@@ -16,5 +16,24 @@
  */
 class MUVideo_Version extends MUVideo_Base_Version
 {
-    // custom enhancements can go here
+    /**
+     * Retrieves meta data information for this application.
+     *
+     * @return array List of meta data.
+     */
+    public function getMetaData()
+    {
+        $meta = parent::getMetaData();
+        
+        // the current module version
+        $meta['version']              = '1.0.0';
+        // the displayed name of the module
+        $meta['displayname']          = $this->__('MUVideo');
+        // the module description
+        $meta['description']          = $this->__('MUVideo module is a module to handle Videos.');
+        //! url version of name, should be in lowercase without space
+        $meta['url']                  = $this->__('muvideo');
+
+        return $meta;
+    }
 }
