@@ -88,7 +88,7 @@ class MUVideo_Controller_Movie extends MUVideo_Controller_Base_Movie
         
         // initialize 
         $youtubeId = '';
-        // we get the if from the url
+        // we get the id from the url
         $youtubeId = explode('=', $entity['urlOfYoutube']);
         
         // assign to template
