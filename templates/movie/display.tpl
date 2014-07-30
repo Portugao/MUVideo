@@ -6,10 +6,14 @@
 {include file="`$lct`/header.tpl"}
 {pageaddvar name='javascript' value='jquery'}
 {pageaddvar name='javascript' value='jquery-ui'}
+{if $movie.urlOfYoutube eq ''}
 {pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/projekktor/projekktor-1.3.09.min.js'}
 {pageaddvar name='stylesheet' value='modules/MUVideo/lib/vendor/projekktor/themes/maccaco/projekktor.style.css'}
+{/if}
+{if $movie.urlOfYoutube ne ''}
 {pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/lazyYT/lazyYT.js'}
 {pageaddvar name='stylesheet' value='modules/MUVideo/lib/vendor/lazyYT/lazyYT.css'}
+{/if}
 <div class="muvideo-movie muvideo-display">
     {gt text='Movie' assign='templateTitle'}
     {assign var='templateTitle' value=$movie->getTitleFromDisplayPattern()|default:$templateTitle}
@@ -17,10 +21,10 @@
     {if $lct eq 'admin'}
         <div class="z-admin-content-pagetitle">
             {icon type='display' size='small' __alt='Details'}
-            <h3>{$templateTitle|notifyfilters:'muvideo.filter_hooks.movies.filter'}{icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h3>
+            <h3>{$templateTitle|notifyfilters:'muvideo.filter_hooks.movies.filter'} {icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h3>
         </div>
     {else}
-        <h2>{$templateTitle|notifyfilters:'muvideo.filter_hooks.movies.filter'}{icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h2>
+        <h2>{$templateTitle|notifyfilters:'muvideo.filter_hooks.movies.filter'} {icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h2>
     {/if}
 
     <dl>
@@ -31,10 +35,10 @@
         <dd>{$movie.description}</dd>
         {/if}
         {if $movie.urlOfYoutube ne ''}
-        <div class="lazyYT" data-youtube-id=PFU9HYyMVxQ data-width="600" data-height="300">loading...</div>
+        <div class="lazyYT" data-youtube-id={$youtubeId} data-width="600" data-height="450">loading...</div>
         {/if}
         {if $movie.urlOfYoutube eq ''}
-            <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="640" height="360" controls>             
+            <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="640" height="385" controls>             
                 <source src="{$movie.uploadOfMovieFullPathUrl}" />         
             </video>
         {/if}
@@ -141,8 +145,9 @@
         var MU = jQuery.noConflict(); 
                
         MU(document).ready(function() {
-        
-        jQuery('.lazyYT').lazyYT();  
+        {{if $movie.urlOfYoutube ne ''}}
+        jQuery('.lazyYT').lazyYT(); 
+        {{/if}} 
         {{if $movie.urlOfYoutube eq ''}}           
         projekktor('#player_a', {
         poster: '{{$movie.poster}}',
