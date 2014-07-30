@@ -51,7 +51,9 @@
                 {/if}
                 <col id="cTitle" />
                 <col id="cDescription" />
+                {if $lqt eq 'admin'}
                 <col id="cUploadOfMovie" />
+                {/if}
                 <col id="cUrlOfYoutube" />
                 <col id="cPoster" />
                 <col id="cCollection" />
@@ -70,9 +72,11 @@
                 <th id="hDescription" scope="col" class="z-left">
                     {sortlink __linktext='Description' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='description' sortdir=$sdir all=$all own=$own collection=$collection workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize ot='movie'}
                 </th>
+                {if $lqt eq 'admin'}
                 <th id="hUploadOfMovie" scope="col" class="z-left">
                     {sortlink __linktext='Upload of movie' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='uploadOfMovie' sortdir=$sdir all=$all own=$own collection=$collection workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize ot='movie'}
                 </th>
+                {/if}
                 <th id="hUrlOfYoutube" scope="col" class="z-left">
                     {sortlink __linktext='Url of youtube' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='urlOfYoutube' sortdir=$sdir all=$all own=$own collection=$collection workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize ot='movie'}
                 </th>
@@ -100,6 +104,7 @@
                 <td headers="hDescription" class="z-left">
                     {$movie.description}
                 </td>
+                {if $lqt eq 'admin'}
                 <td headers="hUploadOfMovie" class="z-left">
                     {if $movie.uploadOfMovie ne ''}
                       <a href="{$movie.uploadOfMovieFullPathURL}" title="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}"{if $movie.uploadOfMovieMeta.isImage} rel="imageviewer[movie]"{/if}>
@@ -111,6 +116,7 @@
                       </a>
                     {else}&nbsp;{/if}
                 </td>
+                {/if}
                 <td headers="hUrlOfYoutube" class="z-left">
                     {if $movie.urlOfYoutube ne ''}
                     <a href="{$movie.urlOfYoutube}" title="{gt text='Visit this page'}">{icon type='url' size='extrasmall' __alt='Homepage'}</a>
@@ -162,7 +168,7 @@
             </tr>
         {foreachelse}
             <tr class="z-{if $lqt eq 'admin'}admin{else}data{/if}tableempty">
-              <td class="z-left" colspan="{if $lqt eq 'admin'}8{else}7{/if}">
+              <td class="z-left" colspan="{if $lqt eq 'admin'}8{else}6{/if}">
             {gt text='No movies found.'}
               </td>
             </tr>
