@@ -24,4 +24,43 @@ class MUVideo_UploadHandler extends MUVideo_Base_UploadHandler
         parent::__construct();
         $this->allowedFileSizes = array('movie' => array('uploadOfMovie' => ModUtil::getVar('MUVideo', 'maxSizeOfMovie', 1024000000), 'poster' => ModUtil::getVar('MUVideo', 'maxSizeOfPoster', 102400)));
     }
+    
+    /**
+     * Determines the allowed file extensions for a given object type.
+     *
+     * @param string $objectType Currently treated entity type.
+     * @param string $fieldName  Name of upload field.
+     * @param string $extension  Input file extension.
+     *
+     * @return array the list of allowed file extensions
+     */
+    protected function isAllowedFileExtension($objectType, $fieldName, $extension)
+    {
+        // determine the allowed extensions
+        $allowedExtensions = array();
+        switch ($objectType) {
+            case 'movie':
+                switch ($fieldName) {
+                    case 'uploadOfMovie':
+                        $allowedExtensions = array('mp4');
+                        break;
+                    case 'poster':
+                        $allowedExtensions = array('gif', 'jpeg', 'jpg', 'png');
+                        break;
+                }
+                break;
+        }
+    
+        if (count($allowedExtensions) > 0) {
+            if (!in_array($extension, $allowedExtensions)) {
+                return false;
+            }
+        }
+    
+        if (in_array($extension, $this->forbiddenFileTypes)) {
+            return false;
+        }
+    
+        return true;
+    }
 }

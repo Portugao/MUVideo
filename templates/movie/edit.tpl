@@ -57,8 +57,8 @@
             {formuploadinput group='movie' id='uploadOfMovie' mandatory=false readOnly=false cssClass=' validate-upload' }
             <span class="z-formnote"><a id="resetUploadOfMovieVal" href="javascript:void(0);" class="z-hide" style="clear:left;">{gt text='Reset to empty value'}</a></span>
             
-                <span class="z-formnote">{gt text='Allowed file extensions:'} <span id="uploadOfMovieFileExtensions">swf, fly,mp4</span></span>
-            <span class="z-formnote">{gt text='Allowed file size:'} {'1024000000'|muvideoGetFileSize:'':false:false}</span>
+                <span class="z-formnote">{gt text='Allowed file extensions:'} <span id="uploadOfMovieFileExtensions">mp4</span></span>
+            <span class="z-formnote">{gt text='Allowed file size:'} {modgetvar module='MUVideo' name='maxSizeOfMovie' assign='allowedFileSize'}{$allowedFileSize|muvideoGetFileSize:'':false:false}</span>
             {if $mode ne 'create'}
                 {if $movie.uploadOfMovie ne ''}
                     <span class="z-formnote">
