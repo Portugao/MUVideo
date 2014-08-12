@@ -138,6 +138,18 @@ abstract class MUVideo_Entity_Base_Movie extends Zikula_EntityAccess
     
     /**
      * @ORM\Column(type="integer")
+     * @var integer $widthOfMovie.
+     */
+    protected $widthOfMovie;
+    
+    /**
+     * @ORM\Column(type="integer")
+     * @var integer $heightOfMovie.
+     */
+    protected $heightOfMovie;
+    
+    /**
+     * @ORM\Column(type="integer")
      * @ZK\StandardFields(type="userid", on="create")
      * @var integer $createdUserId.
      */
@@ -572,6 +584,54 @@ abstract class MUVideo_Entity_Base_Movie extends Zikula_EntityAccess
     public function getPosterFullPathUrl()
     {
         return $this->posterFullPathUrl;
+    }
+    
+    /**
+     * Get width of movie.
+     *
+     * @return integer
+     */
+    public function getWidthOfMovie()
+    {
+        return $this->widthOfMovie;
+    }
+    
+    /**
+     * Set width.
+     *
+     * @param integer $width.
+     *
+     * @return void
+     */
+    public function setWidthOfMovie($widthOfMovie)
+    {
+        if ($widthOfMovie != $this->widthOfMovie) {
+            $this->widthOfMovie = $widthOfMovie;
+        }
+    }
+    
+    /**
+     * Get height of movie.
+     *
+     * @return integer
+     */
+    public function getHeightOfMovie()
+    {
+        return $this->heightOfMovie;
+    }
+    
+    /**
+     * Set height of movie.
+     *
+     * @param integer $height.
+     *
+     * @return void
+     */
+    public function setHeightOfMovie($heightOfMovie)
+    {
+        if ($heightOfMovie != $this->heightOfMovie) {
+            $this->heightOfMovie = $heightOfMovie;
+        }
     }
     
     /**

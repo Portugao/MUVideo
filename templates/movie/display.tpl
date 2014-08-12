@@ -6,6 +6,7 @@
 {include file="`$lct`/header.tpl"}
 {pageaddvar name='javascript' value='jquery'}
 {pageaddvar name='javascript' value='jquery-ui'}
+{pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/FitVids/jquery.fitvids.js'}
 {if $movie.urlOfYoutube eq ''}
 {pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/projekktor/projekktor-1.3.09.min.js'}
 {pageaddvar name='stylesheet' value='modules/MUVideo/lib/vendor/projekktor/themes/maccaco/projekktor.style.css'}
@@ -35,10 +36,10 @@
         <dd>{$movie.description}</dd>
         {/if}
         {if $movie.urlOfYoutube ne ''}
-        <div class="lazyYT" data-youtube-id={$youtubeId} data-width="600" data-height="450">loading...</div>
+        <div class="lazyYT" data-youtube-id={$youtubeId} data-width="{$movie.widthOfMovie}" data-height="{$movie.heightOfMovie}">loading...</div>
         {/if}
         {if $movie.urlOfYoutube eq ''}
-            <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="640" height="385" controls>             
+            <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie}" controls>             
                 <source src="{$movie.uploadOfMovieFullPathUrl}" />         
             </video>
         {/if}
@@ -145,8 +146,10 @@
         var MU = jQuery.noConflict(); 
                
         MU(document).ready(function() {
+        MU('.lazyYT').fitVids();
         {{if $movie.urlOfYoutube ne ''}}
-        jQuery('.lazyYT').lazyYT(); 
+         
+        MU('.lazyYT').lazyYT(); 
         {{/if}} 
         {{if $movie.urlOfYoutube eq ''}}           
         projekktor('#player_a', {

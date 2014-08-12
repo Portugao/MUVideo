@@ -59,6 +59,24 @@ class MUVideo_Entity_Validator_Base_Movie extends MUVideo_Validator
             $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('poster', 255), $dom);
             return $errorInfo;
         }
+        
+        if (!$this->isStringNotLongerThan('widthOfMovie', 11)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('widthOdMovie', 11), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotEmpty('widthOfMovie')) {
+            $errorInfo['message'] = __f('Error! Field value must not be empty (%s).', array('widthOfMovie'), $dom);
+            return $errorInfo;
+        }
+        
+        if (!$this->isStringNotLongerThan('heightOfMovie', 11)) {
+            $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('heightOdMovie', 11), $dom);
+            return $errorInfo;
+        }
+        if (!$this->isStringNotEmpty('heightOfMovie')) {
+            $errorInfo['message'] = __f('Error! Field value must not be empty (%s).', array('heightOfMovie'), $dom);
+            return $errorInfo;
+        }
     
         return true;
     }
