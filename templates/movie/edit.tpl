@@ -92,7 +92,7 @@
             <span class="z-formnote"><a id="resetPosterVal" href="javascript:void(0);" class="z-hide" style="clear:left;">{gt text='Reset to empty value'}</a></span>
             
                 <span class="z-formnote">{gt text='Allowed file extensions:'} <span id="posterFileExtensions">gif, jpeg, jpg, png</span></span>
-            <span class="z-formnote">{gt text='Allowed file size:'} {'102400'|muvideoGetFileSize:'':false:false}</span>
+            <span class="z-formnote">{gt text='Allowed file size:'} {modgetvar module='MUVideo' name='maxSizeOfPoster' assign='allowedPosterSize'}{$allowedPosterSize|muvideoGetFileSize:'':false:false}</span>
             {if $mode ne 'create'}
                 {if $movie.poster ne ''}
                     <span class="z-formnote">
@@ -112,6 +112,18 @@
                 {/if}
             {/if}
             {muvideoValidationError id='poster' class='validate-upload'}
+        </div>
+        
+        <div class="z-formrow">
+            {formlabel for='widthOfMovie' __text='Width of movie' cssClass=''}
+            {formintinput group='movie' id='widthOfMovie' mandatory=false readOnly=false __title='Enter the width of the movie' textMode='singleline' maxLength=255 cssClass='' }
+            {muvideoValidationError id='widthOfMovie' class='required'}
+        </div>
+        
+        <div class="z-formrow">
+            {formlabel for='heightOfMovie' __text='Height of movie' cssClass=''}
+            {formintinput group='movie' id='heightOfMovie' mandatory=true readOnly=false __title='Enter the height of the movie' textMode='singleline' maxLength=255 cssClass='' }
+            {muvideoValidationError id='heightOfMovie' class='required'}
         </div>
     </fieldset>
     
