@@ -16,5 +16,61 @@
  */
 class MUVideo_ContentType_Item extends MUVideo_ContentType_Base_Item
 {
-    // feel free to extend the content type here
+    protected $moviewidth;
+    protected $movieheight;
+    
+    /**
+     * Loads the data.
+     *
+     * @param array $data Data array with parameters.
+     */
+    public function loadData(&$data)
+    {
+        $serviceManager = ServiceUtil::getManager();
+        $controllerHelper = new MUVideo_Util_Controller($serviceManager);
+    
+        $utilArgs = array('name' => 'detail');
+        if (!isset($data['objectType']) || !in_array($data['objectType'], $controllerHelper->getObjectTypes('contentType', $utilArgs))) {
+            $data['objectType'] = $controllerHelper->getDefaultObjectType('contentType', $utilArgs);
+        }
+    
+        $this->objectType = $data['objectType'];
+    
+        if (!isset($data['id'])) {
+            $data['id'] = null;
+        }
+
+        if (!isset($data['moviewidth'])) {
+            $data['moviewidth'] = 400;
+        }
+        $this->moviewidth = $data['moviewidth'];
+        
+        if (!isset($data['movieheight'])) {
+            $data['movieheight'] = 300;
+        }
+        $this->movieheight = $data['movieheight'];
+        
+        if (!isset($data['displayMode'])) {
+            $data['displayMode'] = 'embed';
+        }
+    
+        $this->id = $data['id'];
+        $this->displayMode = $data['displayMode'];
+    }
+    
+    /**
+     * Returns common arguments for display data selection with the external api.
+     *
+     * @return array Display arguments.
+     */
+    protected function getDisplayArguments()
+    {
+        return array('objectType' => $this->objectType,
+                'source' => 'contentType',
+                'displayMode' => $this->displayMode,
+                'id' => $this->id,
+                'moviewidth' => $this->moviewidth,
+                'movieheight' => $this->movieheight
+        );
+    }
 }

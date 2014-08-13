@@ -17,6 +17,8 @@
     </a>
     </p>
 {/if}
+{checkpermission component='MUVideoContentPlugin::' instance='::' level='ACCESS_READ' assign='muvideocontentplugin'}
+{if $muvideocontentplugin eq true}
 {checkpermissionblock component='MUVideo::' instance='::' level='ACCESS_EDIT'}
     {if $displayMode eq 'embed'}
         <p class="muvideo-external-title">
@@ -38,10 +40,10 @@
           </a>
         {else}&nbsp;{/if} *}
         {if $movie.urlOfYoutube ne ''}
-        <div class="lazyYT" data-youtube-id={$youtubeId} data-width="600" data-height="450">loading...</div>
+        <div class="lazyYT" data-youtube-id={$youtubeId} data-width="{$moviewidth}" data-height="{$movieheight}">loading...</div>
         {/if}
         {if $movie.urlOfYoutube eq ''}
-            <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="640" height="385" controls>             
+            <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="{$moviewidth}" height="{$movieheight}" controls>             
                 <source src="{$movie.uploadOfMovieFullPathUrl}" />         
             </video>
         {/if}
@@ -60,6 +62,7 @@
             {if $movie.description ne ''}{$movie.description}<br />{/if}
         </p>
     *}
+{/if}
 {/if}
 </div>
 <script type="text/javascript">

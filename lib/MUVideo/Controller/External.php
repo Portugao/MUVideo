@@ -29,6 +29,7 @@ class MUVideo_Controller_External extends MUVideo_Controller_Base_External
     public function display(array $args = array())
     {
         $getData = $this->request->query;
+        $getPostData = $this->request->request;
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
     
         $objectType = isset($args['objectType']) ? $args['objectType'] : $getData->filter('ot', '', FILTER_SANITIZE_STRING);
@@ -48,6 +49,9 @@ class MUVideo_Controller_External extends MUVideo_Controller_Base_External
         if (!in_array($source, array('contentType', 'scribite'))) {
             $source = 'contentType';
         }
+        
+        $moviewidth = isset($args['moviewidth']) ? $args['moviewidth'] : $getPostData->filter('moviewidth', '', FILTER_SANITIZE_STRING);
+        $movieheight = isset($args['movieheight']) ? $args['movieheight'] : $getPostData->filter('movieheight', '', FILTER_SANITIZE_STRING);
     
         $displayMode = isset($args['displayMode']) ? $args['displayMode'] : $getData->filter('displayMode', 'embed', FILTER_SANITIZE_STRING);
         if (!in_array($displayMode, array('link', 'embed'))) {
@@ -89,6 +93,8 @@ class MUVideo_Controller_External extends MUVideo_Controller_Base_External
         $this->view->assign('objectType', $objectType)
                   ->assign('source', $source)
                   ->assign($objectType, $entity)
+                  ->assign('moviewidth', $moviewidth)
+                  ->assign('movieheight', $movieheight)
                   ->assign('displayMode', $displayMode);
         
         // initialize
