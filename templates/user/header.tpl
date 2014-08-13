@@ -9,7 +9,8 @@
 
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
     <div class="z-frontendbox">
-        <h2>{gt text='M u video' comment='This is the title of the header template'}</h2>
+       {* <h2>{gt text='M u video' comment='This is the title of the header template'}</h2> *}
+       <h2>{modgetinfo modname='MUVideo' info='displayname'}{if $templateTitle}: {$templateTitle}{/if}</h2>
         {modulelinks modname='MUVideo' type='user'}
     </div>
 {/if}
