@@ -41,7 +41,11 @@ class MUVideo_Controller_External extends MUVideo_Controller_Base_External
         $id = isset($args['id']) ? $args['id'] : $getData->filter('id', null, FILTER_SANITIZE_STRING);
     
         $component = $this->name . ':' . ucwords($objectType) . ':';
-        if (!SecurityUtil::checkPermission($component, $id . '::', ACCESS_READ)) {
+       /* if (!SecurityUtil::checkPermission($component, $id . '::', ACCESS_READ)) {
+            return '';
+        }*/
+        
+        if (!SecurityUtil::checkPermission('MUVideoContentPlugin::', '::', ACCESS_READ)) {
             return '';
         }
     

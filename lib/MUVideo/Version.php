@@ -33,6 +33,8 @@ class MUVideo_Version extends MUVideo_Base_Version
         $meta['description']          = $this->__('MUVideo module is a module to handle Videos.');
         //! url version of name, should be in lowercase without space
         $meta['url']                  = $this->__('muvideo');
+        
+        $meta['securityschema']['MUVideoContentPlugin::'] = '::'; 
 
         return $meta;
     }
