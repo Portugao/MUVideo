@@ -6,7 +6,6 @@
 {include file="`$lct`/header.tpl"}
 {pageaddvar name='javascript' value='jquery'}
 {pageaddvar name='javascript' value='jquery-ui'}
-{pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/FitVids/jquery.fitvids.js'}
 {if $movie.urlOfYoutube eq ''}
 {pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/projekktor/projekktor-1.3.09.min.js'}
 {pageaddvar name='stylesheet' value='modules/MUVideo/lib/vendor/projekktor/themes/maccaco/projekktor.style.css'}
@@ -36,7 +35,7 @@
         <dd>{$movie.description}</dd>
         {/if}
         {if $movie.urlOfYoutube ne ''}
-        <div class="lazyYT" data-youtube-id={$youtubeId} data-width="{$movie.widthOfMovie}" data-height="{$movie.heightOfMovie}">loading...</div>
+        <div class="lazyYT theme_video_fluid" data-youtube-id={$youtubeId} data-width="{$movie.widthOfMovie}" data-height="{$movie.heightOfMovie}">loading...</div>
         {/if}
         {if $movie.urlOfYoutube eq ''}
             <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie}" controls>             
@@ -98,8 +97,8 @@
         </dd> *}
         
     </dl>
-    
-          {if isset($movie.Collection) && $movie.Collection ne null}
+
+    {if isset($movie.Collection) && $movie.Collection ne null}
           <dl>
           <dt>{gt text='Collection'}</dt>
           <dd>
@@ -146,10 +145,8 @@
         var MU = jQuery.noConflict(); 
                
         MU(document).ready(function() {
-        MU('.lazyYT').fitVids();
-        {{if $movie.urlOfYoutube ne ''}}
-         
-        MU('.lazyYT').lazyYT(); 
+        {{if $movie.urlOfYoutube ne ''}}     
+        jQuery('.lazyYT').lazyYT(); 
         {{/if}} 
         {{if $movie.urlOfYoutube eq ''}}           
         projekktor('#player_a', {

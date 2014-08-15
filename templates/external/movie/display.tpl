@@ -19,13 +19,12 @@
 {/if}
 {checkpermission component='MUVideoContentPlugin::' instance='::' level='ACCESS_READ' assign='muvideocontentplugin'}
 {if $muvideocontentplugin eq true}
-{checkpermissionblock component='MUVideo::' instance='::' level='ACCESS_EDIT'}
+
     {if $displayMode eq 'embed'}
         <p class="muvideo-external-title">
             <strong>{$movie->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filter_hooks.movies.filter'}</strong>
         </p>
     {/if}
-{/checkpermissionblock}
 
 {if $displayMode eq 'link'}
 {elseif $displayMode eq 'embed'}
@@ -40,7 +39,7 @@
           </a>
         {else}&nbsp;{/if} *}
         {if $movie.urlOfYoutube ne ''}
-        <div class="lazyYT" data-youtube-id={$youtubeId} data-width="{$moviewidth}" data-height="{$movieheight}">loading...</div>
+        <div class="lazyYT theme_video_fluid" data-youtube-id={$youtubeId} data-width="{$moviewidth}" data-height="{$movieheight}">loading...</div>
         {/if}
         {if $movie.urlOfYoutube eq ''}
             <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="{$moviewidth}" height="{$movieheight}" controls>             
