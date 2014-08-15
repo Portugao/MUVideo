@@ -1,0 +1,882 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: MUVideo\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-08-15 09:14+0000\n"
+"PO-Revision-Date: 2014-08-15 14:10+0100\n"
+"Last-Translator: \n"
+"Language-Team: Michael Ueberschaer\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: workflows/function.none_permissioncheck.php:56
+msgid "None workflow (no approval)"
+msgstr "Kein Workflow"
+
+#: workflows/function.none_permissioncheck.php:57
+msgid ""
+"This is like a non-existing workflow. Everything is online immediately after "
+"creation."
+msgstr ""
+"Dies ist wie ein nicht existierender Workflow. Alles is direkt online nach "
+"der Erstellung."
+
+#: workflows/function.none_permissioncheck.php:61
+msgid "Initial"
+msgstr "Anfang"
+
+#: workflows/function.none_permissioncheck.php:61
+msgid "Pseudo-state for content which is just created and not persisted yet."
+msgstr ""
+"Pseudostaus für Inhalt der gerade erstellt wurde und noch nicht gesichert "
+"wurde."
+
+#: workflows/function.none_permissioncheck.php:62
+msgid "Approved"
+msgstr "Freigegeben"
+
+#: workflows/function.none_permissioncheck.php:62
+msgid "Content has been approved and is available online."
+msgstr "Inhalt wurde freigegeben und ist online verfügbar."
+
+#: workflows/function.none_permissioncheck.php:63
+msgid "Deleted"
+msgstr "Gelöscht"
+
+#: workflows/function.none_permissioncheck.php:63
+msgid "Pseudo-state for content which has been deleted from the database."
+msgstr "Pseudostatus für Inhalt der aus der Datenbank gelöscht wurde."
+
+#: workflows/function.none_permissioncheck.php:69 templates/movie/view.tpl:188
+#: templates/collection/view.tpl:123
+msgid "Submit"
+msgstr "Abschicken"
+
+#: workflows/function.none_permissioncheck.php:69
+msgid "Submit content."
+msgstr "Inhalt abschicken"
+
+#: workflows/function.none_permissioncheck.php:73
+msgid "Update"
+msgstr "Aktualisierung"
+
+#: workflows/function.none_permissioncheck.php:73
+msgid "Update content."
+msgstr "Inhalt updaten"
+
+#: workflows/function.none_permissioncheck.php:74 templates/movie/view.tpl:186
+#: templates/movie/delete.tpl:12 templates/movie/delete.tpl:28
+#: templates/collection/view.tpl:121 templates/collection/delete.tpl:12
+#: templates/collection/delete.tpl:28
+msgid "Delete"
+msgstr "Löschen"
+
+#: workflows/function.none_permissioncheck.php:74 templates/movie/view.tpl:186
+#: templates/collection/view.tpl:121
+msgid "Delete content permanently."
+msgstr "Inhalt dauerhaft löschen"
+
+#: templates/plugins/function.muvideoTemplateSelector.php:30
+#: templates/block/itemlist_modify.tpl:53
+msgid "Only item titles"
+msgstr "Nur Titel"
+
+#: templates/plugins/function.muvideoTemplateSelector.php:31
+#: templates/block/itemlist_modify.tpl:54
+msgid "With description"
+msgstr "Mit Beschreibung"
+
+#: templates/plugins/function.muvideoTemplateSelector.php:32
+#: templates/contenttype/itemlist_edit.tpl:67
+#: templates/block/itemlist_modify.tpl:55
+#: templates/block/itemlist_modify.tpl:60
+msgid "Custom template"
+msgstr "Eigenes Template"
+
+#: templates/plugins/function.muvideoTemplateHeaders.php:31
+#, php-format
+msgid "%1$s: missing parameter '%2$s'"
+msgstr "%1$s: Parameter '%2$s' fehlt"
+
+#: templates/plugins/function.muvideoObjectTypeSelector.php:30
+#: templates/external/movie/find.tpl:25 templates/movie/view_quickNav.tpl:15
+#: templates/search/options.tpl:5 templates/block/itemlist_modify.tpl:5
+msgid "Collections"
+msgstr "Kollektionen"
+
+#: templates/plugins/function.muvideoObjectTypeSelector.php:31
+#: templates/external/collection/find.tpl:25
+#: templates/collection/display.tpl:23 templates/collection/display.tpl:25
+#: templates/search/options.tpl:9 templates/block/itemlist_modify.tpl:6
+msgid "Movies"
+msgstr "Filme"
+
+#: templates/plugins/function.muvideoValidationError.php:36
+msgid "This is a required field."
+msgstr "Dies ist ein Pflichtfeld."
+
+#: templates/plugins/function.muvideoValidationError.php:37
+msgid "Please enter a valid number in this field."
+msgstr "Bitte gib eine gültige Zahl ein."
+
+#: templates/plugins/function.muvideoValidationError.php:38
+msgid ""
+"Please use numbers only in this field. please avoid spaces or other "
+"characters such as dots or commas."
+msgstr ""
+"Bitte nutze nur Ziffern in diesem Feld. Vermeide Leerzeichen und andere "
+"Zeichen wie Punkte oder Kommata."
+
+#: templates/plugins/function.muvideoValidationError.php:39
+msgid "Please use letters only (a-z) in this field."
+msgstr "Bitte nutze nur Buchstaben (a-z) in diiesem Feld."
+
+#: templates/plugins/function.muvideoValidationError.php:40
+msgid ""
+"Please use only letters (a-z) or numbers (0-9) only in this field. No spaces "
+"or other characters are allowed."
+msgstr ""
+"Bitte nutze nur Buchstaben (a-z) oder Ziffern (0-9) in diesem feld. "
+"Leerzeichen und andere Zeichen sind nicht erlaubt."
+
+#: templates/plugins/function.muvideoValidationError.php:41
+msgid "Please enter a valid date."
+msgstr "Bitte gib ein gültiges Datum ein."
+
+#: templates/plugins/function.muvideoValidationError.php:42
+msgid "Please enter a valid email address. For example yourname@example.com ."
+msgstr ""
+"Bitte gib eine gültige email Adresse en. Zum Beispiel deinname@beispiel.com ."
+
+#: templates/plugins/function.muvideoValidationError.php:43
+msgid "Please enter a valid URL."
+msgstr "Bitte gib eine gültige URL ein."
+
+#: templates/plugins/function.muvideoValidationError.php:44
+msgid ""
+"Please use this date format: dd/mm/yyyy. For example 17/03/2010 for the 17th "
+"of March, 2010."
+msgstr ""
+"Bitte nutze folgendes Datumsformat: dd/mm/yyyy. Beispiel: 17/03/2011 für den "
+"17. März 2011."
+
+#: templates/plugins/function.muvideoValidationError.php:45
+msgid "Please enter a valid $ amount. For example $100.00 ."
+msgstr "Bitte gib eine $ gültige Zahl ein. Zum Beispiel $ 100.00  ."
+
+#: templates/plugins/function.muvideoValidationError.php:46
+msgid "Please make a selection."
+msgstr "Bitte treffe ein Auswahl."
+
+#: templates/plugins/function.muvideoValidationError.php:47
+msgid "Please select one of the above options."
+msgstr "Bitte wähle eine der oberen Optionen"
+
+#: templates/plugins/function.muvideoValidationError.php:50
+msgid "This value must not contain spaces."
+msgstr "Dieser Wert darf keine Leerzeichen enthalten."
+
+#: templates/plugins/function.muvideoValidationError.php:51
+msgid "Please select an allowed file type."
+msgstr "Bitte wähle einen erlaubten Dateitypen."
+
+#: templates/plugins/function.muvideoValidationError.php:52
+#: templates/plugins/function.muvideoValidationError.php:54
+#: templates/plugins/function.muvideoValidationError.php:56
+msgid "Please select a value in the past."
+msgstr "Bitte wähle einen Wert in der Vergangenheit"
+
+#: templates/plugins/function.muvideoValidationError.php:53
+#: templates/plugins/function.muvideoValidationError.php:55
+#: templates/plugins/function.muvideoValidationError.php:57
+msgid "Please select a value in the future."
+msgstr "Bitte wähle einen Wert in der Zukunft"
+
+#: templates/plugins/function.muvideoValidationError.php:58
+msgid "This value is already assigned, but must be unique. Please change it."
+msgstr ""
+"Dieser Wert existiert shon und er muss eindeutig sein. Bitte ändere ihn."
+
+#: templates/plugin_config/ItemList.tpl:14
+#: templates/contenttype/itemlist_edit.tpl:38
+#: templates/block/itemlist_modify.tpl:37
+msgid "Sorting"
+msgstr "Sortierung"
+
+#: templates/plugin_config/ItemList.tpl:16
+#: templates/contenttype/itemlist_edit.tpl:42
+#: templates/block/itemlist_modify.tpl:39
+msgid "Random"
+msgstr "Zufall"
+
+#: templates/plugin_config/ItemList.tpl:17
+#: templates/contenttype/itemlist_edit.tpl:45
+#: templates/block/itemlist_modify.tpl:40
+msgid "Newest"
+msgstr "Aktuellste"
+
+#: templates/plugin_config/ItemList.tpl:18
+#: templates/contenttype/itemlist_edit.tpl:48
+#: templates/block/itemlist_modify.tpl:41
+msgid "Default"
+msgstr "Standard"
+
+#: templates/plugin_config/ItemList.tpl:22
+#: templates/contenttype/itemlist_edit.tpl:54
+#: templates/block/itemlist_modify.tpl:46
+msgid "Amount"
+msgstr "Anzahl"
+
+#: templates/plugin_config/ItemList.tpl:27
+#: templates/contenttype/itemlist_edit.tpl:74
+#: templates/block/itemlist_modify.tpl:66
+msgid "Filter (expert option)"
+msgstr "Filter ( Expertenoption )"
+
+#: templates/plugin_config/ItemList.tpl:30
+#: templates/contenttype/itemlist_edit.tpl:78
+#: templates/block/itemlist_modify.tpl:69
+msgid "Syntax examples"
+msgstr "Syntax Beispiele"
+
+#: templates/plugin_config/ItemList.tpl:30
+#: templates/contenttype/itemlist_edit.tpl:78
+#: templates/block/itemlist_modify.tpl:69
+msgid "or"
+msgstr "oder"
+
+#: templates/plugin_config/ItemList.tpl:36
+msgid "No object types found."
+msgstr "Fehler! Keine Objekttypen gefunden."
+
+#: templates/external/movie/display.tpl:38 templates/external/movie/info.tpl:9
+#: templates/movie/display.tpl:52 templates/movie/display.tpl:72
+#: templates/movie/view.tpl:114 templates/movie/view.tpl:131
+#: templates/movie/edit.tpl:70 templates/movie/edit.tpl:104
+msgid "Download"
+msgstr "Download"
+
+#: templates/external/movie/find.tpl:5 templates/external/movie/find.tpl:36
+#: templates/external/collection/find.tpl:25
+msgid "Search and select movie"
+msgstr "Suche und wähle Film"
+
+#: templates/external/movie/find.tpl:24
+#: templates/external/collection/find.tpl:24
+msgid "Switch to"
+msgstr "Wechsel zu"
+
+#: templates/external/movie/find.tpl:25
+#: templates/external/collection/find.tpl:5
+#: templates/external/collection/find.tpl:36
+msgid "Search and select collection"
+msgstr "Suche und wähle Kollektion"
+
+#: templates/external/movie/find.tpl:39
+#: templates/external/collection/find.tpl:39
+msgid "Paste as"
+msgstr "Einfügen als"
+
+#: templates/external/movie/find.tpl:41
+msgid "Link to the movie"
+msgstr "Link zum Film"
+
+#: templates/external/movie/find.tpl:42
+msgid "ID of movie"
+msgstr "Id des Films"
+
+#: templates/external/movie/find.tpl:48 templates/external/movie/select.tpl:14
+#: templates/movie/display.tpl:19 templates/collection/view.csv.tpl:4
+msgid "Movie"
+msgstr "Film"
+
+#: templates/external/movie/find.tpl:60 templates/external/movie/select.tpl:19
+#: templates/external/collection/find.tpl:60
+#: templates/external/collection/select.tpl:19
+#: templates/contenttype/itemlist_collection_display_description.tpl:11
+#: templates/contenttype/itemlist_movie_display_description.tpl:11
+msgid "No entries found."
+msgstr "Keine Einträge gefunden."
+
+#: templates/external/movie/find.tpl:67 templates/external/movie/select.tpl:25
+#: templates/external/collection/find.tpl:67
+#: templates/external/collection/select.tpl:25
+#: templates/movie/view_quickNav.tpl:39
+#: templates/collection/view_quickNav.tpl:28
+msgid "Sort by"
+msgstr "Sortieren anhand"
+
+#: templates/external/movie/find.tpl:69 templates/external/movie/select.tpl:27
+#: templates/external/collection/find.tpl:69
+#: templates/external/collection/select.tpl:27
+#: templates/movie/view_quickNav.tpl:42
+#: templates/collection/view_quickNav.tpl:31
+msgid "Id"
+msgstr "Id"
+
+#: templates/external/movie/find.tpl:70 templates/external/movie/select.tpl:28
+#: templates/external/collection/find.tpl:70
+#: templates/external/collection/select.tpl:28
+#: templates/movie/view_quickNav.tpl:26 templates/movie/view_quickNav.tpl:43
+#: templates/movie/view.csv.tpl:3 templates/collection/view_quickNav.tpl:15
+#: templates/collection/view_quickNav.tpl:32
+#: templates/collection/view.csv.tpl:3
+msgid "Workflow state"
+msgstr "Workflow Status"
+
+#: templates/external/movie/find.tpl:71 templates/external/movie/select.tpl:29
+#: templates/external/collection/find.tpl:71
+#: templates/external/collection/select.tpl:29
+#: templates/movie/view_quickNav.tpl:44 templates/movie/view.tpl:70
+#: templates/movie/edit.tpl:45 templates/movie/view.csv.tpl:3
+#: templates/collection/display.tpl:47
+#: templates/collection/view_quickNav.tpl:33 templates/collection/view.tpl:64
+#: templates/collection/edit.tpl:45 templates/collection/view.csv.tpl:3
+msgid "Title"
+msgstr "Titel"
+
+#: templates/external/movie/find.tpl:72 templates/external/movie/select.tpl:30
+#: templates/external/collection/find.tpl:72
+#: templates/external/collection/select.tpl:30 templates/movie/display.tpl:34
+#: templates/movie/view_quickNav.tpl:45 templates/movie/view.tpl:73
+#: templates/movie/edit.tpl:51 templates/movie/view.csv.tpl:3
+#: templates/collection/display.tpl:49
+#: templates/collection/view_quickNav.tpl:34 templates/collection/view.tpl:67
+#: templates/collection/edit.tpl:51 templates/collection/view.csv.tpl:3
+msgid "Description"
+msgstr "Beschreibung"
+
+#: templates/external/movie/find.tpl:73 templates/external/movie/select.tpl:31
+#: templates/movie/view_quickNav.tpl:46 templates/movie/view.tpl:77
+#: templates/movie/edit.tpl:56 templates/movie/view.csv.tpl:3
+msgid "Upload of movie"
+msgstr "Film hochladen"
+
+#: templates/external/movie/find.tpl:74 templates/external/movie/select.tpl:32
+#: templates/movie/display.tpl:57 templates/movie/view_quickNav.tpl:47
+#: templates/movie/view.tpl:81 templates/movie/edit.tpl:84
+#: templates/movie/view.csv.tpl:3
+msgid "Url of youtube"
+msgstr "Url von youtube"
+
+#: templates/external/movie/find.tpl:75 templates/external/movie/select.tpl:33
+#: templates/movie/display.tpl:66 templates/movie/view_quickNav.tpl:48
+#: templates/movie/view.tpl:84 templates/movie/edit.tpl:90
+#: templates/movie/view.csv.tpl:3
+msgid "Poster"
+msgstr "Poster"
+
+#: templates/external/movie/find.tpl:76 templates/external/movie/select.tpl:34
+#: templates/external/collection/find.tpl:73
+#: templates/external/collection/select.tpl:31
+#: templates/movie/view_quickNav.tpl:49
+#: templates/collection/view_quickNav.tpl:35
+msgid "Creation date"
+msgstr "Erstelldatum"
+
+#: templates/external/movie/find.tpl:77 templates/external/movie/select.tpl:35
+#: templates/external/collection/find.tpl:74
+#: templates/external/collection/select.tpl:32
+#: templates/movie/view_quickNav.tpl:50
+#: templates/collection/view_quickNav.tpl:36
+msgid "Creator"
+msgstr "Ersteller"
+
+#: templates/external/movie/find.tpl:78 templates/external/movie/select.tpl:36
+#: templates/external/collection/find.tpl:75
+#: templates/external/collection/select.tpl:33
+#: templates/movie/view_quickNav.tpl:51
+#: templates/collection/view_quickNav.tpl:37
+msgid "Update date"
+msgstr "Aktualisierungsdatum"
+
+#: templates/external/movie/find.tpl:81 templates/external/movie/select.tpl:39
+#: templates/external/collection/find.tpl:78
+#: templates/external/collection/select.tpl:36
+#: templates/movie/view_quickNav.tpl:54
+#: templates/collection/view_quickNav.tpl:40
+msgid "ascending"
+msgstr "Aufsteigend"
+
+#: templates/external/movie/find.tpl:82 templates/external/movie/select.tpl:40
+#: templates/external/collection/find.tpl:79
+#: templates/external/collection/select.tpl:37
+#: templates/movie/view_quickNav.tpl:55
+#: templates/collection/view_quickNav.tpl:41
+msgid "descending"
+msgstr "Absteigend"
+
+#: templates/external/movie/find.tpl:87
+#: templates/external/collection/find.tpl:84 templates/admin/config.tpl:22
+#: templates/movie/view_quickNav.tpl:62
+#: templates/collection/view_quickNav.tpl:48
+msgid "Page size"
+msgstr "Seitengröße"
+
+#: templates/external/movie/find.tpl:100
+#: templates/external/movie/select.tpl:45
+#: templates/external/collection/find.tpl:97
+#: templates/external/collection/select.tpl:42
+msgid "Search for"
+msgstr "Suchen nach"
+
+#: templates/external/movie/find.tpl:102
+#: templates/external/movie/select.tpl:47
+#: templates/external/collection/find.tpl:99
+#: templates/external/collection/select.tpl:44
+msgid "Filter"
+msgstr "Filter"
+
+#: templates/external/movie/find.tpl:108
+#: templates/external/collection/find.tpl:105
+msgid "Change selection"
+msgstr "Auswahl ändern"
+
+#: templates/external/movie/find.tpl:109
+#: templates/external/collection/find.tpl:106 templates/admin/config.tpl:37
+#: templates/movie/edit.tpl:174 templates/movie/delete.tpl:30
+#: templates/collection/edit.tpl:99 templates/collection/delete.tpl:30
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: templates/external/movie/select.tpl:4
+msgid "Movie information"
+msgstr "Filminformation"
+
+#: templates/external/collection/find.tpl:41
+msgid "Link to the collection"
+msgstr "Link zur Kollektion"
+
+#: templates/external/collection/find.tpl:42
+msgid "ID of collection"
+msgstr "Id der Kollektion"
+
+#: templates/external/collection/find.tpl:48
+#: templates/external/collection/select.tpl:14 templates/movie/display.tpl:77
+#: templates/movie/display.tpl:103 templates/movie/view.tpl:87
+#: templates/movie/view.csv.tpl:4 templates/collection/display.tpl:8
+#: templates/collection/include_selectOne.tpl:9
+#: templates/collection/include_selectOne.tpl:14
+msgid "Collection"
+msgstr "Kollektion"
+
+#: templates/external/collection/select.tpl:4
+msgid "Collection information"
+msgstr "Kollektionsinformation"
+
+#: templates/admin/config.tpl:4 templates/admin/config.tpl:7
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: templates/admin/config.tpl:15
+msgid "Variables"
+msgstr "Variablen"
+
+#: templates/admin/config.tpl:19
+msgid "Here you can manage all basic settings for this application."
+msgstr "Hier kannst Du die Grundeinstellungen für dieses Modul verwalten."
+
+#: templates/admin/config.tpl:23
+msgid "Enter the page size. Only digits are allowed."
+msgstr "Gib die Seitengröße ein. Nur Ziffern sind erlaubt."
+
+#: templates/admin/config.tpl:26
+msgid "Max size of movie"
+msgstr "Maximale Größe des Films"
+
+#: templates/admin/config.tpl:27
+msgid "Enter the max size of movie. Only digits are allowed."
+msgstr "Gib die maximale Größe des Films ein. Nur Ziffern sind erlaubt."
+
+#: templates/admin/config.tpl:30
+msgid "Max size of poster"
+msgstr "Maximale Größe des Posters"
+
+#: templates/admin/config.tpl:31
+msgid "Enter the max size of poster. Only digits are allowed."
+msgstr "Gib die maximale Größe des Posters ein. Nur Ziffern sind erlaubt."
+
+#: templates/admin/config.tpl:36
+msgid "Update configuration"
+msgstr "Einstellungen aktualisieren"
+
+#: templates/movie/display.tpl:24 templates/collection/display.tpl:13
+msgid "Details"
+msgstr "Details"
+
+#: templates/movie/display.tpl:25 templates/movie/display.tpl:28
+#: templates/movie/view.tpl:89 templates/movie/view.tpl:157
+#: templates/collection/display.tpl:14 templates/collection/display.tpl:17
+#: templates/collection/view.tpl:69 templates/collection/view.tpl:92
+msgid "Actions"
+msgstr "Aktionen"
+
+#: templates/movie/display.tpl:60 templates/movie/view.tpl:122
+msgid "Visit this page"
+msgstr "Seite besuchen"
+
+#: templates/movie/display.tpl:60 templates/movie/view.tpl:122
+msgid "Homepage"
+msgstr "Homepage"
+
+#: templates/movie/display.tpl:84 templates/movie/display.tpl:109
+#: templates/movie/include_displayItemListMany.tpl:25
+#: templates/movie/view.tpl:141
+#: templates/movie/include_displayItemListOne.tpl:21
+#: templates/collection/include_displayItemListMany.tpl:25
+#: templates/collection/include_displayItemListOne.tpl:21
+msgid "Open quick view window"
+msgstr "Fenster für Schnellansicht öffnen"
+
+#: templates/movie/display.tpl:84 templates/movie/display.tpl:109
+#: templates/movie/include_displayItemListMany.tpl:25
+#: templates/movie/view.tpl:141
+#: templates/movie/include_displayItemListOne.tpl:21
+#: templates/collection/include_displayItemListMany.tpl:25
+#: templates/collection/include_displayItemListOne.tpl:21
+msgid "Quick view"
+msgstr "Schnellansicht"
+
+#: templates/movie/display.tpl:95 templates/movie/display.tpl:120
+#: templates/movie/view.tpl:149
+msgid "Not set."
+msgstr "Nicht gesetzt."
+
+#: templates/movie/view_quickNav.tpl:6
+#: templates/collection/view_quickNav.tpl:6
+msgid "Quick navigation"
+msgstr "Schnellnavigation"
+
+#: templates/movie/view_quickNav.tpl:13
+#: templates/collection/view_quickNav.tpl:13
+#: templates/block/itemlist_modify.tpl:12
+msgid "All"
+msgstr "Alle"
+
+#: templates/movie/view_quickNav.tpl:35
+#: templates/collection/view_quickNav.tpl:24
+msgid "Search"
+msgstr "Suchen"
+
+#: templates/movie/view_quickNav.tpl:73
+#: templates/collection/view_quickNav.tpl:59
+msgid "OK"
+msgstr "OK"
+
+#: templates/movie/main.tpl:7
+msgid "Welcome to the movie section of the M u video application."
+msgstr "Willkommen zum Filmbereich von MUVideo"
+
+#: templates/movie/view.tpl:8
+msgid "Movie list"
+msgstr "Filmliste"
+
+#: templates/movie/view.tpl:21 templates/movie/edit.tpl:16
+#: templates/collection/display.tpl:39
+msgid "Create movie"
+msgstr "Film erstellen"
+
+#: templates/movie/view.tpl:31 templates/collection/view.tpl:31
+msgid "Back to paginated view"
+msgstr "Zurück zur Seitenansicht"
+
+#: templates/movie/view.tpl:35 templates/collection/view.tpl:35
+msgid "Show all entries"
+msgstr "Alle Einträge anzeigen"
+
+#: templates/movie/view.tpl:170 templates/mailz/itemlist_movie_text.tpl:7
+#: templates/mailz/itemlist_movie_html.tpl:10
+msgid "No movies found."
+msgstr "Keine Filme gefunden"
+
+#: templates/movie/view.tpl:183
+msgid "With selected movies"
+msgstr "Mit gewählten Filmen"
+
+#: templates/movie/view.tpl:185 templates/collection/view.tpl:120
+msgid "Choose action"
+msgstr "Wähle eine Aktion"
+
+#: templates/movie/view.atom.tpl:8 templates/movie/view.rss.tpl:15
+msgid "Latest movies"
+msgstr "Letzte Filme"
+
+#: templates/movie/view.atom.tpl:9 templates/movie/view.rss.tpl:16
+msgid "A direct feed showing the list of movies"
+msgstr "Ein Feed der die Filmliste anzeigt"
+
+#: templates/movie/edit.tpl:11 templates/movie/edit.tpl:21
+msgid "Edit movie"
+msgstr "Film bearbeiten"
+
+#: templates/movie/edit.tpl:42 templates/collection/edit.tpl:42
+msgid "Content"
+msgstr "Inhalt"
+
+#: templates/movie/edit.tpl:46
+msgid "Enter the title of the movie"
+msgstr "Gib den Filmtitel ein"
+
+#: templates/movie/edit.tpl:52
+msgid "Enter the description of the movie"
+msgstr "Gib die Filmbeschreibung ein"
+
+#: templates/movie/edit.tpl:58 templates/movie/edit.tpl:92
+msgid "Reset to empty value"
+msgstr "Zu leerem Wert zurück setzen"
+
+#: templates/movie/edit.tpl:60 templates/movie/edit.tpl:94
+msgid "Allowed file extensions:"
+msgstr "Erlaubte Dateiendungen"
+
+#: templates/movie/edit.tpl:61 templates/movie/edit.tpl:95
+msgid "Allowed file size:"
+msgstr "Erlaubte Dateigröße:"
+
+#: templates/movie/edit.tpl:65 templates/movie/edit.tpl:99
+msgid "Current file"
+msgstr "Aktuelle Datei"
+
+#: templates/movie/edit.tpl:75
+msgid "Delete upload of movie ?"
+msgstr "Diesen Film löschen?"
+
+#: templates/movie/edit.tpl:76 templates/movie/edit.tpl:110
+msgid "Delete existing file"
+msgstr "Vorhandene Datei löchen"
+
+#: templates/movie/edit.tpl:85
+msgid "Enter the url of youtube of the movie"
+msgstr "Gib die Url von Youtube ein"
+
+#: templates/movie/edit.tpl:109
+msgid "Delete poster ?"
+msgstr "Poster löschen?"
+
+#: templates/movie/edit.tpl:118 templates/contenttype/item_edit.tpl:16
+msgid "Width of movie"
+msgstr "Breite des Films:"
+
+#: templates/movie/edit.tpl:119
+msgid "Enter the width of the movie"
+msgstr "Gib die Breite des Films ein"
+
+#: templates/movie/edit.tpl:124 templates/contenttype/item_edit.tpl:18
+msgid "Height of movie"
+msgstr "Höhe des Films"
+
+#: templates/movie/edit.tpl:125
+msgid "Enter the height of the movie"
+msgstr "Gib die Höhe des Films ein"
+
+#: templates/movie/edit.tpl:153 templates/collection/edit.tpl:78
+msgid "Return control"
+msgstr "Weiterleitungkontrolle"
+
+#: templates/movie/edit.tpl:155 templates/collection/edit.tpl:80
+msgid "Create another item after save"
+msgstr "Ein weiteres Element nach dem Speichern erstellen"
+
+#: templates/movie/edit.tpl:168
+msgid "Really delete this movie?"
+msgstr "Diesen Film wirklich löschen?"
+
+#: templates/movie/delete.tpl:8
+msgid "Delete movie"
+msgstr "Film löschen"
+
+#: templates/movie/delete.tpl:19
+msgid "Do you really want to delete this movie ?"
+msgstr "Möchtest du diesen Film wirklich löschen?"
+
+#: templates/movie/delete.tpl:26 templates/collection/delete.tpl:26
+msgid "Confirmation prompt"
+msgstr "Sicherheitsabfrage"
+
+#: templates/contenttype/itemlist_movie_display.tpl:4
+#: templates/contenttype/itemlist_collection_display_description.tpl:8
+#: templates/contenttype/itemlist_movie_display_description.tpl:8
+#: templates/contenttype/itemlist_collection_display.tpl:4
+msgid "Read more"
+msgstr "Mehr lesen"
+
+#: templates/contenttype/item_edit.tpl:5
+#: templates/contenttype/itemlist_edit.tpl:3
+#: templates/block/itemlist_modify.tpl:3
+msgid "Object type"
+msgstr "Objekttyp"
+
+#: templates/contenttype/item_edit.tpl:8
+#: templates/contenttype/itemlist_edit.tpl:7
+msgid ""
+"If you change this please save the element once to reload the parameters "
+"below."
+msgstr ""
+"Wenn Du dies änderst speichere dieses Element um die Parameter unten neu zu "
+"laden."
+
+#: templates/contenttype/item_edit.tpl:11
+msgid ""
+"Please select your item here. You can resort the dropdown list and reduce "
+"it's entries by applying filters. On the right side you will see a preview "
+"of the selected entry."
+msgstr ""
+"Bitte wähle Dein Element hier. Du kannst die Dropdownliste umsortieren und "
+"ihre Elemente mit Filtern reduzieren. Auf der rechten Seite siehst Du eine "
+"Vorschau des gewählten Eintrags."
+
+#: templates/contenttype/item_edit.tpl:24
+msgid "Link to object"
+msgstr "Link zum Objekt"
+
+#: templates/contenttype/item_edit.tpl:26
+msgid "Embed object display"
+msgstr "Eingebettetes Objekt anzeigen"
+
+#: templates/contenttype/itemlist_edit.tpl:22
+#: templates/block/itemlist_modify.tpl:17
+msgid "Category"
+msgstr "Kategorie"
+
+#: templates/contenttype/itemlist_edit.tpl:25
+#: templates/block/itemlist_modify.tpl:22
+msgid "Categories"
+msgstr "Kategorien"
+
+#: templates/contenttype/itemlist_edit.tpl:30
+#: templates/block/itemlist_modify.tpl:30
+msgid "This is an optional filter."
+msgstr "Dies ist ein optionaler Filter."
+
+#: templates/contenttype/itemlist_edit.tpl:60
+#: templates/block/itemlist_modify.tpl:51
+msgid "Template"
+msgstr "Template"
+
+#: templates/contenttype/itemlist_edit.tpl:70
+#: templates/block/itemlist_modify.tpl:62
+msgid "Example"
+msgstr "Beispiel"
+
+#: templates/collection/include_selectOne.tpl:17
+msgid "Choose collection"
+msgstr "Kollektionenauswahl"
+
+#: templates/collection/include_selectOne.tpl:18
+#: templates/collection/include_selectOne.tpl:24
+msgid "Choose the collection"
+msgstr "Wähle Kollektion"
+
+#: templates/collection/main.tpl:7
+msgid "Welcome to the collection section of the M u video application."
+msgstr "Willkommen zum Kollektionenbereich von MUVideo"
+
+#: templates/collection/view.tpl:8
+msgid "Collection list"
+msgstr "Kollektionenliste"
+
+#: templates/collection/view.tpl:21 templates/collection/edit.tpl:16
+msgid "Create collection"
+msgstr "Erstelle Kollektion"
+
+#: templates/collection/view.tpl:105
+#: templates/mailz/itemlist_collection_text.tpl:7
+#: templates/mailz/itemlist_collection_html.tpl:10
+msgid "No collections found."
+msgstr "Keine Kollektionen gefunden"
+
+#: templates/collection/view.tpl:118
+msgid "With selected collections"
+msgstr "Mit gewählten Kollektionen"
+
+#: templates/collection/view.atom.tpl:8 templates/collection/view.rss.tpl:15
+msgid "Latest collections"
+msgstr "Letzte Kollektionen"
+
+#: templates/collection/view.atom.tpl:9 templates/collection/view.rss.tpl:16
+msgid "A direct feed showing the list of collections"
+msgstr "Ein Feed der die Kollektionenliste anzeigt"
+
+#: templates/collection/edit.tpl:11 templates/collection/edit.tpl:21
+msgid "Edit collection"
+msgstr "Kollektion bearbeiten"
+
+#: templates/collection/edit.tpl:46
+msgid "Enter the title of the collection"
+msgstr "Gib den Kollektionentitel ein"
+
+#: templates/collection/edit.tpl:52
+msgid "Enter the description of the collection"
+msgstr "Gib die Kollektionenbeschreibung ein"
+
+#: templates/collection/edit.tpl:93
+msgid "Really delete this collection?"
+msgstr "Diese Kollektion wirklich löschen?"
+
+#: templates/collection/delete.tpl:8
+msgid "Delete collection"
+msgstr "Lösche Kollektion"
+
+#: templates/collection/delete.tpl:19
+msgid "Do you really want to delete this collection ?"
+msgstr "Möchtest du diese Kollektion wirklich löschen?"
+
+#: templates/helper/include_standardfields_edit.tpl:4
+#: templates/helper/include_standardfields_edit.tpl:9
+#: templates/helper/include_standardfields_display.tpl:4
+#: templates/helper/include_standardfields_display.tpl:7
+msgid "Creation and update"
+msgstr "Erstellung und Aktualisierung"
+
+#: templates/helper/include_standardfields_edit.tpl:13
+#, php-format
+msgid "Created by %s"
+msgstr "Erstellt von %s"
+
+#: templates/helper/include_standardfields_edit.tpl:14
+#, php-format
+msgid "Created on %s"
+msgstr "Erstellt am %s"
+
+#: templates/helper/include_standardfields_edit.tpl:18
+#, php-format
+msgid "Updated by %s"
+msgstr "Aktualisiert von %s"
+
+#: templates/helper/include_standardfields_edit.tpl:19
+#, php-format
+msgid "Updated on %s"
+msgstr "Aktualisiert am %s"
+
+#: templates/helper/include_standardfields_display.tpl:11
+msgid "Creation"
+msgstr "Erstellung"
+
+#: templates/helper/include_standardfields_display.tpl:22
+#, php-format
+msgid "Created by %1$s on %2$s"
+msgstr "Erstellt von %1$s am %2$s"
+
+#: templates/helper/include_standardfields_display.tpl:25
+msgid "Last update"
+msgstr "Letzte Aktualisierung"
+
+#: templates/helper/include_standardfields_display.tpl:36
+#, php-format
+msgid "Updated by %1$s on %2$s"
+msgstr "Aktualisiert von %1$s am %2$s"
+
+#: templates/block/itemlist_modify.tpl:8
+msgid ""
+"If you change this please save the block once to reload the parameters below."
+msgstr ""
+"Wenn Du dies änderst speichere bitte den Block erneut um die Parameter "
+"unterhalb wieder zu laden."
