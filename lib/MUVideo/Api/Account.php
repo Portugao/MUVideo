@@ -16,5 +16,47 @@
  */
 class MUVideo_Api_Account extends MUVideo_Api_Base_Account
 {
-    // feel free to extend the account api here
+    /**
+     * Return an array of items to show in the your account panel.
+     *
+     * @param array $args List of arguments.
+     *
+     * @return array List of collected account items
+     */
+    public function getall(array $args = array())
+    {
+        // collect items in an array
+        $items = array();
+    
+        $useAccountPage = $this->getVar('useAccountPage', true);
+        if ($useAccountPage === false) {
+            return $items;
+        }
+    
+        $userName = (isset($args['uname'])) ? $args['uname'] : UserUtil::getVar('uname');
+        // does this user exist?
+        if (UserUtil::getIdFromName($userName) === false) {
+            // user does not exist
+            return $items;
+        }
+    
+        if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_OVERVIEW)) {
+            return $items;
+        }
+    
+    
+        // Create an array of links to return
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+            $items[] = array(
+                'url'   => ModUtil::url($this->name, 'admin', 'main'),
+                'title' => $this->__('MUVideo Backend'),
+                'icon'   => 'configure.png',
+                'module' => 'core',
+                'set'    => 'icons/large'
+            );
+        }
+    
+        // return the items
+        return $items;
+    }
 }
