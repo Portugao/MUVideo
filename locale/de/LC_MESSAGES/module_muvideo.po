@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MUVideo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-15 09:14+0000\n"
-"PO-Revision-Date: 2014-08-15 14:10+0100\n"
+"POT-Creation-Date: 2014-08-16 14:24+0000\n"
+"PO-Revision-Date: 2014-08-16 16:36+0100\n"
 "Last-Translator: \n"
 "Language-Team: Michael Ueberschaer\n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,7 @@ msgstr ""
 "der Erstellung."
 
 #: workflows/function.none_permissioncheck.php:61
+#: lib/MUVideo/Util/Base/Workflow.php:28
 msgid "Initial"
 msgstr "Anfang"
 
@@ -40,14 +41,20 @@ msgstr ""
 "wurde."
 
 #: workflows/function.none_permissioncheck.php:62
+#: lib/MUVideo/Util/Base/ListEntries.php:172
+#: lib/MUVideo/Util/Base/ListEntries.php:194
+#: lib/MUVideo/Util/Base/Workflow.php:31
 msgid "Approved"
 msgstr "Freigegeben"
 
 #: workflows/function.none_permissioncheck.php:62
+#: lib/MUVideo/Util/Base/ListEntries.php:173
+#: lib/MUVideo/Util/Base/ListEntries.php:195
 msgid "Content has been approved and is available online."
 msgstr "Inhalt wurde freigegeben und ist online verfügbar."
 
 #: workflows/function.none_permissioncheck.php:63
+#: lib/MUVideo/Util/Base/Workflow.php:34
 msgid "Deleted"
 msgstr "Gelöscht"
 
@@ -72,7 +79,13 @@ msgstr "Aktualisierung"
 msgid "Update content."
 msgstr "Inhalt updaten"
 
-#: workflows/function.none_permissioncheck.php:74 templates/movie/view.tpl:186
+#: workflows/function.none_permissioncheck.php:74
+#: lib/MUVideo/Entity/Base/Movie.php:941 lib/MUVideo/Entity/Base/Movie.php:942
+#: lib/MUVideo/Entity/Base/Movie.php:985 lib/MUVideo/Entity/Base/Movie.php:986
+#: lib/MUVideo/Entity/Base/Collection.php:636
+#: lib/MUVideo/Entity/Base/Collection.php:637
+#: lib/MUVideo/Entity/Base/Collection.php:701
+#: lib/MUVideo/Entity/Base/Collection.php:702 templates/movie/view.tpl:186
 #: templates/movie/delete.tpl:12 templates/movie/delete.tpl:28
 #: templates/collection/view.tpl:121 templates/collection/delete.tpl:12
 #: templates/collection/delete.tpl:28
@@ -107,12 +120,16 @@ msgid "%1$s: missing parameter '%2$s'"
 msgstr "%1$s: Parameter '%2$s' fehlt"
 
 #: templates/plugins/function.muvideoObjectTypeSelector.php:30
+#: lib/MUVideo/NewsletterPlugin/ItemList.php:70
+#: lib/MUVideo/Api/Base/User.php:42 lib/MUVideo/Api/Base/Admin.php:42
 #: templates/external/movie/find.tpl:25 templates/movie/view_quickNav.tpl:15
 #: templates/search/options.tpl:5 templates/block/itemlist_modify.tpl:5
 msgid "Collections"
 msgstr "Kollektionen"
 
 #: templates/plugins/function.muvideoObjectTypeSelector.php:31
+#: lib/MUVideo/NewsletterPlugin/ItemList.php:71
+#: lib/MUVideo/Api/Base/User.php:48 lib/MUVideo/Api/Base/Admin.php:48
 #: templates/external/collection/find.tpl:25
 #: templates/collection/display.tpl:23 templates/collection/display.tpl:25
 #: templates/search/options.tpl:9 templates/block/itemlist_modify.tpl:6
@@ -205,6 +222,614 @@ msgid "This value is already assigned, but must be unique. Please change it."
 msgstr ""
 "Dieser Wert existiert shon und er muss eindeutig sein. Bitte ändere ihn."
 
+#: lib/MUVideo/Form/Handler/Admin/Base/Config.php:114
+msgid "Error! Failed to set configuration variables."
+msgstr "Fehler! Setzen von Modulvariablen fehlgeschlagen."
+
+#: lib/MUVideo/Form/Handler/Admin/Base/Config.php:121
+msgid "Done! Module configuration updated."
+msgstr "Erledigt! Moduleinstellungen aktualisiert."
+
+#: lib/MUVideo/Form/Handler/Movie/Base/Edit.php:59
+msgid ""
+"Sorry, but you can not create the movie yet as other items are required "
+"which must be created before!"
+msgstr ""
+"Entschuldigung, aber Du kannst keinen Film erstellen bevor andere "
+"erforderliche Elemente nicht erstellt sind!"
+
+#: lib/MUVideo/Form/Handler/Movie/Base/Edit.php:190
+msgid "Done! Movie created."
+msgstr "Erledigt! Film erstellt."
+
+#: lib/MUVideo/Form/Handler/Movie/Base/Edit.php:192
+#: lib/MUVideo/Form/Handler/Movie/Base/Edit.php:199
+msgid "Done! Movie updated."
+msgstr "Erledigt! Film aktualisiert."
+
+#: lib/MUVideo/Form/Handler/Movie/Base/Edit.php:196
+msgid "Done! Movie deleted."
+msgstr "Erledigt! Film gelöscht."
+
+#: lib/MUVideo/Form/Handler/Movie/Base/Edit.php:225
+#: lib/MUVideo/Form/Handler/Collection/Base/Edit.php:205
+#: lib/MUVideo/Controller/Base/Movie.php:501
+#: lib/MUVideo/Controller/Base/Collection.php:501
+#, php-format
+msgid ""
+"Sorry, but an unknown error occured during the %s action. Please apply the "
+"changes again!"
+msgstr ""
+"Entschuldigung, aber ein unbekannter Fehler ist während der Aktion %s "
+"aufgetreten. Bitte betsätige die Änderungen erneut!"
+
+#: lib/MUVideo/Form/Handler/Collection/Base/Edit.php:57
+msgid ""
+"Sorry, but you can not create the collection yet as other items are required "
+"which must be created before!"
+msgstr ""
+"Entschuldigung, aber Du kannst keine Kollektion erstellen bevor andere "
+"erforderliche Elemente nicht erstellt sind!"
+
+#: lib/MUVideo/Form/Handler/Collection/Base/Edit.php:170
+msgid "Done! Collection created."
+msgstr "Erledigt! Kollektion erstellt."
+
+#: lib/MUVideo/Form/Handler/Collection/Base/Edit.php:172
+#: lib/MUVideo/Form/Handler/Collection/Base/Edit.php:179
+msgid "Done! Collection updated."
+msgstr "Erledigt! Kollektion aktualisiert."
+
+#: lib/MUVideo/Form/Handler/Collection/Base/Edit.php:176
+msgid "Done! Collection deleted."
+msgstr "Erledigt! Kollektion gelöscht."
+
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:222
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:285
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:317
+#: lib/MUVideo/Controller/Movie.php:56
+#: lib/MUVideo/Controller/Base/Movie.php:258
+#: lib/MUVideo/Controller/Base/Movie.php:366
+#: lib/MUVideo/Controller/Base/Collection.php:258
+#: lib/MUVideo/Controller/Base/Collection.php:366
+#: lib/MUVideo/Controller/Base/External.php:84
+#: lib/MUVideo/Controller/External.php:79
+msgid "No such item."
+msgstr "Kein solches Element."
+
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:249
+#: lib/MUVideo/Controller/Base/Movie.php:375
+#: lib/MUVideo/Controller/Base/Collection.php:375
+msgid "Error! Could not determine workflow actions."
+msgstr "Fehler! Konnte Wofkflowaktionen nicht beenden."
+
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:466
+msgid "Done! Item created."
+msgstr "Erledigt! Element erstellt."
+
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:468
+msgid "Error! Creation attempt failed."
+msgstr "Fehler! Erstellung fehlgeschlagen."
+
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:473
+#: lib/MUVideo/Controller/Base/Movie.php:511
+#: lib/MUVideo/Controller/Base/Collection.php:511
+msgid "Done! Item updated."
+msgstr "Erledigt! Element aktualisiert."
+
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:475
+msgid "Error! Update attempt failed."
+msgstr "Fehler! Aktualisierung fehlgeschlagen"
+
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:480
+#: lib/MUVideo/Controller/Base/Movie.php:401
+#: lib/MUVideo/Controller/Base/Movie.php:509
+#: lib/MUVideo/Controller/Base/Collection.php:401
+#: lib/MUVideo/Controller/Base/Collection.php:509
+msgid "Done! Item deleted."
+msgstr "Erledigt! Element gelöscht."
+
+#: lib/MUVideo/Form/Handler/Common/Base/Edit.php:482
+msgid "Error! Deletion attempt failed."
+msgstr "Fehler! Löschen fehlgeschlagen"
+
+#: lib/MUVideo/Form/Plugin/Base/AbstractObjectSelector.php:123
+#: lib/MUVideo/Form/Plugin/Base/AbstractObjectSelector.php:129
+#, php-format
+msgid "Error! in %1$s: the %2$s parameter must be specified."
+msgstr "Fehler! In %1$s: Der Parameter %2$s muss spezifizert werden."
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:110
+msgid "collection"
+msgstr "Kollektion"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:113
+msgid "movie"
+msgstr "Film"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:117
+#, php-format
+msgid "Add %s"
+msgstr "%s hinzufügen"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:117
+#, php-format
+msgid "Select %s"
+msgstr "Wähle %s"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:118
+#, php-format
+msgid "Find %s"
+msgstr "Finde %s"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:119
+#, php-format
+msgid "Search %s"
+msgstr "Suche %s"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:126
+#, php-format
+msgid "Create new %s"
+msgstr "%s neu erstellen"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:126
+msgid "Create"
+msgstr "Erstellen"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:141
+msgid "No results found!"
+msgstr "Keine Ergebnisse gefunden"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:143
+#: templates/external/movie/find.tpl:109
+#: templates/external/collection/find.tpl:106 templates/admin/config.tpl:37
+#: templates/movie/edit.tpl:174 templates/movie/delete.tpl:30
+#: templates/collection/edit.tpl:99 templates/collection/delete.tpl:30
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: lib/MUVideo/Form/Plugin/Base/RelationSelectorAutoComplete.php:145
+msgid "This function requires JavaScript activated!"
+msgstr "Diese Funktion verlangt aktiviertes Javascript!"
+
+#: lib/MUVideo/ContentType/Base/Item.php:52
+msgid "MUVideo detail view"
+msgstr "MUVideo Detailansicht"
+
+#: lib/MUVideo/ContentType/Base/Item.php:64
+msgid "Display or link a single MUVideo object."
+msgstr "Zeige oder verlinke ein einzelnes Objekt von MUVideo.\v"
+
+#: lib/MUVideo/ContentType/Base/Item.php:119
+msgid "No item selected."
+msgstr "Kein solches Element."
+
+#: lib/MUVideo/ContentType/Base/ItemList.php:90
+#: lib/MUVideo/Block/Base/ItemList.php:41
+msgid "MUVideo list view"
+msgstr "MUVideo Listenansicht"
+
+#: lib/MUVideo/ContentType/Base/ItemList.php:102
+#: lib/MUVideo/Block/Base/ItemList.php:42
+msgid "Display list of MUVideo objects."
+msgstr "Zeige eine Liste von MUVideo Objekten."
+
+#: lib/MUVideo/Base/Installer.php:38 lib/MUVideo/Base/Installer.php:118
+msgid "Doctrine Exception: "
+msgstr "Doctrine Ausnahme:"
+
+#: lib/MUVideo/Base/Installer.php:40
+#, php-format
+msgid ""
+"An error was encountered while creating the tables for the %s extension."
+msgstr "Ein Fehler ist während des Erstellens der Tabellen für %s aufgetreten."
+
+#: lib/MUVideo/Base/Installer.php:42
+msgid ""
+"Please enable the development mode by editing the /config/config.php file in "
+"order to reveal the error details."
+msgstr ""
+"Bitte schalte den Entwicklermodus durch Bearbeiten der Datei /config/config."
+"php ein."
+
+#: lib/MUVideo/Base/Installer.php:111
+#, php-format
+msgid ""
+"An error was encountered while removing stored object workflows for the %s "
+"extension."
+msgstr ""
+"Während des Entfernens gespeicherter Objekt Arbeitsabläufe für das Modul %s "
+"ist ein Fehler aufgetreten."
+
+#: lib/MUVideo/Base/Installer.php:120
+#, php-format
+msgid "An error was encountered while dropping tables for the %s extension."
+msgstr ""
+"Ein Fehler ist während des Löschens der Tabellen für das Modul %s "
+"aufgetreten."
+
+#: lib/MUVideo/Base/Installer.php:140
+#, php-format
+msgid "The upload directories at [%s] can be removed manually."
+msgstr "Die Upload Ordner in [%s] können manuell gelöscht werden."
+
+#: lib/MUVideo/Base/UploadHandler.php:97
+msgid "Error! Could not move your file to the destination folder."
+msgstr "Fehler! Konnte Deine Datei nicht in den Zielordner verschieben.."
+
+#: lib/MUVideo/Base/UploadHandler.php:127
+msgid "Error! No file found."
+msgstr "Fehler! Keine Datei gefunden."
+
+#: lib/MUVideo/Base/UploadHandler.php:139
+msgid ""
+"Error! This file type is not allowed. Please choose another file format."
+msgstr ""
+"Fehler! Dieser Dateityp ist nicht erlaubt. Wähle bitte ein anderes Format."
+
+#: lib/MUVideo/Base/UploadHandler.php:150
+#, php-format
+msgid "Error! Your file is too big. Please keep it smaller than %s kilobytes."
+msgstr ""
+"Fehler! Ihre Datei ist zu gross. Bitte machen Sie sie kleiner als %s "
+"Kilobytes."
+
+#: lib/MUVideo/Base/UploadHandler.php:154
+#, php-format
+msgid "Error! Your file is too big. Please keep it smaller than %s megabytes."
+msgstr ""
+"Fehler! Deine Datei ist zu gross. Bitte halte sie kleiner als %s megabytes."
+
+#: lib/MUVideo/Base/UploadHandler.php:163
+msgid "Error! This file type seems not to be a valid image."
+msgstr "Fehler! Dieser Dateityp scheint kein gültiges Bild zu sein."
+
+#: lib/MUVideo/Base/UploadHandler.php:338
+#: lib/MUVideo/Base/UploadHandler.php:356
+msgid "Unknown error"
+msgstr "Unbekannter Fehler"
+
+#: lib/MUVideo/Base/UploadHandler.php:341
+#: lib/MUVideo/Base/UploadHandler.php:344
+msgid "File too big"
+msgstr "Datei zu groß"
+
+#: lib/MUVideo/Base/UploadHandler.php:347
+msgid "File uploaded partially"
+msgstr "Datei teilweise hoch geladen"
+
+#: lib/MUVideo/Base/UploadHandler.php:350
+msgid "No file uploaded"
+msgstr "Keine Dateien hoch geladen!"
+
+#: lib/MUVideo/Base/UploadHandler.php:353
+msgid "No tmp folder"
+msgstr "Kein temporärer Ordner"
+
+#: lib/MUVideo/Base/UploadHandler.php:360
+msgid "Error with upload: "
+msgstr "Fehler mit Upload:"
+
+#: lib/MUVideo/Base/Version.php:30
+msgid "M u video"
+msgstr "MUVideo"
+
+#: lib/MUVideo/Base/Version.php:32
+msgid "M u video module generated by ModuleStudio 0.6.2."
+msgstr "MUVideo module generated by ModuleStudio 0.5.4."
+
+#. ! url version of name, should be in lowercase without space
+#: lib/MUVideo/Base/Version.php:34 lib/MUVideo/Version.php:35
+msgid "muvideo"
+msgstr "muvideo"
+
+#: lib/MUVideo/Base/Version.php:70
+msgid "muvideo Collections Display Hooks"
+msgstr "muvideo Kollektionen Ansicht Hooks"
+
+#: lib/MUVideo/Base/Version.php:88
+msgid "muvideo Collections Filter Hooks"
+msgstr "muvideoKollektion Filter Hooks"
+
+#: lib/MUVideo/Base/Version.php:93
+msgid "muvideo Movies Display Hooks"
+msgstr "muvideo Film Ansicht Hooks"
+
+#: lib/MUVideo/Base/Version.php:111
+msgid "muvideo Movies Filter Hooks"
+msgstr "muivideo Filme Filter Hooks"
+
+#: lib/MUVideo/Block/Base/ItemList.php:37
+msgid ""
+"Notice: This block will not be displayed until you activate the MUVideo "
+"module."
+msgstr ""
+"Hinweis: Dieser Block wird erst angezeigt, wenn das Modul MUVideo aktiviert "
+"ist."
+
+#: lib/MUVideo/Block/Base/ItemList.php:148
+msgid "MUVideo items"
+msgstr "MUVideo Elemente"
+
+#: lib/MUVideo/NewsletterPlugin/ItemList.php:27
+msgid "Latest MUVideo items"
+msgstr "Aktuelle MUVideo Elemente"
+
+#: lib/MUVideo/NewsletterPlugin/ItemList.php:37
+msgid "List of collections and other MUVideo items"
+msgstr "Liste von Themen und andere MUVideo Elementen"
+
+#: lib/MUVideo/NewsletterPlugin/ItemList.php:47
+msgid ""
+"This plugin shows a list of collections and other items of the MUVideo "
+"module."
+msgstr ""
+"Dieses Plugin zeigt eine Liste von Kollektionen und anderen Elementen von "
+"MUVideo."
+
+#: lib/MUVideo/Version.php:31
+msgid "MUVideo"
+msgstr "MUVideo"
+
+#: lib/MUVideo/Version.php:33
+msgid "MUVideo module is a module to handle Videos."
+msgstr "MUVideo ist ein Modul zur Verwaltung und Einbindung von Videos."
+
+#: lib/MUVideo/Util/Base/ListEntries.php:177
+#: lib/MUVideo/Util/Base/ListEntries.php:199
+msgid "All except approved"
+msgstr "Alle ausgenommen freigegebene"
+
+#: lib/MUVideo/Util/Base/ListEntries.php:178
+#: lib/MUVideo/Util/Base/ListEntries.php:200
+msgid "Shows all items except these which are approved"
+msgstr "Zeigt alle Elemente ausgenommen die freigegeben wurden"
+
+#: lib/MUVideo/Util/Base/View.php:218
+msgid "Bytes"
+msgstr "Bytes"
+
+#: lib/MUVideo/Util/Base/View.php:221
+msgid "KB"
+msgstr "KB"
+
+#: lib/MUVideo/Util/Base/View.php:225
+msgid "MB"
+msgstr "MB"
+
+#: lib/MUVideo/Util/Base/View.php:229
+msgid "GB"
+msgstr "GB"
+
+#: lib/MUVideo/Util/Base/Controller.php:226
+#, php-format
+msgid ""
+"The upload directory \"%s\" does not exist and could not be created. Try to "
+"create it yourself and make sure that this folder is accessible via the web "
+"and writable by the webserver."
+msgstr ""
+"Der Upload Ordner \"%s\" existiert nicht und konnte nicht erstellt werden. "
+"Versuche ihn selbst zu erstellen und stelle sicher, dass er erreichbar und "
+"beschreibbar ist."
+
+#: lib/MUVideo/Util/Base/Controller.php:232
+#, php-format
+msgid ""
+"Warning! The upload directory at \"%s\" exists but is not writable by the "
+"webserver."
+msgstr ""
+"Warnung! Der Upload Ordner in \"%s\" existiert, ist aber nicht beschreibbar."
+
+#: lib/MUVideo/Util/Base/Controller.php:243
+#, php-format
+msgid "Warning! Could not write the .htaccess file at \"%s\"."
+msgstr "Warnung! Konnte die .htaccess Datei in \"%s\" nicht schreiben."
+
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:31
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:39
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:68
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:77
+#: lib/MUVideo/Entity/Validator/Base/Collection.php:31
+#: lib/MUVideo/Entity/Validator/Base/Collection.php:39
+#, php-format
+msgid "Error! Field value must not be empty (%s)."
+msgstr "Fehler! Der Wert des Feldes darf nicht leer sein (%s)."
+
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:35
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:43
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:47
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:51
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:59
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:64
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:73
+#: lib/MUVideo/Entity/Validator/Base/Collection.php:35
+#: lib/MUVideo/Entity/Validator/Base/Collection.php:43
+#, php-format
+msgid "Error! Length of field value must not be higher than %2$s (%1$s)."
+msgstr "Fehler! Die Länge des Feldes darf nicht größer als %2$s (%1$s) sein."
+
+#: lib/MUVideo/Entity/Validator/Base/Movie.php:55
+#, php-format
+msgid "Error! Field value must be a valid url (%s)."
+msgstr "Fehler! Der Wert des Feldes muss eine valide Url (%s) sein."
+
+#: lib/MUVideo/Entity/Repository/Base/Movie.php:255
+#: lib/MUVideo/Entity/Repository/Base/Movie.php:280
+#: lib/MUVideo/Entity/Repository/Base/Movie.php:307
+#: lib/MUVideo/Entity/Repository/Base/Movie.php:334
+#: lib/MUVideo/Entity/Repository/Base/Collection.php:247
+#: lib/MUVideo/Entity/Repository/Base/Collection.php:272
+#: lib/MUVideo/Entity/Repository/Base/Collection.php:299
+#: lib/MUVideo/Entity/Repository/Base/Collection.php:326
+msgid "Invalid user identifier received."
+msgstr "Fehler! Ungültiger Benutzer aufgerufen."
+
+#: lib/MUVideo/Entity/Repository/Base/Movie.php:374
+#: lib/MUVideo/Entity/Repository/Base/Collection.php:366
+#: lib/MUVideo/Api/Base/Selection.php:68
+msgid "Invalid identifier received."
+msgstr "Fehler! Ungültiger Bezeichner aufgerufen."
+
+#: lib/MUVideo/Entity/Base/Movie.php:832
+#: lib/MUVideo/Entity/Base/Collection.php:527
+msgid "Error! Could not load the associated workflow."
+msgstr "Fehler! Konnte den notwendigen Wokflow nicht laden."
+
+#: lib/MUVideo/Entity/Base/Movie.php:910
+#: lib/MUVideo/Entity/Base/Collection.php:605
+msgid "Open preview page"
+msgstr "Vorschau öffnen"
+
+#: lib/MUVideo/Entity/Base/Movie.php:911
+#: lib/MUVideo/Entity/Base/Collection.php:606
+msgid "Preview"
+msgstr "Vorschau"
+
+#: lib/MUVideo/Entity/Base/Movie.php:917 lib/MUVideo/Entity/Base/Movie.php:961
+#: lib/MUVideo/Entity/Base/Collection.php:612
+#: lib/MUVideo/Entity/Base/Collection.php:677 templates/movie/display.tpl:23
+#: templates/collection/display.tpl:13
+msgid "Details"
+msgstr "Details"
+
+#: lib/MUVideo/Entity/Base/Movie.php:927 lib/MUVideo/Entity/Base/Movie.php:928
+#: lib/MUVideo/Entity/Base/Movie.php:971 lib/MUVideo/Entity/Base/Movie.php:972
+#: lib/MUVideo/Entity/Base/Collection.php:622
+#: lib/MUVideo/Entity/Base/Collection.php:623
+#: lib/MUVideo/Entity/Base/Collection.php:687
+#: lib/MUVideo/Entity/Base/Collection.php:688
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: lib/MUVideo/Entity/Base/Movie.php:933 lib/MUVideo/Entity/Base/Movie.php:977
+#: lib/MUVideo/Entity/Base/Collection.php:628
+#: lib/MUVideo/Entity/Base/Collection.php:693
+msgid "Reuse for new item"
+msgstr "Für ein neues Element benutzen"
+
+#: lib/MUVideo/Entity/Base/Movie.php:934 lib/MUVideo/Entity/Base/Movie.php:978
+#: lib/MUVideo/Entity/Base/Collection.php:629
+#: lib/MUVideo/Entity/Base/Collection.php:694
+msgid "Reuse"
+msgstr "Wiederverwenden"
+
+#: lib/MUVideo/Entity/Base/Movie.php:950 lib/MUVideo/Entity/Base/Movie.php:951
+#: lib/MUVideo/Entity/Base/Movie.php:994 lib/MUVideo/Entity/Base/Movie.php:995
+#: lib/MUVideo/Entity/Base/Collection.php:645
+#: lib/MUVideo/Entity/Base/Collection.php:646
+#: lib/MUVideo/Entity/Base/Collection.php:710
+#: lib/MUVideo/Entity/Base/Collection.php:711
+msgid "Back to overview"
+msgstr "Zurück zur Übersicht"
+
+#: lib/MUVideo/Entity/Base/Movie.php:1226
+#: lib/MUVideo/Entity/Base/Collection.php:923
+msgid "Error! Could not remove stored workflow. Deletion has been aborted."
+msgstr ""
+"Fehler! Konnte den gespeicherten Wokflow nicht entfernen. Löschen wurde "
+"abgebrochen."
+
+#: lib/MUVideo/Entity/Base/Collection.php:666
+#: lib/MUVideo/Entity/Base/Collection.php:667
+#: lib/MUVideo/Entity/Base/Collection.php:731
+#: lib/MUVideo/Entity/Base/Collection.php:732 templates/movie/view.tpl:21
+#: templates/movie/edit.tpl:16 templates/collection/display.tpl:39
+msgid "Create movie"
+msgstr "Film erstellen"
+
+#: lib/MUVideo/Api/Base/Selection.php:170
+msgid "Invalid object type received."
+msgstr "Ungültiger Objekttyp aufgerufen."
+
+#: lib/MUVideo/Api/Base/Search.php:145
+msgid "Error! Could not save the search results."
+msgstr "Fehler! Konnte das Suchergebnis nicht speichern."
+
+#: lib/MUVideo/Api/Base/Mailz.php:32
+msgid "3 newest collections"
+msgstr "Letzte Kollektionen"
+
+#: lib/MUVideo/Api/Base/Mailz.php:33
+msgid "A list of the three newest collections."
+msgstr "Eine Liste der 3 neuesten Kollektionen."
+
+#: lib/MUVideo/Api/Base/Mailz.php:38
+msgid "3 random collections"
+msgstr "3 zufällige Kollektionen"
+
+#: lib/MUVideo/Api/Base/Mailz.php:39
+msgid "A list of three random collections."
+msgstr "Eine Liste 3 zufälliger Kollektionen."
+
+#: lib/MUVideo/Api/Base/User.php:30
+msgid "Backend"
+msgstr "Backend"
+
+#: lib/MUVideo/Api/Base/User.php:31
+msgid "Switch to administration area."
+msgstr "Wechsel zum Administrationsbereich."
+
+#: lib/MUVideo/Api/Base/User.php:43 lib/MUVideo/Api/Base/Admin.php:43
+#: templates/collection/view.tpl:8
+msgid "Collection list"
+msgstr "Kollektionenliste"
+
+#: lib/MUVideo/Api/Base/User.php:49 lib/MUVideo/Api/Base/Admin.php:49
+#: templates/movie/view.tpl:8
+msgid "Movie list"
+msgstr "Filmliste"
+
+#: lib/MUVideo/Api/Base/User.php:66 lib/MUVideo/Api/Base/User.php:208
+msgid "Invalid arguments array received."
+msgstr "Ungültiges Array von Argumenten aufgerufen."
+
+#: lib/MUVideo/Api/Base/Admin.php:30
+msgid "Frontend"
+msgstr "Frontend"
+
+#: lib/MUVideo/Api/Base/Admin.php:31
+msgid "Switch to user area."
+msgstr "Wechsel zum Nutzerbereich."
+
+#: lib/MUVideo/Api/Base/Admin.php:53
+msgid "Configuration"
+msgstr "Einstellungen"
+
+#: lib/MUVideo/Api/Base/Admin.php:54
+msgid "Manage settings for this application"
+msgstr "Verwalte die Einstellungen für MUVideo"
+
+#: lib/MUVideo/Api/Base/Account.php:52
+msgid "M u video Backend"
+msgstr "MUVideo Backend"
+
+#: lib/MUVideo/Api/Account.php:52
+msgid "MUVideo Backend"
+msgstr "MUVideo Backend"
+
+#: lib/MUVideo/Controller/Movie.php:50
+#: lib/MUVideo/Controller/Base/Movie.php:252
+#: lib/MUVideo/Controller/Base/Movie.php:360
+#: lib/MUVideo/Controller/Base/Collection.php:252
+#: lib/MUVideo/Controller/Base/Collection.php:360
+#: lib/MUVideo/Controller/Base/External.php:78
+#: lib/MUVideo/Controller/External.php:73
+msgid "Error! Invalid identifier received."
+msgstr "Fehler! Ungültiger Bezeichner aufgerufen."
+
+#: lib/MUVideo/Controller/Base/Movie.php:385
+msgid "Error! It is not allowed to delete this movie."
+msgstr "Fehler! Es ist nicht erlaubt diesen Filmt zu löschen."
+
+#: lib/MUVideo/Controller/Base/Collection.php:385
+msgid "Error! It is not allowed to delete this collection."
+msgstr "Fehler! Es ist nicht erlaubt diese Kollektion zu löschen."
+
+#: lib/MUVideo/Controller/Base/External.php:144
+msgid "Error: Invalid editor context given for external controller action."
+msgstr ""
+"Fehler: Ungültiger Context für den Editor für externe Controller-Aktion."
+
 #: templates/plugin_config/ItemList.tpl:14
 #: templates/contenttype/itemlist_edit.tpl:38
 #: templates/block/itemlist_modify.tpl:37
@@ -257,8 +882,8 @@ msgstr "oder"
 msgid "No object types found."
 msgstr "Fehler! Keine Objekttypen gefunden."
 
-#: templates/external/movie/display.tpl:38 templates/external/movie/info.tpl:9
-#: templates/movie/display.tpl:52 templates/movie/display.tpl:72
+#: templates/external/movie/display.tpl:37 templates/external/movie/info.tpl:9
+#: templates/movie/display.tpl:51 templates/movie/display.tpl:71
 #: templates/movie/view.tpl:114 templates/movie/view.tpl:131
 #: templates/movie/edit.tpl:70 templates/movie/edit.tpl:104
 msgid "Download"
@@ -294,7 +919,7 @@ msgid "ID of movie"
 msgstr "Id des Films"
 
 #: templates/external/movie/find.tpl:48 templates/external/movie/select.tpl:14
-#: templates/movie/display.tpl:19 templates/collection/view.csv.tpl:4
+#: templates/movie/display.tpl:18 templates/collection/view.csv.tpl:4
 msgid "Movie"
 msgstr "Film"
 
@@ -345,7 +970,7 @@ msgstr "Titel"
 
 #: templates/external/movie/find.tpl:72 templates/external/movie/select.tpl:30
 #: templates/external/collection/find.tpl:72
-#: templates/external/collection/select.tpl:30 templates/movie/display.tpl:34
+#: templates/external/collection/select.tpl:30 templates/movie/display.tpl:33
 #: templates/movie/view_quickNav.tpl:45 templates/movie/view.tpl:73
 #: templates/movie/edit.tpl:51 templates/movie/view.csv.tpl:3
 #: templates/collection/display.tpl:49
@@ -361,14 +986,14 @@ msgid "Upload of movie"
 msgstr "Film hochladen"
 
 #: templates/external/movie/find.tpl:74 templates/external/movie/select.tpl:32
-#: templates/movie/display.tpl:57 templates/movie/view_quickNav.tpl:47
+#: templates/movie/display.tpl:56 templates/movie/view_quickNav.tpl:47
 #: templates/movie/view.tpl:81 templates/movie/edit.tpl:84
 #: templates/movie/view.csv.tpl:3
 msgid "Url of youtube"
 msgstr "Url von youtube"
 
 #: templates/external/movie/find.tpl:75 templates/external/movie/select.tpl:33
-#: templates/movie/display.tpl:66 templates/movie/view_quickNav.tpl:48
+#: templates/movie/display.tpl:65 templates/movie/view_quickNav.tpl:48
 #: templates/movie/view.tpl:84 templates/movie/edit.tpl:90
 #: templates/movie/view.csv.tpl:3
 msgid "Poster"
@@ -440,13 +1065,6 @@ msgstr "Filter"
 msgid "Change selection"
 msgstr "Auswahl ändern"
 
-#: templates/external/movie/find.tpl:109
-#: templates/external/collection/find.tpl:106 templates/admin/config.tpl:37
-#: templates/movie/edit.tpl:174 templates/movie/delete.tpl:30
-#: templates/collection/edit.tpl:99 templates/collection/delete.tpl:30
-msgid "Cancel"
-msgstr "Abbrechen"
-
 #: templates/external/movie/select.tpl:4
 msgid "Movie information"
 msgstr "Filminformation"
@@ -460,8 +1078,8 @@ msgid "ID of collection"
 msgstr "Id der Kollektion"
 
 #: templates/external/collection/find.tpl:48
-#: templates/external/collection/select.tpl:14 templates/movie/display.tpl:77
-#: templates/movie/display.tpl:103 templates/movie/view.tpl:87
+#: templates/external/collection/select.tpl:14 templates/movie/display.tpl:76
+#: templates/movie/display.tpl:102 templates/movie/view.tpl:87
 #: templates/movie/view.csv.tpl:4 templates/collection/display.tpl:8
 #: templates/collection/include_selectOne.tpl:9
 #: templates/collection/include_selectOne.tpl:14
@@ -508,26 +1126,22 @@ msgstr "Gib die maximale Größe des Posters ein. Nur Ziffern sind erlaubt."
 msgid "Update configuration"
 msgstr "Einstellungen aktualisieren"
 
-#: templates/movie/display.tpl:24 templates/collection/display.tpl:13
-msgid "Details"
-msgstr "Details"
-
-#: templates/movie/display.tpl:25 templates/movie/display.tpl:28
+#: templates/movie/display.tpl:24 templates/movie/display.tpl:27
 #: templates/movie/view.tpl:89 templates/movie/view.tpl:157
 #: templates/collection/display.tpl:14 templates/collection/display.tpl:17
 #: templates/collection/view.tpl:69 templates/collection/view.tpl:92
 msgid "Actions"
 msgstr "Aktionen"
 
-#: templates/movie/display.tpl:60 templates/movie/view.tpl:122
+#: templates/movie/display.tpl:59 templates/movie/view.tpl:122
 msgid "Visit this page"
 msgstr "Seite besuchen"
 
-#: templates/movie/display.tpl:60 templates/movie/view.tpl:122
+#: templates/movie/display.tpl:59 templates/movie/view.tpl:122
 msgid "Homepage"
 msgstr "Homepage"
 
-#: templates/movie/display.tpl:84 templates/movie/display.tpl:109
+#: templates/movie/display.tpl:83 templates/movie/display.tpl:108
 #: templates/movie/include_displayItemListMany.tpl:25
 #: templates/movie/view.tpl:141
 #: templates/movie/include_displayItemListOne.tpl:21
@@ -536,7 +1150,7 @@ msgstr "Homepage"
 msgid "Open quick view window"
 msgstr "Fenster für Schnellansicht öffnen"
 
-#: templates/movie/display.tpl:84 templates/movie/display.tpl:109
+#: templates/movie/display.tpl:83 templates/movie/display.tpl:108
 #: templates/movie/include_displayItemListMany.tpl:25
 #: templates/movie/view.tpl:141
 #: templates/movie/include_displayItemListOne.tpl:21
@@ -545,7 +1159,7 @@ msgstr "Fenster für Schnellansicht öffnen"
 msgid "Quick view"
 msgstr "Schnellansicht"
 
-#: templates/movie/display.tpl:95 templates/movie/display.tpl:120
+#: templates/movie/display.tpl:94 templates/movie/display.tpl:119
 #: templates/movie/view.tpl:149
 msgid "Not set."
 msgstr "Nicht gesetzt."
@@ -574,15 +1188,6 @@ msgstr "OK"
 #: templates/movie/main.tpl:7
 msgid "Welcome to the movie section of the M u video application."
 msgstr "Willkommen zum Filmbereich von MUVideo"
-
-#: templates/movie/view.tpl:8
-msgid "Movie list"
-msgstr "Filmliste"
-
-#: templates/movie/view.tpl:21 templates/movie/edit.tpl:16
-#: templates/collection/display.tpl:39
-msgid "Create movie"
-msgstr "Film erstellen"
 
 #: templates/movie/view.tpl:31 templates/collection/view.tpl:31
 msgid "Back to paginated view"
@@ -778,10 +1383,6 @@ msgstr "Wähle Kollektion"
 #: templates/collection/main.tpl:7
 msgid "Welcome to the collection section of the M u video application."
 msgstr "Willkommen zum Kollektionenbereich von MUVideo"
-
-#: templates/collection/view.tpl:8
-msgid "Collection list"
-msgstr "Kollektionenliste"
 
 #: templates/collection/view.tpl:21 templates/collection/edit.tpl:16
 msgid "Create collection"
