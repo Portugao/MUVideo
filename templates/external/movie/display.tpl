@@ -39,7 +39,7 @@
           </a>
         {else}&nbsp;{/if} *}
         {if $movie.urlOfYoutube ne ''}
-        <div class="lazyYT theme_video_fluid" data-youtube-id={$youtubeId} data-width="{$moviewidth}" data-height="{$movieheight}">loading...</div>
+        <div class="lazyYT {if $func ne 'edit'}theme_video_fluid{/if}" data-youtube-id={$youtubeId} data-width="{$moviewidth}" data-height="{$movieheight}">loading...</div>
         {/if}
         {if $movie.urlOfYoutube eq ''}
             <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="{$moviewidth}" height="{$movieheight}" controls>             
