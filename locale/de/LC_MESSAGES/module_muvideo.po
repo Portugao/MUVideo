@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: MUVideo\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-08-16 14:24+0000\n"
-"PO-Revision-Date: 2014-08-16 16:36+0100\n"
+"PO-Revision-Date: 2014-08-18 14:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: Michael Ueberschaer\n"
 "MIME-Version: 1.0\n"
@@ -1236,7 +1236,7 @@ msgstr "Gib die Filmbeschreibung ein"
 
 #: templates/movie/edit.tpl:58 templates/movie/edit.tpl:92
 msgid "Reset to empty value"
-msgstr "Zu leerem Wert zurück setzen"
+msgstr "Zurück setzen"
 
 #: templates/movie/edit.tpl:60 templates/movie/edit.tpl:94
 msgid "Allowed file extensions:"

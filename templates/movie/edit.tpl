@@ -79,7 +79,6 @@
             {/if}
             {muvideoValidationError id='uploadOfMovie' class='validate-upload'}
         </div>
-        
         <div class="z-formrow">
             {formlabel for='urlOfYoutube' __text='Url of youtube' cssClass=''}
             {formurlinput group='movie' id='urlOfYoutube' mandatory=false readOnly=false __title='Enter the url of youtube of the movie' textMode='singleline' maxLength=255 cssClass=' validate-url' }

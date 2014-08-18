@@ -38,7 +38,7 @@
 
     {include file='movie/view_quickNav.tpl' all=$all own=$own workflowStateFilter=false}{* see template file for available options *}
 
-    {if $lqt eq 'admin'}
+    {if $lct eq 'admin'}
     <form action="{modurl modname='MUVideo' type='movie' func='handleSelectedEntries' lct=$lct}" method="post" id="moviesViewForm" class="z-form">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -46,22 +46,22 @@
     {/if}
         <table class="z-datatable">
             <colgroup>
-                {if $lqt eq 'admin'}
+                {if $lct eq 'admin'}
                     <col id="cSelect" />
                 {/if}
                 <col id="cTitle" />
                 <col id="cDescription" />
-                {if $lqt eq 'admin'}
+                {if $lct eq 'admin'}
                 <col id="cUploadOfMovie" />
-                {/if}
                 <col id="cUrlOfYoutube" />
+                {/if}               
                 <col id="cPoster" />
                 <col id="cCollection" />
                 <col id="cItemActions" />
             </colgroup>
             <thead>
             <tr>
-                {if $lqt eq 'admin'}
+                {if $lct eq 'admin'}
                     <th id="hSelect" scope="col" align="center" valign="middle">
                         <input type="checkbox" id="toggleMovies" />
                     </th>
@@ -72,14 +72,14 @@
                 <th id="hDescription" scope="col" class="z-left">
                     {sortlink __linktext='Description' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='description' sortdir=$sdir all=$all own=$own collection=$collection workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize ot='movie'}
                 </th>
-                {if $lqt eq 'admin'}
+                {if $lct eq 'admin'}
                 <th id="hUploadOfMovie" scope="col" class="z-left">
                     {sortlink __linktext='Upload of movie' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='uploadOfMovie' sortdir=$sdir all=$all own=$own collection=$collection workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize ot='movie'}
                 </th>
-                {/if}
                 <th id="hUrlOfYoutube" scope="col" class="z-left">
                     {sortlink __linktext='Url of youtube' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='urlOfYoutube' sortdir=$sdir all=$all own=$own collection=$collection workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize ot='movie'}
                 </th>
+                 {/if}               
                 <th id="hPoster" scope="col" class="z-left">
                     {sortlink __linktext='Poster' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='poster' sortdir=$sdir all=$all own=$own collection=$collection workflowState=$workflowState searchterm=$searchterm pageSize=$pageSize ot='movie'}
                 </th>
@@ -93,7 +93,7 @@
         
         {foreach item='movie' from=$items}
             <tr class="{cycle values='z-odd, z-even'}">
-                {if $lqt eq 'admin'}
+                {if $lct eq 'admin'}
                     <td headers="hselect" align="center" valign="top">
                         <input type="checkbox" name="items[]" value="{$movie.id}" class="movies-checkbox" />
                     </td>
@@ -104,7 +104,7 @@
                 <td headers="hDescription" class="z-left">
                     {$movie.description}
                 </td>
-                {if $lqt eq 'admin'}
+                {if $lct eq 'admin'}
                 <td headers="hUploadOfMovie" class="z-left">
                     {if $movie.uploadOfMovie ne ''}
                       <a href="{$movie.uploadOfMovieFullPathURL}" title="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}"{if $movie.uploadOfMovieMeta.isImage} rel="imageviewer[movie]"{/if}>
@@ -116,12 +116,12 @@
                       </a>
                     {else}&nbsp;{/if}
                 </td>
-                {/if}
                 <td headers="hUrlOfYoutube" class="z-left">
                     {if $movie.urlOfYoutube ne ''}
                     <a href="{$movie.urlOfYoutube}" title="{gt text='Visit this page'}">{icon type='url' size='extrasmall' __alt='Homepage'}</a>
                     {else}&nbsp;{/if}
                 </td>
+                {/if}
                 <td headers="hPoster" class="z-left">
                     {if $movie.poster ne ''}
                       <a href="{$movie.posterFullPathURL}" title="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}"{if $movie.posterMeta.isImage} rel="imageviewer[movie]"{/if}>
@@ -167,8 +167,8 @@
                 </td>
             </tr>
         {foreachelse}
-            <tr class="z-{if $lqt eq 'admin'}admin{else}data{/if}tableempty">
-              <td class="z-left" colspan="{if $lqt eq 'admin'}8{else}6{/if}">
+            <tr class="z-{if $lct eq 'admin'}admin{else}data{/if}tableempty">
+              <td class="z-left" colspan="{if $lct eq 'admin'}8{else}6{/if}">
             {gt text='No movies found.'}
               </td>
             </tr>
@@ -180,7 +180,7 @@
         {if !isset($showAllEntries) || $showAllEntries ne 1}
             {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='MUVideo' type='movie' func='view' lct=$lct}
         {/if}
-    {if $lqt eq 'admin'}
+    {if $lct eq 'admin'}
             <fieldset>
                 <label for="mUVideoAction">{gt text='With selected movies'}</label>
                 <select id="mUVideoAction" name="action">
