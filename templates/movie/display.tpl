@@ -41,14 +41,14 @@
         <div class="lazyYT theme_video_fluid" data-youtube-id={$youtubeId} data-width="{$movie.widthOfMovie}" data-height="{$movie.heightOfMovie}">loading...</div>
         {/if}
         {if $movie.urlOfYoutube eq ''}
-          {*  <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie}" controls>             
+          {*  <video id="player_a" class="projekktor" poster="{$movie.posterFullPathUrl}" title="{$movie.title}" width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie}" controls>             
                 <source src="{$movie.uploadOfMovieFullPathUrl}" />         
             </video> *}
             
             <!-- surrounding element with class - needed!! -->
             <div class="leanback-player-video">
             <!-- HTML5 <video> element -->
-                <video width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie} preload="metadata" controls poster="{$movie.uploadOfMovieFullPathUrl}">
+                <video width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie} preload="metadata" controls poster="{$movie.posterFullPathUrl}">
                 <!-- HTML5 <video> sources -->
 		            <source src="{$movie.uploadOfMovieFullPathUrl}" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'/>
                     {* <source src="./folder/video.ogv" type='video/ogg; codecs="theora, vorbis"'/> *}
