@@ -48,7 +48,7 @@
             <!-- surrounding element with class - needed!! -->
             <div class="leanback-player-video">
             <!-- HTML5 <video> element -->
-                <video width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie} preload="metadata" controls poster="./folder/poster.jpg">
+                <video width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie} preload="metadata" controls poster="{$movie.uploadOfMovieFullPathUrl}">
                 <!-- HTML5 <video> sources -->
 		            <source src="{$movie.uploadOfMovieFullPathUrl}" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'/>
                     {* <source src="./folder/video.ogv" type='video/ogg; codecs="theora, vorbis"'/> *}
