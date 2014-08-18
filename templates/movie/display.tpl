@@ -9,6 +9,9 @@
 {if $movie.urlOfYoutube eq ''}
 {pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/projekktor/projekktor-1.3.09.min.js'}
 {pageaddvar name='stylesheet' value='modules/MUVideo/lib/vendor/projekktor/themes/maccaco/projekktor.style.css'}
+{pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/leanback_player/js.player/leanbackPlayer.pack.js'}
+{pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/leanback_player/js.player/leanbackPlayer.de.js'}
+{pageaddvar name='stylesheet' value='modules/MUVideo/lib/vendor/leanbackplayer/css.player/leanbackPlayer.default.css'}
 {/if}
 {if $movie.urlOfYoutube ne ''}
 {pageaddvar name='javascript' value='modules/MUVideo/lib/vendor/lazyYT/lazyYT.js'}
@@ -38,9 +41,20 @@
         <div class="lazyYT theme_video_fluid" data-youtube-id={$youtubeId} data-width="{$movie.widthOfMovie}" data-height="{$movie.heightOfMovie}">loading...</div>
         {/if}
         {if $movie.urlOfYoutube eq ''}
-            <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie}" controls>             
+          {*  <video id="player_a" class="projekktor" poster="{$movie.poster}" title="{$movie.title}" width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie}" controls>             
                 <source src="{$movie.uploadOfMovieFullPathUrl}" />         
-            </video>
+            </video> *}
+            
+            <!-- surrounding element with class - needed!! -->
+            <div class="leanback-player-video">
+            <!-- HTML5 <video> element -->
+                <video width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie} preload="metadata" controls poster="./folder/poster.jpg">
+                <!-- HTML5 <video> sources -->
+		            <source src="{$movie.uploadOfMovieFullPathUrl}" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'/>
+                    {* <source src="./folder/video.ogv" type='video/ogg; codecs="theora, vorbis"'/> *}
+                </video>
+           </div>
+     
         {/if}
        {* <dt>{gt text='Upload of movie'}</dt>
         <dd>{if $movie.uploadOfMovie ne ''}
