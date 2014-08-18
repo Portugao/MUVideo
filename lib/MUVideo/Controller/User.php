@@ -16,5 +16,22 @@
  */
 class MUVideo_Controller_User extends MUVideo_Controller_Base_User
 {
-    // feel free to add your own controller methods here
+    /**
+     * This method is the default function handling the user area called without defining arguments.
+     *
+     *
+     * @return mixed Output.
+     */
+    public function main()
+    {
+        // parameter specifying which type of objects we are treating
+        $objectType = $this->request->query->filter('ot', 'collection', FILTER_SANITIZE_STRING);
+        
+        $permLevel = ACCESS_OVERVIEW;
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        
+        $redirectUrl = ModUtil::url($this->name, 'user', 'view', array('lct' => 'admin'));
+        
+        return $this->redirect($redirectUrl);
+    }
 }

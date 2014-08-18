@@ -10,6 +10,9 @@ MUVideo
 * lib/MUVideo/Api/Account.php
 
 * lib/MUVideo/ContentType/Item.php
+
+* lib/MUVideo/Controller/Admin.php
 * lib/MUVideo/Controller/External.php
 * lib/MUVideo/Controller/Movie.php
+* lib/MUVideo/Controller/User.php
 
