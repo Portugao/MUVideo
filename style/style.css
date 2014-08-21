@@ -159,14 +159,14 @@ div.muvideo-view form.muvideo-quicknav fieldset #num {
     text-align: right;
 }
 
-.lazyYT {
+/*.lazyYT {
     position: relative;
     width: 100% !important;
     height: 0 !important;
     padding-top: 52% !important;
 }
 
-/*.lazyYT iframe,  
+.lazyYT iframe,  
 .lazyYT object,  
 .lazyYT embed {
 	position: absolute;
