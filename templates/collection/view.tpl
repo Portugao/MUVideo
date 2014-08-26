@@ -38,7 +38,7 @@
 
     {include file='collection/view_quickNav.tpl' all=$all own=$own workflowStateFilter=false}{* see template file for available options *}
 
-    {if $lqt eq 'admin'}
+    {if $lct eq 'admin'}
     <form action="{modurl modname='MUVideo' type='collection' func='handleSelectedEntries' lct=$lct}" method="post" id="collectionsViewForm" class="z-form">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -46,7 +46,7 @@
     {/if}
         <table class="z-datatable">
             <colgroup>
-                {if $lqt eq 'admin'}
+                {if $lct eq 'admin'}
                     <col id="cSelect" />
                 {/if}
                 <col id="cTitle" />
@@ -55,7 +55,7 @@
             </colgroup>
             <thead>
             <tr>
-                {if $lqt eq 'admin'}
+                {if $lct eq 'admin'}
                     <th id="hSelect" scope="col" align="center" valign="middle">
                         <input type="checkbox" id="toggleCollections" />
                     </th>
@@ -73,7 +73,7 @@
         
         {foreach item='collection' from=$items}
             <tr class="{cycle values='z-odd, z-even'}">
-                {if $lqt eq 'admin'}
+                {if $lct eq 'admin'}
                     <td headers="hselect" align="center" valign="top">
                         <input type="checkbox" name="items[]" value="{$collection.id}" class="collections-checkbox" />
                     </td>
@@ -101,8 +101,8 @@
                 </td>
             </tr>
         {foreachelse}
-            <tr class="z-{if $lqt eq 'admin'}admin{else}data{/if}tableempty">
-              <td class="z-left" colspan="{if $lqt eq 'admin'}4{else}3{/if}">
+            <tr class="z-{if $lct eq 'admin'}admin{else}data{/if}tableempty">
+              <td class="z-left" colspan="{if $lct eq 'admin'}4{else}3{/if}">
             {gt text='No collections found.'}
               </td>
             </tr>
@@ -112,9 +112,9 @@
         </table>
         
         {if !isset($showAllEntries) || $showAllEntries ne 1}
-            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='MUVideo' type='collection' func='view' lct=$lct}
+            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='MUVideo' type=$lct func='view' ot='collection' lct=$lct}
         {/if}
-    {if $lqt eq 'admin'}
+    {if $lct eq 'admin'}
             <fieldset>
                 <label for="mUVideoAction">{gt text='With selected collections'}</label>
                 <select id="mUVideoAction" name="action">

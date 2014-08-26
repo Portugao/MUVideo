@@ -178,7 +178,7 @@
         </table>
         
         {if !isset($showAllEntries) || $showAllEntries ne 1}
-            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='MUVideo' type='movie' func='view' lct=$lct}
+            {pager rowcount=$pager.numitems limit=$pager.itemsperpage display='page' modname='MUVideo' type=$lct func='view' ot='movie' lct=$lct}
         {/if}
     {if $lct eq 'admin'}
             <fieldset>
