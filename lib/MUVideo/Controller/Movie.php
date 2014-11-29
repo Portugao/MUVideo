@@ -15,7 +15,7 @@
  * Movie controller class providing navigation and interaction functionality.
  */
 class MUVideo_Controller_Movie extends MUVideo_Controller_Base_Movie
-{
+{      
     /**
      * This method provides a item detail view.
      *
