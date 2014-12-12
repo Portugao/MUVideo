@@ -1,0 +1,120 @@
+application MUVideo {
+	vendor MU
+	author "Michael Ueberschaer"
+	email "kontakt@webdesign-in-bremen.com"
+	url "http://webdesign-in-bremen.com"
+	version "1.1.0"
+	prefix muvideo
+	generatorSettings {
+		settingsContainer Settings
+		targetCoreVersion ZK136
+	}
+	modelLayer {
+		modelContainer Model {
+			entities {
+				entity collection leading categorisable {
+					nameMultiple collections
+					displayPattern "#title#"
+					outgoing ( "collection.movie" ) fields {
+						string title {
+							defaultValue ""
+						},
+						text description {
+							mandatory false
+							length 4000
+						}
+					}
+				},
+				entity movie categorisable {
+					nameMultiple movies
+					displayPattern "#title#"
+					incoming ( "collection.movie" )
+					fields {
+						string title,
+						text description {
+							mandatory false
+							length 4000
+						},
+						upload uploadOfMovie {
+							mandatory false
+							allowedExtensions "swf,flv,mp4"
+							allowedFileSize 1024000000
+						},
+						url urlOfYoutube {
+							mandatory false
+						},
+						upload poster {
+							mandatory false
+							allowedFileSize 102400
+						},
+						integer widthOfMovie,
+						integer heightOfMovie
+					}
+				}
+			}
+			relations {
+				one2many bidirectional {
+					source collection
+					sourceAlias collection
+					target movie
+					targetAlias movie
+					orderBy title
+				}
+			}
+			variables {
+				varContainer Variables {
+					vars {
+						intVar pageSize {
+							value "10"
+						},
+						intVar maxSizeOfMovie {
+							value "1024000000"
+						},
+						intVar maxSizeOfPoster {
+							value "102400"
+						},
+						filePathVar standardPoster {
+							value "/images/poster.png"
+						}
+					}
+				}
+			}
+		}
+	}
+	controllerLayer {
+		controllerContainer Controller {
+			modelContext ( "MUVideo.Model" )
+			processViews "MUVideo.View"
+			controllers {
+				adminController Admin {
+					actions {
+						mainAction Main,
+						viewAction View,
+						displayAction Display,
+						editAction Edit,
+						deleteAction Delete
+					}
+				},
+				userController User {
+					actions {
+						mainAction Main,
+						viewAction View,
+						displayAction Display,
+						editAction Edit,
+						deleteAction Delete
+					}
+				},
+				ajaxController Ajax {
+					actions {
+						mainAction Main
+					}
+				}
+			}
+		}
+	}
+	viewLayer {
+		viewContainer View {
+			controller "MUVideo.Controller"
+		}
+	}
+}
