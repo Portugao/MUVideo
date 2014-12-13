@@ -9,23 +9,23 @@
 
 {if $mode eq 'edit'}
     {gt text='Edit collection' assign='templateTitle'}
-    {if $lcq eq 'admin'}
+    {if $lct eq 'admin'}
         {assign var='adminPageIcon' value='edit'}
     {/if}
 {elseif $mode eq 'create'}
     {gt text='Create collection' assign='templateTitle'}
-    {if $lcq eq 'admin'}
+    {if $lct eq 'admin'}
         {assign var='adminPageIcon' value='new'}
     {/if}
 {else}
     {gt text='Edit collection' assign='templateTitle'}
-    {if $lcq eq 'admin'}
+    {if $lct eq 'admin'}
         {assign var='adminPageIcon' value='edit'}
     {/if}
 {/if}
 <div class="muvideo-collection muvideo-edit">
     {pagesetvar name='title' value=$templateTitle}
-    {if $lcq eq 'admin'}
+    {if $lct eq 'admin'}
         <div class="z-admin-content-pagetitle">
             {icon type=$adminPageIcon size='small' alt=$templateTitle}
             <h3>{$templateTitle}</h3>
@@ -53,6 +53,7 @@
         </div>
     </fieldset>
     
+    {include file='helper/include_categories_edit.tpl' obj=$collection groupName='collectionObj'}
     {if $mode ne 'create'}
         {include file='helper/include_standardfields_edit.tpl' obj=$collection}
     {/if}
@@ -65,12 +66,13 @@
         {notifydisplayhooks eventname='muvideo.ui_hooks.collections.form_edit' id=null assign='hooks'}
     {/if}
     {if is_array($hooks) && count($hooks)}
-        {foreach key='providerArea' item='hook' from=$hooks}
+        {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
             <fieldset>
                 {$hook}
             </fieldset>
         {/foreach}
     {/if}
+    
     
     {* include return control *}
     {if $mode eq 'create'}
@@ -86,7 +88,7 @@
     {* include possible submit actions *}
     <div class="z-buttons z-formbuttons">
     {foreach item='action' from=$actions}
-        {assign var='actionIdCapital' value=$action.id|@ucwords}
+        {assign var='actionIdCapital' value=$action.id|@ucfirst}
         {gt text=$action.title assign='actionTitle'}
         {*gt text=$action.description assign='actionDescription'*}{* TODO: formbutton could support title attributes *}
         {if $action.id eq 'delete'}
@@ -96,7 +98,7 @@
             {formbutton id="btn`$actionIdCapital`" commandName=$action.id text=$actionTitle class=$action.buttonClass}
         {/if}
     {/foreach}
-        {formbutton id='btnCancel' commandName='cancel' __text='Cancel' class='z-bt-cancel'}
+    {formbutton id='btnCancel' commandName='cancel' __text='Cancel' class='z-bt-cancel'}
     </div>
     {/muvideoFormFrame}
 {/form}
@@ -109,9 +111,9 @@
 
 <script type="text/javascript">
 /* <![CDATA[ */
-
+    
     var formButtons, formValidator;
-
+    
     function handleFormButton (event) {
         var result = formValidator.validate();
         if (!result) {
@@ -123,29 +125,28 @@
                 btn.addClassName('z-hide');
             });
         }
-
+    
         return result;
     }
-
+    
     document.observe('dom:loaded', function() {
-
+    
         muvideoAddCommonValidationRules('collection', '{{if $mode ne 'create'}}{{$collection.id}}{{/if}}');
         {{* observe validation on button events instead of form submit to exclude the cancel command *}}
         formValidator = new Validation('{{$__formid}}', {onSubmit: false, immediate: true, focusOnError: false});
         {{if $mode ne 'create'}}
             var result = formValidator.validate();
         {{/if}}
-
+    
         formButtons = $('{{$__formid}}').select('div.z-formbuttons input');
-
+    
         formButtons.each(function (elem) {
             if (elem.id != 'btnCancel') {
                 elem.observe('click', handleFormButton);
             }
         });
-
+    
         Zikula.UI.Tooltips($$('.muvideo-form-tooltips'));
     });
-
 /* ]]> */
 </script>

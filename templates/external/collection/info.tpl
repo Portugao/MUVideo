@@ -2,4 +2,5 @@
 <dl id="collection{$collection.id}">
 <dt>{$collection->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filter_hooks.collections.filter'|htmlentities}</dt>
 {if $collection.description ne ''}<dd>{$collection.description}</dd>{/if}
+<dd>{assignedcategorieslist categories=$collection.categories doctrine2=true}</dd>
 </dl>

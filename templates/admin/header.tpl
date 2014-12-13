@@ -7,6 +7,9 @@
 {pageaddvar name='javascript' value='zikula.imageviewer'}
 {pageaddvar name='javascript' value='modules/MUVideo/javascript/MUVideo.js'}
 
+{* initialise additional gettext domain for translations within javascript *}
+{pageaddvar name='jsgettext' value='module_muvideo_js:MUVideo'}
+
 {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
     {adminheader}
 {/if}

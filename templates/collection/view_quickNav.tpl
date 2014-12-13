@@ -11,6 +11,30 @@
         <input type="hidden" name="all" value="{$all|default:0}" />
         <input type="hidden" name="own" value="{$own|default:0}" />
         {gt text='All' assign='lblDefault'}
+        {if !isset($categoryFilter) || $categoryFilter eq true}
+            {nocache}
+            {modapifunc modname='MUVideo' type='category' func='getAllProperties' ot=$objectType assign='properties'}
+            {if $properties ne null && is_array($properties)}
+                {gt text='All' assign='lblDefault'}
+                {foreach key='propertyName' item='propertyId' from=$properties}
+                    {modapifunc modname='MUVideo' type='category' func='hasMultipleSelection' ot=$objectType registry=$propertyName assign='hasMultiSelection'}
+                    {gt text='Category' assign='categoryLabel'}
+                    {assign var='categorySelectorId' value='catid'}
+                    {assign var='categorySelectorName' value='catid'}
+                    {assign var='categorySelectorSize' value='1'}
+                    {if $hasMultiSelection eq true}
+                        {gt text='Categories' assign='categoryLabel'}
+                        {assign var='categorySelectorName' value='catids'}
+                        {assign var='categorySelectorId' value='catids__'}
+                        {assign var='categorySelectorSize' value='5'}
+                    {/if}
+                        <label for="{$categorySelectorId}{$propertyName}">{$categoryLabel}</label>
+                        &nbsp;
+                        {selector_category name="`$categorySelectorName``$propertyName`" field='id' selectedValue=$catIdList.$propertyName categoryRegistryModule='MUVideo' categoryRegistryTable=$objectType categoryRegistryProperty=$propertyName defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
+                {/foreach}
+            {/if}
+            {/nocache}
+        {/if}
         {if !isset($workflowStateFilter) || $workflowStateFilter eq true}
                 <label for="workflowState">{gt text='Workflow state'}</label>
                 <select id="workflowState" name="workflowState">

@@ -34,6 +34,31 @@
 
         <fieldset>
             <legend>{gt text='Search and select movie'}</legend>
+            
+            {if $properties ne null && is_array($properties)}
+                {gt text='All' assign='lblDefault'}
+                {nocache}
+                {foreach key='propertyName' item='propertyId' from=$properties}
+                    <div class="z-formrow categoryselector">
+                        {modapifunc modname='MUVideo' type='category' func='hasMultipleSelection' ot=$objectType registry=$propertyName assign='hasMultiSelection'}
+                        {gt text='Category' assign='categoryLabel'}
+                        {assign var='categorySelectorId' value='catid'}
+                        {assign var='categorySelectorName' value='catid'}
+                        {assign var='categorySelectorSize' value='1'}
+                        {if $hasMultiSelection eq true}
+                            {gt text='Categories' assign='categoryLabel'}
+                            {assign var='categorySelectorName' value='catids'}
+                            {assign var='categorySelectorId' value='catids__'}
+                            {assign var='categorySelectorSize' value='8'}
+                        {/if}
+                        <label for="{$categorySelectorId}{$propertyName}">{$categoryLabel}</label>
+                        &nbsp;
+                            {selector_category name="`$categorySelectorName``$propertyName`" field='id' selectedValue=$catIds.$propertyName categoryRegistryModule='MUVideo' categoryRegistryTable=$objectType categoryRegistryProperty=$propertyName defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
+                            <span class="z-sub z-formnote">{gt text='This is an optional filter.'}</span>
+                    </div>
+                {/foreach}
+                {/nocache}
+            {/if}
 
             <div class="z-formrow">
                 <label for="mUVideoPasteAs">{gt text='Paste as'}:</label>
@@ -51,7 +76,7 @@
                         {foreach item='movie' from=$items}
                             <li>
                                 <a href="#" onclick="muvideo.finder.selectItem({$movie.id})" onkeypress="muvideo.finder.selectItem({$movie.id})">{$movie->getTitleFromDisplayPattern()}</a>
-                                <input type="hidden" id="url{$movie.id}" value="{modurl modname='MUVideo' type='user' func='display' id=$movie.id fqurl=true}" />
+                                <input type="hidden" id="url{$movie.id}" value="{modurl modname='MUVideo' type='user' func='display' ot='movie'  id=$movie.id fqurl=true}" />
                                 <input type="hidden" id="title{$movie.id}" value="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}" />
                                 <input type="hidden" id="desc{$movie.id}" value="{capture assign='description'}{if $movie.description ne ''}{$movie.description}{/if}
                                 {/capture}{$description|strip_tags|replace:"\"":""}" />
@@ -73,6 +98,8 @@
                     <option value="uploadOfMovie"{if $sort eq 'uploadOfMovie'} selected="selected"{/if}>{gt text='Upload of movie'}</option>
                     <option value="urlOfYoutube"{if $sort eq 'urlOfYoutube'} selected="selected"{/if}>{gt text='Url of youtube'}</option>
                     <option value="poster"{if $sort eq 'poster'} selected="selected"{/if}>{gt text='Poster'}</option>
+                    <option value="widthOfMovie"{if $sort eq 'widthOfMovie'} selected="selected"{/if}>{gt text='Width of movie'}</option>
+                    <option value="heightOfMovie"{if $sort eq 'heightOfMovie'} selected="selected"{/if}>{gt text='Height of movie'}</option>
                     <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
                     <option value="createdUserId"{if $sort eq 'createdUserId'} selected="selected"{/if}>{gt text='Creator'}</option>
                     <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>

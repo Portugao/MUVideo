@@ -28,7 +28,7 @@ function MUVideo_workflow_none_permissioncheck($obj, $permLevel, $currentUser, $
 
     // calculate the permission component
     $objectType = $obj['_objectType'];
-    $component = 'MUVideo:' . ucwords($objectType) . ':';
+    $component = 'MUVideo:' . ucfirst($objectType) . ':';
 
     // calculate the permission instance
     $idFields = ModUtil::apiFunc('MUVideo', 'selection', 'getIdFields', array('ot' => $objectType));

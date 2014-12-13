@@ -18,7 +18,7 @@
 
     <p class="z-warningmsg">{gt text='Do you really want to delete this movie ?'}</p>
 
-    <form class="z-form" action="{modurl modname='MUVideo' type=$lct func='delete' id=$movie.id ot='movie'}" method="post">
+    <form class="z-form" action="{modurl modname='MUVideo' type=$lct func='delete' ot='movie'  id=$movie.id}" method="post">
         <div>
             <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
             <input type="hidden" id="confirmation" name="confirmation" value="1" />

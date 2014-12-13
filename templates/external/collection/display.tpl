@@ -2,7 +2,7 @@
 <div id="collection{$collection.id}" class="muvideo-external-collection">
 {if $displayMode eq 'link'}
     <p class="muvideo-external-link">
-    <a href="{modurl modname='MUVideo' type='user' func='display' id=$collection.id}" title="{$collection->getTitleFromDisplayPattern()|replace:"\"":""}">
+    <a href="{modurl modname='MUVideo' type='user' func='display' ot='collection'  id=$collection.id}" title="{$collection->getTitleFromDisplayPattern()|replace:"\"":""}">
     {$collection->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filter_hooks.collections.filter'}
     </a>
     </p>
@@ -32,6 +32,7 @@
     {*
         <p class="muvideo-external-description">
             {if $collection.description ne ''}{$collection.description}<br />{/if}
+            {assignedcategorieslist categories=$collection.categories doctrine2=true}
         </p>
     *}
 {/if}

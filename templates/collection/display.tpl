@@ -11,10 +11,12 @@
     {if $lct eq 'admin'}
         <div class="z-admin-content-pagetitle">
             {icon type='display' size='small' __alt='Details'}
-            <h3>{$templateTitle|notifyfilters:'muvideo.filter_hooks.collections.filter'}{icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h3>
+            <h3>{$templateTitle|notifyfilters:'muvideo.filter_hooks.collections.filter'}{icon id="itemActions`$collection.id`Trigger" type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}
+            </h3>
         </div>
     {else}
-        <h2>{$templateTitle|notifyfilters:'muvideo.filter_hooks.collections.filter'}{icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h2>
+        <h2>{$templateTitle|notifyfilters:'muvideo.filter_hooks.collections.filter'}{icon id="itemActions`$collection.id`Trigger" type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}
+        </h2>
     {/if}
 
     {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
@@ -50,24 +52,26 @@
         <dd>{$collection.description}</dd>
         
     </dl>
+    {include file='helper/include_categories_display.tpl' obj=$collection}
     {include file='helper/include_standardfields_display.tpl' obj=$collection}
 
     {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
         {* include display hooks *}
         {notifydisplayhooks eventname='muvideo.ui_hooks.collections.display_view' id=$collection.id urlobject=$currentUrlObject assign='hooks'}
-        {foreach key='providerArea' item='hook' from=$hooks}
+        {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
             {$hook}
         {/foreach}
         {if count($collection._actions) gt 0}
-            <p id="itemActions">
-            {foreach item='option' from=$collection._actions}
-                <a href="{$option.url.type|muvideoActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" class="z-icon-es-{$option.icon}">{$option.linkText|safetext}</a>
-            {/foreach}
+            <p id="itemActions{$collection.id}">
+                {foreach item='option' from=$collection._actions}
+                    <a href="{$option.url.type|muvideoActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" class="z-icon-es-{$option.icon}">{$option.linkText|safetext}</a>
+                {/foreach}
             </p>
+        
             <script type="text/javascript">
             /* <![CDATA[ */
                 document.observe('dom:loaded', function() {
-                    muvideoInitItemActions('collection', 'display', 'itemActions');
+                    muvideoInitItemActions('collection', 'display', 'itemActions{{$collection.id}}');
                 });
             /* ]]> */
             </script>

@@ -34,6 +34,31 @@
 
         <fieldset>
             <legend>{gt text='Search and select collection'}</legend>
+            
+            {if $properties ne null && is_array($properties)}
+                {gt text='All' assign='lblDefault'}
+                {nocache}
+                {foreach key='propertyName' item='propertyId' from=$properties}
+                    <div class="z-formrow categoryselector">
+                        {modapifunc modname='MUVideo' type='category' func='hasMultipleSelection' ot=$objectType registry=$propertyName assign='hasMultiSelection'}
+                        {gt text='Category' assign='categoryLabel'}
+                        {assign var='categorySelectorId' value='catid'}
+                        {assign var='categorySelectorName' value='catid'}
+                        {assign var='categorySelectorSize' value='1'}
+                        {if $hasMultiSelection eq true}
+                            {gt text='Categories' assign='categoryLabel'}
+                            {assign var='categorySelectorName' value='catids'}
+                            {assign var='categorySelectorId' value='catids__'}
+                            {assign var='categorySelectorSize' value='8'}
+                        {/if}
+                        <label for="{$categorySelectorId}{$propertyName}">{$categoryLabel}</label>
+                        &nbsp;
+                            {selector_category name="`$categorySelectorName``$propertyName`" field='id' selectedValue=$catIds.$propertyName categoryRegistryModule='MUVideo' categoryRegistryTable=$objectType categoryRegistryProperty=$propertyName defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
+                            <span class="z-sub z-formnote">{gt text='This is an optional filter.'}</span>
+                    </div>
+                {/foreach}
+                {/nocache}
+            {/if}
 
             <div class="z-formrow">
                 <label for="mUVideoPasteAs">{gt text='Paste as'}:</label>
@@ -51,7 +76,7 @@
                         {foreach item='collection' from=$items}
                             <li>
                                 <a href="#" onclick="muvideo.finder.selectItem({$collection.id})" onkeypress="muvideo.finder.selectItem({$collection.id})">{$collection->getTitleFromDisplayPattern()}</a>
-                                <input type="hidden" id="url{$collection.id}" value="{modurl modname='MUVideo' type='user' func='display' id=$collection.id fqurl=true}" />
+                                <input type="hidden" id="url{$collection.id}" value="{modurl modname='MUVideo' type='user' func='display' ot='collection'  id=$collection.id fqurl=true}" />
                                 <input type="hidden" id="title{$collection.id}" value="{$collection->getTitleFromDisplayPattern()|replace:"\"":""}" />
                                 <input type="hidden" id="desc{$collection.id}" value="{capture assign='description'}{if $collection.description ne ''}{$collection.description}{/if}
                                 {/capture}{$description|strip_tags|replace:"\"":""}" />

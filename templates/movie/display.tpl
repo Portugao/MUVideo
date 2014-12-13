@@ -136,6 +136,7 @@
         {/if}
         <dd>
         </dl>
+    {include file='helper/include_categories_display.tpl' obj=$movie}
     {include file='helper/include_standardfields_display.tpl' obj=$movie}
 
     {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}

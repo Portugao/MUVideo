@@ -30,6 +30,10 @@
                     {formlabel for='maxSizeOfPoster' __text='Max size of poster' cssClass=''}
                         {formintinput id='maxSizeOfPoster' group='config' maxLength=255 __title='Enter the max size of poster. Only digits are allowed.'}
                 </div>
+                <div class="z-formrow">
+                    {formlabel for='standardPoster' __text='Standard poster' cssClass=''}
+                        {formtextinput id='standardPoster' group='config' maxLength=255 __title='Enter the standard poster.'}
+                </div>
             </fieldset>
 
             <div class="z-buttons z-formbuttons">

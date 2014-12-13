@@ -126,6 +126,7 @@
         </div>
     </fieldset>
     
+    {include file='helper/include_categories_edit.tpl' obj=$movie groupName='movieObj'}
     {include file='collection/include_selectOne.tpl' group='movie' alias='collection' aliasReverse='movie' mandatory=false idPrefix='muvideoMovie_Collection' linkingItem=$movie displayMode='dropdown' allowEditing=false}
     {if $mode ne 'create'}
         {include file='helper/include_standardfields_edit.tpl' obj=$movie}

@@ -10,6 +10,31 @@
 {assign var='leftSide' value=' style="float: left; width: 10em"'}
 {assign var='rightSide' value=' style="float: left"'}
 {assign var='break' value=' style="clear: left"'}
+
+{if $properties ne null && is_array($properties)}
+    {gt text='All' assign='lblDefault'}
+    {nocache}
+    {foreach key='propertyName' item='propertyId' from=$properties}
+        <p>
+            {modapifunc modname='MUVideo' type='category' func='hasMultipleSelection' ot='movie' registry=$propertyName assign='hasMultiSelection'}
+            {gt text='Category' assign='categoryLabel'}
+            {assign var='categorySelectorId' value='catid'}
+            {assign var='categorySelectorName' value='catid'}
+            {assign var='categorySelectorSize' value='1'}
+            {if $hasMultiSelection eq true}
+                {gt text='Categories' assign='categoryLabel'}
+                {assign var='categorySelectorName' value='catids'}
+                {assign var='categorySelectorId' value='catids__'}
+                {assign var='categorySelectorSize' value='8'}
+            {/if}
+            <label for="{$baseID}_{$categorySelectorId}{$propertyName}"{$leftSide}>{$categoryLabel}:</label>
+            &nbsp;
+            {selector_category name="`$baseID`_`$categorySelectorName``$propertyName`" field='id' selectedValue=$catIds.$propertyName categoryRegistryModule='MUVideo' categoryRegistryTable=$objectType categoryRegistryProperty=$propertyName defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
+            <br{$break} />
+        </p>
+    {/foreach}
+    {/nocache}
+{/if}
 <p>
     <label for="{$baseID}Id"{$leftSide}>{gt text='Movie'}:</label>
     <select id="{$baseID}Id" name="id"{$rightSide}>
@@ -31,6 +56,8 @@
         <option value="uploadOfMovie"{if $sort eq 'uploadOfMovie'} selected="selected"{/if}>{gt text='Upload of movie'}</option>
         <option value="urlOfYoutube"{if $sort eq 'urlOfYoutube'} selected="selected"{/if}>{gt text='Url of youtube'}</option>
         <option value="poster"{if $sort eq 'poster'} selected="selected"{/if}>{gt text='Poster'}</option>
+        <option value="widthOfMovie"{if $sort eq 'widthOfMovie'} selected="selected"{/if}>{gt text='Width of movie'}</option>
+        <option value="heightOfMovie"{if $sort eq 'heightOfMovie'} selected="selected"{/if}>{gt text='Height of movie'}</option>
         <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
         <option value="createdUserId"{if $sort eq 'createdUserId'} selected="selected"{/if}>{gt text='Creator'}</option>
         <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>

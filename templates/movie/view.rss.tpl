@@ -34,13 +34,15 @@
 {foreach item='movie' from=$items}
     <item>
         <title><![CDATA[{if isset($movie.updatedDate) && $movie.updatedDate ne null}{$movie.updatedDate|dateformat} - {/if}{$movie->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filterhook.movies'}]]></title>
-        <link>{modurl modname='MUVideo' type=$lct func='display' id=$movie.id fqurl='1'}</link>
-        <guid>{modurl modname='MUVideo' type=$lct func='display' id=$movie.id fqurl='1'}</guid>
+        <link>{modurl modname='MUVideo' type=$lct func='display' ot='movie'  id=$movie.id fqurl=true}</link>
+        <guid>{modurl modname='MUVideo' type=$lct func='display' ot='movie'  id=$movie.id fqurl=true}</guid>
         {if isset($movie.createdUserId)}
             {usergetvar name='uname' uid=$movie.createdUserId assign='cr_uname'}
             {usergetvar name='name' uid=$movie.createdUserId assign='cr_name'}
             <author>{usergetvar name='email' uid=$movie.createdUserId} ({$cr_name|default:$cr_uname})</author>
         {/if}
+
+        <category><![CDATA[{gt text='Categories'}: {foreach name='categoryLoop' key='propName' item='catMapping' from=$movie.categories}{$catMapping.category.name|safetext}{if !$smarty.foreach.categoryLoop.last}, {/if}{/foreach}]]></category>
 
         <description>
             <![CDATA[

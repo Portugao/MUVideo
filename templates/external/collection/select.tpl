@@ -10,6 +10,31 @@
 {assign var='leftSide' value=' style="float: left; width: 10em"'}
 {assign var='rightSide' value=' style="float: left"'}
 {assign var='break' value=' style="clear: left"'}
+
+{if $properties ne null && is_array($properties)}
+    {gt text='All' assign='lblDefault'}
+    {nocache}
+    {foreach key='propertyName' item='propertyId' from=$properties}
+        <p>
+            {modapifunc modname='MUVideo' type='category' func='hasMultipleSelection' ot='collection' registry=$propertyName assign='hasMultiSelection'}
+            {gt text='Category' assign='categoryLabel'}
+            {assign var='categorySelectorId' value='catid'}
+            {assign var='categorySelectorName' value='catid'}
+            {assign var='categorySelectorSize' value='1'}
+            {if $hasMultiSelection eq true}
+                {gt text='Categories' assign='categoryLabel'}
+                {assign var='categorySelectorName' value='catids'}
+                {assign var='categorySelectorId' value='catids__'}
+                {assign var='categorySelectorSize' value='8'}
+            {/if}
+            <label for="{$baseID}_{$categorySelectorId}{$propertyName}"{$leftSide}>{$categoryLabel}:</label>
+            &nbsp;
+            {selector_category name="`$baseID`_`$categorySelectorName``$propertyName`" field='id' selectedValue=$catIds.$propertyName categoryRegistryModule='MUVideo' categoryRegistryTable=$objectType categoryRegistryProperty=$propertyName defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
+            <br{$break} />
+        </p>
+    {/foreach}
+    {/nocache}
+{/if}
 <p>
     <label for="{$baseID}Id"{$leftSide}>{gt text='Collection'}:</label>
     <select id="{$baseID}Id" name="id"{$rightSide}>

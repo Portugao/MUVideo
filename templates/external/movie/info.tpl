@@ -12,4 +12,5 @@
 {else}&nbsp;{/if}
 </dd>
 {if $movie.description ne ''}<dd>{$movie.description}</dd>{/if}
+<dd>{assignedcategorieslist categories=$movie.categories doctrine2=true}</dd>
 </dl>
