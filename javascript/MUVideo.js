@@ -166,7 +166,7 @@ function muvideoInitInlineWindow(containerElem, title)
         }
     );
 
-    // return the instance
+    // return the instance;
     return newWindow;
 }
 

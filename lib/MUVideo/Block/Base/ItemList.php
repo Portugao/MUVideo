@@ -17,11 +17,20 @@
 class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
 {
     /**
+     * List of object types allowing categorisation.
+     *
+     * @var array
+     */
+    protected $categorisableObjectTypes;
+    
+    /**
      * Initialise the block.
      */
     public function init()
     {
         SecurityUtil::registerPermissionSchema('MUVideo:ItemListBlock:', 'Block title::');
+    
+        $this->categorisableObjectTypes = array('collection', 'movie');
     }
     
     /**
@@ -91,6 +100,18 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
             $vars['filter'] = '';
         }
     
+        if (!isset($vars['catIds'])) {
+            $primaryRegistry = ModUtil::apiFunc('MUVideo', 'category', 'getPrimaryProperty', array('ot' => $vars['objectType']));
+            $vars['catIds'] = array($primaryRegistry => array());
+            // backwards compatibility
+            if (isset($vars['catId'])) {
+                $vars['catIds'][$primaryRegistry][] = $vars['catId'];
+                unset($vars['catId']);
+            }
+        } elseif (!is_array($vars['catIds'])) {
+            $vars['catIds'] = explode(',', $vars['catIds']);
+        }
+    
         ModUtil::initOOModule('MUVideo');
     
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
@@ -101,13 +122,13 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
     
         $objectType = $vars['objectType'];
     
-        $entityClass = 'MUVideo_Entity_' . ucwords($objectType);
+        $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);
         $entityManager = $this->serviceManager->getService('doctrine.entitymanager');
         $repository = $entityManager->getRepository($entityClass);
     
         $this->view->setCaching(Zikula_View::CACHE_ENABLED);
         // set cache id
-        $component = 'MUVideo:' . ucwords($objectType) . ':';
+        $component = 'MUVideo:' . ucfirst($objectType) . ':';
         $instance = '::';
         $accessLevel = ACCESS_READ;
         if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
@@ -131,6 +152,18 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
         $orderBy = $this->getSortParam($vars, $repository);
         $qb = $repository->genericBaseQuery($where, $orderBy);
     
+        $properties = null;
+        if (in_array($vars['objectType'], $this->categorisableObjectTypes)) {
+            $properties = ModUtil::apiFunc('MUVideo', 'category', 'getAllProperties', array('ot' => $objectType));
+        }
+    
+        // apply category filters
+        if (in_array($objectType, $this->categorisableObjectTypes)) {
+            if (is_array($vars['catIds']) && count($vars['catIds']) > 0) {
+                $qb = ModUtil::apiFunc('MUVideo', 'category', 'buildFilterClauses', array('qb' => $qb, 'ot' => $objectType, 'catids' => $vars['catIds']));
+            }
+        }
+    
         // get objects from database
         $currentPage = 1;
         $resultsPerPage = $vars['amount'];
@@ -142,6 +175,9 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
                    ->assign('objectType', $objectType)
                    ->assign('items', $entities)
                    ->assign($repository->getAdditionalTemplateParameters('block'));
+    
+        // assign category properties
+        $this->view->assign('properties', $properties);
     
         // set a block title
         if (empty($blockinfo['title'])) {
@@ -252,6 +288,18 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
             $vars['filter'] = '';
         }
     
+        if (!isset($vars['catIds'])) {
+            $primaryRegistry = ModUtil::apiFunc('MUVideo', 'category', 'getPrimaryProperty', array('ot' => $vars['objectType']));
+            $vars['catIds'] = array($primaryRegistry => array());
+            // backwards compatibility
+            if (isset($vars['catId'])) {
+                $vars['catIds'][$primaryRegistry][] = $vars['catId'];
+                unset($vars['catId']);
+            }
+        } elseif (!is_array($vars['catIds'])) {
+            $vars['catIds'] = explode(',', $vars['catIds']);
+        }
+    
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
     
         // assign the approriate values
@@ -291,14 +339,20 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
             $vars['objectType'] = $controllerHelper->getDefaultObjectType('block');
         }
     
+        $primaryRegistry = ModUtil::apiFunc('MUVideo', 'category', 'getPrimaryProperty', array('ot' => $vars['objectType']));
+        $vars['catIds'] = array($primaryRegistry => array());
+        if (in_array($vars['objectType'], $this->categorisableObjectTypes)) {
+            $vars['catIds'] = ModUtil::apiFunc('MUVideo', 'category', 'retrieveCategoriesFromRequest', array('ot' => $vars['objectType']));
+        }
+    
         // write back the new contents
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
     
         // clear the block cache
         $this->view->clear_cache('block/itemlist_display.tpl');
-        $this->view->clear_cache('block/itemlist_' . ucwords($vars['objectType']) . '_display.tpl');
+        $this->view->clear_cache('block/itemlist_' . ucfirst($vars['objectType']) . '_display.tpl');
         $this->view->clear_cache('block/itemlist_display_description.tpl');
-        $this->view->clear_cache('block/itemlist_' . ucwords($vars['objectType']) . '_display_description.tpl');
+        $this->view->clear_cache('block/itemlist_' . ucfirst($vars['objectType']) . '_display_description.tpl');
     
         return $blockinfo;
     }

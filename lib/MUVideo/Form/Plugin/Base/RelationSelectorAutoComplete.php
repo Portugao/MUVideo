@@ -127,24 +127,27 @@
             }
 
             $alias = $this->id;
+            $class = $this->getStyleClass();
 
             $result = '
                 <div class="muvideo-relation-rightside">'
                     . $addLink . '
-                    <div id="' . $idPrefix . 'AddFields">
+                    <div id="' . $idPrefix . 'AddFields muvideo-autocomplete' . (($this->withImage) ? '-with-image' : '') . '">
                         <label for="' . $idPrefix . 'Selector">' . $selectLabelText . '</label>
-                        <br />
-                        <img src="' . System::getBaseUrl() . 'images/icons/extrasmall/search.png" width="16" height="16" alt="' . $searchIconText . '" />
+                        <br />';
+
+            $result .= '<img src="' . System::getBaseUrl() . 'images/icons/extrasmall/search.png" width="16" height="16" alt="' . $searchIconText . '" />
                         <input type="text" name="' . $idPrefix . 'Selector" id="' . $idPrefix . 'Selector" value="" />
                         <input type="hidden" name="' . $idPrefix . 'Scope" id="' . $idPrefix . 'Scope" value="' . ((!$many) ? '0' : '1') . '" />
                         <img src="' . System::getBaseUrl() . 'images/ajax/indicator_circle.gif" width="16" height="16" alt="" id="' . $idPrefix . 'Indicator" style="display: none" />
                         <span id="' . $idPrefix . 'NoResultsHint" class="z-hide">' . __('No results found!', $dom) . '</span>
-                        <div id="' . $idPrefix . 'SelectorChoices" class="muvideo-autocomplete' . (($this->withImage) ? '-with-image' : '') . '"></div>
-                        <input type="button" id="' . $idPrefix . 'SelectorDoCancel" name="' . $idPrefix . 'SelectorDoCancel" value="' . __('Cancel', $dom) . '" class="z-button muvideo-inline-button" />'
-                        . $createLink . '
-                        <noscript><p>' . __('This function requires JavaScript activated!', $dom) . '</p></noscript>
-                    </div>
-                </div>';
+                        <div id="' . $idPrefix . 'SelectorChoices" class=""></div>';
+            $result .= '
+                            <input type="button" id="' . $idPrefix . 'SelectorDoCancel" name="' . $idPrefix . 'SelectorDoCancel" value="' . __('Cancel', $dom) . '" class="z-button muvideo-inline-button" />'
+                            . $createLink . '
+                            <noscript><p>' . __('This function requires JavaScript activated!', $dom) . '</p></noscript>
+                        </div>
+                    </div>' . "\n";
 
             return $result;
         }

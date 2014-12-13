@@ -92,15 +92,28 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
             $defaultValue = isset($args[$idField]) && is_numeric($args[$idField]) ? $args[$idField] : 0;
             if ($this->hasCompositeKeys($objectType)) {
                 // composite key may be alphanumeric
-                $id = $request->query->filter($idField, $defaultValue);
+    if ($request->query->has($idField)) {
+                    $id = $request->query->filter($idField, $defaultValue);
+                } else {
+                    $id = $defaultValue;
+                }
             } else {
                 // single identifier
-                $id = (int) $request->query->filter($idField, $defaultValue, FILTER_VALIDATE_INT);
+    if ($request->query->has($idField)) {
+                    $id = (int) $request->query->filter($idField, $defaultValue, FILTER_VALIDATE_INT);
+                } else {
+                    $id = $defaultValue;
+                }
             }
+    
             // fallback if id has not been found yet
             if (!$id && $idField != 'id' && count($idFields) == 1) {
                 $defaultValue = isset($args['id']) && is_numeric($args['id']) ? $args['id'] : 0;
-                $id = (int) $request->query->filter('id', $defaultValue, FILTER_VALIDATE_INT);
+    if ($request->query->has('id')) {
+                    $id = (int) $request->query->filter('id', $defaultValue, FILTER_VALIDATE_INT);
+                } else {
+                    $id = $defaultValue;
+                }
             }
             $idValues[$idField] = $id;
         }
@@ -140,7 +153,7 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
      */
     public function formatPermalink($name)
     {
-        $name = str_replace(array('?', '?', '?', '?', '?', '?', '?', '.', '?', '"', '/', ':', '?', '?', '?'),
+        $name = str_replace(array('ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß', '.', '?', '"', '/', ':', 'é', 'è', 'â'),
                             array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'),
                             $name);
         $name = DataUtil::formatPermalink($name);
@@ -202,7 +215,7 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     {
         $result = true;
     
-        $result &= $this->checkAndCreateUploadFolder('movie', 'uploadOfMovie', 'swf, fly,mp4');
+        $result &= $this->checkAndCreateUploadFolder('movie', 'uploadOfMovie', 'swf,flv,mp4');
         $result &= $this->checkAndCreateUploadFolder('movie', 'poster', 'gif, jpeg, jpg, png');
     
         return $result;

@@ -48,8 +48,37 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
         $this->setVar('pageSize', 10);
         $this->setVar('maxSizeOfMovie', 1024000000);
         $this->setVar('maxSizeOfPoster', 102400);
+        $this->setVar('standardPoster', '/images/poster.png');
     
         $categoryRegistryIdsPerEntity = array();
+    
+        // add default entry for category registry (property named Main)
+        include_once 'modules/MUVideo/lib/MUVideo/Api/Base/Category.php';
+        include_once 'modules/MUVideo/lib/MUVideo/Api/Category.php';
+        $categoryApi = new MUVideo_Api_Category($this->serviceManager);
+        $categoryGlobal = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/Global');
+    
+        $registryData = array();
+        $registryData['modname'] = $this->name;
+        $registryData['table'] = 'Collection';
+        $registryData['property'] = $categoryApi->getPrimaryProperty(array('ot' => 'Collection'));
+        $registryData['category_id'] = $categoryGlobal['id'];
+        $registryData['id'] = false;
+        if (!DBUtil::insertObject($registryData, 'categories_registry')) {
+            LogUtil::registerError($this->__f('Error! Could not create a category registry for the %s entity.', array('collection')));
+        }
+        $categoryRegistryIdsPerEntity['collection'] = $registryData['id'];
+    
+        $registryData = array();
+        $registryData['modname'] = $this->name;
+        $registryData['table'] = 'Movie';
+        $registryData['property'] = $categoryApi->getPrimaryProperty(array('ot' => 'Movie'));
+        $registryData['category_id'] = $categoryGlobal['id'];
+        $registryData['id'] = false;
+        if (!DBUtil::insertObject($registryData, 'categories_registry')) {
+            LogUtil::registerError($this->__f('Error! Could not create a category registry for the %s entity.', array('movie')));
+        }
+        $categoryRegistryIdsPerEntity['movie'] = $registryData['id'];
     
         // create the default data
         $this->createDefaultData($categoryRegistryIdsPerEntity);
@@ -79,7 +108,7 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
     /*
         // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case 1.0.0:
+            case '1.0.0':
                 // do something
                 // ...
                 // update the database schema
@@ -130,6 +159,10 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
         // remove all module vars
         $this->delVars();
     
+        // remove category registry entries
+        ModUtil::dbInfoLoad('Categories');
+        DBUtil::deleteWhere('categories_registry', 'modname = \'' . $this->name . '\'');
+    
         // remove all thumbnails
         $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
         $manager->setModule($this->name);
@@ -152,7 +185,9 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
     {
         $classNames = array();
         $classNames[] = 'MUVideo_Entity_Collection';
+        $classNames[] = 'MUVideo_Entity_CollectionCategory';
         $classNames[] = 'MUVideo_Entity_Movie';
+        $classNames[] = 'MUVideo_Entity_MovieCategory';
     
         return $classNames;
     }

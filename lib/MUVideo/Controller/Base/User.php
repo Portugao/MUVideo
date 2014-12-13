@@ -43,7 +43,7 @@ class MUVideo_Controller_Base_User extends Zikula_AbstractController
         $permLevel = ACCESS_OVERVIEW;
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', $permLevel), LogUtil::getErrorMsgPermission());
         
-        $redirectUrl = ModUtil::url($this->name, 'user', 'view');
+        $redirectUrl = ModUtil::url($this->name, 'user', 'view', array('lct' => 'user'));
         
         return $this->redirect($redirectUrl);
     }
@@ -72,7 +72,8 @@ class MUVideo_Controller_Base_User extends Zikula_AbstractController
             $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
         }
         $permLevel = ACCESS_READ;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        
         // redirect to entity controller
         
         System::queryStringSetVar('lct', 'user');
@@ -85,6 +86,7 @@ class MUVideo_Controller_Base_User extends Zikula_AbstractController
      * This method provides a item detail view.
      *
      * @param string  $ot           Treated object type.
+     * @param int     $id           Identifier of entity to be shown.
      * @param string  $tpl          Name of alternative template (to be used instead of the default template).
      * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output).
      *
@@ -101,7 +103,8 @@ class MUVideo_Controller_Base_User extends Zikula_AbstractController
             $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
         }
         $permLevel = ACCESS_READ;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        
         // redirect to entity controller
         
         System::queryStringSetVar('lct', 'user');
@@ -130,7 +133,8 @@ class MUVideo_Controller_Base_User extends Zikula_AbstractController
             $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
         }
         $permLevel = ACCESS_EDIT;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        
         // redirect to entity controller
         
         System::queryStringSetVar('lct', 'user');
@@ -143,7 +147,7 @@ class MUVideo_Controller_Base_User extends Zikula_AbstractController
      * This method provides a handling of simple delete requests.
      *
      * @param string  $ot           Treated object type.
-     * @param int     $id           Identifier of entity to be deleted.
+     * @param int     $id           Identifier of entity to be shown.
      * @param boolean $confirmation Confirm the deletion, else a confirmation page is displayed.
      * @param string  $tpl          Name of alternative template (to be used instead of the default template).
      * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output).
@@ -161,7 +165,8 @@ class MUVideo_Controller_Base_User extends Zikula_AbstractController
             $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
         }
         $permLevel = ACCESS_DELETE;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        
         // redirect to entity controller
         
         System::queryStringSetVar('lct', 'user');
@@ -188,14 +193,14 @@ class MUVideo_Controller_Base_User extends Zikula_AbstractController
         if (empty($idPrefix)) {
             return false;
         }
-    
+        
         $this->view->assign('itemId', $id)
                    ->assign('idPrefix', $idPrefix)
                    ->assign('commandName', $commandName)
                    ->assign('jcssConfig', JCSSUtil::getJSConfig());
-    
+        
         $this->view->display('user/inlineRedirectHandler.tpl');
-    
+        
         return true;
     }
 }

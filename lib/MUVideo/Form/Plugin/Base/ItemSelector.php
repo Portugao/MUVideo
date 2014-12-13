@@ -90,13 +90,21 @@ class MUVideo_Form_Plugin_Base_ItemSelector extends Zikula_Form_Plugin_TextInput
         }
         $firstTime = false;
 
-        if (!SecurityUtil::checkPermission('MUVideo:' . ucwords($this->objectType) . ':', '::', ACCESS_COMMENT)) {
+        if (!SecurityUtil::checkPermission('MUVideo:' . ucfirst($this->objectType) . ':', '::', ACCESS_COMMENT)) {
             return false;
+        }
+
+        $categorisableObjectTypes = array('collection', 'movie');
+        $catIds = array();
+        if (in_array($this->objectType, $categorisableObjectTypes)) {
+            // fetch selected categories to reselect them in the output
+            // the actual filtering is done inside the repository class
+            $catIds = ModUtil::apiFunc('MUVideo', 'category', 'retrieveCategoriesFromRequest', array('ot' => $this->objectType));
         }
 
         $this->selectedItemId = $this->text;
 
-        $entityClass = 'MUVideo_Entity_' . ucwords($this->objectType);
+        $entityClass = 'MUVideo_Entity_' . ucfirst($this->objectType);
         $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->getService('doctrine.entitymanager');
         $repository = $entityManager->getRepository($entityClass);
@@ -114,6 +122,14 @@ class MUVideo_Form_Plugin_Base_ItemSelector extends Zikula_Form_Plugin_TextInput
         $view->assign('objectType', $this->objectType)
              ->assign('items', $entities)
              ->assign('selectedId', $this->selectedItemId);
+
+        // assign category properties
+        $properties = null;
+        if (in_array($this->objectType, $categorisableObjectTypes)) {
+            $properties = ModUtil::apiFunc('MUVideo', 'category', 'getAllProperties', array('ot' => $this->objectType));
+        }
+        $view->assign('properties', $properties)
+             ->assign('catIds', $catIds);
 
         return $view->fetch('external/' . $this->objectType . '/select.tpl');
     }

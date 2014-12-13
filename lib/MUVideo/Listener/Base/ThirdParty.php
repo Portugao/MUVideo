@@ -65,4 +65,64 @@ class MUVideo_Listener_Base_ThirdParty
         // plugin for showing a list of multiple items
         $types->add('MUVideo_ContentType_ItemList');
     }
+    
+    /**
+     * Listener for the `module.scribite.editorhelpers` event.
+     *
+     * This occurs when Scribite adds pagevars to the editor page.
+     * MUVideo will use this to add a javascript helper to add custom items.
+     *
+     * @param Zikula_Event $event The event instance.
+     */
+    public static function getEditorHelpers(Zikula_Event $event)
+    {
+        // intended is using the add() method to add a helper like below
+        $helpers = $event->getSubject();
+        
+        $helpers->add(
+            array('module' => 'MUVideo',
+                  'type'   => 'javascript',
+                  'path'   => 'modules/MUVideo/javascript/MUVideo_finder.js')
+        );
+    }
+    
+    /**
+     * Listener for the `moduleplugin.tinymce.externalplugins` event.
+     *
+     * Adds external plugin to TinyMCE.
+     *
+     * @param Zikula_Event $event The event instance.
+     */
+    public static function getTinyMcePlugins(Zikula_Event $event)
+    {
+        // intended is using the add() method to add a plugin like below
+        $plugins = $event->getSubject();
+        
+        $plugins->add(
+            array('name' => 'muvideo',
+                  'path' => 'modules/MUVideo/docs/scribite/plugins/TinyMce/vendor/tinymce/plugins/muvideo/editor_plugin.js'
+            )
+        );
+    }
+    
+    /**
+     * Listener for the `moduleplugin.ckeditor.externalplugins` event.
+     *
+     * Adds external plugin to CKEditor.
+     *
+     * @param Zikula_Event $event The event instance.
+     */
+    public static function getCKEditorPlugins(Zikula_Event $event)
+    {
+        // intended is using the add() method to add a plugin like below
+        $plugins = $event->getSubject();
+        
+        $plugins->add(
+            array('name' => 'muvideo',
+                  'path' => 'modules/MUVideo/docs/scribite/plugins/CKEditor/vendor/ckeditor/plugins/muvideo/',
+                  'file' => 'plugin.js',
+                  'img'  => 'ed_muvideo.gif'
+            )
+        );
+    }
 }

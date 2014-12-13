@@ -164,6 +164,7 @@ class MUVideo_Entity_Repository_Base_Collection extends EntityRepository
         $templateParameters = array();
     
         if ($context == 'controllerAction') {
+            $serviceManager = ServiceUtil::getManager();
             if (!isset($args['action'])) {
                 $args['action'] = FormUtil::getPassedValue('func', 'main', 'GETPOST');
             }
@@ -174,7 +175,6 @@ class MUVideo_Entity_Repository_Base_Collection extends EntityRepository
             }
     
             // initialise Imagine preset instances
-            $serviceManager = ServiceUtil::getManager();
             $imageHelper = new MUVideo_Util_Image($serviceManager);
             if (in_array($args['action'], array('display', 'view'))) {
                 // use separate preset for images in related items
@@ -204,6 +204,7 @@ class MUVideo_Entity_Repository_Base_Collection extends EntityRepository
         }
     
         $parameters = array();
+        $parameters['catIdList'] = ModUtil::apiFunc('MUVideo', 'category', 'retrieveCategoriesFromRequest', array('ot' => 'collection', 'source' => 'GET'));
         $parameters['workflowState'] = isset($this->controllerArguments['workflowState']) ? $this->controllerArguments['workflowState'] : FormUtil::getPassedValue('workflowState', '', 'GET');
         $parameters['searchterm'] = isset($this->controllerArguments['searchterm']) ? $this->controllerArguments['searchterm'] : FormUtil::getPassedValue('searchterm', '', 'GET');
         
@@ -230,57 +231,6 @@ class MUVideo_Entity_Repository_Base_Collection extends EntityRepository
     
         $query->execute();
     }
-
-    /**
-     * Deletes all objects created by a certain user.
-     *
-     * @param integer $userId The userid of the creator to be removed.
-     *
-     * @return void
-     *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received
-     */
-    public function deleteCreator($userId)
-    {
-        // check id parameter
-        if ($userId == 0 || !is_numeric($userId)) {
-            throw new \InvalidArgumentException(__('Invalid user identifier received.'));
-        }
-    
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete('MUVideo_Entity_Collection', 'tbl')
-           ->where('tbl.createdUserId = :creator')
-           ->setParameter('creator', $userId);
-        $query = $qb->getQuery();
-    
-        $query->execute();
-    }
-    
-    /**
-     * Deletes all objects updated by a certain user.
-     *
-     * @param integer $userId The userid of the last editor to be removed.
-     *
-     * @return void
-     *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received
-     */
-    public function deleteLastEditor($userId)
-    {
-        // check id parameter
-        if ($userId == 0 || !is_numeric($userId)) {
-            throw new \InvalidArgumentException(__('Invalid user identifier received.'));
-        }
-    
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete('MUVideo_Entity_Collection', 'tbl')
-           ->where('tbl.updatedUserId = :editor')
-           ->setParameter('editor', $userId);
-        $query = $qb->getQuery();
-    
-        $query->execute();
-    }
-    
     /**
      * Updates the creator of all objects created by a certain user.
      *
@@ -332,6 +282,56 @@ class MUVideo_Entity_Repository_Base_Collection extends EntityRepository
            ->where('tbl.updatedUserId = :editor')
            ->setParameter('editor', $userId);
         $query = $qb->getQuery();
+        $query->execute();
+    }
+    
+    /**
+     * Deletes all objects created by a certain user.
+     *
+     * @param integer $userId The userid of the creator to be removed.
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received
+     */
+    public function deleteByCreator($userId)
+    {
+        // check id parameter
+        if ($userId == 0 || !is_numeric($userId)) {
+            throw new \InvalidArgumentException(__('Invalid user identifier received.'));
+        }
+    
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->delete('MUVideo_Entity_Collection', 'tbl')
+           ->where('tbl.createdUserId = :creator')
+           ->setParameter('creator', $userId);
+        $query = $qb->getQuery();
+    
+        $query->execute();
+    }
+    
+    /**
+     * Deletes all objects updated by a certain user.
+     *
+     * @param integer $userId The userid of the last editor to be removed.
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received
+     */
+    public function deleteByLastEditor($userId)
+    {
+        // check id parameter
+        if ($userId == 0 || !is_numeric($userId)) {
+            throw new \InvalidArgumentException(__('Invalid user identifier received.'));
+        }
+    
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->delete('MUVideo_Entity_Collection', 'tbl')
+           ->where('tbl.updatedUserId = :editor')
+           ->setParameter('editor', $userId);
+        $query = $qb->getQuery();
+    
         $query->execute();
     }
 
@@ -518,9 +518,11 @@ class MUVideo_Entity_Repository_Base_Collection extends EntityRepository
         }
     
         if (!$hasFilters) {
-            if ($page > 1) {
+            if ($page > 1 || isset($_GET['pos'])) {
+                // store current page in session
                 SessionUtil::setVar('MUVideoCollectionsCurrentPage', $page);
             } else {
+                // restore current page from session
                 $page = SessionUtil::getVar('MUVideoCollectionsCurrentPage', 1);
                 System::queryStringSetVar('pos', $page);
             }
@@ -542,11 +544,10 @@ class MUVideo_Entity_Repository_Base_Collection extends EntityRepository
      */
     public function addCommonViewFilters(QueryBuilder $qb)
     {
-        /* commented out to allow default filters also for other calls, like content types and mailz
         $currentFunc = FormUtil::getPassedValue('func', 'main', 'GETPOST');
-        if (!in_array($currentFunc, array('main', 'view', 'finder'))) {
+        if ($currentFunc == 'edit') {
             return $qb;
-        }*/
+        }
     
         $parameters = $this->getViewQuickNavParameters('', array());
         foreach ($parameters as $k => $v) {
@@ -902,6 +903,8 @@ class MUVideo_Entity_Repository_Base_Collection extends EntityRepository
     {
         $selection = ', tblMovie';
     
+        $selection = ', tblCategories';
+    
         return $selection;
     }
     
@@ -915,6 +918,8 @@ class MUVideo_Entity_Repository_Base_Collection extends EntityRepository
     protected function addJoinsToFrom(QueryBuilder $qb)
     {
         $qb->leftJoin('tbl.movie', 'tblMovie');
+    
+        $qb->leftJoin('tbl.categories', 'tblCategories');
     
         return $qb;
     }

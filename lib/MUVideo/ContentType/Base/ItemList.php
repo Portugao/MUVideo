@@ -59,6 +59,34 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     protected $filter;
     
     /**
+     * List of object types allowing categorisation.
+     *
+     * @var array
+     */
+    protected $categorisableObjectTypes;
+    
+    /**
+     * List of category registries for different trees.
+     *
+     * @var array
+     */
+    protected $catRegistries;
+    
+    /**
+     * List of category properties for different trees.
+     *
+     * @var array
+     */
+    protected $catProperties;
+    
+    /**
+     * List of category ids with sub arrays for each registry.
+     *
+     * @var array
+     */
+    protected $catIds;
+    
+    /**
      * Returns the module providing this content type.
      *
      * @return string The module name.
@@ -140,6 +168,50 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
         $this->template = $data['template'];
         $this->customTemplate = $data['customTemplate'];
         $this->filter = $data['filter'];
+        $this->categorisableObjectTypes = array('collection', 'movie');
+    
+        // fetch category properties
+        $this->catRegistries = array();
+        $this->catProperties = array();
+        if (in_array($this->objectType, $this->categorisableObjectTypes)) {
+            $idFields = ModUtil::apiFunc('MUVideo', 'selection', 'getIdFields', array('ot' => $this->objectType));
+            $this->catRegistries = ModUtil::apiFunc('MUVideo', 'category', 'getAllPropertiesWithMainCat', array('ot' => $this->objectType, 'arraykey' => $idFields[0]));
+            $this->catProperties = ModUtil::apiFunc('MUVideo', 'category', 'getAllProperties', array('ot' => $this->objectType));
+        }
+    
+        if (!isset($data['catIds'])) {
+            $primaryRegistry = ModUtil::apiFunc('MUVideo', 'category', 'getPrimaryProperty', array('ot' => $this->objectType));
+            $data['catIds'] = array($primaryRegistry => array());
+            // backwards compatibility
+            if (isset($data['catId'])) {
+                $data['catIds'][$primaryRegistry][] = $data['catId'];
+                unset($data['catId']);
+            }
+        } elseif (!is_array($data['catIds'])) {
+            $data['catIds'] = explode(',', $data['catIds']);
+        }
+    
+        foreach ($this->catRegistries as $registryId => $registryCid) {
+            $propName = '';
+            foreach ($this->catProperties as $propertyName => $propertyId) {
+                if ($propertyId == $registryId) {
+                    $propName = $propertyName;
+                    break;
+                }
+            }
+            if (isset($data['catids' . $propName])) {
+                $data['catIds'][$propName] = $data['catids' . $propName];
+            }
+            if (!is_array($data['catIds'][$propName])) {
+                if ($data['catIds'][$propName]) {
+                    $data['catIds'][$propName] = array($data['catIds'][$propName]);
+                } else {
+                    $data['catIds'][$propName] = array();
+                }
+            }
+        }
+    
+        $this->catIds = $data['catIds'];
     }
     
     /**
@@ -152,7 +224,7 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
         $dom = ZLanguage::getModuleDomain('MUVideo');
         ModUtil::initOOModule('MUVideo');
     
-        $entityClass = 'MUVideo_Entity_' . ucwords($this->objectType);
+        $entityClass = 'MUVideo_Entity_' . ucfirst($this->objectType);
         $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->getService('doctrine.entitymanager');
         $repository = $entityManager->getRepository($entityClass);
@@ -162,7 +234,7 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     
         $this->view->setCaching(Zikula_View::CACHE_ENABLED);
         // set cache id
-        $component = 'MUVideo:' . ucwords($this->objectType) . ':';
+        $component = 'MUVideo:' . ucfirst($this->objectType) . ':';
         $instance = '::';
         $accessLevel = ACCESS_READ;
         if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
@@ -185,6 +257,13 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
         $orderBy = $this->getSortParam($repository);
         $qb = $repository->genericBaseQuery($where, $orderBy);
     
+        // apply category filters
+        if (in_array($this->objectType, $this->categorisableObjectTypes)) {
+            if (is_array($this->catIds) && count($this->catIds) > 0) {
+                $qb = ModUtil::apiFunc('MUVideo', 'category', 'buildFilterClauses', array('qb' => $qb, 'ot' => $this->objectType, 'catids' => $this->catIds));
+            }
+        }
+    
         // get objects from database
         $currentPage = 1;
         $resultsPerPage = (isset($this->amount) ? $this->amount : 1);
@@ -204,6 +283,10 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
                    ->assign('objectType', $this->objectType)
                    ->assign('items', $entities)
                    ->assign($repository->getAdditionalTemplateParameters('contentType'));
+    
+        // assign category data
+        $this->view->assign('registries', $this->catRegistries);
+        $this->view->assign('properties', $this->catProperties);
     
         $output = $this->view->fetch($template);
     
@@ -302,5 +385,36 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     
         // ensure our custom plugins are loaded
         array_push($this->view->plugins_dir, 'modules/MUVideo/templates/plugins');
+    
+        // assign category data
+        $this->view->assign('registries', $this->catRegistries);
+        $this->view->assign('properties', $this->catProperties);
+    
+        // assign categories lists for simulating category selectors
+        $dom = ZLanguage::getModuleDomain('MUVideo');
+        $locale = ZLanguage::getLanguageCode();
+        $categories = array();
+        foreach ($this->catRegistries as $registryId => $registryCid) {
+            $propName = '';
+            foreach ($this->catProperties as $propertyName => $propertyId) {
+                if ($propertyId == $registryId) {
+                    $propName = $propertyName;
+                    break;
+                }
+            }
+    
+            //$mainCategory = CategoryUtil::getCategoryByID($registryCid);
+            $cats = CategoryUtil::getSubCategories($registryCid, true, true, false, true, false, null, '', null, 'sort_value');
+            $catsForDropdown = array(
+                array('value' => '', 'text' => __('All', $dom))
+            );
+            foreach ($cats as $cat) {
+                $catName = isset($cat['display_name'][$locale]) ? $cat['display_name'][$locale] : $cat['name'];
+                $catsForDropdown[] = array('value' => $cat['id'], 'text' => $catName);
+            }
+            $categories[$propName] = $catsForDropdown;
+        }
+    
+        $this->view->assign('categories', $categories);
     }
 }

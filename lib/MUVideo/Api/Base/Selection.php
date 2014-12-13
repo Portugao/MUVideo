@@ -170,8 +170,9 @@ class MUVideo_Api_Base_Selection extends Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid object type received.'));
         }
     
-        $entityClass = 'MUVideo_Entity_' . ucwords($objectType);
+        $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);
+        $repository = $this->entityManager->getRepository($entityClass);
     
-        return $this->entityManager->getRepository($entityClass);
+        return $repository;
     }
 }

@@ -67,8 +67,7 @@ class MUVideo_Util_Base_Model extends Zikula_AbstractBase
             throw new \Exception('Error! Invalid object type received.');
         }
     
-        $entityClass = 'MUVideo_Entity_' . ucwords($objectType);
-    
+        $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);
         $repository = $this->entityManager->getRepository($entityClass);
     
         return ($repository->selectCount() > 0);

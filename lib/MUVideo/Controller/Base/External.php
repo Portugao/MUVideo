@@ -17,6 +17,13 @@
 class MUVideo_Controller_Base_External extends Zikula_AbstractController
 {
     /**
+     * List of object types allowing categorisation.
+     *
+     * @var array
+     */
+    protected $categorisableObjectTypes;
+
+    /**
      * Post initialise.
      *
      * Run after construction.
@@ -27,6 +34,7 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
     {
         // Set caching to false by default.
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $this->categorisableObjectTypes = array('collection', 'movie');
     }
 
     /**
@@ -43,51 +51,51 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
     {
         $getData = $this->request->query;
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
-    
+        
         $objectType = isset($args['objectType']) ? $args['objectType'] : $getData->filter('ot', '', FILTER_SANITIZE_STRING);
         $utilArgs = array('controller' => 'external', 'action' => 'display');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controller', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('controllerType', $utilArgs);
         }
-    
+        
         $id = isset($args['id']) ? $args['id'] : $getData->filter('id', null, FILTER_SANITIZE_STRING);
-    
-        $component = $this->name . ':' . ucwords($objectType) . ':';
+        
+        $component = $this->name . ':' . ucfirst($objectType) . ':';
         if (!SecurityUtil::checkPermission($component, $id . '::', ACCESS_READ)) {
             return '';
         }
-    
+        
         $source = isset($args['source']) ? $args['source'] : $getData->filter('source', '', FILTER_SANITIZE_STRING);
         if (!in_array($source, array('contentType', 'scribite'))) {
             $source = 'contentType';
         }
-    
+        
         $displayMode = isset($args['displayMode']) ? $args['displayMode'] : $getData->filter('displayMode', 'embed', FILTER_SANITIZE_STRING);
         if (!in_array($displayMode, array('link', 'embed'))) {
             $displayMode = 'embed';
         }
-    
-        $entityClass = 'MUVideo_Entity_' . ucwords($objectType);
+        
+        $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);
         $repository = $this->entityManager->getRepository($entityClass);
         $repository->setControllerArguments(array());
         $idFields = ModUtil::apiFunc('MUVideo', 'selection', 'getIdFields', array('ot' => $objectType));
         $idValues = array('id' => $id);
-    
+        
         $hasIdentifier = $controllerHelper->isValidIdentifier($idValues);
         if (!$hasIdentifier) {
             return $this->__('Error! Invalid identifier received.');
         }
-    
+        
         // assign object data fetched from the database
         $entity = $repository->selectById($idValues);
         if ((!is_array($entity) && !is_object($entity)) || !isset($entity[$idFields[0]])) {
             return $this->__('No such item.');
         }
-    
+        
         $entity->initWorkflow();
-    
+        
         $instance = $entity->createCompositeIdentifier() . '::';
-    
+        
         $this->view->setCaching(Zikula_View::CACHE_ENABLED);
         // set cache id
         $accessLevel = ACCESS_READ;
@@ -98,12 +106,12 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
             $accessLevel = ACCESS_EDIT;
         }
         $this->view->setCacheId($objectType . '|' . $id . '|a' . $accessLevel);
-    
+        
         $this->view->assign('objectType', $objectType)
                   ->assign('source', $source)
                   ->assign($objectType, $entity)
                   ->assign('displayMode', $displayMode);
-    
+        
         return $this->view->fetch('external/' . $objectType . '/display.tpl');
     }
     
@@ -123,42 +131,46 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
     public function finder()
     {
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('MUVideo'));
-    
+        
         $getData = $this->request->query;
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
-    
+        
         $objectType = $getData->filter('objectType', 'collection', FILTER_SANITIZE_STRING);
         $utilArgs = array('controller' => 'external', 'action' => 'finder');
         if (!in_array($objectType, $controllerHelper->getObjectTypes('controller', $utilArgs))) {
             $objectType = $controllerHelper->getDefaultObjectType('controllerType', $utilArgs);
         }
-    
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('MUVideo:' . ucwords($objectType) . ':', '::', ACCESS_COMMENT), LogUtil::getErrorMsgPermission());
-    
-        $entityClass = 'MUVideo_Entity_' . ucwords($objectType);
+        
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('MUVideo:' . ucfirst($objectType) . ':', '::', ACCESS_COMMENT), LogUtil::getErrorMsgPermission());
+        
+        $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);
         $repository = $this->entityManager->getRepository($entityClass);
         $repository->setControllerArguments(array());
-    
+        
         $editor = $getData->filter('editor', '', FILTER_SANITIZE_STRING);
-        if (empty($editor) || !in_array($editor, array('xinha', 'tinymce'/*, 'ckeditor'*/))) {
+        if (empty($editor) || !in_array($editor, array('xinha', 'tinymce', 'ckeditor'))) {
             return $this->__('Error: Invalid editor context given for external controller action.');
         }
+        
+        // fetch selected categories to reselect them in the output
+        // the actual filtering is done inside the repository class
+        $categoryIds = ModUtil::apiFunc('MUVideo', 'category', 'retrieveCategoriesFromRequest', array('ot' => $objectType, 'source' => 'GET'));
         $sort = $getData->filter('sort', '', FILTER_SANITIZE_STRING);
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
         }
-    
+        
         $sortdir = $getData->filter('sortdir', '', FILTER_SANITIZE_STRING);
         $sdir = strtolower($sortdir);
         if ($sdir != 'asc' && $sdir != 'desc') {
             $sdir = 'asc';
         }
-    
+        
         $sortParam = $sort . ' ' . $sdir;
-    
+        
         // the current offset which is used to calculate the pagination
         $currentPage = (int) $getData->filter('pos', 1, FILTER_VALIDATE_INT);
-    
+        
         // the number of items displayed on a page for pagination
         $resultsPerPage = (int) $getData->filter('num', 0, FILTER_VALIDATE_INT);
         if ($resultsPerPage == 0) {
@@ -166,13 +178,13 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
         }
         $where = '';
         list($entities, $objectCount) = $repository->selectWherePaginated($where, $sortParam, $currentPage, $resultsPerPage);
-    
+        
         foreach ($entities as $k => $entity) {
             $entity->initWorkflow();
         }
-    
+        
         $view = Zikula_View::getInstance('MUVideo', false);
-    
+        
         $view->assign('editorName', $editor)
              ->assign('objectType', $objectType)
              ->assign('items', $entities)
@@ -181,7 +193,15 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
              ->assign('currentPage', $currentPage)
              ->assign('pager', array('numitems'     => $objectCount,
                                      'itemsperpage' => $resultsPerPage));
-    
+        
+        // assign category properties
+        $properties = null;
+        if (in_array($objectType, $this->categorisableObjectTypes)) {
+            $properties = ModUtil::apiFunc('MUVideo', 'category', 'getAllProperties', array('ot' => $objectType));
+        }
+        $view->assign('properties', $properties)
+             ->assign('catIds', $categoryIds);
+        
         return $view->display('external/' . $objectType . '/find.tpl');
     }
 }

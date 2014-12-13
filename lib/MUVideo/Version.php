@@ -26,7 +26,7 @@ class MUVideo_Version extends MUVideo_Base_Version
         $meta = parent::getMetaData();
         
         // the current module version
-        $meta['version']              = '1.0.0';
+        $meta['version']              = '1.1.0';
         // the displayed name of the module
         $meta['displayname']          = $this->__('MUVideo');
         // the module description

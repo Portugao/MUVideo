@@ -34,6 +34,7 @@ class MUVideo_Form_Handler_Movie_Base_Edit extends MUVideo_Form_Handler_Common_E
         $this->objectTypeLower = 'movie';
     
         $this->hasPageLockSupport = true;
+        $this->hasCategories = true;
         // array with upload fields and mandatory flags
         $this->uploadFields = array('uploadOfMovie' => false, 'poster' => false);
         // array with list fields and multiple flags
@@ -142,8 +143,10 @@ class MUVideo_Form_Handler_Movie_Base_Edit extends MUVideo_Form_Handler_Common_E
      */
     protected function getDefaultReturnUrl($args)
     {
+        $legacyControllerType = $this->request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
+    
         // redirect to the list of movies
-        $viewArgs = array('ot' => $this->objectType);
+        $viewArgs = array('ot' => $this->objectType, 'lct' => $legacyControllerType);
         $url = ModUtil::url($this->name, FormUtil::getPassedValue('type', 'user', 'GETPOST'), 'view', $viewArgs);
     
         return $url;
@@ -250,7 +253,9 @@ class MUVideo_Form_Handler_Movie_Base_Edit extends MUVideo_Form_Handler_Common_E
         if ($this->inlineUsage == true) {
             $urlArgs = array('idPrefix'    => $this->idPrefix,
                              'commandName' => $args['commandName']);
-            $urlArgs = $this->addIdentifiersToUrlArgs($urlArgs);
+            foreach ($this->idFields as $idField) {
+                $urlArgs[$idField] = $this->idValues[$idField];
+            }
     
             // inline usage, return to special function for closing the Zikula.UI.Window instance
             return ModUtil::url($this->name, FormUtil::getPassedValue('type', 'user', 'GETPOST'), 'handleInlineRedirect', $urlArgs);
@@ -274,8 +279,10 @@ class MUVideo_Form_Handler_Movie_Base_Edit extends MUVideo_Form_Handler_Common_E
                 return ModUtil::url($this->name, 'admin', 'view', array('ot' => $this->objectType));
             case 'adminDisplay':
                 if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
-                    $urlArgs = $this->addIdentifiersToUrlArgs();
                     $urlArgs['ot'] = $this->objectType;
+                    foreach ($this->idFields as $idField) {
+                        $urlArgs[$idField] = $this->idValues[$idField];
+                    }
                     return ModUtil::url($this->name, 'admin', 'display', $urlArgs);
                 }
                 return $this->getDefaultReturnUrl($args);
@@ -285,8 +292,10 @@ class MUVideo_Form_Handler_Movie_Base_Edit extends MUVideo_Form_Handler_Common_E
                 return ModUtil::url($this->name, 'user', 'view', array('ot' => $this->objectType));
             case 'userDisplay':
                 if ($args['commandName'] != 'delete' && !($this->mode == 'create' && $args['commandName'] == 'cancel')) {
-                    $urlArgs = $this->addIdentifiersToUrlArgs();
                     $urlArgs['ot'] = $this->objectType;
+                    foreach ($this->idFields as $idField) {
+                        $urlArgs[$idField] = $this->idValues[$idField];
+                    }
                     return ModUtil::url($this->name, 'user', 'display', $urlArgs);
                 }
                 return $this->getDefaultReturnUrl($args);

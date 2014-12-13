@@ -102,7 +102,7 @@ function muvideoResetRelatedItemForm(idPrefix)
  * For edit forms we use "iframe: true" to ensure file uploads work without problems.
  * For all other windows we use "iframe: false" because we want the escape key working.
  */
-function muvideoCreateWindowInstance(containerElem, useIframe)
+function muvideoCreateRelationWindowInstance(containerElem, useIframe)
 {
     var newWindow;
 
@@ -130,7 +130,7 @@ function muvideoCreateWindowInstance(containerElem, useIframe)
 /**
  * Observe a link for opening an inline window
  */
-function muvideoInitInlineWindow(objectType, containerID)
+function muvideoinitInlineRelationWindow(objectType, containerID)
 {
     var found, newItem;
 
@@ -149,7 +149,7 @@ function muvideoInitInlineWindow(objectType, containerID)
                 relationHandler.windowInstance.destroy();
             }
             // create and assign the new window instance
-            relationHandler.windowInstance = muvideoCreateWindowInstance($(containerID), true);
+            relationHandler.windowInstance = muvideoCreateRelationWindowInstance($(containerID), true);
         }
     });
 
@@ -161,7 +161,7 @@ function muvideoInitInlineWindow(objectType, containerID)
         newItem.alias = '';
         newItem.prefix = containerID;
         newItem.acInstance = null;
-        newItem.windowInstance = muvideoCreateWindowInstance($(containerID), true);
+        newItem.windowInstance = muvideoCreateRelationWindowInstance($(containerID), true);
 
         // add it to the list of handlers
         relationHandler.push(newItem);
@@ -223,7 +223,7 @@ function muvideoSelectRelatedItem(objectType, idPrefix, inputField, selectedList
         editLink.update(' ' + editImage);
 
         $(elemPrefix + 'Edit').observe('click', function (e) {
-            muvideoInitInlineWindow(objectType, idPrefix + 'Reference_' + newItemId + 'Edit');
+            muvideoinitInlineRelationWindow(objectType, idPrefix + 'Reference_' + newItemId + 'Edit');
             e.stop();
         });
     }
@@ -314,7 +314,7 @@ function muvideoInitRelationItemsForm(objectType, idPrefix, includeEditing)
     // from here inline editing will be handled
     $(idPrefix + 'SelectorDoNew').href += '&theme=Printer&idp=' + idPrefix + 'SelectorDoNew';
     $(idPrefix + 'SelectorDoNew').observe('click', function(e) {
-        muvideoInitInlineWindow(objectType, idPrefix + 'SelectorDoNew');
+        muvideoinitInlineRelationWindow(objectType, idPrefix + 'SelectorDoNew');
         e.stop();
     });
 
@@ -327,7 +327,7 @@ function muvideoInitRelationItemsForm(objectType, idPrefix, includeEditing)
             elemPrefix = idPrefix + 'Reference_' + existingId + 'Edit';
             $(elemPrefix).href += '&theme=Printer&idp=' + elemPrefix;
             $(elemPrefix).observe('click', function (e) {
-                muvideoInitInlineWindow(objectType, elemPrefix);
+                muvideoinitInlineRelationWindow(objectType, elemPrefix);
                 e.stop();
             });
         }
@@ -354,7 +354,7 @@ function muvideoCloseWindowFromInside(idPrefix, itemId)
                 if (relationHandler.acInstance !== null) {
                     // activate it
                     relationHandler.acInstance.activate();
-                    // show a message 
+                    // show a message
                     Zikula.UI.Alert(Zikula.__('Action has been completed.', 'module_muvideo_js'), Zikula.__('Information', 'module_muvideo_js'), {
                         autoClose: 3 // time in seconds
                     });

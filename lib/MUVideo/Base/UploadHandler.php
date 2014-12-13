@@ -232,7 +232,7 @@ class MUVideo_Base_UploadHandler
             case 'movie':
                 switch ($fieldName) {
                     case 'uploadOfMovie':
-                        $allowedExtensions = array('swf', 'fly' ,'mp4');
+                        $allowedExtensions = array('swf,flv,mp4');
                         break;
                     case 'poster':
                         $allowedExtensions = array('gif', 'jpeg', 'jpg', 'png');
@@ -389,9 +389,6 @@ class MUVideo_Base_UploadHandler
             $basePath = $controllerHelper->getFileBaseFolder($objectType, $fieldName);
         } catch (\Exception $e) {
             LogUtil::registerError($e->getMessage());
-            $logger = $serviceManager->get('logger');
-            $logger = $serviceManager->get('logger');
-            $logger->error('{app}: User {user} could not detect upload destination path for entity {entity} and field {field}.', array('app' => 'MUVideo', 'user' => UserUtil::getVar('uname'), 'entity' => $objectType, 'field' => $fieldName));
         }
         $fileName = $objectData[$fieldName];
     

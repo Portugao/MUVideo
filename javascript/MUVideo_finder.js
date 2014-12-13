@@ -105,10 +105,10 @@ function getPasteSnippet(mode, itemId)
     if (mode === 'url') {
         // plugin mode
         return itemUrl;
-    } else {
-        // editor mode
-        return '<a href="' + itemUrl + '" title="' + itemDescription + '">' + itemTitle + '</a>';
     }
+
+    // editor mode
+    return '<a href="' + itemUrl + '" title="' + itemDescription + '">' + itemTitle + '</a>';
 }
 
 
@@ -155,7 +155,11 @@ muvideo.finder.selectItem = function (itemId)
         window.opener.tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
         // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers
     } else if (editor === 'ckeditor') {
-        /** to be done*/
+        if (window.opener.currentMUVideoEditor !== null) {
+            html = getPasteSnippet('html', itemId);
+
+            window.opener.currentMUVideoEditor.insertHtml(html);
+        }
     } else {
         alert('Insert into Editor: ' + editor);
     }
@@ -212,24 +216,24 @@ muvideo.itemSelector.onParamChanged = function ()
 
 muvideo.itemSelector.getItemList = function ()
 {
-    var baseId, pars, request;
+    var baseId, params, request;
 
     baseId = muvideo.itemSelector.baseId;
-    pars = 'ot=' + baseId + '&';
+    params = 'ot=' + baseId + '&';
     if ($(baseId + '_catidMain') != undefined) {
-        pars += 'catidMain=' + $F(baseId + '_catidMain') + '&';
+        params += 'catidMain=' + $F(baseId + '_catidMain') + '&';
     } else if ($(baseId + '_catidsMain') != undefined) {
-        pars += 'catidsMain=' + $F(baseId + '_catidsMain') + '&';
+        params += 'catidsMain=' + $F(baseId + '_catidsMain') + '&';
     }
-    pars += 'sort=' + $F(baseId + 'Sort') + '&' +
-            'sortdir=' + $F(baseId + 'SortDir') + '&' +
-            'searchterm=' + $F(baseId + 'SearchTerm');
+    params += 'sort=' + $F(baseId + 'Sort') + '&' +
+              'sortdir=' + $F(baseId + 'SortDir') + '&' +
+              'searchterm=' + $F(baseId + 'SearchTerm');
 
     request = new Zikula.Ajax.Request(
         Zikula.Config.baseURL + 'ajax.php?module=MUVideo&func=getItemListFinder',
         {
             method: 'post',
-            parameters: pars,
+            parameters: params,
             onFailure: function(req) {
                 Zikula.showajaxerror(req.getMessage());
             },
@@ -288,8 +292,9 @@ muvideo.itemSelector.updatePreview = function ()
     }
 
     if (selectedElement !== null) {
-        $(baseId + 'PreviewContainer').update(window.atob(selectedElement.previewInfo))
-                                      .removeClassName('z-hide');
+        $(baseId + 'PreviewContainer')
+            .update(window.atob(selectedElement.previewInfo))
+            .removeClassName('z-hide');
     }
 };
 

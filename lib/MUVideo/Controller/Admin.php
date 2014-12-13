@@ -30,7 +30,7 @@ class MUVideo_Controller_Admin extends MUVideo_Controller_Base_Admin
         $permLevel = ACCESS_ADMIN;
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', $permLevel), LogUtil::getErrorMsgPermission());
         
-        $redirectUrl = ModUtil::url($this->name, 'admin', 'view', array('lct' => 'admin'));
+        $redirectUrl = ModUtil::url($this->name, 'admin', 'view', array('ot' => $objectType, 'lct' => 'admin'));
         
         return $this->redirect($redirectUrl);
     }

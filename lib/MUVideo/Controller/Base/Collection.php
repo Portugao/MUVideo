@@ -47,7 +47,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $objectType = 'collection';
         $utilArgs = array('controller' => 'collection', 'action' => 'main');
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
         
         if ($legacyControllerType == 'admin') {
             
@@ -94,8 +94,8 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $objectType = 'collection';
         $utilArgs = array('controller' => 'collection', 'action' => 'view');
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_READ;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
-        $entityClass = $this->name . '_Entity_' . ucwords($objectType);
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $entityClass = $this->name . '_Entity_' . ucfirst($objectType);
         $repository = $this->entityManager->getRepository($entityClass);
         $repository->setControllerArguments(array());
         $viewHelper = new MUVideo_Util_View($this->serviceManager);
@@ -107,10 +107,10 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         }
         
         // parameter for used sort order
-        $sdir = $this->request->query->filter('sortdir', '', FILTER_SANITIZE_STRING);
-        $sdir = strtolower($sdir);
-        if ($sdir != 'asc' && $sdir != 'desc') {
-            $sdir = 'asc';
+        $sortdir = $this->request->query->filter('sortdir', '', FILTER_SANITIZE_STRING);
+        $sortdir = strtolower($sortdir);
+        if ($sortdir != 'asc' && $sortdir != 'desc') {
+            $sortdir = 'asc';
         }
         
         // convenience vars to make code clearer
@@ -121,7 +121,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $selectionArgs = array(
             'ot' => $objectType,
             'where' => $where,
-            'orderBy' => $sort . ' ' . $sdir
+            'orderBy' => $sort . ' ' . $sortdir
         );
         
         $showOwnEntries = (int) $this->request->query->filter('own', $this->getVar('showOnlyOwnEntries', 0), FILTER_VALIDATE_INT);
@@ -145,7 +145,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         
         // prepare access level for cache id
         $accessLevel = ACCESS_READ;
-        $component = 'MUVideo:' . ucwords($objectType) . ':';
+        $component = 'MUVideo:' . ucfirst($objectType) . ':';
         $instance = '::';
         if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
             $accessLevel = ACCESS_COMMENT;
@@ -155,7 +155,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         }
         
         $templateFile = $viewHelper->getViewTemplate($this->view, $objectType, 'view', array());
-        $cacheId = 'view|ot_' . $objectType . '_sort_' . $sort . '_' . $sdir;
+        $cacheId = 'view|ot_' . $objectType . '_sort_' . $sort . '_' . $sortdir;
         $resultsPerPage = 0;
         if ($showAllEntries == 1) {
             // set cache id
@@ -206,7 +206,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         // assign the object data, sorting information and details for creating the pager
         $this->view->assign('items', $entities)
                    ->assign('sort', $sort)
-                   ->assign('sdir', $sdir)
+                   ->assign('sdir', $sortdir)
                    ->assign('pageSize', $resultsPerPage)
                    ->assign('currentUrlObject', $currentUrlObject)
                    ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
@@ -221,6 +221,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
     /**
      * This method provides a item detail view.
      *
+     * @param int     $id           Identifier of entity to be shown.
      * @param string  $tpl          Name of alternative template (to be used instead of the default template).
      * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output).
      *
@@ -238,8 +239,8 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $objectType = 'collection';
         $utilArgs = array('controller' => 'collection', 'action' => 'display');
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_READ;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
-        $entityClass = $this->name . '_Entity_' . ucwords($objectType);
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $entityClass = $this->name . '_Entity_' . ucfirst($objectType);
         $repository = $this->entityManager->getRepository($entityClass);
         $repository->setControllerArguments(array());
         
@@ -249,10 +250,23 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $idValues = $controllerHelper->retrieveIdentifier($this->request, array(), $objectType, $idFields);
         $hasIdentifier = $controllerHelper->isValidIdentifier($idValues);
         
+        // check for unique permalinks (without id)
+        $hasSlug = false;
+        $slug = '';
+        if ($hasIdentifier === false) {
+            $entityClass = $this->name . '_Entity_' . ucfirst($objectType);
+            $meta = $this->entityManager->getClassMetadata($entityClass);
+            $hasSlug = $meta->hasField('slug') && $meta->isUniqueField('slug');
+            if ($hasSlug) {
+                $slug = $this->request->query->filter('slug', '', FILTER_SANITIZE_STRING);
+                $hasSlug = (!empty($slug));
+            }
+        }
+        $hasIdentifier |= $hasSlug;
+        
         $this->throwNotFoundUnless($hasIdentifier, $this->__('Error! Invalid identifier received.'));
         
         $selectionArgs = array('ot' => $objectType, 'id' => $idValues);
-        
         
         $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', $selectionArgs);
         $this->throwNotFoundUnless($entity != null, $this->__('No such item.'));
@@ -266,13 +280,13 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $currentUrlArgs['id'] = $instanceId; // TODO remove this
         $currentUrlObject = new Zikula_ModUrl($this->name, 'collection', 'display', ZLanguage::getLanguageCode(), $currentUrlArgs);
         
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', $instanceId . '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel), LogUtil::getErrorMsgPermission());
         
         $viewHelper = new MUVideo_Util_View($this->serviceManager);
         $templateFile = $viewHelper->getViewTemplate($this->view, $objectType, 'display', array());
         
         // set cache id
-        $component = $this->name . ':' . ucwords($objectType) . ':';
+        $component = $this->name . ':' . ucfirst($objectType) . ':';
         $instance = $instanceId . '::';
         $accessLevel = ACCESS_READ;
         if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
@@ -312,7 +326,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $objectType = 'collection';
         $utilArgs = array('controller' => 'collection', 'action' => 'edit');
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_EDIT;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
         
         // create new Form reference
         $view = FormUtil::newForm($this->name, $this);
@@ -331,7 +345,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
     /**
      * This method provides a handling of simple delete requests.
      *
-     * @param int     $id           Identifier of entity to be deleted.
+     * @param int     $id           Identifier of entity to be shown.
      * @param boolean $confirmation Confirm the deletion, else a confirmation page is displayed.
      * @param string  $tpl          Name of alternative template (to be used instead of the default template).
      * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output).
@@ -350,7 +364,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $objectType = 'collection';
         $utilArgs = array('controller' => 'collection', 'action' => 'delete');
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_DELETE;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucwords($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
         $idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', array('ot' => $objectType));
         
         // retrieve identifier of the object we wish to delete
@@ -361,19 +375,21 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         
         $selectionArgs = array('ot' => $objectType, 'id' => $idValues);
         
-        
         $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', $selectionArgs);
         $this->throwNotFoundUnless($entity != null, $this->__('No such item.'));
         
         $entity->initWorkflow();
         
+        // determine available workflow actions
         $workflowHelper = new MUVideo_Util_Workflow($this->serviceManager);
-        $deleteActionId = 'delete';
-        $deleteAllowed = false;
         $actions = $workflowHelper->getActionsForObject($entity);
         if ($actions === false || !is_array($actions)) {
             return LogUtil::registerError($this->__('Error! Could not determine workflow actions.'));
         }
+        
+        // check whether deletion is allowed
+        $deleteActionId = 'delete';
+        $deleteAllowed = false;
         foreach ($actions as $actionId => $action) {
             if ($actionId != $deleteActionId) {
                 continue;
@@ -386,7 +402,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         }
         
         $confirmation = (bool) $this->request->request->filter('confirmation', false, FILTER_VALIDATE_BOOLEAN);
-        if ($confirmation) {
+        if ($confirmation && $deleteAllowed) {
             $this->checkCsrfToken();
         
             $hookAreaPrefix = $entity->getHookAreaPrefix();
@@ -421,7 +437,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
             }
         }
         
-        $entityClass = $this->name . '_Entity_' . ucwords($objectType);
+        $entityClass = $this->name . '_Entity_' . ucfirst($objectType);
         $repository = $this->entityManager->getRepository($entityClass);
         
         // set caching id
@@ -452,19 +468,19 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
     public function handleSelectedEntries()
     {
         $this->checkCsrfToken();
-    
+        
         $redirectUrl = ModUtil::url($this->name, 'admin', 'main', array('ot' => 'collection'));
-    
+        
         $objectType = 'collection';
-    
+        
         // Get parameters
         $action = $this->request->request->get('action', null);
         $items = $this->request->request->get('items', null);
-    
+        
         $action = strtolower($action);
-    
+        
         $workflowHelper = new MUVideo_Util_Workflow($this->serviceManager);
-    
+        
         // process each item
         foreach ($items as $itemid) {
             // check if item exists, and get record instance
@@ -472,9 +488,9 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
                                    'id' => $itemid,
                                    'useJoins' => false);
             $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', $selectionArgs);
-    
+        
             $entity->initWorkflow();
-    
+        
             // check if $action can be applied to this entity (may depend on it's current workflow state)
             $allowedActions = $workflowHelper->getActionsForObject($entity);
             $actionIds = array_keys($allowedActions);
@@ -482,9 +498,9 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
                 // action not allowed, skip this object
                 continue;
             }
-    
+        
             $hookAreaPrefix = $entity->getHookAreaPrefix();
-    
+        
             // Let any hooks perform additional validation actions
             $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
             $hook = new Zikula_ValidationHook($hookAreaPrefix . '.' . $hookType, new Zikula_Hook_ValidationProviders());
@@ -492,7 +508,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
             if ($validators->hasErrors()) {
                 continue;
             }
-    
+        
             $success = false;
             try {
                 // execute the workflow action
@@ -500,17 +516,17 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
             } catch(\Exception $e) {
                 LogUtil::registerError($this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
             }
-    
+        
             if (!$success) {
                 continue;
             }
-    
+        
             if ($action == 'delete') {
                 LogUtil::registerStatus($this->__('Done! Item deleted.'));
             } else {
                 LogUtil::registerStatus($this->__('Done! Item updated.'));
             }
-    
+        
             // Let any hooks know that we have updated or deleted an item
             $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
             $url = null;
@@ -520,15 +536,15 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
             }
             $hook = new Zikula_ProcessHook($hookAreaPrefix . '.' . $hookType, $entity->createCompositeIdentifier(), $url);
             $this->notifyHooks($hook);
-    
+        
             // An item was updated or deleted, so we clear all cached pages for this item.
             $cacheArgs = array('ot' => $objectType, 'item' => $entity);
             ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
         }
-    
+        
         // clear view cache to reflect our changes
         $this->view->clear_cache();
-    
+        
         return $this->redirect($redirectUrl);
     }
 
@@ -549,14 +565,14 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         if (empty($idPrefix)) {
             return false;
         }
-    
+        
         $this->view->assign('itemId', $id)
                    ->assign('idPrefix', $idPrefix)
                    ->assign('commandName', $commandName)
                    ->assign('jcssConfig', JCSSUtil::getJSConfig());
-    
+        
         $this->view->display('collection/inlineRedirectHandler.tpl');
-    
+        
         return true;
     }
 }

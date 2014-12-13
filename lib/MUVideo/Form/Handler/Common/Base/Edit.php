@@ -147,6 +147,13 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     protected $hasPageLockSupport = false;
 
     /**
+     * Whether the entity is categorisable or not.
+     *
+     * @var boolean
+     */
+    protected $hasCategories = false;
+
+    /**
      * Array with upload field names and mandatory flags.
      *
      * @var array
@@ -242,6 +249,10 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
         // save entity reference for later reuse
         $this->entityRef = $entity;
     
+        
+        if ($this->hasCategories === true) {
+            $this->initCategoriesForEdit();
+        }
     
         $workflowHelper = new MUVideo_Util_Workflow($this->view->getServiceManager());
         $actions = $workflowHelper->getActionsForObject($entity);
@@ -324,6 +335,28 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     
         return $entity;
     }
+    
+    /**
+     * Initialise categories.
+     */
+    protected function initCategoriesForEdit()
+    {
+        $entity = $this->entityRef;
+    
+        // assign the actual object for categories listener
+        $this->view->assign($this->objectTypeLower . 'Obj', $entity);
+    
+        // load and assign registered categories
+        $registries = ModUtil::apiFunc($this->name, 'category', 'getAllPropertiesWithMainCat', array('ot' => $this->objectType, 'arraykey' => $this->idFields[0]));
+    
+        // check if multiple selection is allowed for this object type
+        $multiSelectionPerRegistry = array();
+        foreach ($registries as $registryId => $registryCid) {
+            $multiSelectionPerRegistry[$registryId] = ModUtil::apiFunc($this->name, 'category', 'hasMultipleSelection', array('ot' => $this->objectType, 'registry' => $registryId));
+        }
+        $this->view->assign('registries', $registries)
+                   ->assign('multiSelectionPerRegistry', $multiSelectionPerRegistry);
+    }
 
     /**
      * Post-initialise hook.
@@ -332,9 +365,9 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
      */
     public function postInitialize()
     {
-        $entityClass = $this->name . '_Entity_' . ucwords($this->objectType);
+        $entityClass = $this->name . '_Entity_' . ucfirst($this->objectType);
         $repository = $this->entityManager->getRepository($entityClass);
-        $utilArgs = array('controller' => FormUtil::getPassedValue('type', 'user', 'GETPOST'),
+        $utilArgs = array('controller' => \FormUtil::getPassedValue('type', 'user', 'GETPOST'),
                           'action' => 'edit',
                           'mode' => $this->mode);
         $this->view->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
@@ -397,10 +430,10 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     
         if ($action != 'cancel') {
             $otherFormData = $this->fetchInputData($view, $args);
-        	if ($otherFormData === false) {
-            	return false;
-        	}
-    	}
+            if ($otherFormData === false) {
+                return false;
+            }
+        }
     
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
@@ -563,6 +596,10 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
                 $this->repeatCreateAction = $entityData['repeatCreation'];
             }
             unset($entityData['repeatCreation']);
+        }
+        if (isset($entityData['additionalNotificationRemarks'])) {
+            SessionUtil::setVar($this->name . 'AdditionalNotificationRemarks', $entityData['additionalNotificationRemarks']);
+            unset($entityData['additionalNotificationRemarks']);
         }
     
         // search for relationship plugins to update the corresponding data

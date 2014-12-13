@@ -37,8 +37,8 @@ class MUVideo_Base_RouterFacade
             'func'          => '\w+',
             'ot'            => '\w+',
             'slug'          => '[^/.]+', // slugs ([^/.]+ = all chars except / and .)
-            'displayending' => '(?:' . $displayDefaultEnding . '|xml|json|kml|ics)',
-            'viewending'    => '(?:\.csv|\.rss|\.atom|\.xml|\.json|\.kml)?',
+            'displayending' => '(?:' . $displayDefaultEnding . '|json|kml|ics)',
+            'viewending'    => '(?:\.csv|\.rss|\.atom|\.json|\.kml)?',
             'id'            => '\d+'
         );
 

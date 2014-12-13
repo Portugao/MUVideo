@@ -80,21 +80,17 @@ class MUVideo_Listener_Base_User
         $entityManager = $serviceManager->getService('doctrine.entitymanager');
         
         $repo = $entityManager->getRepository('MUVideo_Entity_Collection');
-        // delete all collections created by this user
-        $repo->deleteCreator($uid);
-        // note you could also do: $repo->updateCreator($uid, 2);
+        // set creator to admin (2) for all collections created by this user
+        $repo->updateCreator($uid, 2);
         
         // set last editor to admin (2) for all collections updated by this user
         $repo->updateLastEditor($uid, 2);
-        // note you could also do: $repo->deleteLastEditor($uid);
         
         $repo = $entityManager->getRepository('MUVideo_Entity_Movie');
-        // delete all movies created by this user
-        $repo->deleteCreator($uid);
-        // note you could also do: $repo->updateCreator($uid, 2);
+        // set creator to admin (2) for all movies created by this user
+        $repo->updateCreator($uid, 2);
         
         // set last editor to admin (2) for all movies updated by this user
         $repo->updateLastEditor($uid, 2);
-        // note you could also do: $repo->deleteLastEditor($uid);
     }
 }

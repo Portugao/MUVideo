@@ -219,9 +219,8 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
      */
     public function getAmountOfModerationItems($objectType, $state)
     {
-        $entityClass = $this->name . '_Entity_' . ucwords($objectType);
+        $entityClass = $this->name . '_Entity_' . ucfirst($objectType);
         $entityManager = $this->serviceManager->getService('doctrine.entitymanager');
-    
         $repository = $entityManager->getRepository($entityClass);
     
         $where = 'tbl.workflowState = \'' . $state . '\'';

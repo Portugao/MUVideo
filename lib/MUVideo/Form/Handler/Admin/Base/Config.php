@@ -44,6 +44,7 @@ class MUVideo_Form_Handler_Admin_Base_Config extends Zikula_Form_AbstractHandler
         // retrieve module vars
         $modVars = $this->getVars();
 
+
         // assign all module vars
         $this->view->assign('config', $modVars);
 

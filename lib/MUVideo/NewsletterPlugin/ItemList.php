@@ -145,7 +145,7 @@ class MUVideo_NewsletterPlugin_ItemList extends Newsletter_AbstractPlugin
         $output = array();
     
         foreach ($objectTypes as $objectType) {
-            if (!SecurityUtil::checkPermission($this->modname . ':' . ucwords($objectType) . ':', '::', ACCESS_READ, $this->userNewsletter)) {
+            if (!SecurityUtil::checkPermission($this->modname . ':' . ucfirst($objectType) . ':', '::', ACCESS_READ, $this->userNewsletter)) {
                 // the newsletter has no permission for these items
                 continue;
             }
@@ -171,7 +171,7 @@ class MUVideo_NewsletterPlugin_ItemList extends Newsletter_AbstractPlugin
     protected function selectPluginData($args, $filtAfterDate = null)
     {
         $objectType = $args['objectType'];
-        $entityClass = 'MUVideo_Entity_' . ucwords($objectType);
+        $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);
         $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->getService('doctrine.entitymanager');
         $repository = $entityManager->getRepository($entityClass);

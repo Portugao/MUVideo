@@ -61,7 +61,7 @@ class MUVideo_Api_Base_Mailz extends Zikula_AbstractApi
         // Array ( [uid] => 5 [contenttype] => h [pluginid] => 1 [nid] => 1 [last] => 0000-00-00 00:00:00 [params] => Array ( [] => ) ) 1
         $objectType = 'collection';
     
-        $entityClass = 'MUVideo_Entity_' . ucwords($objectType);
+        $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);
         $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->getService('doctrine.entitymanager');
         $repository = $entityManager->getRepository($entityClass);
