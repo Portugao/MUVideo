@@ -8,6 +8,10 @@ application MUVideo {
 	generatorSettings {
 		settingsContainer Settings
 		targetCoreVersion ZK136
+	generateXmlTemplates false
+		generateTests false
+		writeModelToDocs true
+		markFiles ""
 	}
 	modelLayer {
 		modelContainer Model {
