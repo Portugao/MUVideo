@@ -4,6 +4,7 @@ MUVideo
 * changed files
 
 
+* lib/MUVideo/Installer.php
 * lib/MUVideo/Uploadhandler.php
 * lib/MUVideo/Version.php
 
