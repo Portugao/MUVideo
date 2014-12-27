@@ -5,6 +5,9 @@ MUVideo
 
 * README.md
 
+* docs/scribite/plugins/.... other path to new icon in
+* CKEditor, TinyMce and Xinha
+
 * images/admin.png
 
 * lib/MUVideo/Installer.php
