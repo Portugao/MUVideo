@@ -19,7 +19,7 @@ function MUVideo(editor) {
         id       : 'MUVideo',
         tooltip  : 'Insert MUVideo object',
      // image    : _editor_url + 'plugins/MUVideo/img/ed_MUVideo.gif',
-        image    : '/images/icons/extrasmall/favorites.png',
+        image    : '/modules/MUVideo/images/muvideo.png',
         textMode : false,
         action   : function (editor) {
             var url = Zikula.Config.baseURL + 'index.php'/*Zikula.Config.entrypoint*/ + '?module=MUVideo&type=external&func=finder&editor=xinha';

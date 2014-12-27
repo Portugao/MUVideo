@@ -42,7 +42,7 @@
                 title : 'muvideo.desc',
                 cmd : 'mceMUVideo',
              // image : url + '/img/MUVideo.gif'
-                image : '/images/icons/extrasmall/favorites.png',
+                image : '/modules/MUVideo/images/muvideo.png',
                 onPostRender: function() {
                     var ctrl = this;
 

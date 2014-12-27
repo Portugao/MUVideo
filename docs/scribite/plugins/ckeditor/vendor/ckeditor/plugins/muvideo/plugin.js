@@ -13,7 +13,7 @@ CKEDITOR.plugins.add('muvideo', {
             label: editor.lang.muvideo.title,
             command: 'insertMUVideo',
          // icon: this.path + 'images/ed_muvideo.png'
-            icon: '/images/icons/extrasmall/favorites.png'
+            icon: '/modules/MUVideo/images/muvideo.png'
         });
     }
 });
