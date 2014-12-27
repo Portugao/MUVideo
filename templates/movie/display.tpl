@@ -124,7 +124,7 @@
           <script type="text/javascript">
           /* <![CDATA[ */
               document.observe('dom:loaded', function() {
-                  muvideoInitInlineWindow($('collectionItem{{$movie.Collection.id}}Display'), '{{$movie.Collection->getTitleFromDisplayPattern()|replace:"'":""}}');
+                  mUMUVideoInitInlineWindow($('collectionItem{{$movie.Collection.id}}Display'), '{{$movie.Collection->getTitleFromDisplayPattern()|replace:"'":""}}');
               });
           /* ]]> */
           </script>
@@ -154,7 +154,7 @@
             <script type="text/javascript">
             /* <![CDATA[ */
                 document.observe('dom:loaded', function() {
-                    muvideoInitItemActions('movie', 'display', 'itemActions');
+                    mUMUVideoInitItemActions('movie', 'display', 'itemActions');
                 });
                    
         var MU = jQuery.noConflict(); 

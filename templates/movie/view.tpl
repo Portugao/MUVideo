@@ -142,7 +142,7 @@
                         <script type="text/javascript">
                         /* <![CDATA[ */
                             document.observe('dom:loaded', function() {
-                                muvideoInitInlineWindow($('collectionItem{{$movie.id}}_rel_{{$movie.Collection.id}}Display'), '{{$movie.Collection->getTitleFromDisplayPattern()|replace:"'":""}}');
+                                mUMUVideoInitInlineWindow($('collectionItem{{$movie.id}}_rel_{{$movie.Collection.id}}Display'), '{{$movie.Collection->getTitleFromDisplayPattern()|replace:"'":""}}');
                             });
                         /* ]]> */
                         </script>
@@ -159,7 +159,7 @@
                         <script type="text/javascript">
                         /* <![CDATA[ */
                             document.observe('dom:loaded', function() {
-                                muvideoInitItemActions('movie', 'view', 'itemActions{{$movie.id}}');
+                                mUMUVideoInitItemActions('movie', 'view', 'itemActions{{$movie.id}}');
                             });
                         /* ]]> */
                         </script>

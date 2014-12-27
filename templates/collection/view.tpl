@@ -93,7 +93,7 @@
                         <script type="text/javascript">
                         /* <![CDATA[ */
                             document.observe('dom:loaded', function() {
-                                muvideoInitItemActions('collection', 'view', 'itemActions{{$collection.id}}');
+                                mUMUVideoInitItemActions('collection', 'view', 'itemActions{{$collection.id}}');
                             });
                         /* ]]> */
                         </script>

@@ -75,7 +75,7 @@
                         <ul>
                         {foreach item='movie' from=$items}
                             <li>
-                                <a href="#" onclick="muvideo.finder.selectItem({$movie.id})" onkeypress="muvideo.finder.selectItem({$movie.id})">{$movie->getTitleFromDisplayPattern()}</a>
+                                <a href="#" onclick="mUVideo.finder.selectItem({$movie.id})" onkeypress="mUVideo.finder.selectItem({$movie.id})">{$movie->getTitleFromDisplayPattern()}</a>
                                 <input type="hidden" id="url{$movie.id}" value="{modurl modname='MUVideo' type='user' func='display' ot='movie'  id=$movie.id fqurl=true}" />
                                 <input type="hidden" id="title{$movie.id}" value="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}" />
                                 <input type="hidden" id="desc{$movie.id}" value="{capture assign='description'}{if $movie.description ne ''}{$movie.description}{/if}
