@@ -29,7 +29,7 @@
 <script type="text/javascript">
 /* <![CDATA[ */
     document.observe('dom:loaded', function() {
-        muvideoInitInlineWindow($('collectionItem{{$item.id}}Display'), '{{$item->getTitleFromDisplayPattern()|replace:"'":""}}');
+        mUMUVideoInitInlineWindow($('collectionItem{{$item.id}}Display'), '{{$item->getTitleFromDisplayPattern()|replace:"'":""}}');
     });
 /* ]]> */
 </script>

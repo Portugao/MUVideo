@@ -73,7 +73,7 @@
 {pageaddvar name='javascript' value='prototype'}
 <script type="text/javascript">
 /* <![CDATA[ */
-    function muvideoToggleCustomTemplate() {
+    function mUMUVideoToggleCustomTemplate() {
         if ($F('mUVideoTemplate') == 'custom') {
             $('customTemplateArea').removeClassName('z-hide');
         } else {
@@ -82,9 +82,9 @@
     }
 
     document.observe('dom:loaded', function() {
-        muvideoToggleCustomTemplate();
+        mUMUVideoToggleCustomTemplate();
         $('mUVideoTemplate').observe('change', function(e) {
-            muvideoToggleCustomTemplate();
+            mUMUVideoToggleCustomTemplate();
         });
     });
 /* ]]> */

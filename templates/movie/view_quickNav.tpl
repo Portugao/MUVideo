@@ -37,7 +37,14 @@
         {/if}
         {if !isset($collectionFilter) || $collectionFilter eq true}
                 <label for="collection">{gt text='Collections'}</label>
-                {modapifunc modname='MUVideo' type='selection' func='getEntities' ot='collection' useJoins=false assign='listEntries'}
+                {php}
+                    $mainSearchTerm = '';
+                    if (isset($_GET['q'])) {
+                        $mainSearchTerm = $_GET['q'];
+                        unset($_GET['q']);
+                    }
+                {/php}
+                {modapifunc modname='MUVideo' type='selection' func='getEntities' ot='collection' assign='listEntries'}
                 <select id="collection" name="collection">
                     <option value="">{$lblDefault}</option>
                 {foreach item='option' from=$listEntries}
@@ -45,6 +52,11 @@
                     <option value="{$entryId}"{if $entryId eq $collection} selected="selected"{/if}>{$option->getTitleFromDisplayPattern()}</option>
                 {/foreach}
                 </select>
+                {php}
+                    if (!empty($mainSearchTerm)) {
+                        $_GET['q'] = $mainSearchTerm;
+                    }
+                {/php}
         {/if}
         {if !isset($workflowStateFilter) || $workflowStateFilter eq true}
                 <label for="workflowState">{gt text='Workflow state'}</label>
@@ -57,14 +69,13 @@
         {/if}
         {if !isset($searchFilter) || $searchFilter eq true}
                 <label for="searchTerm">{gt text='Search'}</label>
-                <input type="text" id="searchTerm" name="searchterm" value="{$searchterm}" />
+                <input type="text" id="searchTerm" name="q" value="{$q}" />
         {/if}
         {if !isset($sorting) || $sorting eq true}
                 <label for="sortBy">{gt text='Sort by'}</label>
                 &nbsp;
                 <select id="sortBy" name="sort">
                     <option value="id"{if $sort eq 'id'} selected="selected"{/if}>{gt text='Id'}</option>
-                    <option value="workflowState"{if $sort eq 'workflowState'} selected="selected"{/if}>{gt text='Workflow state'}</option>
                     <option value="title"{if $sort eq 'title'} selected="selected"{/if}>{gt text='Title'}</option>
                     <option value="description"{if $sort eq 'description'} selected="selected"{/if}>{gt text='Description'}</option>
                     <option value="uploadOfMovie"{if $sort eq 'uploadOfMovie'} selected="selected"{/if}>{gt text='Upload of movie'}</option>
@@ -103,7 +114,7 @@
 <script type="text/javascript">
 /* <![CDATA[ */
     document.observe('dom:loaded', function() {
-        muvideoInitQuickNavigation('movie');
+        mUMUVideoInitQuickNavigation('movie');
         {{if isset($searchFilter) && $searchFilter eq false}}
             {{* we can hide the submit button if we have no quick search field *}}
             $('quicknavSubmit').addClassName('z-hide');

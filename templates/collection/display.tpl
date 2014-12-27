@@ -59,7 +59,9 @@
         {* include display hooks *}
         {notifydisplayhooks eventname='muvideo.ui_hooks.collections.display_view' id=$collection.id urlobject=$currentUrlObject assign='hooks'}
         {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
-            {$hook}
+            {if $providerArea ne 'provider.scribite.ui_hooks.editor'}{* fix for #664 *}
+                {$hook}
+            {/if}
         {/foreach}
         {if count($collection._actions) gt 0}
             <p id="itemActions{$collection.id}">
@@ -67,11 +69,10 @@
                     <a href="{$option.url.type|muvideoActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" class="z-icon-es-{$option.icon}">{$option.linkText|safetext}</a>
                 {/foreach}
             </p>
-        
             <script type="text/javascript">
             /* <![CDATA[ */
                 document.observe('dom:loaded', function() {
-                    muvideoInitItemActions('collection', 'display', 'itemActions{{$collection.id}}');
+                    mUMUVideoInitItemActions('collection', 'display', 'itemActions{{$collection.id}}');
                 });
             /* ]]> */
             </script>

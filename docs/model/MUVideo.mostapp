@@ -8,13 +8,12 @@ application MUVideo {
 	generatorSettings {
 		settingsContainer Settings
 		targetCoreVersion ZK136
-	generateXmlTemplates false
+	        generateXmlTemplates false
+		generateOnlyBaseClasses true
 		generateTests false
 		writeModelToDocs true
 		markFiles ""
 	}
-	modelLayer {
-		modelContainer Model {
 			entities {
 				entity collection leading categorisable {
 					nameMultiple collections
@@ -27,6 +26,13 @@ application MUVideo {
 							mandatory false
 							length 4000
 						}
+					}
+					actions {
+						mainAction Main,
+						viewAction View,
+						displayAction Display,
+						editAction Edit,
+						deleteAction Delete
 					}
 				},
 				entity movie categorisable {
@@ -54,14 +60,23 @@ application MUVideo {
 						integer widthOfMovie,
 						integer heightOfMovie
 					}
+					actions {
+						mainAction Main,
+						viewAction View,
+						displayAction Display,
+						editAction Edit,
+						deleteAction Delete
+					}
 				}
-			}
+				}
+	
 			relations {
 				one2many bidirectional {
 					source collection
 					sourceAlias collection
 					target movie
 					targetAlias movie
+					editType ACTIVE_NONE_PASSIVE_CHOOSE
 					orderBy title
 				}
 			}
@@ -83,29 +98,16 @@ application MUVideo {
 					}
 				}
 			}
-		}
-	}
-	controllerLayer {
-		controllerContainer Controller {
-			modelContext ( "MUVideo.Model" )
-			processViews "MUVideo.View"
+
 			controllers {
 				adminController Admin {
 					actions {
 						mainAction Main,
-						viewAction View,
-						displayAction Display,
-						editAction Edit,
-						deleteAction Delete
 					}
 				},
 				userController User {
 					actions {
 						mainAction Main,
-						viewAction View,
-						displayAction Display,
-						editAction Edit,
-						deleteAction Delete
 					}
 				},
 				ajaxController Ajax {
@@ -114,11 +116,4 @@ application MUVideo {
 					}
 				}
 			}
-		}
-	}
-	viewLayer {
-		viewContainer View {
-			controller "MUVideo.Controller"
-		}
-	}
 }

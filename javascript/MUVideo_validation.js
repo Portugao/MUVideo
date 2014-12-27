@@ -1,6 +1,6 @@
 'use strict';
 
-function muvideoToday(format)
+function mUMUVideoToday(format)
 {
     var timestamp, todayDate, month, day, hours, minutes, seconds;
 
@@ -39,7 +39,7 @@ function muvideoToday(format)
 }
 
 // returns YYYY-MM-DD even if date is in DD.MM.YYYY
-function muvideoReadDate(val, includeTime)
+function mUMUVideoReadDate(val, includeTime)
 {
     // look if we have YYYY-MM-DD
     if (val.substr(4, 1) === '-' && val.substr(7, 1) === '-') {
@@ -56,7 +56,7 @@ function muvideoReadDate(val, includeTime)
     }
 }
 
-function muvideoValidateNoSpace(val)
+function mUMUVideoValidateNoSpace(val)
 {
     var valStr;
     valStr = new String(val);
@@ -64,7 +64,7 @@ function muvideoValidateNoSpace(val)
     return (valStr.indexOf(' ') === -1);
 }
 
-function muvideoValidateUploadExtension(val, elem)
+function mUMUVideoValidateUploadExtension(val, elem)
 {
     var fileExtension, allowedExtensions;
     if (val === '') {
@@ -81,14 +81,14 @@ function muvideoValidateUploadExtension(val, elem)
 /**
  * Adds special validation rules.
  */
-function muvideoAddCommonValidationRules(objectType, id)
+function mUMUVideoAddCommonValidationRules(objectType, id)
 {
     Validation.addAllThese([
         ['validate-nospace', Zikula.__('No spaces', 'module_muvideo_js'), function(val, elem) {
-            return muvideoValidateNoSpace(val);
+            return mUMUVideoValidateNoSpace(val);
         }],
         ['validate-upload', Zikula.__('Please select a valid file extension.', 'module_muvideo_js'), function(val, elem) {
-            return muvideoValidateUploadExtension(val, elem);
+            return mUMUVideoValidateUploadExtension(val, elem);
         }],
     ]);
 }

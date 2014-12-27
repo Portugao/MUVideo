@@ -15,7 +15,7 @@
         /* <![CDATA[ */
             // close window from parent document
             document.observe('dom:loaded', function() {
-                muvideoCloseWindowFromInside('{{$idPrefix}}', {{if $commandName eq 'create'}}{{$itemId}}{{else}}0{{/if}});
+                mUMUVideoCloseWindowFromInside('{{$idPrefix}}', {{if $commandName eq 'create'}}{{$itemId}}{{else}}0{{/if}});
             });
         /* ]]> */
         </script>

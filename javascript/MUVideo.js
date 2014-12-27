@@ -1,8 +1,8 @@
 'use strict';
 
-var muvideoContextMenu;
+var mUMUVideoContextMenu;
 
-muvideoContextMenu = Class.create(Zikula.UI.ContextMenu, {
+mUMUVideoContextMenu = Class.create(Zikula.UI.ContextMenu, {
     selectMenuItem: function ($super, event, item, item_container) {
         // open in new tab / window when right-clicked
         if (event.isRightClick()) {
@@ -18,14 +18,14 @@ muvideoContextMenu = Class.create(Zikula.UI.ContextMenu, {
 /**
  * Initialises the context menu for item actions.
  */
-function muvideoInitItemActions(objectType, func, containerId)
+function mUMUVideoInitItemActions(objectType, func, containerId)
 {
     var triggerId, contextMenu, icon;
 
     triggerId = containerId + 'Trigger';
 
     // attach context menu
-    contextMenu = new muvideoContextMenu(triggerId, { leftClick: true, animation: false });
+    contextMenu = new mUMUVideoContextMenu(triggerId, { leftClick: true, animation: false });
 
     // process normal links
     $$('#' + containerId + ' a').each(function (elem) {
@@ -86,53 +86,53 @@ function muvideoInitItemActions(objectType, func, containerId)
     $(triggerId).removeClassName('z-hide');
 }
 
-function muvideoCapitaliseFirstLetter(string)
+function mUMUVideoCapitaliseFirstLetter(string)
 {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    return string.charAt(0).toUpperCase() + string.substring(1);
 }
 
 /**
  * Submits a quick navigation form.
  */
-function muvideoSubmitQuickNavForm(objectType)
+function mUMUVideoSubmitQuickNavForm(objectType)
 {
-    $('muvideo' + muvideoCapitaliseFirstLetter(objectType) + 'QuickNavForm').submit();
+    $('muvideo' + mUMUVideoCapitaliseFirstLetter(objectType) + 'QuickNavForm').submit();
 }
 
 /**
  * Initialise the quick navigation panel in list views.
  */
-function muvideoInitQuickNavigation(objectType)
+function mUMUVideoInitQuickNavigation(objectType)
 {
-    if ($('muvideo' + muvideoCapitaliseFirstLetter(objectType) + 'QuickNavForm') == undefined) {
+    if ($('muvideo' + mUMUVideoCapitaliseFirstLetter(objectType) + 'QuickNavForm') == undefined) {
         return;
     }
 
     if ($('catid') != undefined) {
-        $('catid').observe('change', function () { muvideoSubmitQuickNavForm(objectType); });
+        $('catid').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
     }
     if ($('sortby') != undefined) {
-        $('sortby').observe('change', function () { muvideoSubmitQuickNavForm(objectType); });
+        $('sortby').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
     }
     if ($('sortdir') != undefined) {
-        $('sortdir').observe('change', function () { muvideoSubmitQuickNavForm(objectType); });
+        $('sortdir').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
     }
     if ($('num') != undefined) {
-        $('num').observe('change', function () { muvideoSubmitQuickNavForm(objectType); });
+        $('num').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
     }
 
     switch (objectType) {
     case 'collection':
         if ($('workflowState') != undefined) {
-            $('workflowState').observe('change', function () { muvideoSubmitQuickNavForm(objectType); });
+            $('workflowState').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
         }
         break;
     case 'movie':
         if ($('collection') != undefined) {
-            $('collection').observe('change', function () { muvideoSubmitQuickNavForm(objectType); });
+            $('collection').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
         }
         if ($('workflowState') != undefined) {
-            $('workflowState').observe('change', function () { muvideoSubmitQuickNavForm(objectType); });
+            $('workflowState').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
         }
         break;
     default:
@@ -145,7 +145,7 @@ function muvideoInitQuickNavigation(objectType)
  * For edit forms we use "iframe: true" to ensure file uploads work without problems.
  * For all other windows we use "iframe: false" because we want the escape key working.
  */
-function muvideoInitInlineWindow(containerElem, title)
+function mUMUVideoInitInlineWindow(containerElem, title)
 {
     var newWindow;
 

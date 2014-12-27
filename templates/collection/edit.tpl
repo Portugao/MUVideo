@@ -67,9 +67,11 @@
     {/if}
     {if is_array($hooks) && count($hooks)}
         {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
-            <fieldset>
-                {$hook}
-            </fieldset>
+            {if $providerArea ne 'provider.scribite.ui_hooks.editor'}{* fix for #664 *}
+                <fieldset>
+                    {$hook}
+                </fieldset>
+            {/if}
         {/foreach}
     {/if}
     
@@ -131,7 +133,7 @@
     
     document.observe('dom:loaded', function() {
     
-        muvideoAddCommonValidationRules('collection', '{{if $mode ne 'create'}}{{$collection.id}}{{/if}}');
+        mUMUVideoAddCommonValidationRules('collection', '{{if $mode ne 'create'}}{{$collection.id}}{{/if}}');
         {{* observe validation on button events instead of form submit to exclude the cancel command *}}
         formValidator = new Validation('{{$__formid}}', {onSubmit: false, immediate: true, focusOnError: false});
         {{if $mode ne 'create'}}

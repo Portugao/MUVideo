@@ -1,3 +1,3 @@
 tinyMCE.addI18n('de.muvideo', {
-    desc : 'MUVideo-Objekt einfügen'
+    desc : 'MUVideo-Objekt einf?gen'
 });

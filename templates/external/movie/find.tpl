@@ -125,7 +125,7 @@
 
             <div class="z-formrow">
                 <label for="mUVideoSearchTerm">{gt text='Search for'}:</label>
-                    <input type="text" id="mUVideoSearchTerm" name="searchterm" style="width: 150px" class="z-floatleft" style="margin-right: 10px" />
+                    <input type="text" id="mUVideoSearchTerm" name="q" style="width: 150px" class="z-floatleft" style="margin-right: 10px" />
                     <input type="button" id="mUVideoSearchGo" name="gosearch" value="{gt text='Filter'}" style="width: 80px" />
             </div>
             
@@ -142,7 +142,7 @@
     <script type="text/javascript">
     /* <![CDATA[ */
         document.observe('dom:loaded', function() {
-            muvideo.finder.onLoad();
+            mUVideo.finder.onLoad();
         });
     /* ]]> */
     </script>

@@ -47,7 +47,7 @@ Ajax.Autocompleter.prototype.updateChoices = function (choices)
 /**
  * Resets the value of an upload / file input field.
  */
-function muvideoResetUploadField(fieldName)
+function mUMUVideoResetUploadField(fieldName)
 {
     if ($(fieldName) != null) {
         $(fieldName).setAttribute('type', 'input');
@@ -58,20 +58,23 @@ function muvideoResetUploadField(fieldName)
 /**
  * Initialises the reset button for a certain upload input.
  */
-function muvideoInitUploadField(fieldName)
+function mUMUVideoInitUploadField(fieldName)
 {
-    if ($('reset' + fieldName.capitalize() + 'Val') != null) {
-        $('reset' + fieldName.capitalize() + 'Val').observe('click', function (evt) {
+    var fieldNameCapitalised;
+
+    fieldNameCapitalised = fieldName.charAt(0).toUpperCase() + fieldName.substring(1);
+    if ($('reset' + fieldNameCapitalised + 'Val') != null) {
+        $('reset' + fieldNameCapitalised + 'Val').observe('click', function (evt) {
             evt.preventDefault();
-            muvideoResetUploadField(fieldName);
-        }).removeClassName('z-hide');
+            mUMUVideoResetUploadField(fieldName);
+        }).removeClassName('z-hide').setStyle({ display: 'block' });
     }
 }
 
 /**
  * Toggles the fields of an auto completion field.
  */
-function muvideoToggleRelatedItemForm(idPrefix)
+function mUMUVideoToggleRelatedItemForm(idPrefix)
 {
     // if we don't have a toggle link do nothing
     if ($(idPrefix + 'AddLink') === null) {
@@ -88,10 +91,10 @@ function muvideoToggleRelatedItemForm(idPrefix)
 /**
  * Resets an auto completion field.
  */
-function muvideoResetRelatedItemForm(idPrefix)
+function mUMUVideoResetRelatedItemForm(idPrefix)
 {
     // hide the sub form
-    muvideoToggleRelatedItemForm(idPrefix);
+    mUMUVideoToggleRelatedItemForm(idPrefix);
 
     // reset value of the auto completion field
     $(idPrefix + 'Selector').value = '';
@@ -102,7 +105,7 @@ function muvideoResetRelatedItemForm(idPrefix)
  * For edit forms we use "iframe: true" to ensure file uploads work without problems.
  * For all other windows we use "iframe: false" because we want the escape key working.
  */
-function muvideoCreateRelationWindowInstance(containerElem, useIframe)
+function mUMUVideoCreateRelationWindowInstance(containerElem, useIframe)
 {
     var newWindow;
 
@@ -130,7 +133,7 @@ function muvideoCreateRelationWindowInstance(containerElem, useIframe)
 /**
  * Observe a link for opening an inline window
  */
-function muvideoinitInlineRelationWindow(objectType, containerID)
+function mUMUVideoInitInlineRelationWindow(objectType, containerID)
 {
     var found, newItem;
 
@@ -149,7 +152,7 @@ function muvideoinitInlineRelationWindow(objectType, containerID)
                 relationHandler.windowInstance.destroy();
             }
             // create and assign the new window instance
-            relationHandler.windowInstance = muvideoCreateRelationWindowInstance($(containerID), true);
+            relationHandler.windowInstance = mUMUVideoCreateRelationWindowInstance($(containerID), true);
         }
     });
 
@@ -161,7 +164,7 @@ function muvideoinitInlineRelationWindow(objectType, containerID)
         newItem.alias = '';
         newItem.prefix = containerID;
         newItem.acInstance = null;
-        newItem.windowInstance = muvideoCreateRelationWindowInstance($(containerID), true);
+        newItem.windowInstance = mUMUVideoCreateRelationWindowInstance($(containerID), true);
 
         // add it to the list of handlers
         relationHandler.push(newItem);
@@ -171,7 +174,7 @@ function muvideoinitInlineRelationWindow(objectType, containerID)
 /**
  * Removes a related item from the list of selected ones.
  */
-function muvideoRemoveRelatedItem(idPrefix, removeId)
+function mUMUVideoRemoveRelatedItem(idPrefix, removeId)
 {
     var itemIds, itemIdsArr;
 
@@ -189,7 +192,7 @@ function muvideoRemoveRelatedItem(idPrefix, removeId)
 /**
  * Adds a related item to selection which has been chosen by auto completion.
  */
-function muvideoSelectRelatedItem(objectType, idPrefix, inputField, selectedListItem)
+function mUMUVideoSelectRelatedItem(objectType, idPrefix, inputField, selectedListItem)
 {
     var newItemId, newTitle, includeEditing, editLink, removeLink, elemPrefix, itemPreview, li, editHref, fldPreview, itemIds, itemIdsArr;
 
@@ -209,7 +212,7 @@ function muvideoSelectRelatedItem(objectType, idPrefix, inputField, selectedList
         editLink = Builder.node('a', {id: elemPrefix + 'Edit', href: editHref}, 'edit');
         li.appendChild(editLink);
     }
-    removeLink = Builder.node('a', {id: elemPrefix + 'Remove', href: 'javascript:muvideoRemoveRelatedItem(\'' + idPrefix + '\', ' + newItemId + ');'}, 'remove');
+    removeLink = Builder.node('a', {id: elemPrefix + 'Remove', href: 'javascript:mUMUVideoRemoveRelatedItem(\'' + idPrefix + '\', ' + newItemId + ');'}, 'remove');
     li.appendChild(removeLink);
     if (itemPreview !== '') {
         fldPreview = Builder.node('div', {id: elemPrefix + 'preview', name: idPrefix + 'preview'}, '');
@@ -223,7 +226,7 @@ function muvideoSelectRelatedItem(objectType, idPrefix, inputField, selectedList
         editLink.update(' ' + editImage);
 
         $(elemPrefix + 'Edit').observe('click', function (e) {
-            muvideoinitInlineRelationWindow(objectType, idPrefix + 'Reference_' + newItemId + 'Edit');
+            mUMUVideoInitInlineRelationWindow(objectType, idPrefix + 'Reference_' + newItemId + 'Edit');
             e.stop();
         });
     }
@@ -235,7 +238,7 @@ function muvideoSelectRelatedItem(objectType, idPrefix, inputField, selectedList
             itemIdsArr = itemIds.split(',');
             itemIdsArr.each(function (existingId) {
                 if (existingId) {
-                    muvideoRemoveRelatedItem(idPrefix, existingId);
+                    mUMUVideoRemoveRelatedItem(idPrefix, existingId);
                 }
             });
             itemIds = '';
@@ -246,30 +249,30 @@ function muvideoSelectRelatedItem(objectType, idPrefix, inputField, selectedList
     itemIds += newItemId;
     $(idPrefix + 'ItemList').value = itemIds;
 
-    muvideoResetRelatedItemForm(idPrefix);
+    mUMUVideoResetRelatedItemForm(idPrefix);
 }
 
 /**
  * Initialise a relation field section with autocompletion and optional edit capabilities
  */
-function muvideoInitRelationItemsForm(objectType, idPrefix, includeEditing)
+function mUMUVideoInitRelationItemsForm(objectType, idPrefix, includeEditing)
 {
     var acOptions, itemIds, itemIdsArr;
 
     // add handling for the toggle link if existing
     if ($(idPrefix + 'AddLink') !== null) {
         $(idPrefix + 'AddLink').observe('click', function (e) {
-            muvideoToggleRelatedItemForm(idPrefix);
+            mUMUVideoToggleRelatedItemForm(idPrefix);
         });
     }
     // add handling for the cancel button
     if ($(idPrefix + 'SelectorDoCancel') !== null) {
         $(idPrefix + 'SelectorDoCancel').observe('click', function (e) {
-            muvideoResetRelatedItemForm(idPrefix);
+            mUMUVideoResetRelatedItemForm(idPrefix);
         });
     }
     // clear values and ensure starting state
-    muvideoResetRelatedItemForm(idPrefix);
+    mUMUVideoResetRelatedItemForm(idPrefix);
 
     acOptions = {
         paramName: 'fragment',
@@ -293,7 +296,7 @@ function muvideoInitRelationItemsForm(objectType, idPrefix, includeEditing)
         afterUpdateElement: function (inputField, selectedListItem) {
             // Called after the input element has been updated (i.e. when the user has selected an entry).
             // This function is called after the built-in function that adds the list item text to the input field.
-            muvideoSelectRelatedItem(objectType, idPrefix, inputField, selectedListItem);
+            mUMUVideoSelectRelatedItem(objectType, idPrefix, inputField, selectedListItem);
         }
     };
     relationHandler.each(function (relationHandler) {
@@ -314,7 +317,7 @@ function muvideoInitRelationItemsForm(objectType, idPrefix, includeEditing)
     // from here inline editing will be handled
     $(idPrefix + 'SelectorDoNew').href += '&theme=Printer&idp=' + idPrefix + 'SelectorDoNew';
     $(idPrefix + 'SelectorDoNew').observe('click', function(e) {
-        muvideoinitInlineRelationWindow(objectType, idPrefix + 'SelectorDoNew');
+        mUMUVideoInitInlineRelationWindow(objectType, idPrefix + 'SelectorDoNew');
         e.stop();
     });
 
@@ -327,7 +330,7 @@ function muvideoInitRelationItemsForm(objectType, idPrefix, includeEditing)
             elemPrefix = idPrefix + 'Reference_' + existingId + 'Edit';
             $(elemPrefix).href += '&theme=Printer&idp=' + elemPrefix;
             $(elemPrefix).observe('click', function (e) {
-                muvideoinitInlineRelationWindow(objectType, elemPrefix);
+                mUMUVideoInitInlineRelationWindow(objectType, elemPrefix);
                 e.stop();
             });
         }
@@ -337,7 +340,7 @@ function muvideoInitRelationItemsForm(objectType, idPrefix, includeEditing)
 /**
  * Closes an iframe from the document displayed in it
  */
-function muvideoCloseWindowFromInside(idPrefix, itemId)
+function mUMUVideoCloseWindowFromInside(idPrefix, itemId)
 {
     // if there is no parent window do nothing
     if (window.parent === '') {

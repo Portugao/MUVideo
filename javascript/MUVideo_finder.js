@@ -7,7 +7,7 @@ var currentMUVideoInput = null;
  * Returns the attributes used for the popup window. 
  * @return {String}
  */
-function getPopupAttributes()
+function getMUVideoPopupAttributes()
 {
     var pWidth, pHeight;
 
@@ -20,21 +20,21 @@ function getPopupAttributes()
 /**
  * Open a popup window with the finder triggered by a Xinha button.
  */
-function MUVideoFinderXinha(editor, muvideoURL)
+function MUVideoFinderXinha(editor, muvideoUrl)
 {
     var popupAttributes;
 
     // Save editor for access in selector window
     currentMUVideoEditor = editor;
 
-    popupAttributes = getPopupAttributes();
-    window.open(muvideoURL, '', popupAttributes);
+    popupAttributes = getMUVideoPopupAttributes();
+    window.open(muvideoUrl, '', popupAttributes);
 }
 
 /**
  * Open a popup window with the finder triggered by a CKEditor button.
  */
-function MUVideoFinderCKEditor(editor, muvideoURL)
+function MUVideoFinderCKEditor(editor, muvideoUrl)
 {
     // Save editor for access in selector window
     currentMUVideoEditor = editor;
@@ -47,29 +47,28 @@ function MUVideoFinderCKEditor(editor, muvideoURL)
 }
 
 
+var mUVideo = {};
 
-var muvideo = {};
+mUVideo.finder = {};
 
-muvideo.finder = {};
-
-muvideo.finder.onLoad = function (baseId, selectedId)
+mUVideo.finder.onLoad = function (baseId, selectedId)
 {
-    $$('div.categoryselector select').invoke('observe', 'change', muvideo.finder.onParamChanged);
-    $('mUVideoSort').observe('change', muvideo.finder.onParamChanged);
-    $('mUVideoSortDir').observe('change', muvideo.finder.onParamChanged);
-    $('mUVideoPageSize').observe('change', muvideo.finder.onParamChanged);
-    $('mUVideoSearchGo').observe('click', muvideo.finder.onParamChanged);
-    $('mUVideoSearchGo').observe('keypress', muvideo.finder.onParamChanged);
+    $$('div.categoryselector select').invoke('observe', 'change', mUVideo.finder.onParamChanged);
+    $('mUVideoSort').observe('change', mUVideo.finder.onParamChanged);
+    $('mUVideoSortDir').observe('change', mUVideo.finder.onParamChanged);
+    $('mUVideoPageSize').observe('change', mUVideo.finder.onParamChanged);
+    $('mUVideoSearchGo').observe('click', mUVideo.finder.onParamChanged);
+    $('mUVideoSearchGo').observe('keypress', mUVideo.finder.onParamChanged);
     $('mUVideoSubmit').addClassName('z-hide');
-    $('mUVideoCancel').observe('click', muvideo.finder.handleCancel);
+    $('mUVideoCancel').observe('click', mUVideo.finder.handleCancel);
 };
 
-muvideo.finder.onParamChanged = function ()
+mUVideo.finder.onParamChanged = function ()
 {
     $('mUVideoSelectorForm').submit();
 };
 
-muvideo.finder.handleCancel = function ()
+mUVideo.finder.handleCancel = function ()
 {
     var editor, w;
 
@@ -79,22 +78,23 @@ muvideo.finder.handleCancel = function ()
         window.close();
         w.focus();
     } else if (editor === 'tinymce') {
-        muvideoClosePopup();
+        mUMUVideoClosePopup();
     } else if (editor === 'ckeditor') {
-        muvideoClosePopup();
+        mUMUVideoClosePopup();
     } else {
         alert('Close Editor: ' + editor);
     }
 };
 
 
-function getPasteSnippet(mode, itemId)
+function mUMUVideoGetPasteSnippet(mode, itemId)
 {
-    var itemUrl, itemTitle, itemDescription, pasteMode;
+    var quoteFinder, itemUrl, itemTitle, itemDescription, pasteMode;
 
-    itemUrl = $F('url' + itemId);
-    itemTitle = $F('title' + itemId);
-    itemDescription = $F('desc' + itemId);
+    quoteFinder = new RegExp('"', 'g');
+    itemUrl = $F('url' + itemId).replace(quoteFinder, '');
+    itemTitle = $F('title' + itemId).replace(quoteFinder, '');
+    itemDescription = $F('desc' + itemId).replace(quoteFinder, '');
     pasteMode = $F('mUVideoPasteAs');
 
     if (pasteMode === '2' || pasteMode !== '1') {
@@ -113,19 +113,19 @@ function getPasteSnippet(mode, itemId)
 
 
 // User clicks on "select item" button
-muvideo.finder.selectItem = function (itemId)
+mUVideo.finder.selectItem = function (itemId)
 {
     var editor, html;
 
     editor = $F('editorName');
     if (editor === 'xinha') {
         if (window.opener.currentMUVideoEditor !== null) {
-            html = getPasteSnippet('html', itemId);
+            html = mUMUVideoGetPasteSnippet('html', itemId);
 
             window.opener.currentMUVideoEditor.focusEditor();
             window.opener.currentMUVideoEditor.insertHTML(html);
         } else {
-            html = getPasteSnippet('url', itemId);
+            html = mUMUVideoGetPasteSnippet('url', itemId);
             var currentInput = window.opener.currentMUVideoInput;
 
             if (currentInput.tagName === 'INPUT') {
@@ -151,23 +151,23 @@ muvideo.finder.selectItem = function (itemId)
             }
         }
     } else if (editor === 'tinymce') {
-        html = getPasteSnippet('html', itemId);
-        window.opener.tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
+        html = mUMUVideoGetPasteSnippet('html', itemId);
+        tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
         // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers
     } else if (editor === 'ckeditor') {
         if (window.opener.currentMUVideoEditor !== null) {
-            html = getPasteSnippet('html', itemId);
+            html = mUMUVideoGetPasteSnippet('html', itemId);
 
             window.opener.currentMUVideoEditor.insertHtml(html);
         }
     } else {
         alert('Insert into Editor: ' + editor);
     }
-    muvideoClosePopup();
+    mUMUVideoClosePopup();
 };
 
 
-function muvideoClosePopup()
+function mUMUVideoClosePopup()
 {
     window.opener.focus();
     window.close();
@@ -180,41 +180,41 @@ function muvideoClosePopup()
 // MUVideo item selector for Forms
 //=============================================================================
 
-muvideo.itemSelector = {};
-muvideo.itemSelector.items = {};
-muvideo.itemSelector.baseId = 0;
-muvideo.itemSelector.selectedId = 0;
+mUVideo.itemSelector = {};
+mUVideo.itemSelector.items = {};
+mUVideo.itemSelector.baseId = 0;
+mUVideo.itemSelector.selectedId = 0;
 
-muvideo.itemSelector.onLoad = function (baseId, selectedId)
+mUVideo.itemSelector.onLoad = function (baseId, selectedId)
 {
-    muvideo.itemSelector.baseId = baseId;
-    muvideo.itemSelector.selectedId = selectedId;
+    mUVideo.itemSelector.baseId = baseId;
+    mUVideo.itemSelector.selectedId = selectedId;
 
     // required as a changed object type requires a new instance of the item selector plugin
-    $('mUVideoObjectType').observe('change', muvideo.itemSelector.onParamChanged);
+    $('mUVideoObjectType').observe('change', mUVideo.itemSelector.onParamChanged);
 
     if ($(baseId + '_catidMain') != undefined) {
-        $(baseId + '_catidMain').observe('change', muvideo.itemSelector.onParamChanged);
+        $(baseId + '_catidMain').observe('change', mUVideo.itemSelector.onParamChanged);
     } else if ($(baseId + '_catidsMain') != undefined) {
-        $(baseId + '_catidsMain').observe('change', muvideo.itemSelector.onParamChanged);
+        $(baseId + '_catidsMain').observe('change', mUVideo.itemSelector.onParamChanged);
     }
-    $(baseId + 'Id').observe('change', muvideo.itemSelector.onItemChanged);
-    $(baseId + 'Sort').observe('change', muvideo.itemSelector.onParamChanged);
-    $(baseId + 'SortDir').observe('change', muvideo.itemSelector.onParamChanged);
-    $('mUVideoSearchGo').observe('click', muvideo.itemSelector.onParamChanged);
-    $('mUVideoSearchGo').observe('keypress', muvideo.itemSelector.onParamChanged);
+    $(baseId + 'Id').observe('change', mUVideo.itemSelector.onItemChanged);
+    $(baseId + 'Sort').observe('change', mUVideo.itemSelector.onParamChanged);
+    $(baseId + 'SortDir').observe('change', mUVideo.itemSelector.onParamChanged);
+    $('mUVideoSearchGo').observe('click', mUVideo.itemSelector.onParamChanged);
+    $('mUVideoSearchGo').observe('keypress', mUVideo.itemSelector.onParamChanged);
 
-    muvideo.itemSelector.getItemList();
+    mUVideo.itemSelector.getItemList();
 };
 
-muvideo.itemSelector.onParamChanged = function ()
+mUVideo.itemSelector.onParamChanged = function ()
 {
     $('ajax_indicator').removeClassName('z-hide');
 
-    muvideo.itemSelector.getItemList();
+    mUVideo.itemSelector.getItemList();
 };
 
-muvideo.itemSelector.getItemList = function ()
+mUVideo.itemSelector.getItemList = function ()
 {
     var baseId, params, request;
 
@@ -227,7 +227,7 @@ muvideo.itemSelector.getItemList = function ()
     }
     params += 'sort=' + $F(baseId + 'Sort') + '&' +
               'sortdir=' + $F(baseId + 'SortDir') + '&' +
-              'searchterm=' + $F(baseId + 'SearchTerm');
+              'q=' + $F(baseId + 'SearchTerm');
 
     request = new Zikula.Ajax.Request(
         Zikula.Config.baseURL + 'ajax.php?module=MUVideo&func=getItemListFinder',
@@ -239,41 +239,41 @@ muvideo.itemSelector.getItemList = function ()
             },
             onSuccess: function(req) {
                 var baseId;
-                baseId = muvideo.itemSelector.baseId;
-                muvideo.itemSelector.items[baseId] = req.getData();
+                baseId = mUVideo.itemSelector.baseId;
+                mUVideo.itemSelector.items[baseId] = req.getData();
                 $('ajax_indicator').addClassName('z-hide');
-                muvideo.itemSelector.updateItemDropdownEntries();
-                muvideo.itemSelector.updatePreview();
+                mUVideo.itemSelector.updateItemDropdownEntries();
+                mUVideo.itemSelector.updatePreview();
             }
         }
     );
 };
 
-muvideo.itemSelector.updateItemDropdownEntries = function ()
+mUVideo.itemSelector.updateItemDropdownEntries = function ()
 {
     var baseId, itemSelector, items, i, item;
 
-    baseId = muvideo.itemSelector.baseId;
+    baseId = mUVideo.itemSelector.baseId;
     itemSelector = $(baseId + 'Id');
     itemSelector.length = 0;
 
-    items = muvideo.itemSelector.items[baseId];
+    items = mUVideo.itemSelector.items[baseId];
     for (i = 0; i < items.length; ++i) {
         item = items[i];
         itemSelector.options[i] = new Option(item.title, item.id, false);
     }
 
-    if (muvideo.itemSelector.selectedId > 0) {
-        $(baseId + 'Id').value = muvideo.itemSelector.selectedId;
+    if (mUVideo.itemSelector.selectedId > 0) {
+        $(baseId + 'Id').value = mUVideo.itemSelector.selectedId;
     }
 };
 
-muvideo.itemSelector.updatePreview = function ()
+mUVideo.itemSelector.updatePreview = function ()
 {
     var baseId, items, selectedElement, i;
 
-    baseId = muvideo.itemSelector.baseId;
-    items = muvideo.itemSelector.items[baseId];
+    baseId = mUVideo.itemSelector.baseId;
+    items = mUVideo.itemSelector.items[baseId];
 
     $(baseId + 'PreviewContainer').addClassName('z-hide');
 
@@ -282,9 +282,9 @@ muvideo.itemSelector.updatePreview = function ()
     }
 
     selectedElement = items[0];
-    if (muvideo.itemSelector.selectedId > 0) {
+    if (mUVideo.itemSelector.selectedId > 0) {
         for (var i = 0; i < items.length; ++i) {
-            if (items[i].id === muvideo.itemSelector.selectedId) {
+            if (items[i].id === mUVideo.itemSelector.selectedId) {
                 selectedElement = items[i];
                 break;
             }
@@ -298,14 +298,14 @@ muvideo.itemSelector.updatePreview = function ()
     }
 };
 
-muvideo.itemSelector.onItemChanged = function ()
+mUVideo.itemSelector.onItemChanged = function ()
 {
     var baseId, itemSelector, preview;
 
-    baseId = muvideo.itemSelector.baseId;
+    baseId = mUVideo.itemSelector.baseId;
     itemSelector = $(baseId + 'Id');
-    preview = window.atob(muvideo.itemSelector.items[baseId][itemSelector.selectedIndex].previewInfo);
+    preview = window.atob(mUVideo.itemSelector.items[baseId][itemSelector.selectedIndex].previewInfo);
 
     $(baseId + 'PreviewContainer').update(preview);
-    muvideo.itemSelector.selectedId = $F(baseId + 'Id');
+    mUVideo.itemSelector.selectedId = $F(baseId + 'Id');
 };

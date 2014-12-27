@@ -1,4 +1,4 @@
 CHANGELOG
 =========
 
-Changes in MUVideo 1.0.0
+Changes in MUVideo 1.1.0

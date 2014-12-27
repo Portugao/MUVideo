@@ -16,5 +16,18 @@
  */
 class MUVideo_Util_Model extends MUVideo_Util_Base_Model
 {
-    // feel free to add your own convenience methods here
+    /**
+     *
+     This method is for getting a repository for ratings
+     *
+     */
+
+    public static function getCollectionRepository() 
+    {
+        $serviceManager = ServiceUtil::getManager();
+        $entityManager = $serviceManager->getService('doctrine.entitymanager');
+        $repository = $entityManager->getRepository('MUVideo_Entity_Collection');
+
+        return $repository;
+    }
 }

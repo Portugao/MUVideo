@@ -3,6 +3,9 @@ MUVideo
 
 * changed files
 
+* README.md
+
+* images/admin.png
 
 * lib/MUVideo/Installer.php
 * lib/MUVideo/Uploadhandler.php
@@ -16,4 +19,3 @@ MUVideo
 * lib/MUVideo/Controller/External.php
 * lib/MUVideo/Controller/Movie.php
 * lib/MUVideo/Controller/User.php
-
