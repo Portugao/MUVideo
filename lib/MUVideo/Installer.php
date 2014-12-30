@@ -30,8 +30,6 @@ class MUVideo_Installer extends MUVideo_Base_Installer
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.0.0':
-                // do something
-                // ...
                 // update the database schema
                 try {
                     DoctrineHelper::updateSchema($this->entityManager, $this->listEntityClasses());
@@ -70,6 +68,10 @@ class MUVideo_Installer extends MUVideo_Base_Installer
                     LogUtil::registerError($this->__f('Error! Could not create a category registry for the %s entity.', array('movie')));
                 }
                 $categoryRegistryIdsPerEntity['movie'] = $registryData['id'];
+                
+                EventUtil::registerPersistentModuleHandler('MUVideo', 'module.scribite.editorhelpers', array('MUVideo_Listener_ThirdParty', 'getEditorHelpers'));
+                EventUtil::registerPersistentModuleHandler('MUVideo', 'moduleplugin.tinymce.externalplugins', array('MUVideo_Listener_ThirdParty', 'getTinyMcePlugins'));
+                EventUtil::registerPersistentModuleHandler('MUVideo', 'moduleplugin.ckeditor.externalplugins', array('MUVideo_Listener_ThirdParty', 'getCKEditorPlugins'));
                 
             case '1.1.0':
                 // for later updates
