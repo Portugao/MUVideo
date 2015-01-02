@@ -69,10 +69,12 @@ class MUVideo_Installer extends MUVideo_Base_Installer
                 }
                 $categoryRegistryIdsPerEntity['movie'] = $registryData['id'];
                 
-                EventUtil::registerPersistentModuleHandler('MUVideo', 'module.scribite.editorhelpers', array('MUVideo_Listener_ThirdParty', 'getEditorHelpers'));
-                EventUtil::registerPersistentModuleHandler('MUVideo', 'moduleplugin.tinymce.externalplugins', array('MUVideo_Listener_ThirdParty', 'getTinyMcePlugins'));
-                EventUtil::registerPersistentModuleHandler('MUVideo', 'moduleplugin.ckeditor.externalplugins', array('MUVideo_Listener_ThirdParty', 'getCKEditorPlugins'));
-                
+               // unregister persistent event handlers
+               EventUtil::unregisterPersistentModuleHandlers($this->name);
+               
+               // register persistent event handlers
+               $this->registerPersistentEventHandlers();
+                           
             case '1.1.0':
                 // for later updates
         }
