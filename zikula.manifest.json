@@ -1,0 +1,16 @@
+{
+    "extension": {
+        "title": "MUVideo"
+    },
+    "version": {
+        "semver": "1.1.0",
+        "dependencies": {
+            "zikula/core": ">=1.3.5 <2.0"
+        },
+        "composerpath": "composer.json",
+        "description": "MUVideo is a module to handle video files",
+        "urls": {
+            "issues": "https://github.com/Portugao/MUVideo/issues"
+        }
+    }
+}
