@@ -1,7 +1,7 @@
 {* purpose of this template: module configuration *}
-{include file='admin/header.tpl'}
+{include file='user/header.tpl'}
 <div class="muvideo-getvideos">
-    {gt text='Settings' assign='templateTitle'}
+    {gt text='Get Videos' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
     <div class="z-admin-content-pagetitle">
         {icon type='config' size='small' __alt='Get Videos'}
@@ -19,32 +19,21 @@
                 <p class="z-confirmationmsg">{gt text='Here you can manage all basic settings for this application.'}</p>
             
                 <div class="z-formrow">
-                    {formlabel for='pageSize' __text='Page size' cssClass=''}
-                        {formintinput id='pageSize' group='config' maxLength=255 __title='Enter the page size. Only digits are allowed.'}
-                </div>
-                <div class="z-formrow">
-                    {formlabel for='maxSizeOfMovie' __text='Max size of movie' cssClass=''}
-                        {formintinput id='maxSizeOfMovie' group='config' maxLength=255 __title='Enter the max size of movie. Only digits are allowed.'}
-                </div>
-                <div class="z-formrow">
-                    {formlabel for='maxSizeOfPoster' __text='Max size of poster' cssClass=''}
-                        {formintinput id='maxSizeOfPoster' group='config' maxLength=255 __title='Enter the max size of poster. Only digits are allowed.'}
+                	{gt text='Here you can set different layouts.' assign='toolTip'}
+                    	{formlabel for='channelId' __text='Id of channel' cssClass='muimage-form-tooltips' title=$toolTip}
+                        {formdropdownlist id='channelId' group='getVideos' __title='Choose the layout'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='standardPoster' __text='Standard poster' cssClass=''}
                         {formtextinput id='standardPoster' group='config' maxLength=255 __title='Enter the standard poster.'}
                 </div>
-                <div class="z-formrow">
-                    {formlabel for='youtubeApi' __text='Youtube api' cssClass=''}
-                        {formtextinput id='youtubeApi' group='config' maxLength=255 __title='Enter the youtube api.'}
-                </div>
             </fieldset>
 
             <div class="z-buttons z-formbuttons">
-                {formbutton commandName='save' __text='Update configuration' class='z-bt-save'}
+                {formbutton commandName='get' __text='Get videos' class='z-bt-save'}
                 {formbutton commandName='cancel' __text='Cancel' class='z-bt-cancel'}
             </div>
         {/muvideoFormFrame}
     {/form}
 </div>
-{include file='admin/footer.tpl'}
+{include file='user/footer.tpl'}
