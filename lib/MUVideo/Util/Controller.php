@@ -16,5 +16,31 @@
  */
 class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
 {
-    // feel free to add your own convenience methods here
+    /*
+     * 
+     * this function is to get youtube videos into MUVideo
+     * 
+     */
+    public function getYoutubeVideos($youtubeApi)
+    {          
+        $api = get_data("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={DEINE_PLAYLIST_ID}&maxResults=10&fields=items%2Fsnippet&key=" . $youtubeApi);
+        
+        $video = json_decode($api, true);
+    }
+    
+    /*
+     * 
+     * this function is to call a url, for example a youtube call
+     */
+    public function getData($url)
+    {
+        $ch = curl_init();
+        $timeout = 5;
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
+    }
 }

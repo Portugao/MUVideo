@@ -16,5 +16,21 @@
  */
 class MUVideo_Controller_Collection extends MUVideo_Controller_Base_Collection
 {
-    // feel free to add your own controller methods here
+    /**
+     * This method takes care of the application configuration.
+     *
+     * @return string Output
+     */
+    public function getVideos()
+    {
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN));
+        
+        // Create new Form reference
+        $view = \FormUtil::newForm($this->name, $this);
+        
+        $templateName = 'collection/getVideos.tpl';
+        
+        // Execute form using supplied template and page event handler
+        return $view->execute($templateName, new MUVideo_Form_Handler_Collection_GetVideos());
+    }
 }

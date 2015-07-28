@@ -1,10 +1,10 @@
 {* purpose of this template: module configuration *}
 {include file='admin/header.tpl'}
-<div class="muvideo-config">
+<div class="muvideo-getvideos">
     {gt text='Settings' assign='templateTitle'}
     {pagesetvar name='title' value=$templateTitle}
     <div class="z-admin-content-pagetitle">
-        {icon type='config' size='small' __alt='Settings'}
+        {icon type='config' size='small' __alt='Get Videos'}
         <h3>{$templateTitle}</h3>
     </div>
 
