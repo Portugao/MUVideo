@@ -54,6 +54,8 @@
     </dl>
     {include file='helper/include_categories_display.tpl' obj=$collection}
     {include file='helper/include_standardfields_display.tpl' obj=$collection}
+    
+    <a href="{modurl modname='MUVideo' type='user' func='getVideos' ot='collection' collectionId=$collection.id}">{gt text='Get videos into this collection'}</a>
 
     {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
         {* include display hooks *}
