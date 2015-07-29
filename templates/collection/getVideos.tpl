@@ -12,20 +12,16 @@
         {* add validation summary and a <div> element for styling the form *}
         {muvideoFormFrame}
             {formsetinitialfocus inputId='pageSize'}
-            {gt text='Variables' assign='tabTitle'}
+            {gt text='Import' assign='tabTitle'}
             <fieldset>
                 <legend>{$tabTitle}</legend>
             
-                <p class="z-confirmationmsg">{gt text='Here you can manage all basic settings for this application.'}</p>
+                <p class="z-confirmationmsg">{gt text='Here you can get videos from your youtube channel into MUVideo.'}</p>
             
                 <div class="z-formrow">
-                	{gt text='Here you can set different layouts.' assign='toolTip'}
+                	{gt text='Here you can choose a channel' assign='toolTip'}
                     	{formlabel for='channelId' __text='Id of channel' cssClass='muimage-form-tooltips' title=$toolTip}
-                        {formdropdownlist id='channelId' group='getVideos' __title='Choose the layout'}
-                </div>
-                <div class="z-formrow">
-                    {formlabel for='standardPoster' __text='Standard poster' cssClass=''}
-                        {formtextinput id='standardPoster' group='config' maxLength=255 __title='Enter the standard poster.'}
+                        {formdropdownlist id='channelId' group='getVideos' __title='Choose the channel'}
                 </div>
             </fieldset>
 
