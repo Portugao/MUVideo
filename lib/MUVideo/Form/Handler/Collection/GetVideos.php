@@ -35,7 +35,7 @@ class MUVideo_Form_Handler_Collection_GetVideos extends MUVideo_Form_Handler_Col
         } else {
             foreach ($playLists as $playList) {
                 $thisPlaylist = explode(',', $playList);
-                $formVars['channelIdItems'][] = array('value' => $thisPlayList[0], 'text' => $thisPlaylist[1]);
+                $formVars['channelIdItems'][] = array('value' => $thisPlaylist[0], 'text' => $thisPlaylist[1]);
             }
             $this->view->assign('getVideos', $formVars);
         }
@@ -68,7 +68,7 @@ class MUVideo_Form_Handler_Collection_GetVideos extends MUVideo_Form_Handler_Col
         $serviceManager = ServiceUtil::getManager();
         $controllerHelper = new MUVideo_Util_Controller($serviceManager);
         
-        return $controllerHelper->getYoutubeVideos($channelId[0]);
+        return $controllerHelper->getYoutubeVideos($channelId[0], $collectionId);
     
        // return $this->view->redirect($this->getRedirectUrl($args));
     }

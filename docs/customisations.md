@@ -22,3 +22,7 @@ MUVideo
 * lib/MUVideo/Controller/External.php
 * lib/MUVideo/Controller/Movie.php
 * lib/MUVideo/Controller/User.php
+
+* lib/MUVideo/Entity/Movie.php
+
+* lib/MUVideo/Util/Controller.php

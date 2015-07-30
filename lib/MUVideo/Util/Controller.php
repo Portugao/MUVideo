@@ -18,12 +18,17 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
 {
     /*
      *
-     * this function is to get youtube videos into MUVideo
-     *
-     */
-    public function getYoutubeVideos($channelId = '')
+    * this function is to get youtube videos into MUVideo
+    *
+    */
+    public function getYoutubeVideos($channelId = '', $collectionId = 0)
     {
+        
+        $dom = ZLanguage::getModuleDomain($this->name);
         $youtubeApi = ModUtil::getVar($this->name, 'youtubeApi');
+        
+        $collectionRepository = MUVideo_Util_Model::getCollectionRepository();
+        $collectionObject = $collectionRepository->selectById($collectionId);
 
         $api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" . $channelId  . "&key=" . $youtubeApi);
         // https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCJC8ynLpY_q89tmNhqIf1Sg&key={YOUR_API_KEY}
@@ -31,24 +36,55 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
 
         $videos = json_decode($api, true);
 
-        foreach ($videos['items'] as $videoData) {
-            if (isset($videoData['id']['videoId'])) {
-                LogUtil::registerError($videoData['id']['videoId']);
-                 
-                $newYoutubeVideo = new MUVideo_Entity_Movie();
-                $newYoutubeVideo->setTitle($videoData['snippet']['title']);
-                $newYoutubeVideo->setDescription($videoData['snippet']['description']);
-                $newYoutubeVideo->setUrlOfYoutube('https://www.youtube.com/watch?v=' . $videoData['id']['videoId']);
-                
-                
+        $movieRepository = MUVideo_Util_Model::getMovieRepository();
+        $where = 'tbl.urlOfYoutube != \'' . DataUtil::formatForStore('') . '\'';
+        // we look for movies with a youtube url entered
+        $existingYoutubeVideos = $movieRepository->selectWhere($where);
+
+        if ($existingYoutubeVideos && count($existingYoutubeVideos > 0)) {
+            foreach ($existingYoutubeVideos as $existingYoutubeVideo) {
+                $youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $existingYoutubeVideo['urlOfYoutube']);
+                $videoIds[] = $youtubeId;
             }
         }
+
+        if (is_array($videos['items'])) {
+
+            foreach ($videos['items'] as $videoData) {
+                if (isset($videoData['id']['videoId'])) {
+                    if (isset($videoIds) && is_array($videoIds)) {
+                        if (in_array($videoData['id']['videoId'], $videoIds)) {                  
+                            continue;
+                        }
+                    }
+                    
+                    $serviceManager = ServiceUtil::getManager();
+                    $entityManager = $serviceManager->getService('doctrine.entitymanager');
+                     
+                    $newYoutubeVideo = new MUVideo_Entity_Movie();
+                    $newYoutubeVideo->setTitle($videoData['snippet']['title']);
+                    $newYoutubeVideo->setDescription($videoData['snippet']['description']);
+                    $newYoutubeVideo->setUrlOfYoutube('https://www.youtube.com/watch?v=' . $videoData['id']['videoId']);
+                    $newYoutubeVideo->setWidthOfMovie('400');
+                    $newYoutubeVideo->setHeightOfMovie('300');
+                    $newYoutubeVideo->setWorkflowState('approved');
+                    $newYoutubeVideo->setCollection($collectionObject);
+
+                    $entityManager->persist($newYoutubeVideo);
+                    $entityManager->flush();
+                    LogUtil::registerStatus(__('The movie', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
+                }
+            }
+        }
+        
+        $redirectUrl = ModUtil::url($this->name, 'user', 'display', array('ot' => 'collection', 'id' => $collectionId));
+        return System::redirect($redirectUrl);
     }
 
     /*
      *
-     * this function is to call a url, for example a youtube call
-     */
+    * this function is to call a url, for example a youtube call
+    */
     public function getData($url)
     {
         $ch = curl_init();
