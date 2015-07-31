@@ -55,8 +55,10 @@
     {include file='helper/include_categories_display.tpl' obj=$collection}
     {include file='helper/include_standardfields_display.tpl' obj=$collection}
     
-    <a href="{modurl modname='MUVideo' type='user' func='getVideos' ot='collection' collectionId=$collection.id}">{gt text='Get videos into this collection'}</a>
-
+    {checkpermission component="MUVideo::" instance=".*" level="ACCESS_ADD" assign="auth"}
+    {if $auth eq true}
+    	<a class="z-icon-es-add" href="{modurl modname='MUVideo' type='user' func='getVideos' ot='collection' collectionId=$collection.id}">{gt text='Get videos into this collection'}</a>
+	{/if}
     {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
         {* include display hooks *}
         {notifydisplayhooks eventname='muvideo.ui_hooks.collections.display_view' id=$collection.id urlobject=$currentUrlObject assign='hooks'}
