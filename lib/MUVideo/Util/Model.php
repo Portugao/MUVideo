@@ -18,7 +18,7 @@ class MUVideo_Util_Model extends MUVideo_Util_Base_Model
 {
     /**
      *
-     This method is for getting a repository for ratings
+     This method is for getting a repository for collections
      *
      */
 
@@ -28,6 +28,21 @@ class MUVideo_Util_Model extends MUVideo_Util_Base_Model
         $entityManager = $serviceManager->getService('doctrine.entitymanager');
         $repository = $entityManager->getRepository('MUVideo_Entity_Collection');
 
+        return $repository;
+    }
+    
+    /**
+     *
+     This method is for getting a repository for movies
+     *
+     */
+    
+    public static function getMovieRepository()
+    {
+        $serviceManager = ServiceUtil::getManager();
+        $entityManager = $serviceManager->getService('doctrine.entitymanager');
+        $repository = $entityManager->getRepository('MUVideo_Entity_Movie');
+    
         return $repository;
     }
 }

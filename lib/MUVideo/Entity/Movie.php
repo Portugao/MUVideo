@@ -66,6 +66,19 @@ class MUVideo_Entity_Movie extends MUVideo_Entity_Base_Movie
      */
     public function postPersistCallback()
     {
+        $request = new Zikula_Request_Http();
+        $func = $request->query->filter('func', 'main', FILTER_SANITIZE_STRING);
+        if ($func == 'getVideos') {
+        
+            $id = $this->getId();
+        
+            $workflowHelper = new Zikula_Workflow('none', 'MUVideo');
+        
+            $obj['__WORKFLOW__']['obj_table'] = 'movie';
+            $obj['__WORKFLOW__']['obj_idcolumn'] = 'id';
+            $obj['id'] = $id;
+            $workflowHelper->registerWorkflow($obj, 'approved');
+        }
         $this->performPostPersistCallback();
     }
     

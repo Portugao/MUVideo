@@ -34,6 +34,14 @@
                     {formlabel for='standardPoster' __text='Standard poster' cssClass=''}
                         {formtextinput id='standardPoster' group='config' maxLength=255 __title='Enter the standard poster.'}
                 </div>
+                <div class="z-formrow">
+                    {formlabel for='youtubeApi' __text='Youtube api' cssClass=''}
+                        {formtextinput id='youtubeApi' group='config' maxLength=255 __title='Enter the youtube api.'}
+                </div>
+                <div class="z-formrow">
+                    {formlabel for='channelIds' __text='Id of channel' cssClass=''}
+                        {formtextinput id='channelIds' group='config' maxLength=255 __title='Enter the ids of your channels (comma separated).'}
+                </div>
             </fieldset>
 
             <div class="z-buttons z-formbuttons">
