@@ -147,6 +147,18 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 		if ($modargs['api'] == 1) {
 			return;
 		}
+		
+		$controllers = array('display');
+		
+		if($modargs['modname'] == 'Content') {
+			$controllers[] = 'view';
+			$controllers[] = 'pagelist';
+		}
+		
+	    if (!in_array($modargs['modfunc'][1], $controllers)) {
+            // unallowed controller, thus nothing to do
+            return;
+        }
 
 		function replacePattern($treffer)
 		{
