@@ -16,184 +16,231 @@
  */
 class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispatch
 {
-    /**
-     * Listener for the `module_dispatch.postloadgeneric` event.
-     *
-     * Called after a module api or controller has been loaded.
-     * Receives the args `array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api)`.
-     *
-     * @param Zikula_Event $event The event instance.
-     */
-    public static function postLoadGeneric(Zikula_Event $event)
-    {
-        parent::postLoadGeneric($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
-    }
-    
-    /**
-     * Listener for the `module_dispatch.preexecute` event.
-     *
-     * Occurs in `ModUtil::exec()` after function call with the following args:
-     *     `array('modname' => $modname,
-     *            'modfunc' => $modfunc,
-     *            'args' => $args,
-     *            'modinfo' => $modinfo,
-     *            'type' => $type,
-     *            'api' => $api)`
-     * .
-     *
-     * @param Zikula_Event $event The event instance.
-     */
-    public static function preExecute(Zikula_Event $event)
-    {
-        parent::preExecute($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
-    }
-    
-    /**
-     * Listener for the `module_dispatch.postexecute` event.
-     *
-     * Occurs in `ModUtil::exec()` after function call with the following args:
-     *     `array('modname' => $modname,
-     *            'modfunc' => $modfunc,
-     *            'args' => $args,
-     *            'modinfo' => $modinfo,
-     *            'type' => $type,
-     *            'api' => $api)`
-     * .
-     * Receives the modules output with `$event->getData();`.
-     * Can modify this output with `$event->setData($data);`.
-     *
-     * @param Zikula_Event $event The event instance.
-     */
-    public static function postExecute(Zikula_Event $event)
-    {
-        parent::postExecute($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
-    }
-    
-    /**
-     * Listener for the `module_dispatch.custom_classname` event.
-     *
-     * In order to override the classname calculated in `ModUtil::exec()`.
-     * In order to override a pre-existing controller/api method, use this event type to override the class name that is loaded.
-     * This allows to override the methods using inheritance.
-     * Receives no subject, args of `array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
-     * and 'event data' of `$className`. This can be altered by setting `$event->setData()` followed by `$event->stop()`.
-     *
-     * @param Zikula_Event $event The event instance.
-     */
-    public static function customClassname(Zikula_Event $event)
-    {
-        parent::customClassName($event);
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
-    }
-    
-    /**
-     * Listener for the `module_dispatch.service_links` event.
-     *
-     * Occurs when building admin menu items.
-     * Adds sublinks to a Services menu that is appended to all modules if populated.
-     * Triggered by module_dispatch.postexecute in bootstrap.
-     *
-     * @param Zikula_Event $event The event instance.
-     */
-    public static function serviceLinks(Zikula_Event $event)
-    {
-        parent::customClassName($event);
-    
-        // Format data like so:
-        // $event->data[] = array('url' => ModUtil::url('MUVideo', 'user', 'main'), 'text' => __('Link Text'));
-    
-        // you can access general data available in the event
-        
-        // the event name
-        // echo 'Event: ' . $event->getName();
-        
-        // type of current request: MASTER_REQUEST or SUB_REQUEST
-        // if a listener should only be active for the master request,
-        // be sure to check that at the beginning of your method
-        // if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
-        //     // don't do anything if it's not the master request
-        //     return;
-        // }
-        
-        // kernel instance handling the current request
-        // $kernel = $event->getKernel();
-        
-        // the currently handled request
-        // $request = $event->getRequest();
-    }
+	/**
+	 * Listener for the `module_dispatch.postloadgeneric` event.
+	 *
+	 * Called after a module api or controller has been loaded.
+	 * Receives the args `array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api)`.
+	 *
+	 * @param Zikula_Event $event The event instance.
+	 */
+	public static function postLoadGeneric(Zikula_Event $event)
+	{
+		parent::postLoadGeneric($event);
+
+		// you can access general data available in the event
+
+		// the event name
+		// echo 'Event: ' . $event->getName();
+
+		// type of current request: MASTER_REQUEST or SUB_REQUEST
+		// if a listener should only be active for the master request,
+		// be sure to check that at the beginning of your method
+		// if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+		//     // don't do anything if it's not the master request
+		//     return;
+		// }
+
+		// kernel instance handling the current request
+		// $kernel = $event->getKernel();
+
+		// the currently handled request
+		// $request = $event->getRequest();
+	}
+
+	/**
+	 * Listener for the `module_dispatch.preexecute` event.
+	 *
+	 * Occurs in `ModUtil::exec()` after function call with the following args:
+	 *     `array('modname' => $modname,
+	 *            'modfunc' => $modfunc,
+	 *            'args' => $args,
+	 *            'modinfo' => $modinfo,
+	 *            'type' => $type,
+	 *            'api' => $api)`
+	 * .
+	 *
+	 * @param Zikula_Event $event The event instance.
+	 */
+	public static function preExecute(Zikula_Event $event)
+	{
+		parent::preExecute($event);
+
+		// you can access general data available in the event
+
+		// the event name
+		// echo 'Event: ' . $event->getName();
+
+		// type of current request: MASTER_REQUEST or SUB_REQUEST
+		// if a listener should only be active for the master request,
+		// be sure to check that at the beginning of your method
+		// if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+		//     // don't do anything if it's not the master request
+		//     return;
+		// }
+
+		// kernel instance handling the current request
+		// $kernel = $event->getKernel();
+
+		// the currently handled request
+		// $request = $event->getRequest();
+	}
+
+	/**
+	 * Listener for the `module_dispatch.postexecute` event.
+	 *
+	 * Occurs in `ModUtil::exec()` after function call with the following args:
+	 *     `array('modname' => $modname,
+	 *            'modfunc' => $modfunc,
+	 *            'args' => $args,
+	 *            'modinfo' => $modinfo,
+	 *            'type' => $type,
+	 *            'api' => $api)`
+	 * .
+	 * Receives the modules output with `$event->getData();`.
+	 * Can modify this output with `$event->setData($data);`.
+	 *
+	 * @param Zikula_Event $event The event instance.
+	 */
+	public static function postExecute(Zikula_Event $event)
+	{
+		parent::postExecute($event);
+
+		// you can access general data available in the event
+
+		// the event name
+		// echo 'Event: ' . $event->getName();
+
+		// type of current request: MASTER_REQUEST or SUB_REQUEST
+		// if a listener should only be active for the master request,
+		// be sure to check that at the beginning of your method
+		// if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+		//     // don't do anything if it's not the master request
+		//     return;
+		// }
+
+		// kernel instance handling the current request
+		// $kernel = $event->getKernel();
+
+		// the currently handled request
+		// $request = $event->getRequest();
+
+		$modargs = $event->getArgs();
+		if (in_array($modargs['modname'], array('Blocks', 'Admin', 'MUVideo'))) {
+			// nothing to do for module blocks, admin and muvideo
+			return;
+		}
+
+		if ($modargs['type'] == 'admin') {
+			// admin call, thus nothing to do
+			return;
+		}
+
+		// check if MUVideo is activated for any modules
+		$modules = MUVideo_Api_User::checkModules();
+		if (!is_array($modules) || count($modules) < 1) {
+			// no active modules, thus nothing to do
+			return;
+		}
+
+		// we are not interested in api functions
+		if ($modargs['api'] == 1) {
+			return;
+		}
+
+		function replacePattern($treffer)
+		{
+			$movieId = $treffer[2];
+			$movierepository = MUVideo_Util_Model::getMovieRepository();
+			$movie = $movierepository->selectById($movieId);
+			if (is_object($movie)) {
+				$youtubeUrl = $movie['urlOfYoutube'];
+				if ($youtubeUrl != '') {
+					$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $youtubeUrl);
+					return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' . $youtubeId . '?rel=0" allowfullscreen></iframe></div>';
+				} else {
+					return '';
+				}
+			} else {
+				return '';
+			}
+		}
+
+		$data = $event->getData();
+		 
+		$pattern = "(MUVIDEO)\[([0-9]*)\]";
+		$newData = preg_replace_callback("/$pattern/", 'replacePattern', $data);
+		$event->setData($newData);
+	}
+
+	/**
+	 * Listener for the `module_dispatch.custom_classname` event.
+	 *
+	 * In order to override the classname calculated in `ModUtil::exec()`.
+	 * In order to override a pre-existing controller/api method, use this event type to override the class name that is loaded.
+	 * This allows to override the methods using inheritance.
+	 * Receives no subject, args of `array('modname' => $modname, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api)`
+	 * and 'event data' of `$className`. This can be altered by setting `$event->setData()` followed by `$event->stop()`.
+	 *
+	 * @param Zikula_Event $event The event instance.
+	 */
+	public static function customClassname(Zikula_Event $event)
+	{
+		parent::customClassName($event);
+
+		// you can access general data available in the event
+
+		// the event name
+		// echo 'Event: ' . $event->getName();
+
+		// type of current request: MASTER_REQUEST or SUB_REQUEST
+		// if a listener should only be active for the master request,
+		// be sure to check that at the beginning of your method
+		// if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+		//     // don't do anything if it's not the master request
+		//     return;
+		// }
+
+		// kernel instance handling the current request
+		// $kernel = $event->getKernel();
+
+		// the currently handled request
+		// $request = $event->getRequest();
+	}
+
+	/**
+	 * Listener for the `module_dispatch.service_links` event.
+	 *
+	 * Occurs when building admin menu items.
+	 * Adds sublinks to a Services menu that is appended to all modules if populated.
+	 * Triggered by module_dispatch.postexecute in bootstrap.
+	 *
+	 * @param Zikula_Event $event The event instance.
+	 */
+	public static function serviceLinks(Zikula_Event $event)
+	{
+		parent::customClassName($event);
+
+		// Format data like so:
+		// $event->data[] = array('url' => ModUtil::url('MUVideo', 'user', 'main'), 'text' => __('Link Text'));
+
+		// you can access general data available in the event
+
+		// the event name
+		// echo 'Event: ' . $event->getName();
+
+		// type of current request: MASTER_REQUEST or SUB_REQUEST
+		// if a listener should only be active for the master request,
+		// be sure to check that at the beginning of your method
+		// if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+		//     // don't do anything if it's not the master request
+		//     return;
+		// }
+
+		// kernel instance handling the current request
+		// $kernel = $event->getKernel();
+
+		// the currently handled request
+		// $request = $event->getRequest();
+	}
 }

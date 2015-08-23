@@ -17,7 +17,7 @@
 class MUVideo_Controller_Collection extends MUVideo_Controller_Base_Collection
 {
     /**
-     * This method takes care of the application configuration.
+     * This method takes care of getting youtube videos.
      *
      * @return string Output
      */
