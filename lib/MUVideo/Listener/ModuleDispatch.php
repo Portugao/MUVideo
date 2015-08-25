@@ -126,6 +126,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 		// $request = $event->getRequest();
 
 		$modargs = $event->getArgs();
+
 		if (in_array($modargs['modname'], array('Blocks', 'Admin', 'MUVideo'))) {
 			// nothing to do for module blocks, admin and muvideo
 			return;
@@ -147,42 +148,52 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 		if ($modargs['api'] == 1) {
 			return;
 		}
-		
+
 		$controllers = array('display');
-		
+
 		if($modargs['modname'] == 'Content') {
 			$controllers[] = 'view';
 			$controllers[] = 'pagelist';
 		}
-		
-	    if (!in_array($modargs['modfunc'][1], $controllers)) {
-            // unallowed controller, thus nothing to do
-            return;
-        }
 
-		function replacePattern($treffer)
-		{
-			$movieId = $treffer[2];
-			$movierepository = MUVideo_Util_Model::getMovieRepository();
-			$movie = $movierepository->selectById($movieId);
-			if (is_object($movie)) {
-				$youtubeUrl = $movie['urlOfYoutube'];
-				if ($youtubeUrl != '') {
-					$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $youtubeUrl);
-					return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' . $youtubeId . '?rel=0" allowfullscreen></iframe></div>';
+		if (!in_array($modargs['modfunc'][1], $controllers)) {
+			// unallowed controller, thus nothing to do
+			return;
+		}
+
+		$request = new Zikula_Request_Http();
+		$module = $request->query->filter('module', 'MUVideo', FILTER_SANITIZE_STRING);
+
+		if ($modargs['modname'] == $module && in_array($modargs['modname'], $modules)) {
+
+			function replacePattern($treffer)
+			{
+				$movieId = $treffer[2];
+				$movierepository = MUVideo_Util_Model::getMovieRepository();
+				$movie = $movierepository->selectById($movieId);
+				if (is_object($movie)) {
+					$youtubeUrl = $movie['urlOfYoutube'];
+					if ($youtubeUrl != '') {
+						$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $youtubeUrl);
+						return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' . $youtubeId . '?rel=0" allowfullscreen></iframe></div>';
+					} else {
+						return '';
+					}
 				} else {
 					return '';
 				}
-			} else {
+			}
+		} else {
+			function replacePattern($treffer) {
 				return '';
 			}
 		}
-
 		$data = $event->getData();
-		 
+
 		$pattern = "(MUVIDEO)\[([0-9]*)\]";
 		$newData = preg_replace_callback("/$pattern/", 'replacePattern', $data);
 		$event->setData($newData);
+
 	}
 
 	/**
