@@ -23,7 +23,7 @@ class MUVideo_Api_User extends MUVideo_Api_Base_User
      */
     public static function checkModules()
     {
-        $modules = ModUtil::getVar('MUVideo', 'modules');
+        $modules = ModUtil::getVar('MUVideo', 'supportedModules');
         $modules = explode(',', $modules);
         return $modules;
     }
