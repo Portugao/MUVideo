@@ -23,20 +23,23 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
     */
     public function getYoutubeVideos($channelId = '', $collectionId = 0)
     {
-        
         $dom = ZLanguage::getModuleDomain($this->name);
         $youtubeApi = ModUtil::getVar($this->name, 'youtubeApi');
-        
+
+        // we get collection repository and the relevant collection object
         $collectionRepository = MUVideo_Util_Model::getCollectionRepository();
         $collectionObject = $collectionRepository->selectById($collectionId);
+
+        // we get a movie repository
+        $movieRepository = MUVideo_Util_Model::getMovieRepository();
 
         $api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" . $channelId  . "&key=" . $youtubeApi);
         // https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCJC8ynLpY_q89tmNhqIf1Sg&key={YOUR_API_KEY}
         //$api = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={DEINE_PLAYLIST_ID}&maxResults=10&fields=items%2Fsnippet&key=" . $youtubeApi);
 
+        // we decode the jason array to php array
         $videos = json_decode($api, true);
 
-        $movieRepository = MUVideo_Util_Model::getMovieRepository();
         $where = 'tbl.urlOfYoutube != \'' . DataUtil::formatForStore('') . '\'';
         // we look for movies with a youtube url entered
         $existingYoutubeVideos = $movieRepository->selectWhere($where);
@@ -47,19 +50,30 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
                 $videoIds[] = $youtubeId;
             }
         }
+        
+        $serviceManager = ServiceUtil::getManager();
+        $entityManager = $serviceManager->getService('doctrine.entitymanager');
 
         if (is_array($videos['items'])) {
 
             foreach ($videos['items'] as $videoData) {
                 if (isset($videoData['id']['videoId'])) {
                     if (isset($videoIds) && is_array($videoIds)) {
-                        if (in_array($videoData['id']['videoId'], $videoIds)) {                  
+                        if (in_array($videoData['id']['videoId'], $videoIds)) {
+                            $fragment = $videoData['id']['videoId'];
+                            $where2 = 'tbl.urlOfYoutube LIKE \'%' . $fragment . '\'';
+                            $thisExistingVideo = $movieRepository->selectWhere($where2);
+                            $thisExistingVideoObject = $movieRepository->selectById($thisExistingVideo['id']);
+
+                            $thisExistingVideoObject->setTitle($videoData['snippet']['title']);
+                            $thisExistingVideoObject->setDescription($videoData['snippet']['description']);
+                            $thisExistingVideoObject->setCollection($collectionObject);
+                            
+                            $entityManager->flush();
+                            
                             continue;
                         }
                     }
-                    
-                    $serviceManager = ServiceUtil::getManager();
-                    $entityManager = $serviceManager->getService('doctrine.entitymanager');
                      
                     $newYoutubeVideo = new MUVideo_Entity_Movie();
                     $newYoutubeVideo->setTitle($videoData['snippet']['title']);
@@ -72,11 +86,11 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
 
                     $entityManager->persist($newYoutubeVideo);
                     $entityManager->flush();
-                    LogUtil::registerStatus(__('The movie', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
+                    LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
                 }
             }
         }
-        
+
         $redirectUrl = ModUtil::url($this->name, 'user', 'display', array('ot' => 'collection', 'id' => $collectionId));
         return System::redirect($redirectUrl);
     }

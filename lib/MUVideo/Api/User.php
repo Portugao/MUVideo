@@ -16,5 +16,15 @@
  */
 class MUVideo_Api_User extends MUVideo_Api_Base_User
 {
-    // feel free to add own api methods here
+    /**
+     * Returns the supported modules set in the configuration.
+     *
+     * @return array $modules
+     */
+    public static function checkModules()
+    {
+        $modules = ModUtil::getVar('MUVideo', 'supportedModules');
+        $modules = explode(',', $modules);
+        return $modules;
+    }
 }
