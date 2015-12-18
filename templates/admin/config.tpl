@@ -42,6 +42,10 @@
                     {formlabel for='channelIds' __text='Id of channel' cssClass=''}
                         {formtextinput id='channelIds' group='config' maxLength=255 __title='Enter the ids of your channels (comma separated).'}
                 </div>
+                <div class="z-formrow">
+                    {formlabel for='supportedModules' __text='Supported modules' cssClass=''}
+                        {formtextinput id='supportedModules' group='config' maxLength=255 __title='Enter the supported modules (comma separated).'}
+                </div>
             </fieldset>
 
             <div class="z-buttons z-formbuttons">
