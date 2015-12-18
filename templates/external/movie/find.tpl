@@ -63,6 +63,7 @@
             <div class="z-formrow">
                 <label for="mUVideoPasteAs">{gt text='Paste as'}:</label>
                     <select id="mUVideoPasteAs" name="pasteas">
+                    	<option value="4">{gt text='Embed movie'}</option>
                         <option value="1">{gt text='Link to the movie'}</option>
                         <option value="2">{gt text='ID of movie'}</option>
                     </select>
