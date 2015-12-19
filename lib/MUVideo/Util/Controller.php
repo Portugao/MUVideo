@@ -63,14 +63,15 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
                             $fragment = $videoData['id']['videoId'];
                             $where2 = 'tbl.urlOfYoutube LIKE \'%' . $fragment . '\'';
                             $thisExistingVideo = $movieRepository->selectWhere($where2);
-                            $thisExistingVideoObject = $movieRepository->selectById($thisExistingVideo['id']);
+                            if(is_array($thisExistingVideo) && count($thisExistingVideo) == 1) {
+                            $thisExistingVideoObject = $movieRepository->selectById($thisExistingVideo[0]['id']);
 
                             $thisExistingVideoObject->setTitle($videoData['snippet']['title']);
                             $thisExistingVideoObject->setDescription($videoData['snippet']['description']);
                             $thisExistingVideoObject->setCollection($collectionObject);
                             
                             $entityManager->flush();
-                            
+                            }
                             continue;
                         }
                     }
