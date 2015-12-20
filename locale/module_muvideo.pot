@@ -1221,7 +1221,7 @@ msgid "Id of channel"
 msgstr ""
 
 #: templates/admin/config.tpl:43
-msgid "Enter the ids of your channels (comma separated)."
+msgid "Enter the ids of your channels (comma and semicolon separated, for example: 1234,channel name;5678,other channel name)."
 msgstr ""
 
 #: templates/admin/config.tpl:46
