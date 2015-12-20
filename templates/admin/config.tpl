@@ -40,7 +40,7 @@
                 </div>
                 <div class="z-formrow">
                     {formlabel for='channelIds' __text='Id of channel' cssClass=''}
-                        {formtextinput id='channelIds' group='config' maxLength=255 __title='Enter the ids of your channels (comma separated).'}
+                        {formtextinput id='channelIds' group='config' maxLength=255 __title='Enter the ids of your channels (comma and semicolon separated, for example: 1234,channel name;5678,other channel name).'}
                 </div>
                 <div class="z-formrow">
                     {formlabel for='supportedModules' __text='Supported modules' cssClass=''}
