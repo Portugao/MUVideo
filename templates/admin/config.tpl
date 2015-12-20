@@ -46,6 +46,11 @@
                     {formlabel for='supportedModules' __text='Supported modules' cssClass=''}
                         {formtextinput id='supportedModules' group='config' maxLength=255 __title='Enter the supported modules (comma separated).'}
                 </div>
+                <div class="z-formrow">
+                    {gt text='If this option is enabled, title and description of existing youtube videos will be overridden using the import function.' assign='toolTip'}
+                    {formlabel for='overrideVars' __text='Override vars' cssClass='muvideo-form-tooltips ' title=$toolTip}
+                        {formcheckbox id='overrideVars' group='config'}
+                </div>
             </fieldset>
 
             <div class="z-buttons z-formbuttons">

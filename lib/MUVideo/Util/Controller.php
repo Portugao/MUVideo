@@ -63,7 +63,7 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
                             $fragment = $videoData['id']['videoId'];
                             $where2 = 'tbl.urlOfYoutube LIKE \'%' . $fragment . '\'';
                             $thisExistingVideo = $movieRepository->selectWhere($where2);
-                            if(is_array($thisExistingVideo) && count($thisExistingVideo) == 1) {
+                            if(is_array($thisExistingVideo) && count($thisExistingVideo) == 1 && ModUtil::getVar($this->name, 'overrideVars') == 1) {
                             $thisExistingVideoObject = $movieRepository->selectById($thisExistingVideo[0]['id']);
 
                             $thisExistingVideoObject->setTitle($videoData['snippet']['title']);

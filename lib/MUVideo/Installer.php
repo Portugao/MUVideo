@@ -76,7 +76,14 @@ class MUVideo_Installer extends MUVideo_Base_Installer
                $this->registerPersistentEventHandlers();
                            
             case '1.1.0':
-                // for later updates
+
+            	$this->setVar('youtubeApi', '');
+            	$this->setVar('channelIds', '');
+            	$this->setVar('supportedModuls', '');
+            	$this->setVar('overrideVars', false);
+            	
+            case '1.2.0':
+            	// for later updates
         }
     
         // update successful

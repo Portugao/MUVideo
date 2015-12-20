@@ -49,6 +49,10 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
         $this->setVar('maxSizeOfMovie', 1024000000);
         $this->setVar('maxSizeOfPoster', 102400);
         $this->setVar('standardPoster', '/images/poster.png');
+        $this->setVar('youtubeApi', '');
+        $this->setVar('channelIds', '');
+        $this->setVar('supportedModuls', '');
+        $this->setVar('overrideVars', false);
     
         $categoryRegistryIdsPerEntity = array();
     
