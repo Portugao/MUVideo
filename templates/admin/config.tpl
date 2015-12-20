@@ -48,7 +48,7 @@
                 </div>
                 <div class="z-formrow">
                     {gt text='If this option is enabled, title and description of existing youtube videos will be overridden using the import function.' assign='toolTip'}
-                    {formlabel for='overrideVars' __text='Override vars' cssClass='muvideo-form-tooltips ' title=$toolTip}
+                    {formlabel for='overrideVars' __text='Override attributes' cssClass='muvideo-form-tooltips ' title=$toolTip}
                         {formcheckbox id='overrideVars' group='config'}
                 </div>
             </fieldset>

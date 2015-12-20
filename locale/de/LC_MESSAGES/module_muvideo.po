@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MUVideo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-20 15:41+0100\n"
-"PO-Revision-Date: 2015-12-20 15:44+0100\n"
+"POT-Creation-Date: 2015-12-20 16:59+0100\n"
+"PO-Revision-Date: 2015-12-20 16:59+0100\n"
 "Last-Translator: \n"
 "Language-Team: Michael Ueberschaer\n"
 "Language: de\n"
@@ -1269,6 +1269,18 @@ msgstr "Unterstützte Module"
 #: templates/admin/config.tpl:47
 msgid "Enter the supported modules (comma separated)."
 msgstr "Gib die unterstützten Module ein (kommasepariert)"
+
+#: templates/admin/config.tpl:50
+msgid ""
+"If this option is enabled, title and description of existing youtube videos "
+"will be overridden using the import function."
+msgstr ""
+"Ist diese Option aktiviert, werden Titel und Beschreibung vorhandener "
+"Youtube Videos überschrieben, wenn die Importfunktion genutzt wird."
+
+#: templates/admin/config.tpl:5
+msgid "Override attributes"
+msgstr "Attribute überschreiben"
 
 #: templates/admin/config.tpl:52
 msgid "Update configuration"

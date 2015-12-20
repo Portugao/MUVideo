@@ -1232,6 +1232,14 @@ msgstr ""
 msgid "Enter the supported modules (comma separated)."
 msgstr ""
 
+#: templates/admin/config.tpl:50
+msgid "If this option is enabled, title and description of existing youtube videos will be overridden using the import function."
+msgstr ""
+
+#: templates/admin/config.tpl:5
+msgid "Override attributes"
+msgstr ""
+
 #: templates/admin/config.tpl:52
 msgid "Update configuration"
 msgstr ""
