@@ -124,6 +124,8 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 
 		// the currently handled request
 		// $request = $event->getRequest();
+		
+		$isAvailable = ModUtil::available('MUVideo');
 
 		$modargs = $event->getArgs();
 
@@ -151,7 +153,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 
 		$controllers = array('display');
 
-		if($modargs['modname'] == 'Content') {
+		if($modargs['modname'] == 'Content' || $modargs['modname'] == 'News') {
 			$controllers[] = 'view';
 			$controllers[] = 'pagelist';
 		}
@@ -164,7 +166,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 		$request = new Zikula_Request_Http();
 		$module = $request->query->filter('module', 'MUVideo', FILTER_SANITIZE_STRING);
 
-		if ($modargs['modname'] == $module && in_array($modargs['modname'], $modules)) {
+		if ($modargs['modname'] == $module && in_array($modargs['modname'], $modules) && $isAvailable === true) {
 
 			function replacePattern($treffer)
 			{
