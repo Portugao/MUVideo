@@ -154,19 +154,26 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 		$controllers = array('display');
 
 		if($modargs['modname'] == 'Content' || $modargs['modname'] == 'News') {
-			$controllers[] = 'view';
+			$controllers[] = 'view';		
+		}
+		
+		if ($modargs['modname'] == 'Content') {
 			$controllers[] = 'pagelist';
+		}
+		if ($modargs['modname'] == 'Clip') {
+			$controllers[] = 'list';
 		}
 
 		if (!in_array($modargs['modfunc'][1], $controllers)) {
 			// unallowed controller, thus nothing to do
 			return;
 		}
+		
 
 		$request = new Zikula_Request_Http();
 		$module = $request->query->filter('module', 'MUVideo', FILTER_SANITIZE_STRING);
 
-		if ($modargs['modname'] == $module && in_array($modargs['modname'], $modules) && $isAvailable === true) {
+		if (($modargs['modname'] == $module && in_array($modargs['modname'], $modules) || $module == 'MUVideo') && $isAvailable === true) {
 
 			function replacePattern($treffer)
 			{
@@ -185,17 +192,15 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 					return '';
 				}
 			}
-		} else {
-			function replacePattern($treffer) {
-				return '';
-			}
-		}
 		$data = $event->getData();
 
-		$pattern = "(MUVIDEO)\[([0-9]*)\]";
+		$pattern = "(YOUTUBE)\[([0-9]*)\]";
 		$newData = preg_replace_callback("/$pattern/", 'replacePattern', $data);
-		$event->setData($newData);
-
+		$event->setData($newData);			
+			
+		} else {
+			// nothing to do
+		}
 	}
 
 	/**

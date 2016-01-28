@@ -98,7 +98,7 @@ function mUMUVideoGetPasteSnippet(mode, itemId)
     pasteMode = $F('mUVideoPasteAs');
     
     if (pasteMode === '4') {
-    	return 'MUVIDEO[' + itemId + ']';
+    	return 'YOUTUBE[' + itemId + ']';
     }
 
     if (pasteMode === '2' || pasteMode !== '1') {
