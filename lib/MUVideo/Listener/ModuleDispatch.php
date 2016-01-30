@@ -129,7 +129,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 
 		$modargs = $event->getArgs();
 
-		if (in_array($modargs['modname'], array('Blocks', 'Admin', 'MUVideo'))) {
+		if (in_array($modargs['modname'], array('Blocks', 'Admin'))) {
 			// nothing to do for module blocks, admin and muvideo
 			return;
 		}
@@ -137,6 +137,14 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 		if ($modargs['type'] == 'admin') {
 			// admin call, thus nothing to do
 			return;
+		}
+		
+		if ($modargs['modname'] == 'MUVideo') {
+			if ($modargs['type'] == 'user') {
+				// user call for MUVideo, thus nothing to do
+				return;
+				
+			}
 		}
 
 		// check if MUVideo is activated for any modules
@@ -153,7 +161,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 
 		$controllers = array('display');
 
-		if($modargs['modname'] == 'Content' || $modargs['modname'] == 'News') {
+		if($modargs['modname'] == 'Content' || $modargs['modname'] == 'News' || $modargs['modname'] == 'MUVideo') {
 			$controllers[] = 'view';		
 		}
 		
@@ -169,11 +177,21 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 			return;
 		}
 		
+		// get displayname of $modargs['modname']
+		$modArgsModuleId = ModUtil::getIdFromName($modargs['modname']);
+		$modArgsModuleArray = ModUtil::getInfo($modArgsModuleId);
+		$modargsModule = $modArgsModuleArray['displayname'];		
+		
 
 		$request = new Zikula_Request_Http();
 		$module = $request->query->filter('module', 'MUVideo', FILTER_SANITIZE_STRING);
+		
+		// get displayname of called module
+		$moduleId = ModUtil::getIdFromName($module);
+		$modArray = ModUtil::getInfo($moduleId);
+		$moduleDisplayName = $modArray['displayname'];
 
-		if (($modargs['modname'] == $module && in_array($modargs['modname'], $modules) || $module == 'MUVideo') && $isAvailable === true) {
+		if (($modargsModule == $moduleDisplayName && in_array($modargs['modname'], $modules) || $module == 'MUVideo') && $isAvailable === true) {
 
 			function replacePattern($treffer)
 			{
