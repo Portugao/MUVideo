@@ -38,7 +38,7 @@
         <dd>{$movie.description}</dd>
         {/if}
         {if $movie.urlOfYoutube ne ''}
-        <div class="lazyYT theme_video_fluid" data-youtube-id={$youtubeId} data-width="{$movie.widthOfMovie}" data-height="{$movie.heightOfMovie}">loading...</div>
+        	YOUTUBE[{$movie.id}]
         {/if}
         {if $movie.urlOfYoutube eq ''}
           {*  <video id="player_a" class="projekktor" poster="{$movie.posterFullPathUrl}" title="{$movie.title}" width="{$movie.widthOfMovie}" height="{$movie.heightOfMovie}" controls>             
