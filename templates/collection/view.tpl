@@ -79,7 +79,7 @@
                     </td>
                 {/if}
                 <td headers="hTitle" class="z-left">
-                    {$collection.title}
+                    <a href="{modurl modname='MUVideo' type='user' func='display' ot='collection' id=$collection.id}">{$collection.title}</a>
                 </td>
                 <td headers="hDescription" class="z-left">
                     {$collection.description}
