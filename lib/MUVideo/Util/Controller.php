@@ -33,8 +33,10 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
         // we get a movie repository
         $movieRepository = MUVideo_Util_Model::getMovieRepository();
 
-        $api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" . $channelId  . "&key=" . $youtubeApi);
+        $api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&channelId=" . $channelId  . "&key=" . $youtubeApi);
         // https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCJC8ynLpY_q89tmNhqIf1Sg&key={YOUR_API_KEY}
+        // simple call for playlist
+        //$api = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=" . $plylistId - "&key=" . $youtubeApi);
         //$api = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={DEINE_PLAYLIST_ID}&maxResults=10&fields=items%2Fsnippet&key=" . $youtubeApi);
 
         // we decode the jason array to php array
@@ -71,6 +73,7 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_Controller
                                 $thisExistingVideoObject->setCollection($collectionObject);
                             
                                 $entityManager->flush();
+                                LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was overrided', $dom));
                             }
                             continue;
                         }
