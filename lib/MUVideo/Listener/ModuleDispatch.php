@@ -129,8 +129,8 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 
 		$modargs = $event->getArgs();
 
-		if (in_array($modargs['modname'], array('Blocks', 'Admin'))) {
-			// nothing to do for module blocks, admin and muvideo
+		if (in_array($modargs['modname'], array('Admin'))) {
+			// nothing to do for module admin
 			return;
 		}
 
@@ -158,8 +158,16 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 		if ($modargs['api'] == 1) {
 			return;
 		}
+		
+		if (UserUtil::getVar('uid') == 2 && $modargs['modname'] == 'Blocks') {
+			LogUtil::registerStatus($modargs['modfunc'][1]);
+		}
 
 		$controllers = array('display');
+		
+		if ($modargs['modname'] == 'Blocks') {
+			$controllers[] = 'getallplacements';
+		}
 
 		if($modargs['modname'] == 'Content' || $modargs['modname'] == 'News' || $modargs['modname'] == 'MUVideo') {
 			$controllers[] = 'view';		
@@ -193,7 +201,10 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 
 		if (($modargsModule == $moduleDisplayName && in_array($modargs['modname'], $modules) || $module == 'MUVideo') && $isAvailable === true) {
 
-			function replacePattern($treffer)
+		$data = $event->getData();
+
+		$pattern = "(YOUTUBE)\[([0-9]*)\]";
+		$newData = preg_replace_callback("/$pattern/", 			function ($treffer)
 			{
 				$movieId = $treffer[2];
 				$movierepository = MUVideo_Util_Model::getMovieRepository();
@@ -202,18 +213,14 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 					$youtubeUrl = $movie['urlOfYoutube'];
 					if ($youtubeUrl != '') {
 						$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $youtubeUrl);
-						return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' . $youtubeId . '?rel=0" allowfullscreen></iframe></div>';
+						return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/' . $youtubeId . '?rel=0" allowfullscreen></iframe></div>';
 					} else {
 						return '';
 					}
 				} else {
 					return '';
 				}
-			}
-		$data = $event->getData();
-
-		$pattern = "(YOUTUBE)\[([0-9]*)\]";
-		$newData = preg_replace_callback("/$pattern/", 'replacePattern', $data);
+			}, $data);
 		$event->setData($newData);			
 			
 		} else {
@@ -291,4 +298,26 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_ModuleDispat
 		// the currently handled request
 		// $request = $event->getRequest();
 	}
+	
+	/*
+	 * 
+	 */
+	
+	/*public function replacePattern($treffer)
+	{
+		$movieId = $treffer[2];
+		$movierepository = MUVideo_Util_Model::getMovieRepository();
+		$movie = $movierepository->selectById(1);
+		if (is_object($movie)) {
+			$youtubeUrl = $movie['urlOfYoutube'];
+			if ($youtubeUrl != '') {
+				$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $youtubeUrl);
+				return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' . $youtubeId . '?rel=0" allowfullscreen></iframe></div>';
+			} else {
+				return '';
+			}
+		} else {
+			return '';
+		}
+	}*/
 }
