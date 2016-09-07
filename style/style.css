@@ -28,7 +28,8 @@ div#z-maincontent.z-module-muvideo table tbody tr td {
 }
 /* validation */
 div.z-formrow input.required, div.z-formrow textarea.required {
-    border: 1px solid #00a8e6;
+    /*border: 1px solid #00a8e6;*/
+    background-color: #ffffff;
 }
 div.z-formrow input.validation-failed, div.z-formrow textarea.validation-failed {
     border: 1px solid #f30;
@@ -68,20 +69,11 @@ div.muvideo-edit .z-panel-content legend {
 }
 
 
-div.muvideo-autocomplete-wrap {
-    position: absolute;
-    height: 40px;
-    margin: 0;
-    padding: 0;
-    left: 260px;
-    top: 10px;
-}
-
 div.muvideo-autocomplete,
 div.muvideo-autocomplete-withimage {
     position: relative !important;
     top: 2px !important;
-    width: 191px !important;
+    width: 500px !important;
     background-color: #fff;
     border: 1px solid #888;
     margin: 0;
@@ -96,6 +88,7 @@ div.muvideo-autocomplete ul,
 div.muvideo-autocomplete-with-image ul {
     margin: 0;
     padding: 0;
+    width: 475px !important;
 }
 
 div.muvideo-autocomplete ul li,
@@ -158,21 +151,3 @@ div.muvideo-view form.muvideo-quicknav fieldset #num {
     width: 50px;
     text-align: right;
 }
-
-/*.lazyYT {
-    position: relative;
-    width: 100% !important;
-    height: 0 !important;
-    padding-top: 52% !important;
-}
-
-.lazyYT iframe,  
-.lazyYT object,  
-.lazyYT embed {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-}*/
-
