@@ -53,7 +53,7 @@ mUVideo.finder = {};
 
 mUVideo.finder.onLoad = function (baseId, selectedId)
 {
-    $$('div.categoryselector select').invoke('observe', 'change', mUVideo.finder.onParamChanged);
+    $$('div.category-selector select').invoke('observe', 'change', mUVideo.finder.onParamChanged);
     $('mUVideoSort').observe('change', mUVideo.finder.onParamChanged);
     $('mUVideoSortDir').observe('change', mUVideo.finder.onParamChanged);
     $('mUVideoPageSize').observe('change', mUVideo.finder.onParamChanged);
@@ -73,7 +73,7 @@ mUVideo.finder.handleCancel = function ()
     var editor, w;
 
     editor = $F('editorName');
-    if (editor === 'xinha') {
+    if ('xinha' === editor) {
         w = parent.window;
         window.close();
         w.focus();
@@ -122,8 +122,8 @@ mUVideo.finder.selectItem = function (itemId)
     var editor, html;
 
     editor = $F('editorName');
-    if (editor === 'xinha') {
-        if (window.opener.currentMUVideoEditor !== null) {
+    if ('xinha' === editor) {
+        if (null !== window.opener.currentMUVideoEditor) {
             html = mUMUVideoGetPasteSnippet('html', itemId);
 
             window.opener.currentMUVideoEditor.focusEditor();
@@ -132,10 +132,10 @@ mUVideo.finder.selectItem = function (itemId)
             html = mUMUVideoGetPasteSnippet('url', itemId);
             var currentInput = window.opener.currentMUVideoInput;
 
-            if (currentInput.tagName === 'INPUT') {
+            if ('INPUT' === currentInput.tagName) {
                 // Simply overwrite value of input elements
                 currentInput.value = html;
-            } else if (currentInput.tagName === 'TEXTAREA') {
+            } else if ('TEXTAREA' === currentInput.tagName) {
                 // Try to paste into textarea - technique depends on environment
                 if (typeof document.selection !== 'undefined') {
                     // IE: Move focus to textarea (which fortunately keeps its current selection) and overwrite selection
@@ -154,12 +154,12 @@ mUVideo.finder.selectItem = function (itemId)
                 }
             }
         }
-    } else if (editor === 'tinymce') {
+    } else if ('tinymce' === editor) {
         html = mUMUVideoGetPasteSnippet('html', itemId);
         tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
         // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers
-    } else if (editor === 'ckeditor') {
-        if (window.opener.currentMUVideoEditor !== null) {
+    } else if ('ckeditor' === editor) {
+        if (null !== window.opener.currentMUVideoEditor) {
             html = mUMUVideoGetPasteSnippet('html', itemId);
 
             window.opener.currentMUVideoEditor.insertHtml(html);
@@ -169,7 +169,6 @@ mUVideo.finder.selectItem = function (itemId)
     }
     mUMUVideoClosePopup();
 };
-
 
 function mUMUVideoClosePopup()
 {
@@ -295,7 +294,7 @@ mUVideo.itemSelector.updatePreview = function ()
         }
     }
 
-    if (selectedElement !== null) {
+    if (null !== selectedElement) {
         $(baseId + 'PreviewContainer')
             .update(window.atob(selectedElement.previewInfo))
             .removeClassName('z-hide');

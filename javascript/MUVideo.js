@@ -111,11 +111,11 @@ function mUMUVideoInitQuickNavigation(objectType)
     if ($('catid') != undefined) {
         $('catid').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
     }
-    if ($('sortby') != undefined) {
-        $('sortby').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
+    if ($('sortBy') != undefined) {
+        $('sortBy').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
     }
-    if ($('sortdir') != undefined) {
-        $('sortdir').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
+    if ($('sortDir') != undefined) {
+        $('sortDir').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
     }
     if ($('num') != undefined) {
         $('num').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
@@ -128,6 +128,14 @@ function mUMUVideoInitQuickNavigation(objectType)
         }
         break;
     case 'movie':
+        if ($('collection') != undefined) {
+            $('collection').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
+        }
+        if ($('workflowState') != undefined) {
+            $('workflowState').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
+        }
+        break;
+    case 'playlist':
         if ($('collection') != undefined) {
             $('collection').observe('change', function () { mUMUVideoSubmitQuickNavForm(objectType); });
         }

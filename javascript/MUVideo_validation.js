@@ -47,7 +47,7 @@ function mUMUVideoReadDate(val, includeTime)
     }
 
     // look if we have DD.MM.YYYY
-    if (val.substr(2, 1) === '.' && val.substr(4, 1) === '.') {
+    if (val.substr(2, 1) === '.' && val.substr(5, 1) === '.') {
         var newVal = val.substr(6, 4) + '-' + val.substr(3, 2) + '-' + val.substr(0, 2);
         if (includeTime === true) {
             newVal += ' ' + val.substr(11, 5);
@@ -81,7 +81,7 @@ function mUMUVideoValidateUploadExtension(val, elem)
 /**
  * Adds special validation rules.
  */
-function mUMUVideoAddCommonValidationRules(objectType, id)
+function mUMUVideoAddCommonValidationRules(objectType, currentEntityId)
 {
     Validation.addAllThese([
         ['validate-nospace', Zikula.__('No spaces', 'module_muvideo_js'), function(val, elem) {
