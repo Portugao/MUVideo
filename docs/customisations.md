@@ -25,4 +25,9 @@ MUVideo
 
 * lib/MUVideo/Entity/Movie.php
 
+* lib/MUVideo/Listener/ModuleDispatch.php
+
 * lib/MUVideo/Util/Controller.php
+* lib/MUvideo/util/Model.php
+
+* templates/user/header.tpl
