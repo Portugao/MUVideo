@@ -25,7 +25,7 @@ class MUVideo_Listener_Base_Page
      * This single filter can be used to override all css or js scripts or any other var types
      * sent to `PageUtil::addVar()`.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function pageutilAddvarFilter(Zikula_Event $event)
     {
@@ -36,7 +36,7 @@ class MUVideo_Listener_Base_Page
      *
      * Filter type event for output filter HTML sanitisation.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function systemOutputFilter(Zikula_Event $event)
     {

@@ -22,7 +22,7 @@ class MUVideo_Listener_Base_View
      * Occurs just before `Zikula_View#__construct()` finishes.
      * The subject is the Zikula_View instance.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function init(Zikula_Event $event)
     {
@@ -36,7 +36,7 @@ class MUVideo_Listener_Base_View
      * args are `array('template' => $template)`,
      * $data was the result of the fetch to be filtered.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function postFetch(Zikula_Event $event)
     {

@@ -21,7 +21,7 @@ class MUVideo_Listener_Base_FrontController
      *
      * Runs before the front controller does any work.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function preDispatch(Zikula_Event $event)
     {

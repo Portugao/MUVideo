@@ -23,7 +23,7 @@ class MUVideo_Listener_Base_Errors
      * Used to activate `set_error_handler()`.
      * Event must `stop()`.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function setupErrorReporting(Zikula_Event $event)
     {
@@ -35,7 +35,7 @@ class MUVideo_Listener_Base_Errors
      * Invoked on any system error.
      * args gets `array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)`.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function systemError(Zikula_Event $event)
     {

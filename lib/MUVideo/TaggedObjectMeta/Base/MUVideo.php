@@ -19,11 +19,11 @@ class MUVideo_TaggedObjectMeta_Base_MUVideo extends Tag_AbstractTaggedObjectMeta
     /**
      * Constructor.
      *
-     * @param integer             $objectId  Identifier of treated object.
-     * @param integer             $areaId    Name of hook area.
-     * @param string              $module    Name of the owning module.
+     * @param integer             $objectId  Identifier of treated object
+     * @param integer             $areaId    Name of hook area
+     * @param string              $module    Name of the owning module
      * @param string              $urlString **deprecated**
-     * @param Zikula_ModUrl $urlObject Object carrying url arguments.
+     * @param Zikula_ModUrl $urlObject Object carrying url arguments
      */
     function __construct($objectId, $areaId, $module, $urlString = null, Zikula_ModUrl $urlObject = null)
     {
@@ -34,6 +34,8 @@ class MUVideo_TaggedObjectMeta_Base_MUVideo extends Tag_AbstractTaggedObjectMeta
         $urlArgs = $urlObject->getArgs();
         $objectType = isset($urlArgs['ot']) ? $urlArgs['ot'] : 'collection';
     
+        $serviceManager = ServiceUtil::getManager();
+    
         $component = $module . ':' . ucfirst($objectType) . ':';
         $perm = SecurityUtil::checkPermission($component, $objectId . '::', ACCESS_READ);
         if (!$perm) {
@@ -41,7 +43,6 @@ class MUVideo_TaggedObjectMeta_Base_MUVideo extends Tag_AbstractTaggedObjectMeta
         }
     
         $entityClass = $module . '_Entity_' . ucfirst($objectType);
-        $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->getService('doctrine.entitymanager');
         $repository = $entityManager->getRepository($entityClass);
         $useJoins = false;

@@ -18,13 +18,14 @@ class MUVideo_Listener_Base_Mailer
 {
     /**
      * Listener for the `module.mailer.api.sendmessage` event.
+     * Occurs when a new message should be sent.
      *
      * Invoked from `Mailer_Api_User#sendmessage`.
      * Subject is `Mailer_Api_User` with `$args`.
      * This is a notifyUntil event so the event must `$event->stop()` and set any
      * return data into `$event->data`, or `$event->setData()`.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function sendMessage(Zikula_Event $event)
     {

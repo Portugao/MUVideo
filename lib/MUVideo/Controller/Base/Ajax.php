@@ -19,10 +19,10 @@ class MUVideo_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
 
 
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the main area called without defining arguments.
      *
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     public function main()
     {
@@ -32,14 +32,14 @@ class MUVideo_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
         $permLevel = ACCESS_OVERVIEW;
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . '::', '::', $permLevel), LogUtil::getErrorMsgPermission());
     }
-    
+
     
     /**
      * Retrieve item list for finder selections in Forms, Content type plugin and Scribite.
      *
-     * @param string $ot      Name of currently used object type.
-     * @param string $sort    Sorting field.
-     * @param string $sortdir Sorting direction.
+     * @param string $ot      Name of currently used object type
+     * @param string $sort    Sorting field
+     * @param string $sortdir Sorting direction
      *
      * @return Zikula_Response_Ajax
      */
@@ -103,12 +103,12 @@ class MUVideo_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
     /**
      * Builds and returns a slim data array from a given entity.
      *
-     * @param string $objectType       The currently treated object type.
-     * @param object $item             The currently treated entity.
-     * @param string $itemid           Data item identifier(s).
-     * @param string $descriptionField Name of item description field.
+     * @param string $objectType       The currently treated object type
+     * @param object $item             The currently treated entity
+     * @param string $itemid           Data item identifier(s)
+     * @param string $descriptionField Name of item description field
      *
-     * @return array The slim data representation.
+     * @return array The slim data representation
      */
     protected function prepareSlimItem($objectType, $item, $itemId, $descriptionField)
     {
@@ -119,18 +119,20 @@ class MUVideo_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
         $title = $item->getTitleFromDisplayPattern();
         $description = ($descriptionField != '') ? $item[$descriptionField] : '';
     
-        return array('id'          => $itemId,
-                     'title'       => str_replace('&amp;', '&', $title),
-                     'description' => $description,
-                     'previewInfo' => $previewInfo);
+        return array(
+            'id'          => $itemId,
+            'title'       => str_replace('&amp;', '&', $title),
+            'description' => $description,
+            'previewInfo' => $previewInfo
+        );
     }
     
     /**
      * Searches for entities for auto completion usage.
      *
-     * @param string $ot       Treated object type.
-     * @param string $fragment The fragment of the entered item name.
-     * @param string $exclude  Comma separated list with ids of other items (to be excluded from search).
+     * @param string $ot       Treated object type
+     * @param string $fragment The fragment of the entered item name
+     * @param string $exclude  Comma separated list with ids of other items (to be excluded from search)
      *
      * @return Zikula_Response_Ajax_Plain
      */
@@ -165,7 +167,7 @@ class MUVideo_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
             $fragment = $this->request->query->get('fragment', '');
             $exclude = $this->request->query->get('exclude', '');
         }
-        $exclude = ((!empty($exclude)) ? array($exclude) : array());
+        $exclude = !empty($exclude) ? explode(',', $exclude) : array();
         
         // parameter for used sorting field
         $sort = $this->request->query->get('sort', '');
@@ -184,10 +186,10 @@ class MUVideo_Controller_Base_Ajax extends Zikula_Controller_AbstractAjax
         if ((is_array($entities) || is_object($entities)) && count($entities) > 0) {
             $descriptionFieldName = $repository->getDescriptionFieldName();
             $previewFieldName = $repository->getPreviewFieldName();
-            if (!empty($previewFieldName)) {
-                $imageHelper = new MUVideo_Util_Image($this->serviceManager);
-                $imagineManager = $imageHelper->getManager($objectType, $previewFieldName, 'controllerAction', $utilArgs);
-            }
+            
+            //$imageHelper = new MUVideo_Util_Image($this->serviceManager);
+            //$imagineManager = $imageHelper->getManager($objectType, $previewFieldName, 'controllerAction', $utilArgs);
+            $imagineManager = ServiceUtil::getManager()->getService('systemplugin.imagine.manager');
             foreach ($entities as $item) {
                 // class="informal" --> show in dropdown, but do nots copy in the input field after selection
                 $itemTitle = $item->getTitleFromDisplayPattern();

@@ -28,15 +28,17 @@ class MUVideo_Util_Base_Model extends Zikula_AbstractBase
      * Note that even creation of a certain object is possible, it may still be forbidden for the current user
      * if he does not have the required permission level.
      *
-     * @param string $objectType Name of treated entity type.
+     * @param string $objectType Name of treated entity type
      *
-     * @return boolean Whether a new instance can be created or not.
+     * @return boolean Whether a new instance can be created or not
+     *
+     * @throws Exception If an invalid object type is used
      */
     public function canBeCreated($objectType)
     {
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', array('util' => 'model', 'action' => 'canBeCreated')))) {
-            throw new \Exception('Error! Invalid object type received.');
+            throw new Exception('Error! Invalid object type received.');
         }
     
         $result = false;
@@ -48,6 +50,9 @@ class MUVideo_Util_Base_Model extends Zikula_AbstractBase
             case 'movie':
                 $result = true;
                 break;
+            case 'playlist':
+                $result = true;
+                break;
         }
     
         return $result;
@@ -56,15 +61,17 @@ class MUVideo_Util_Base_Model extends Zikula_AbstractBase
     /**
      * Determines whether there exist at least one instance of a certain object type in the database.
      *
-     * @param string $objectType Name of treated entity type.
+     * @param string $objectType Name of treated entity type
      *
-     * @return boolean Whether at least one instance exists or not.
+     * @return boolean Whether at least one instance exists or not
+     *
+     * @throws Exception If an invalid object type is used
      */
     protected function hasExistingInstances($objectType)
     {
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
         if (!in_array($objectType, $controllerHelper->getObjectTypes('util', array('util' => 'model', 'action' => 'hasExistingInstances')))) {
-            throw new \Exception('Error! Invalid object type received.');
+            throw new Exception('Error! Invalid object type received.');
         }
     
         $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);

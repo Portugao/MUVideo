@@ -19,7 +19,7 @@ class MUVideo_Api_Base_Account extends Zikula_AbstractApi
     /**
      * Return an array of items to show in the your account panel.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
      * @return array List of collected account items
      */
@@ -44,12 +44,11 @@ class MUVideo_Api_Base_Account extends Zikula_AbstractApi
             return $items;
         }
     
-    
         // Create an array of links to return
         if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
             $items[] = array(
                 'url'   => ModUtil::url($this->name, 'admin', 'main'),
-                'title' => $this->__('M u video Backend'),
+                'title'  => $this->__('M u video Backend'),
                 'icon'   => 'configure.png',
                 'module' => 'core',
                 'set'    => 'icons/large'

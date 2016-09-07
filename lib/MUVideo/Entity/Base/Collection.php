@@ -30,27 +30,27 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
 {
     /**
-     * @var string The tablename this object maps to.
+     * @var string The tablename this object maps to
      */
     protected $_objectType = 'collection';
     
     /**
-     * @var MUVideo_Entity_Validator_Collection The validator for this entity.
+     * @var MUVideo_Entity_Validator_Collection The validator for this entity
      */
     protected $_validator = null;
     
     /**
-     * @var boolean Option to bypass validation if needed.
+     * @var boolean Option to bypass validation if needed
      */
     protected $_bypassValidation = false;
     
     /**
-     * @var array List of available item actions.
+     * @var array List of available item actions
      */
     protected $_actions = array();
     
     /**
-     * @var array The current workflow data of this object.
+     * @var array The current workflow data of this object
      */
     protected $__WORKFLOW__ = array();
     
@@ -58,28 +58,40 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
-     * @var integer $id.
+     * @var integer $id
      */
     protected $id = 0;
     
     /**
+     * the current workflow state
      * @ORM\Column(length=20)
-     * @var string $workflowState.
+     * @var string $workflowState
      */
     protected $workflowState = 'initial';
     
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(length=255)
-     * @var string $title.
+     * @var string $title
      */
     protected $title = '';
     
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="text", length=4000)
-     * @var text $description.
+     * @var text $description
      */
     protected $description = '';
     
+    
+    /**
+     * Field for storing the locale of this entity.
+     * Overrides the locale set in translationListener (as pointed out in https://github.com/l3pp4rd/DoctrineExtensions/issues/130#issuecomment-1790206 ).
+     *
+     * @Gedmo\Locale
+     * @var string $locale
+     */
+    protected $locale;
     
     /**
      * @ORM\OneToMany(targetEntity="MUVideo_Entity_CollectionCategory", 
@@ -92,28 +104,28 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * @ORM\Column(type="integer")
      * @ZK\StandardFields(type="userid", on="create")
-     * @var integer $createdUserId.
+     * @var integer $createdUserId
      */
     protected $createdUserId;
     
     /**
      * @ORM\Column(type="integer")
      * @ZK\StandardFields(type="userid", on="update")
-     * @var integer $updatedUserId.
+     * @var integer $updatedUserId
      */
     protected $updatedUserId;
     
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
-     * @var datetime $createdDate.
+     * @var \DateTime $createdDate
      */
     protected $createdDate;
     
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
-     * @var datetime $updatedDate.
+     * @var \DateTime $updatedDate
      */
     protected $updatedDate;
     
@@ -123,9 +135,18 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      * @ORM\OneToMany(targetEntity="MUVideo_Entity_Movie", mappedBy="collection")
      * @ORM\JoinTable(name="muvideo_collectionmovie")
      * @ORM\OrderBy({"title" = "ASC"})
-     * @var MUVideo_Entity_Movie[] $movie.
+     * @var \MUVideo_Entity_Movie[] $movie
      */
     protected $movie = null;
+    
+    /**
+     * Bidirectional - One collection [collection] has many playlists [playlists] (INVERSE SIDE).
+     *
+     * @ORM\OneToMany(targetEntity="MUVideo_Entity_Playlist", mappedBy="collection")
+     * @ORM\JoinTable(name="muvideo_collectionplaylists")
+     * @var \MUVideo_Entity_Playlist[] $playlists
+     */
+    protected $playlists = null;
     
     
     /**
@@ -142,11 +163,12 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
         $this->initValidator();
         $this->initWorkflow();
         $this->movie = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
     
     /**
-     * Get _object type.
+     * Gets the _object type.
      *
      * @return string
      */
@@ -156,9 +178,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set _object type.
+     * Sets the _object type.
      *
-     * @param string $_objectType.
+     * @param string $_objectType
      *
      * @return void
      */
@@ -168,7 +190,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get _validator.
+     * Gets the _validator.
      *
      * @return MUVideo_Entity_Validator_Collection
      */
@@ -178,9 +200,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set _validator.
+     * Sets the _validator.
      *
-     * @param MUVideo_Entity_Validator_Collection $_validator.
+     * @param MUVideo_Entity_Validator_Collection $_validator
      *
      * @return void
      */
@@ -190,7 +212,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get _bypass validation.
+     * Gets the _bypass validation.
      *
      * @return boolean
      */
@@ -200,9 +222,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set _bypass validation.
+     * Sets the _bypass validation.
      *
-     * @param boolean $_bypassValidation.
+     * @param boolean $_bypassValidation
      *
      * @return void
      */
@@ -212,7 +234,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get _actions.
+     * Gets the _actions.
      *
      * @return array
      */
@@ -222,9 +244,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set _actions.
+     * Sets the _actions.
      *
-     * @param array $_actions.
+     * @param array $_actions
      *
      * @return void
      */
@@ -234,7 +256,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get __ w o r k f l o w__.
+     * Gets the __ w o r k f l o w__.
      *
      * @return array
      */
@@ -244,9 +266,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set __ w o r k f l o w__.
+     * Sets the __ w o r k f l o w__.
      *
-     * @param array $__WORKFLOW__.
+     * @param array $__WORKFLOW__
      *
      * @return void
      */
@@ -257,7 +279,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     
     
     /**
-     * Get id.
+     * Gets the id.
      *
      * @return integer
      */
@@ -267,9 +289,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set id.
+     * Sets the id.
      *
-     * @param integer $id.
+     * @param integer $id
      *
      * @return void
      */
@@ -279,7 +301,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get workflow state.
+     * Gets the workflow state.
      *
      * @return string
      */
@@ -289,9 +311,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set workflow state.
+     * Sets the workflow state.
      *
-     * @param string $workflowState.
+     * @param string $workflowState
      *
      * @return void
      */
@@ -301,7 +323,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get title.
+     * Gets the title.
      *
      * @return string
      */
@@ -311,9 +333,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set title.
+     * Sets the title.
      *
-     * @param string $title.
+     * @param string $title
      *
      * @return void
      */
@@ -323,7 +345,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get description.
+     * Gets the description.
      *
      * @return text
      */
@@ -333,9 +355,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set description.
+     * Sets the description.
      *
-     * @param text $description.
+     * @param text $description
      *
      * @return void
      */
@@ -345,7 +367,29 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get categories.
+     * Gets the locale.
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+    
+    /**
+     * Sets the locale.
+     *
+     * @param string $locale
+     *
+     * @return void
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+    
+    /**
+     * Gets the categories.
      *
      * @return array
      */
@@ -355,9 +399,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set categories.
+     * Sets the categories.
      *
-     * @param array $categories.
+     * @param array $categories
      *
      * @return void
      */
@@ -367,7 +411,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get created user id.
+     * Gets the created user id.
      *
      * @return integer
      */
@@ -377,9 +421,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set created user id.
+     * Sets the created user id.
      *
-     * @param integer $createdUserId.
+     * @param integer $createdUserId
      *
      * @return void
      */
@@ -389,7 +433,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get updated user id.
+     * Gets the updated user id.
      *
      * @return integer
      */
@@ -399,9 +443,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set updated user id.
+     * Sets the updated user id.
      *
-     * @param integer $updatedUserId.
+     * @param integer $updatedUserId
      *
      * @return void
      */
@@ -411,9 +455,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get created date.
+     * Gets the created date.
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getCreatedDate()
     {
@@ -421,9 +465,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set created date.
+     * Sets the created date.
      *
-     * @param datetime $createdDate.
+     * @param \DateTime $createdDate
      *
      * @return void
      */
@@ -433,9 +477,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Get updated date.
+     * Gets the updated date.
      *
-     * @return datetime
+     * @return \DateTime
      */
     public function getUpdatedDate()
     {
@@ -443,9 +487,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set updated date.
+     * Sets the updated date.
      *
-     * @param datetime $updatedDate.
+     * @param \DateTime $updatedDate
      *
      * @return void
      */
@@ -456,7 +500,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     
     
     /**
-     * Get movie.
+     * Gets the movie.
      *
      * @return MUVideo_Entity_Movie[]
      */
@@ -466,9 +510,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     }
     
     /**
-     * Set movie.
+     * Sets the movie.
      *
-     * @param MUVideo_Entity_Movie[] $movie.
+     * @param MUVideo_Entity_Movie[] $movie
      *
      * @return void
      */
@@ -482,7 +526,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Adds an instance of MUVideo_Entity_Movie to the list of movie.
      *
-     * @param MUVideo_Entity_Movie $movie The instance to be added to the collection.
+     * @param MUVideo_Entity_Movie $movie The instance to be added to the collection
      *
      * @return void
      */
@@ -495,7 +539,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Removes an instance of MUVideo_Entity_Movie from the list of movie.
      *
-     * @param MUVideo_Entity_Movie $movie The instance to be removed from the collection.
+     * @param MUVideo_Entity_Movie $movie The instance to be removed from the collection
      *
      * @return void
      */
@@ -505,6 +549,58 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
         $movie->setCollection(null);
     }
     
+    /**
+     * Gets the playlists.
+     *
+     * @return MUVideo_Entity_Playlist[]
+     */
+    public function getPlaylists()
+    {
+        return $this->playlists;
+    }
+    
+    /**
+     * Sets the playlists.
+     *
+     * @param MUVideo_Entity_Playlist[] $playlists
+     *
+     * @return void
+     */
+    public function setPlaylists($playlists)
+    {
+        foreach ($playlists as $playlistSingle) {
+            $this->addPlaylists($playlistSingle);
+        }
+    }
+    
+    /**
+     * Adds an instance of MUVideo_Entity_Playlist to the list of playlists.
+     *
+     * @param MUVideo_Entity_Playlist $playlist The instance to be added to the collection
+     *
+     * @return void
+     */
+    public function addPlaylists(MUVideo_Entity_Playlist $playlist)
+    {
+        $this->playlists->add($playlist);
+        $playlist->setCollection($this);
+    }
+    
+    /**
+     * Removes an instance of MUVideo_Entity_Playlist from the list of playlists.
+     *
+     * @param MUVideo_Entity_Playlist $playlist The instance to be removed from the collection
+     *
+     * @return void
+     */
+    public function removePlaylists(MUVideo_Entity_Playlist $playlist)
+    {
+        $this->playlists->removeElement($playlist);
+        $playlist->setCollection(null);
+    }
+    
+    
+    protected $processedPostLoad = false;
     
     /**
      * Post-Process the data after the entity has been constructed by the entity manager.
@@ -515,11 +611,15 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      *     - no access to associations (not initialised yet)
      *
      * @see MUVideo_Entity_Collection::postLoadCallback()
-     * @return boolean true if completed successfully else false.
+     * @return boolean true if completed successfully else false
      */
     protected function performPostLoadCallback()
     {
         // echo 'loaded a record ...';
+        if ($this->processedPostLoad) {
+            return true;
+        }
+        
         $currentFunc = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
         $usesCsvOutput = FormUtil::getPassedValue('usecsvext', false, 'GETPOST', FILTER_VALIDATE_BOOLEAN);
         
@@ -527,8 +627,10 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
         $this->formatTextualField('workflowState', $currentFunc, $usesCsvOutput, true);
         $this->formatTextualField('title', $currentFunc, $usesCsvOutput);
         $this->formatTextualField('description', $currentFunc, $usesCsvOutput);
-    
+        
         $this->prepareItemActions();
+        
+        $this->processedPostLoad = true;
     
         return true;
     }
@@ -536,10 +638,10 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Formats a given textual field depending on it's actual kind of content.
      *
-     * @param string  $fieldName     Name of field to be formatted.
-     * @param string  $currentFunc   Name of current controller action.
-     * @param string  $usesCsvOutput Whether the output is CSV or not (defaults to false).
-     * @param boolean $allowZero     Whether 0 values are allowed or not (defaults to false).
+     * @param string  $fieldName     Name of field to be formatted
+     * @param string  $currentFunc   Name of current controller action
+     * @param string  $usesCsvOutput Whether the output is CSV or not (defaults to false)
+     * @param boolean $allowZero     Whether 0 values are allowed or not (defaults to false)
      */
     protected function formatTextualField($fieldName, $currentFunc, $usesCsvOutput = false, $allowZero = false)
     {
@@ -566,6 +668,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
             }
         }
     
+        // workaround for ampersand problem (#692)
+        $string = str_replace('&amp;', '&', $string);
+    
         $this[$fieldName] = $string;
     }
     
@@ -573,9 +678,9 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      * Checks whether any html tags are contained in the given string.
      * See http://stackoverflow.com/questions/10778035/how-to-check-if-string-contents-have-any-html-in-it for implementation details.
      *
-     * @param $string string The given input string.
+     * @param $string string The given input string
      *
-     * @return boolean Whether any html tags are found or not.
+     * @return boolean Whether any html tags are found or not
      */
     protected function containsHtml($string)
     {
@@ -594,11 +699,10 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      *     - no creation of other entities allowed
      *
      * @see MUVideo_Entity_Collection::prePersistCallback()
-     * @return boolean true if completed successfully else false.
+     * @return boolean true if completed successfully else false
      */
     protected function performPrePersistCallback()
     {
-        $this->validate();
     
         return true;
     }
@@ -613,10 +717,11 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      *     - no access to entity manager or unit of work apis
      *
      * @see MUVideo_Entity_Collection::postPersistCallback()
-     * @return boolean true if completed successfully else false.
+     * @return boolean true if completed successfully else false
      */
     protected function performPostPersistCallback()
     {
+    
         return true;
     }
     
@@ -629,7 +734,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      *     - will not be called for a DQL DELETE statement
      *
      * @see MUVideo_Entity_Collection::preRemoveCallback()
-     * @return boolean true if completed successfully else false.
+     * @return boolean true if completed successfully else false
      */
     protected function performPreRemoveCallback()
     {
@@ -639,6 +744,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
             $result = (bool) DBUtil::deleteObjectByID('workflows', $workflow['id']);
             if ($result === false) {
                 $dom = ZLanguage::getModuleDomain('MUVideo');
+        
                 return LogUtil::registerError(__('Error! Could not remove stored workflow. Deletion has been aborted.', $dom));
             }
         }
@@ -656,10 +762,31 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      *     - will not be called for a DQL DELETE statement
      *
      * @see MUVideo_Entity_Collection::postRemoveCallback()
-     * @return boolean true if completed successfully else false.
+     * @return boolean true if completed successfully else false
      */
     protected function performPostRemoveCallback()
     {
+        $objectType = $this->get_objectType();
+        $objectId = $this->createCompositeIdentifier();
+        
+        // initialise the upload handler
+        $uploadManager = new MUVideo_UploadHandler();
+        
+        $uploadFields = array();
+        switch ($objectType) {
+            case 'movie':
+                $uploadFields = array('uploadOfMovie', 'poster');
+                break;
+        }
+        
+        foreach ($uploadFields as $uploadField) {
+            if (empty($this->$uploadField)) {
+                continue;
+            }
+        
+            // remove upload file (and image thumbnails)
+            $uploadManager->deleteUploadFile('mUVideo', $this, $uploadField, $objectId);
+        }
     
         return true;
     }
@@ -676,11 +803,10 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      *     - no creation of other entities allowed
      *
      * @see MUVideo_Entity_Collection::preUpdateCallback()
-     * @return boolean true if completed successfully else false.
+     * @return boolean true if completed successfully else false
      */
     protected function performPreUpdateCallback()
     {
-        $this->validate();
     
         return true;
     }
@@ -694,38 +820,11 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      *     - will not be called for a DQL UPDATE statement
      *
      * @see MUVideo_Entity_Collection::postUpdateCallback()
-     * @return boolean true if completed successfully else false.
+     * @return boolean true if completed successfully else false
      */
     protected function performPostUpdateCallback()
     {
-        return true;
-    }
     
-    /**
-     * Pre-Process the data prior to a save operation.
-     * This combines the PrePersist and PreUpdate events.
-     * For more information see corresponding callback handlers.
-     *
-     * @see MUVideo_Entity_Collection::preSaveCallback()
-     * @return boolean true if completed successfully else false.
-     */
-    protected function performPreSaveCallback()
-    {
-        $this->validate();
-    
-        return true;
-    }
-    
-    /**
-     * Post-Process the data after a save operation.
-     * This combines the PostPersist and PostUpdate events.
-     * For more information see corresponding callback handlers.
-     *
-     * @see MUVideo_Entity_Collection::postSaveCallback()
-     * @return boolean true if completed successfully else false.
-     */
-    protected function performPostSaveCallback()
-    {
         return true;
     }
     
@@ -733,6 +832,8 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Returns the formatted title conforming to the display pattern
      * specified for this entity.
+     *
+     * @return string The display title
      */
     public function getTitleFromDisplayPattern()
     {
@@ -748,7 +849,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Initialises the validator and return it's instance.
      *
-     * @return MUVideo_Entity_Validator_Collection The validator for this entity.
+     * @return MUVideo_Entity_Validator_Collection The validator for this entity
      */
     public function initValidator()
     {
@@ -763,7 +864,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Sets/retrieves the workflow details.
      *
-     * @param boolean $forceLoading load the workflow record.
+     * @param boolean $forceLoading load the workflow record
      */
     public function initWorkflow($forceLoading = false)
     {
@@ -783,7 +884,8 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
             'obj_table' => $this['_objectType'],
             'obj_idcolumn' => $idColumn,
             'obj_id' => $this[$idColumn],
-            'schemaname' => $schemaName);
+            'schemaname' => $schemaName
+        );
         
         // load the real workflow only when required (e. g. when func is edit or delete)
         if ((!in_array($currentFunc, array('main', 'view', 'display')) && empty($isReuse)) || $forceLoading) {
@@ -819,13 +921,14 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
             'obj_table' => $this['_objectType'],
             'obj_idcolumn' => 'id',
             'obj_id' => 0,
-            'schemaname' => $schemaName);
+            'schemaname' => $schemaName
+        );
     }
     
     /**
      * Start validation and raise exception if invalid data is found.
      *
-     * @return void.
+     * @return void
      *
      * @throws Zikula_Exception Thrown if a validation error occurs
      */
@@ -839,12 +942,14 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
         if (is_array($result)) {
             throw new Zikula_Exception($result['message'], $result['code'], $result['debugArray']);
         }
+    
+        return true;
     }
     
     /**
      * Return entity data in JSON format.
      *
-     * @return string JSON-encoded data.
+     * @return string JSON-encoded data
      */
     public function toJson()
     {
@@ -862,34 +967,50 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     
         $currentLegacyControllerType = FormUtil::getPassedValue('lct', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
         $currentFunc = FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
+        $component = 'MUVideo:Collection:';
+        $instance = $this->id . '::';
         $dom = ZLanguage::getModuleDomain('MUVideo');
         if ($currentLegacyControllerType == 'admin') {
             if (in_array($currentFunc, array('main', 'view'))) {
                 $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                    'url' => array(
+                        'type' => 'user',
+                        'func' => 'display',
+                        'arguments' => array('ot' => 'collection', 'id' => $this['id'])
+                    ),
                     'icon' => 'preview',
                     'linkTitle' => __('Open preview page', $dom),
                     'linkText' => __('Preview', $dom)
                 );
                 $this->_actions[] = array(
-                    'url' => array('type' => 'admin', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                    'url' => array(
+                        'type' => 'admin',
+                        'func' => 'display',
+                        'arguments' => array('ot' => 'collection', 'id' => $this['id'])
+                    ),
                     'icon' => 'display',
                     'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
                     'linkText' => __('Details', $dom)
                 );
             }
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
-                $component = 'MUVideo:Collection:';
-                $instance = $this->id . '::';
                 if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
                     $this->_actions[] = array(
-                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                        'url' => array(
+                            'type' => 'admin',
+                            'func' => 'edit',
+                            'arguments' => array('ot' => 'collection', 'id' => $this['id'])
+                        ),
                         'icon' => 'edit',
                         'linkTitle' => __('Edit', $dom),
                         'linkText' => __('Edit', $dom)
                     );
                     $this->_actions[] = array(
-                        'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'astemplate' => $this['id'])),
+                        'url' => array(
+                            'type' => 'admin',
+                            'func' => 'edit',
+                            'arguments' => array('ot' => 'collection', 'astemplate' => $this['id'])
+                        ),
                         'icon' => 'saveas',
                         'linkTitle' => __('Reuse for new item', $dom),
                         'linkText' => __('Reuse', $dom)
@@ -897,7 +1018,11 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
                 }
                 if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
                     $this->_actions[] = array(
-                        'url' => array('type' => 'admin', 'func' => 'delete', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                        'url' => array(
+                            'type' => 'admin',
+                            'func' => 'delete',
+                            'arguments' => array('ot' => 'collection', 'id' => $this['id'])
+                        ),
                         'icon' => 'delete',
                         'linkTitle' => __('Delete', $dom),
                         'linkText' => __('Delete', $dom)
@@ -906,7 +1031,11 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(
-                    'url' => array('type' => 'admin', 'func' => 'view', 'arguments' => array('ot' => 'collection')),
+                    'url' => array(
+                        'type' => 'admin',
+                        'func' => 'view',
+                        'arguments' => array('ot' => 'collection')
+                    ),
                     'icon' => 'back',
                     'linkTitle' => __('Back to overview', $dom),
                     'linkText' => __('Back to overview', $dom)
@@ -919,42 +1048,78 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
             $uid = UserUtil::getVar('uid');
             if ($authAdmin || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
             
-                $urlArgs = array('ot' => 'movie',
-                                 'collection' => $this->id);
+                $urlArgs = array(
+                    'ot' => 'movie',
+                    'collection' => $this->id
+                );
                 if ($currentFunc == 'view') {
                     $urlArgs['returnTo'] = 'adminViewCollection';
                 } elseif ($currentFunc == 'display') {
                     $urlArgs['returnTo'] = 'adminDisplayCollection';
                 }
                 $this->_actions[] = array(
-                    'url' => array('type' => 'admin', 'func' => 'edit', 'arguments' => $urlArgs),
+                    'url' => array(
+                        'type' => 'admin',
+                        'func' => 'edit',
+                        'arguments' => $urlArgs
+                    ),
                     'icon' => 'add',
                     'linkTitle' => __('Create movie', $dom),
                     'linkText' => __('Create movie', $dom)
+                );
+            
+                $urlArgs = array(
+                    'ot' => 'playlist',
+                    'collection' => $this->id
+                );
+                if ($currentFunc == 'view') {
+                    $urlArgs['returnTo'] = 'adminViewCollection';
+                } elseif ($currentFunc == 'display') {
+                    $urlArgs['returnTo'] = 'adminDisplayCollection';
+                }
+                $this->_actions[] = array(
+                    'url' => array(
+                        'type' => 'admin',
+                        'func' => 'edit',
+                        'arguments' => $urlArgs
+                    ),
+                    'icon' => 'add',
+                    'linkTitle' => __('Create playlist', $dom),
+                    'linkText' => __('Create playlist', $dom)
                 );
             }
         }
         if ($currentLegacyControllerType == 'user') {
             if (in_array($currentFunc, array('main', 'view'))) {
                 $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'display', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                    'url' => array(
+                        'type' => 'user',
+                        'func' => 'display',
+                        'arguments' => array('ot' => 'collection', 'id' => $this['id'])
+                    ),
                     'icon' => 'display',
                     'linkTitle' => str_replace('"', '', $this->getTitleFromDisplayPattern()),
                     'linkText' => __('Details', $dom)
                 );
             }
             if (in_array($currentFunc, array('main', 'view', 'display'))) {
-                $component = 'MUVideo:Collection:';
-                $instance = $this->id . '::';
                 if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
                     $this->_actions[] = array(
-                        'url' => array('type' => 'user', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                        'url' => array(
+                            'type' => 'user',
+                            'func' => 'edit',
+                            'arguments' => array('ot' => 'collection', 'id' => $this['id'])
+                        ),
                         'icon' => 'edit',
                         'linkTitle' => __('Edit', $dom),
                         'linkText' => __('Edit', $dom)
                     );
                     $this->_actions[] = array(
-                        'url' => array('type' => 'user', 'func' => 'edit', 'arguments' => array('ot' => 'collection', 'astemplate' => $this['id'])),
+                        'url' => array(
+                            'type' => 'user',
+                            'func' => 'edit',
+                            'arguments' => array('ot' => 'collection', 'astemplate' => $this['id'])
+                        ),
                         'icon' => 'saveas',
                         'linkTitle' => __('Reuse for new item', $dom),
                         'linkText' => __('Reuse', $dom)
@@ -962,7 +1127,11 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
                 }
                 if (SecurityUtil::checkPermission($component, $instance, ACCESS_DELETE)) {
                     $this->_actions[] = array(
-                        'url' => array('type' => 'user', 'func' => 'delete', 'arguments' => array('ot' => 'collection', 'id' => $this['id'])),
+                        'url' => array(
+                            'type' => 'user',
+                            'func' => 'delete',
+                            'arguments' => array('ot' => 'collection', 'id' => $this['id'])
+                        ),
                         'icon' => 'delete',
                         'linkTitle' => __('Delete', $dom),
                         'linkText' => __('Delete', $dom)
@@ -971,7 +1140,11 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
             }
             if ($currentFunc == 'display') {
                 $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'view', 'arguments' => array('ot' => 'collection')),
+                    'url' => array(
+                        'type' => 'user',
+                        'func' => 'view',
+                        'arguments' => array('ot' => 'collection')
+                    ),
                     'icon' => 'back',
                     'linkTitle' => __('Back to overview', $dom),
                     'linkText' => __('Back to overview', $dom)
@@ -984,18 +1157,44 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
             $uid = UserUtil::getVar('uid');
             if ($authAdmin || (isset($uid) && isset($this->createdUserId) && $this->createdUserId == $uid)) {
             
-                $urlArgs = array('ot' => 'movie',
-                                 'collection' => $this->id);
+                $urlArgs = array(
+                    'ot' => 'movie',
+                    'collection' => $this->id
+                );
                 if ($currentFunc == 'view') {
                     $urlArgs['returnTo'] = 'userViewCollection';
                 } elseif ($currentFunc == 'display') {
                     $urlArgs['returnTo'] = 'userDisplayCollection';
                 }
                 $this->_actions[] = array(
-                    'url' => array('type' => 'user', 'func' => 'edit', 'arguments' => $urlArgs),
+                    'url' => array(
+                        'type' => 'user',
+                        'func' => 'edit',
+                        'arguments' => $urlArgs
+                    ),
                     'icon' => 'add',
                     'linkTitle' => __('Create movie', $dom),
                     'linkText' => __('Create movie', $dom)
+                );
+            
+                $urlArgs = array(
+                    'ot' => 'playlist',
+                    'collection' => $this->id
+                );
+                if ($currentFunc == 'view') {
+                    $urlArgs['returnTo'] = 'userViewCollection';
+                } elseif ($currentFunc == 'display') {
+                    $urlArgs['returnTo'] = 'userDisplayCollection';
+                }
+                $this->_actions[] = array(
+                    'url' => array(
+                        'type' => 'user',
+                        'func' => 'edit',
+                        'arguments' => $urlArgs
+                    ),
+                    'icon' => 'add',
+                    'linkTitle' => __('Create playlist', $dom),
+                    'linkText' => __('Create playlist', $dom)
                 );
             }
         }
@@ -1004,7 +1203,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Creates url arguments array for easy creation of display urls.
      *
-     * @return Array The resulting arguments list.
+     * @return array The resulting arguments list
      */
     public function createUrlArgs()
     {
@@ -1022,13 +1221,23 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * Create concatenated identifier string (for composite keys).
      *
-     * @return String concatenated identifiers.
+     * @return String concatenated identifiers
      */
     public function createCompositeIdentifier()
     {
         $itemId = $this['id'];
     
         return $itemId;
+    }
+    
+    /**
+     * Determines whether this entity supports hook subscribers or not.
+     *
+     * @return boolean
+     */
+    public function supportsHookSubscribers()
+    {
+        return true;
     }
     
     /**
@@ -1046,7 +1255,7 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      * 
      * @param array $objects The objects are added to this array. Default: array()
      * 
-     * @return array of entity objects.
+     * @return array of entity objects
      */
     public function getRelatedObjectsToPersist(&$objects = array()) 
     {
@@ -1056,6 +1265,8 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
     /**
      * ToString interceptor implementation.
      * This method is useful for debugging purposes.
+     *
+     * @return string The output string for this entity
      */
     public function __toString()
     {
@@ -1071,7 +1282,6 @@ abstract class MUVideo_Entity_Base_Collection extends Zikula_EntityAccess
      * (1) http://docs.doctrine-project.org/en/latest/cookbook/implementing-wakeup-or-clone.html
      * (2) http://www.php.net/manual/en/language.oop5.cloning.php
      * (3) http://stackoverflow.com/questions/185934/how-do-i-create-a-copy-of-an-object-in-php
-     * (4) http://www.pantovic.com/article/26/doctrine2-entity-cloning
      */
     public function __clone()
     {

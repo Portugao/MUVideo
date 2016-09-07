@@ -22,7 +22,9 @@ class MUVideo_Listener_Base_Users
      * Occurs after the Users module configuration has been
      * updated via the administration interface.
      *
-     * @param Zikula_Event $event The event instance.
+     * Event data is populated by the new values.
+     *
+     * @param Zikula_Event $event The event instance
      */
     public static function configUpdated(Zikula_Event $event)
     {

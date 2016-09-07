@@ -17,22 +17,22 @@
 class MUVideo_Base_UploadHandler
 {
     /**
-     * @var array List of object types with upload fields.
+     * @var array List of object types with upload fields
      */
     protected $allowedObjectTypes;
 
     /**
-     * @var array List of file types to be considered as images.
+     * @var array List of file types to be considered as images
      */
     protected $imageFileTypes;
 
     /**
-     * @var array List of dangerous file types to be rejected.
+     * @var array List of dangerous file types to be rejected
      */
     protected $forbiddenFileTypes;
 
     /**
-     * @var array List of allowed file sizes per field.
+     * @var array List of allowed file sizes per field
      */
     protected $allowedFileSizes;
 
@@ -48,25 +48,38 @@ class MUVideo_Base_UploadHandler
     }
 
     /**
+     * Sets the translator.
+     *
+     * @param TranslatorInterface $translator Translator service instance
+     */
+    public function setTranslator(/*TranslatorInterface */$translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
      * Process a file upload.
      *
-     * @param string $objectType Currently treated entity type.
-     * @param string $fileData   Form data array.
-     * @param string $fieldName  Name of upload field.
+     * @param string $objectType Currently treated entity type
+     * @param string $fileData   Form data array
+     * @param string $fieldName  Name of upload field
      *
-     * @return array Resulting file name and collected meta data.
+     * @return array Resulting file name and collected meta data
      */
     public function performFileUpload($objectType, $fileData, $fieldName)
     {
         $dom = ZLanguage::getModuleDomain('MUVideo');
     
-        $result = array('fileName' => '',
-                        'metaData' => array());
+        $result = array(
+            'fileName' => '',
+            'metaData' => array()
+        );
     
         // check whether uploads are allowed for the given object type
         if (!in_array($objectType, $this->allowedObjectTypes)) {
             return $result;
         }
+    
     
         // perform validation
         if (!$this->validateFileUpload($objectType, $fileData[$fieldName], $fieldName)) {
@@ -107,9 +120,9 @@ class MUVideo_Base_UploadHandler
     /**
      * Check if an upload file meets all validation criteria.
      *
-     * @param string $objectType Currently treated entity type.
-     * @param array $file Reference to data of uploaded file.
-     * @param string $fieldName  Name of upload field.
+     * @param string $objectType Currently treated entity type
+     * @param array $file Reference to data of uploaded file
+     * @param string $fieldName  Name of upload field
      *
      * @return boolean true if file is valid else false
      */
@@ -120,7 +133,7 @@ class MUVideo_Base_UploadHandler
         $serviceManager = ServiceUtil::getManager();
     
         // check if a file has been uploaded properly without errors
-        if ((!is_array($file)) || (is_array($file) && ($file['error'] != '0'))) {
+        if (!is_array($file) || (is_array($file) && $file['error'] != '0')) {
             if (is_array($file)) {
                 return $this->handleError($file);
             }
@@ -154,7 +167,7 @@ class MUVideo_Base_UploadHandler
                 return LogUtil::registerError(__f('Error! Your file is too big. Please keep it smaller than %s megabytes.', array($maxSizeMB), $dom));
             }
         }
-    
+        
         // validate image file
         $isImage = in_array($extension, $this->imageFileTypes);
         if ($isImage) {
@@ -170,8 +183,8 @@ class MUVideo_Base_UploadHandler
     /**
      * Read meta data from a certain file.
      *
-     * @param string $fileName  Name of file to be processed.
-     * @param string $filePath  Path to file to be processed.
+     * @param string $fileName  Name of file to be processed
+     * @param string $filePath  Path to file to be processed
      *
      * @return array collected meta data
      */
@@ -183,10 +196,9 @@ class MUVideo_Base_UploadHandler
         }
     
         $extensionarr = explode('.', $fileName);
-        $meta = array();
         $meta['extension'] = strtolower($extensionarr[count($extensionarr) - 1]);
         $meta['size'] = filesize($filePath);
-        $meta['isImage'] = (in_array($meta['extension'], $this->imageFileTypes) ? true : false);
+        $meta['isImage'] = in_array($meta['extension'], $this->imageFileTypes) ? true : false;
     
         if (!$meta['isImage']) {
             return $meta;
@@ -218,9 +230,9 @@ class MUVideo_Base_UploadHandler
     /**
      * Determines the allowed file extensions for a given object type.
      *
-     * @param string $objectType Currently treated entity type.
-     * @param string $fieldName  Name of upload field.
-     * @param string $extension  Input file extension.
+     * @param string $objectType Currently treated entity type
+     * @param string $fieldName  Name of upload field
+     * @param string $extension  Input file extension
      *
      * @return array the list of allowed file extensions
      */
@@ -259,11 +271,11 @@ class MUVideo_Base_UploadHandler
      *
      * It considers different strategies for computing the result.
      *
-     * @param string $objectType Currently treated entity type.
-     * @param string $fieldName  Name of upload field.
-     * @param string $basePath   Base path for file storage.
-     * @param string $fileName   Input file name.
-     * @param string $extension  Input file extension.
+     * @param string $objectType Currently treated entity type
+     * @param string $fieldName  Name of upload field
+     * @param string $basePath   Base path for file storage
+     * @param string $fileName   Input file name
+     * @param string $extension  Input file extension
      *
      * @return string the resulting file name
      */
@@ -325,13 +337,14 @@ class MUVideo_Base_UploadHandler
     /**
      * Error handling helper method.
      *
-     * @param array $file File array from $_FILES.
+     * @param array $file File array from $_FILES
      *
      * @return boolean false
      */
     private function handleError($file)
     {
         $dom = ZLanguage::getModuleDomain('MUVideo');
+    
         $errorMessage = '';
         switch ($file['error']) {
             case UPLOAD_ERR_OK: //no error; possible file attack!
@@ -357,19 +370,19 @@ class MUVideo_Base_UploadHandler
                 break;
         }
     
-        return LogUtil::registerError(__('Error with upload: ', $dom) . $errorMessage);
+        return LogUtil::registerError(__('Error with upload', $dom) . ': ' . $errorMessage);
     }
 
     /**
      * Deletes an existing upload file.
      * For images the thumbnails are removed, too.
      *
-     * @param string  $objectType Currently treated entity type.
-     * @param string  $objectData Object data array.
-     * @param string  $fieldName  Name of upload field.
-     * @param integer $objectId   Primary identifier of the given object.
+     * @param string  $objectType Currently treated entity type
+     * @param string  $objectData Object data array
+     * @param string  $fieldName  Name of upload field
+     * @param integer $objectId   Primary identifier of the given object
      *
-     * @return mixed Array with updated object data on success, else false.
+     * @return mixed Array with updated object data on success, else false
      */
     public function deleteUploadFile($objectType, $objectData, $fieldName, $objectId)
     {

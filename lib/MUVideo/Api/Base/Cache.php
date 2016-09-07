@@ -65,6 +65,13 @@ class MUVideo_Api_Base_Cache extends Zikula_AbstractApi
                 
                 
                 break;
+            case 'playlist':
+                $cacheIds[] = 'playlist_main';
+                $cacheIds[] = $objectType . '_view';
+                $cacheIds[] = $objectType . '_display|' . $instanceId;
+                
+                
+                break;
         }
     
         $view = Zikula_View::getInstance('MUVideo');
@@ -87,6 +94,14 @@ class MUVideo_Api_Base_Cache extends Zikula_AbstractApi
                 
                 break;
             case 'movie':
+                $cacheIdPrefix = 'MUVideo/' . $objectType . '/';
+                $cacheIds[] = $cacheIdPrefix . 'main'; // main function
+                $cacheIds[] = $cacheIdPrefix . 'view/'; // view function (list views)
+                $cacheIds[] = $cacheIdPrefix . 'display/' . $instanceId; // display function (detail views)
+                
+                
+                break;
+            case 'playlist':
                 $cacheIdPrefix = 'MUVideo/' . $objectType . '/';
                 $cacheIds[] = $cacheIdPrefix . 'main'; // main function
                 $cacheIds[] = $cacheIdPrefix . 'view/'; // view function (list views)

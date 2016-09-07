@@ -19,16 +19,16 @@ class MUVideo_Util_Base_ListEntries extends Zikula_AbstractBase
     /**
      * Return the name or names for a given list item.
      *
-     * @param string $value      The dropdown value to process.
-     * @param string $objectType The treated object type.
-     * @param string $fieldName  The list field's name.
-     * @param string $delimiter  String used as separator for multiple selections.
+     * @param string $value      The dropdown value to process
+     * @param string $objectType The treated object type
+     * @param string $fieldName  The list field's name
+     * @param string $delimiter  String used as separator for multiple selections
      *
-     * @return string List item name.
+     * @return string List item name
      */
     public function resolve($value, $objectType = '', $fieldName = '', $delimiter = ', ')
     {
-        if (empty($value) || empty($objectType) || empty($fieldName)) {
+        if ((empty($value) && $value != '0') || empty($objectType) || empty($fieldName)) {
             return $value;
         }
     
@@ -67,9 +67,9 @@ class MUVideo_Util_Base_ListEntries extends Zikula_AbstractBase
     /**
      * Extract concatenated multi selection.
      *
-     * @param string  $value The dropdown value to process.
+     * @param string  $value The dropdown value to process
      *
-     * @return array List of single values.
+     * @return array List of single values
      */
     public function extractMultiList($value)
     {
@@ -91,10 +91,10 @@ class MUVideo_Util_Base_ListEntries extends Zikula_AbstractBase
     /**
      * Determine whether a certain dropdown field has a multi selection or not.
      *
-     * @param string $objectType The treated object type.
-     * @param string $fieldName  The list field's name.
+     * @param string $objectType The treated object type
+     * @param string $fieldName  The list field's name
      *
-     * @return boolean True if this is a multi list false otherwise.
+     * @return boolean True if this is a multi list false otherwise
      */
     public function hasMultipleSelection($objectType, $fieldName)
     {
@@ -118,6 +118,13 @@ class MUVideo_Util_Base_ListEntries extends Zikula_AbstractBase
                         break;
                 }
                 break;
+            case 'playlist':
+                switch ($fieldName) {
+                    case 'workflowState':
+                        $result = false;
+                        break;
+                }
+                break;
         }
     
         return $result;
@@ -127,10 +134,10 @@ class MUVideo_Util_Base_ListEntries extends Zikula_AbstractBase
     /**
      * Get entries for a certain dropdown field.
      *
-     * @param string  $objectType The treated object type.
-     * @param string  $fieldName  The list field's name.
+     * @param string  $objectType The treated object type
+     * @param string  $fieldName  The list field's name
      *
-     * @return array Array with desired list entries.
+     * @return array Array with desired list entries
      */
     public function getEntries($objectType, $fieldName)
     {
@@ -154,6 +161,13 @@ class MUVideo_Util_Base_ListEntries extends Zikula_AbstractBase
                         break;
                 }
                 break;
+            case 'playlist':
+                switch ($fieldName) {
+                    case 'workflowState':
+                        $entries = $this->getWorkflowStateEntriesForPlaylist();
+                        break;
+                }
+                break;
         }
     
         return $entries;
@@ -163,21 +177,25 @@ class MUVideo_Util_Base_ListEntries extends Zikula_AbstractBase
     /**
      * Get 'workflow state' list entries.
      *
-     * @return array Array with desired list entries.
+     * @return array Array with desired list entries
      */
     public function getWorkflowStateEntriesForCollection()
     {
         $states = array();
-        $states[] = array('value'   => 'approved',
-                          'text'    => $this->__('Approved'),
-                          'title'   => $this->__('Content has been approved and is available online.'),
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => '!approved',
-                          'text'    => $this->__('All except approved'),
-                          'title'   => $this->__('Shows all items except these which are approved'),
-                          'image'   => '',
-                          'default' => false);
+        $states[] = array(
+            'value'   => 'approved',
+            'text'    => $this->__('Approved'),
+            'title'   => $this->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        );
+        $states[] = array(
+            'value'   => '!approved',
+            'text'    => $this->__('All except approved'),
+            'title'   => $this->__('Shows all items except these which are approved'),
+            'image'   => '',
+            'default' => false
+        );
     
         return $states;
     }
@@ -185,21 +203,51 @@ class MUVideo_Util_Base_ListEntries extends Zikula_AbstractBase
     /**
      * Get 'workflow state' list entries.
      *
-     * @return array Array with desired list entries.
+     * @return array Array with desired list entries
      */
     public function getWorkflowStateEntriesForMovie()
     {
         $states = array();
-        $states[] = array('value'   => 'approved',
-                          'text'    => $this->__('Approved'),
-                          'title'   => $this->__('Content has been approved and is available online.'),
-                          'image'   => '',
-                          'default' => false);
-        $states[] = array('value'   => '!approved',
-                          'text'    => $this->__('All except approved'),
-                          'title'   => $this->__('Shows all items except these which are approved'),
-                          'image'   => '',
-                          'default' => false);
+        $states[] = array(
+            'value'   => 'approved',
+            'text'    => $this->__('Approved'),
+            'title'   => $this->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        );
+        $states[] = array(
+            'value'   => '!approved',
+            'text'    => $this->__('All except approved'),
+            'title'   => $this->__('Shows all items except these which are approved'),
+            'image'   => '',
+            'default' => false
+        );
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'workflow state' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getWorkflowStateEntriesForPlaylist()
+    {
+        $states = array();
+        $states[] = array(
+            'value'   => 'approved',
+            'text'    => $this->__('Approved'),
+            'title'   => $this->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        );
+        $states[] = array(
+            'value'   => '!approved',
+            'text'    => $this->__('All except approved'),
+            'title'   => $this->__('Shows all items except these which are approved'),
+            'image'   => '',
+            'default' => false
+        );
     
         return $states;
     }

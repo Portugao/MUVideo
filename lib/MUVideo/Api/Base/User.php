@@ -19,18 +19,11 @@ class MUVideo_Api_Base_User extends Zikula_AbstractApi
     /**
      * Returns available user panel links.
      *
-     * @return array Array of user links.
+     * @return array Array of user links
      */
     public function getLinks()
     {
         $links = array();
-
-        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'main'),
-                             'text' => $this->__('Backend'),
-                             'title' => $this->__('Switch to administration area.'),
-                             'class' => 'z-icon-es-options');
-        }
 
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
         $utilArgs = array('api' => 'user', 'action' => 'getLinks');
@@ -40,17 +33,46 @@ class MUVideo_Api_Base_User extends Zikula_AbstractApi
         $currentLegacyType = $this->request->query->filter('lct', 'user', FILTER_SANITIZE_STRING);
         $permLevel = in_array('admin', array($currentType, $currentLegacyType)) ? ACCESS_ADMIN : ACCESS_READ;
 
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+            $links[] = array(
+                'url' => ModUtil::url($this->name, 'admin', 'main'),
+                 'text' => $this->__('Backend'),
+                 'title' => $this->__('Switch to administration area.'),
+                 'class' => 'z-icon-es-options'
+             );
+        }
+        
         if (in_array('collection', $allowedObjectTypes)
             && SecurityUtil::checkPermission($this->name . ':Collection:', '::', $permLevel)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'collection')),
-                             'text' => $this->__('Collections'),
-                             'title' => $this->__('Collection list'));
+            $links[] = array(
+                'url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'collection')),
+                 'text' => $this->__('Collections'),
+                 'title' => $this->__('Collection list')
+             );
         }
         if (in_array('movie', $allowedObjectTypes)
             && SecurityUtil::checkPermission($this->name . ':Movie:', '::', $permLevel)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'movie')),
-                             'text' => $this->__('Movies'),
-                             'title' => $this->__('Movie list'));
+            $links[] = array(
+                'url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'movie')),
+                 'text' => $this->__('Movies'),
+                 'title' => $this->__('Movie list')
+             );
+        }
+        if (in_array('playlist', $allowedObjectTypes)
+            && SecurityUtil::checkPermission($this->name . ':Playlist:', '::', $permLevel)) {
+            $links[] = array(
+                'url' => ModUtil::url($this->name, 'user', 'view', array('ot' => 'playlist')),
+                 'text' => $this->__('Playlists'),
+                 'title' => $this->__('Playlist list')
+             );
+        }
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+            $links[] = [
+                'url' => $this->router->generate('muvideo_admin_config'),
+                'text' => $this->__('Configuration'),
+                'title' => $this->__('Manage settings for this application'),
+                'icon' => 'wrench'
+            ];
         }
 
         return $links;
@@ -59,7 +81,7 @@ class MUVideo_Api_Base_User extends Zikula_AbstractApi
     /**
      * Forms custom url string.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
      * @return string custom url string
      */
@@ -201,7 +223,7 @@ class MUVideo_Api_Base_User extends Zikula_AbstractApi
     /**
      * Decodes the custom url string.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
      * @return bool true if successful, false otherwise
      */

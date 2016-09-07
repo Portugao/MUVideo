@@ -19,17 +19,17 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
     /**
      * Determines the view template for a certain method with given parameters.
      *
-     * @param Zikula_View $view    Reference to view object.
-     * @param string      $type    Current controller (name of currently treated entity).
-     * @param string      $func    Current function (main, view, ...).
-     * @param array       $args    Additional arguments.
+     * @param Zikula_View $view     Reference to view object
+     * @param string      $type    Current controller (name of currently treated entity)
+     * @param string      $func    Current function (main, view, ...)
+     * @param array       $args    Additional arguments
      *
-     * @return string name of template file.
+     * @return string name of template file
      */
     public function getViewTemplate(Zikula_View $view, $type, $func, $args = array())
     {
         // create the base template name
-        $template = DataUtil::formatForOS($type . '/' . $func);
+        $template = $type . '/' . $func;
     
         // check for template extension
         $templateExtension = $this->determineExtension($view, $type, $func, $args);
@@ -42,6 +42,7 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
             $templateExtension .= '.tpl';
         }
     
+        // check if custom template exists
         if (!empty($tpl) && $view->template_exists($template . '_' . DataUtil::formatForOS($tpl) . $templateExtension)) {
             $template .= '_' . DataUtil::formatForOS($tpl);
         }
@@ -53,13 +54,13 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
     /**
      * Utility method for managing view templates.
      *
-     * @param Zikula_View $view     Reference to view object.
-     * @param string      $type     Current controller (name of currently treated entity).
-     * @param string      $func     Current function (main, view, ...).
-     * @param string      $template Optional assignment of precalculated template file.
-     * @param array       $args     Additional arguments.
+     * @param Zikula_View $view     Reference to view object
+     * @param string      $type     Current controller (name of currently treated entity)
+     * @param string      $func     Current function (main, view, ...)
+     * @param array       $args     Additional arguments
+     * @param string      $template Optional assignment of precalculated template file
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     public function processTemplate(Zikula_View $view, $type, $func, $args = array(), $template = '')
     {
@@ -85,10 +86,11 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
             // standalone output
             if ($templateExtension == 'pdf') {
                 $template = str_replace('.pdf', '', $template);
+    
                 return $this->processPdf($view, $template);
-            } else {
-                $view->display($template);
             }
+    
+            $view->display($template);
             System::shutDown();
         }
     
@@ -99,12 +101,12 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
     /**
      * Get extension of the currently treated template.
      *
-     * @param Zikula_View $view    Reference to view object.
-     * @param string      $type    Current controller (name of currently treated entity).
-     * @param string      $func    Current function (main, view, ...).
-     * @param array       $args    Additional arguments.
+     * @param Zikula_View $view     Reference to view object
+     * @param string      $type    Current controller (name of currently treated entity)
+     * @param string      $func    Current function (main, view, ...)
+     * @param array       $args    Additional arguments
      *
-     * @return array List of allowed template extensions.
+     * @return array List of allowed template extensions
      */
     protected function determineExtension(Zikula_View $view, $type, $func, $args = array())
     {
@@ -132,10 +134,10 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
     /**
      * Get list of available template extensions.
      *
-     * @param string $type Current controller (name of currently treated entity).
-     * @param string $func Current function (main, view, ...).
+     * @param string $type Current controller (name of currently treated entity)
+     * @param string $func Current function (main, view, ...)
      *
-     * @return array List of allowed template extensions.
+     * @return array List of allowed template extensions
      */
     public function availableExtensions($type, $func)
     {
@@ -149,9 +151,9 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
             }
         } elseif ($func == 'display') {
             if ($hasAdminAccess) {
-                $extensions = array('json', 'kml', 'ics');
+                $extensions = array('json', 'kml');
             } else {
-                $extensions = array('ics');
+                $extensions = array();
             }
         }
     
@@ -161,10 +163,10 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
     /**
      * Processes a template file using dompdf (LGPL).
      *
-     * @param Zikula_View $view     Reference to view object.
-     * @param string      $template Name of template to use.
+     * @param Zikula_View $view     Reference to view object
+     * @param string      $template Name of template to use
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     protected function processPdf(Zikula_View $view, $template)
     {
@@ -178,7 +180,7 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
         //$output = utf8_decode($output);
     
         // then the surrounding
-        $output = $view->fetch('include_pdfheader.tpl') . $output . '</body></html>';
+        $output = $view->fetch('includePdfHeader.tpl') . $output . '</body></html>';
     
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
         // create name of the pdf output file
@@ -209,11 +211,11 @@ class MUVideo_Util_Base_View extends Zikula_AbstractBase
     /**
      * Display a given file size in a readable format
      *
-     * @param string  $size     File size in bytes.
-     * @param boolean $nodesc   If set to true the description will not be appended.
-     * @param boolean $onlydesc If set to true only the description will be returned.
+     * @param string  $size     File size in bytes
+     * @param boolean $nodesc   If set to true the description will not be appended
+     * @param boolean $onlydesc If set to true only the description will be returned
      *
-     * @return string File size in a readable form.
+     * @return string File size in a readable form
      */
     public function getReadableFileSize($size, $nodesc = false, $onlydesc = false)
     {

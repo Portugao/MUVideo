@@ -32,26 +32,28 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
         $this->objectType = 'collection';
         $this->objectTypeCapital = 'Collection';
         $this->objectTypeLower = 'collection';
-    
+        
         $this->hasPageLockSupport = true;
+        $this->hasTranslatableFields = true;
+    
         $this->hasCategories = true;
         // array with list fields and multiple flags
         $this->listFields = array('workflowState' => false);
     }
 
     /**
-     * Initialize form handler.
+     * Initialise form handler.
      *
      * This method takes care of all necessary initialisation of our data and form states.
      *
-     * @param Zikula_Form_View $view The form view instance.
+     * @param Zikula_Form_View $view The form view instance
      *
-     * @return boolean False in case of initialization errors, otherwise true.
+     * @return boolean False in case of initialisation errors, otherwise true
      */
     public function initialize(Zikula_Form_View $view)
     {
         $result = parent::initialize($view);
-        if ($result === false) {
+        if (false === $result) {
             return $result;
         }
     
@@ -60,7 +62,7 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
             if (!$modelHelper->canBeCreated($this->objectType)) {
                 LogUtil::registerError($this->__('Sorry, but you can not create the collection yet as other items are required which must be created before!'));
     
-                return $this->view->redirect($this->getRedirectUrl(null));
+                return $this->view->redirect($this->getRedirectUrl(array('commandName' => '')));
             }
         }
     
@@ -72,12 +74,12 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
         $entityData = $entity->toArray();
     
         if (count($this->listFields) > 0) {
-            $helper = new MUVideo_Util_ListEntries($this->view->getServiceManager());
-    
+            $listHelper = new MUVideo_Util_ListEntries($this->view->getServiceManager());
+        
             foreach ($this->listFields as $listField => $isMultiple) {
-                $entityData[$listField . 'Items'] = $helper->getEntries($this->objectType, $listField);
+                $entityData[$listField . 'Items'] = $listHelper->getEntries($this->objectType, $listField);
                 if ($isMultiple) {
-                    $entityData[$listField] = $helper->extractMultiList($entityData[$listField]);
+                    $entityData[$listField] = $listHelper->extractMultiList($entityData[$listField]);
                 }
             }
         }
@@ -85,24 +87,10 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
         // assign data to template as array (makes translatable support easier)
         $this->view->assign($this->objectTypeLower, $entityData);
     
-        if ($this->mode == 'edit') {
-            // assign formatted title
-            $this->view->assign('formattedEntityTitle', $entity->getTitleFromDisplayPattern());
-        }
-    
-        // everything okay, no initialization errors occured
+        // everything okay, no initialisation errors occured
         return true;
     }
 
-    /**
-     * Post-initialise hook.
-     *
-     * @return void
-     */
-    public function postInitialize()
-    {
-        parent::postInitialize();
-    }
 
     /**
      * Get list of allowed redirect codes.
@@ -113,6 +101,7 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
     {
         $codes = parent::getRedirectCodes();
     
+    
         return $codes;
     }
 
@@ -120,9 +109,9 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
      * Get the default redirect url. Required if no returnTo parameter has been supplied.
      * This method is called in handleCommand so we know which command has been performed.
      *
-     * @param array  $args List of arguments.
+     * @param array $args List of arguments
      *
-     * @return string The default redirect url.
+     * @return string The default redirect url
      */
     protected function getDefaultReturnUrl($args)
     {
@@ -140,15 +129,15 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
      *
      * This event handler is called when a command is issued by the user.
      *
-     * @param Zikula_Form_View $view The form view instance.
-     * @param array            $args Additional arguments.
+     * @param Zikula_Form_View $view The form view instance
+     * @param array            $args Additional arguments
      *
-     * @return mixed Redirect or false on errors.
+     * @return mixed Redirect or false on errors
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
         $result = parent::handleCommand($view, $args);
-        if ($result === false) {
+        if (false === $result) {
             return $result;
         }
     
@@ -158,32 +147,32 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
     /**
      * Get success or error message for default operations.
      *
-     * @param Array   $args    Arguments from handleCommand method.
-     * @param Boolean $success Becomes true if this is a success, false for default error.
+     * @param array   $args    Arguments from handleCommand method
+     * @param Boolean $success Becomes true if this is a success, false for default error
      *
-     * @return String desired status or error message.
+     * @return String desired status or error message
      */
     protected function getDefaultMessage($args, $success = false)
     {
-        if ($success !== true) {
+        if (false === $success) {
             return parent::getDefaultMessage($args, $success);
         }
     
         $message = '';
         switch ($args['commandName']) {
             case 'submit':
-                        if ($this->mode == 'create') {
-                            $message = $this->__('Done! Collection created.');
-                        } else {
-                            $message = $this->__('Done! Collection updated.');
-                        }
-                        break;
+                if ($this->mode == 'create') {
+                    $message = $this->__('Done! Collection created.');
+                } else {
+                    $message = $this->__('Done! Collection updated.');
+                }
+                break;
             case 'delete':
-                        $message = $this->__('Done! Collection deleted.');
-                        break;
+                $message = $this->__('Done! Collection deleted.');
+                break;
             default:
-                        $message = $this->__('Done! Collection updated.');
-                        break;
+                $message = $this->__('Done! Collection updated.');
+                break;
         }
     
         return $message;
@@ -192,17 +181,22 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
     /**
      * This method executes a certain workflow action.
      *
-     * @param Array $args Arguments from handleCommand method.
+     * @param array $args Arguments from handleCommand method
      *
-     * @return bool Whether everything worked well or not.
+     * @return bool Whether everything worked well or not
      */
     public function applyAction(array $args = array())
     {
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
     
+        if (!$entity->validate()) {
+            return false;
+        }
+    
         $action = $args['commandName'];
     
+        $success = false;
         try {
             // execute the workflow action
             $workflowHelper = new MUVideo_Util_Workflow($this->view->getServiceManager());
@@ -220,22 +214,23 @@ class MUVideo_Form_Handler_Collection_Base_Edit extends MUVideo_Form_Handler_Com
             }
         }
     
-    
         return $success;
     }
 
     /**
      * Get url to redirect to.
      *
-     * @param array  $args List of arguments.
+     * @param array $args List of arguments
      *
-     * @return string The redirect url.
+     * @return string The redirect url
      */
     protected function getRedirectUrl($args)
     {
         if ($this->inlineUsage == true) {
-            $urlArgs = array('idPrefix'    => $this->idPrefix,
-                             'commandName' => $args['commandName']);
+            $urlArgs = array(
+                'idPrefix' => $this->idPrefix,
+                'commandName' => $args['commandName']
+            );
             foreach ($this->idFields as $idField) {
                 $urlArgs[$idField] = $this->idValues[$idField];
             }

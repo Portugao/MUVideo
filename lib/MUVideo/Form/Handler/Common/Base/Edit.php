@@ -65,9 +65,9 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Reference to treated entity instance.
      *
-     * @var Zikula_EntityAccess
+     * @var Zikula_
      */
-    protected $entityRef = false;
+    protected $entityRef = null;
 
     /**
      * List of identifier names.
@@ -82,20 +82,6 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
      * @var array
      */
     protected $idValues = array();
-    
-    /**
-     * List of identifiers for predefined relationships.
-     *
-     * @var mixed
-     */
-    protected $relationPresets = array();
-
-    /**
-     * One of "create" or "edit".
-     *
-     * @var string
-     */
-    protected $mode;
 
     /**
      * Code defining the redirect goal after command handling.
@@ -117,13 +103,13 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
      * @var string
      */
     protected $repeatReturnUrl = null;
-
+    
     /**
-     * Whether this form is being used inline within a window.
+     * List of identifiers for predefined relationships.
      *
-     * @var boolean
+     * @var mixed
      */
-    protected $inlineUsage = false;
+    protected $relationPresets = array();
 
     /**
      * Full prefix for related items.
@@ -147,11 +133,11 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     protected $hasPageLockSupport = false;
 
     /**
-     * Whether the entity is categorisable or not.
+     * Whether the entity has translatable fields or not.
      *
      * @var boolean
      */
-    protected $hasCategories = false;
+    protected $hasTranslatableFields = false;
 
     /**
      * Array with upload field names and mandatory flags.
@@ -159,14 +145,34 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
      * @var array
      */
     protected $uploadFields = array();
-
+    
+    /**
+     * One of "create" or "edit".
+     *
+     * @var string
+     */
+    protected $mode;
+    
+    /**
+     * Whether this form is being used inline within a window.
+     *
+     * @var boolean
+     */
+    protected $inlineUsage = false;
+    
+    /**
+     * Whether the entity is categorisable or not.
+     *
+     * @var boolean
+     */
+    protected $hasCategories = false;
+    
     /**
      * Array with list field names and multiple flags.
      *
      * @var array
      */
     protected $listFields = array();
-
 
     /**
      * Post construction hook.
@@ -176,7 +182,7 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     public function setup()
     {
     }
-
+    
     /**
      * Pre-initialise hook.
      *
@@ -187,17 +193,18 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     }
 
     /**
-     * Initialize form handler.
+     * Initialise form handler.
      *
      * This method takes care of all necessary initialisation of our data and form states.
      *
-     * @param Zikula_Form_View $view The form view instance.
+     * @param Zikula_Form_View $view The form view instance
      *
-     * @return boolean False in case of initialization errors, otherwise true.
+     * @return boolean False in case of initialisation errors, otherwise true
      */
     public function initialize(Zikula_Form_View $view)
     {
-        $this->inlineUsage = ((UserUtil::getTheme() == 'Printer') ? true : false);
+        $this->inlineUsage = UserUtil::getTheme() == 'Printer' ? true : false;
+    
         $this->idPrefix = $this->request->query->filter('idp', '', FILTER_SANITIZE_STRING);
     
         // initialise redirect goal
@@ -207,7 +214,6 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     
         $this->permissionComponent = $this->name . ':' . $this->objectTypeCapital . ':';
     
-        $entityClass = $this->name . '_Entity_' . ucfirst($this->objectType);
         $this->idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', array('ot' => $this->objectType));
     
         // retrieve identifier of the object we wish to view
@@ -217,23 +223,24 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
         $hasIdentifier = $controllerHelper->isValidIdentifier($this->idValues);
     
         $entity = null;
-        $this->mode = ($hasIdentifier) ? 'edit' : 'create';
+        $this->mode = $hasIdentifier ? 'edit' : 'create';
     
         if ($this->mode == 'edit') {
             if (!SecurityUtil::checkPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
                 return LogUtil::registerPermissionError();
             }
     
-            $entity = $this->initEntityForEdit();
+            $entity = $this->initEntityForEditing();
             if (!is_object($entity)) {
                 return false;
             }
     
-            if ($this->hasPageLockSupport === true && ModUtil::available('PageLock')) {
+            if (true === $this->hasPageLockSupport && ModUtil::available('PageLock')) {
                 // try to guarantee that only one person at a time can be editing this entity
-                ModUtil::apiFunc('PageLock', 'user', 'pageLock',
-                                         array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier(),
-                                               'returnUrl' => $this->getRedirectUrl(null)));
+                ModUtil::apiFunc('PageLock', 'user', 'pageLock', array(
+                    'lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier(),
+                    'returnUrl' => $this->getRedirectUrl(null)
+                ));
             }
         } else {
             if (!SecurityUtil::checkPermission($this->permissionComponent, '::', ACCESS_EDIT)) {
@@ -243,33 +250,37 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
             $entity = $this->initEntityForCreation();
         }
     
-        $this->view->assign('mode', $this->mode)
-                   ->assign('inlineUsage', $this->inlineUsage);
-    
         // save entity reference for later reuse
         $this->entityRef = $entity;
     
         
+        if (true === $this->hasTranslatableFields) {
+            $this->initTranslationsForEditing();
+        }
+        
+        
         if ($this->hasCategories === true) {
-            $this->initCategoriesForEdit();
+            $this->initCategoriesForEditing();
         }
     
         $workflowHelper = new MUVideo_Util_Workflow($this->view->getServiceManager());
         $actions = $workflowHelper->getActionsForObject($entity);
-        if ($actions === false || !is_array($actions)) {
+        if (false === $actions || !is_array($actions)) {
             return LogUtil::registerError($this->__('Error! Could not determine workflow actions.'));
         }
-        // assign list of allowed actions to the view for further processing
-        $this->view->assign('actions', $actions);
     
-        // everything okay, no initialization errors occured
+        $this->view->assign('mode', $this->mode)
+                   ->assign('inlineUsage', $this->inlineUsage)
+                   ->assign('actions', $actions);
+    
+        // everything okay, no initialisation errors occured
         return true;
     }
     
     /**
      * Create concatenated identifier string (for composite keys).
      *
-     * @return String concatenated identifiers. 
+     * @return String concatenated identifiers
      */
     protected function createCompositeIdentifier()
     {
@@ -287,12 +298,12 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Initialise existing entity for editing.
      *
-     * @return Zikula_EntityAccess desired entity instance or null
+     * @return Zikula_EntityAccess|null Desired entity instance or null
      */
-    protected function initEntityForEdit()
+    protected function initEntityForEditing()
     {
         $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $this->objectType, 'id' => $this->idValues));
-        if ($entity == null) {
+        if (null === $entity) {
             return LogUtil::registerError($this->__('No such item.'));
         }
     
@@ -304,31 +315,35 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Initialise new entity for creation.
      *
-     * @return Zikula_EntityAccess desired entity instance or null
+     * @return Zikula_EntityAccess|null Desired entity instance or null
      */
     protected function initEntityForCreation()
     {
         $this->hasTemplateId = false;
         $templateId = $this->request->query->get('astemplate', '');
+        $entity = null;
+    
         if (!empty($templateId)) {
             $templateIdValueParts = explode('_', $templateId);
-            $this->hasTemplateId = (count($templateIdValueParts) == count($this->idFields));
+            $this->hasTemplateId = count($templateIdValueParts) == count($this->idFields);
+    
+            if (true === $this->hasTemplateId) {
+                $templateIdValues = array();
+                $i = 0;
+                foreach ($this->idFields as $idField) {
+                    $templateIdValues[$idField] = $templateIdValueParts[$i];
+                    $i++;
+                }
+                // reuse existing entity
+                $entityT = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $this->objectType, 'id' => $templateIdValues));
+                if (null === $entityT) {
+                    return LogUtil::registerError($this->__('No such item.'));
+                }
+                $entity = clone $entityT;
+            }
         }
     
-        if ($this->hasTemplateId === true) {
-            $templateIdValues = array();
-            $i = 0;
-            foreach ($this->idFields as $idField) {
-                $templateIdValues[$idField] = $templateIdValueParts[$i];
-                $i++;
-            }
-            // reuse existing entity
-            $entityT = ModUtil::apiFunc($this->name, 'selection', 'getEntity', array('ot' => $this->objectType, 'id' => $templateIdValues));
-            if ($entityT == null) {
-                return LogUtil::registerError($this->__('No such item.'));
-            }
-            $entity = clone $entityT;
-        } else {
+        if (is_null($entity)) {
             $entityClass = $this->name . '_Entity_' . ucfirst($this->objectType);
             $entity = new $entityClass();
         }
@@ -337,9 +352,29 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     }
     
     /**
+     * Initialise translations.
+     */
+    protected function initTranslationsForEditing()
+    {
+        $entity = $this->entityRef;
+    
+        // retrieve translated fields
+        $translatableHelper = new MUVideo_Util_Translatable($this->view->getServiceManager());
+        $translations = $translatableHelper->prepareEntityForEditing($this->objectType, $entity);
+    
+        // assign translations
+        foreach ($translations as $language => $translationData) {
+            $this->view->assign($this->objectTypeLower . $language, $translationData);
+        }
+    
+        // assign list of installed languages for translatable extension
+        $this->view->assign('supportedLanguages', $translatableHelper->getSupportedLanguages($this->objectType));
+    }
+    
+    /**
      * Initialise categories.
      */
-    protected function initCategoriesForEdit()
+    protected function initCategoriesForEditing()
     {
         $entity = $this->entityRef;
     
@@ -367,9 +402,11 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     {
         $entityClass = $this->name . '_Entity_' . ucfirst($this->objectType);
         $repository = $this->entityManager->getRepository($entityClass);
-        $utilArgs = array('controller' => \FormUtil::getPassedValue('type', 'user', 'GETPOST'),
-                          'action' => 'edit',
-                          'mode' => $this->mode);
+        $utilArgs = array(
+            'controller' => FormUtil::getPassedValue('type', 'user', 'GETPOST'),
+            'action' => 'edit',
+            'mode' => $this->mode
+        );
         $this->view->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
     }
 
@@ -381,6 +418,7 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     protected function getRedirectCodes()
     {
         $codes = array();
+    
         // main page of admin area
         $codes[] = 'admin';
         // admin list of entities
@@ -408,13 +446,13 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
      * value indicating the name of the command. The command name is normally specified by the plugin
      * that initiated the command.
      *
-     * @param Zikula_Form_View $view The form view instance.
-     * @param array            $args Additional arguments.
+     * @param Zikula_Form_View $view The form view instance
+     * @param array            $args Additional arguments
      *
      * @see Zikula_Form_Plugin_Button
      * @see Zikula_Form_Plugin_ImageButton
      *
-     * @return mixed Redirect or false on errors.
+     * @return mixed Redirect or false on errors
      */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
@@ -428,9 +466,9 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
             }
         }
     
-        if ($action != 'cancel') {
-            $otherFormData = $this->fetchInputData($view, $args);
-            if ($otherFormData === false) {
+        if ($isRegularAction || $action == 'delete') {
+            $unmappedFormData = $this->fetchInputData($view, $args);
+            if (false === $unmappedFormData) {
                 return false;
             }
         }
@@ -438,83 +476,115 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
     
-        $hookAreaPrefix = $entity->getHookAreaPrefix();
-        if ($action != 'cancel') {
-            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
-    
+        $hookHelper = null;
+        if ($entity->supportsHookSubscribers() && $action != 'cancel') {
+            $hookHelper = new MUVideo_Util_Hook($this->view->getServiceManager());
             // Let any hooks perform additional validation actions
-            $hook = new Zikula_ValidationHook($hookAreaPrefix . '.' . $hookType, new Zikula_Hook_ValidationProviders());
-            $validators = $this->notifyHooks($hook)->getValidators();
-            if ($validators->hasErrors()) {
+            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
+            $validationHooksPassed = $hookHelper->callValidationHooks($entity, $hookType);
+            if (!$validationHooksPassed) {
                 return false;
             }
         }
     
-        if ($action != 'cancel') {
+        if ($isRegularAction && true === $this->hasTranslatableFields) {
+            $this->processTranslationsForUpdate($entity, $unmappedFormData);
+        }
+    
+        if ($isRegularAction || $action == 'delete') {
             $success = $this->applyAction($args);
             if (!$success) {
                 // the workflow operation failed
                 return false;
             }
     
-            // Let any hooks know that we have created, updated or deleted an item
-            $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
-            $url = null;
-            if ($action != 'delete') {
-                $urlArgs = $entity->createUrlArgs();
-                $url = new Zikula_ModUrl($this->name, FormUtil::getPassedValue('type', 'user', 'GETPOST'), 'display', ZLanguage::getLanguageCode(), $urlArgs);
+            if ($entity->supportsHookSubscribers()) {
+                // Let any hooks know that we have created, updated or deleted an item
+                $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
+                $url = null;
+                if ($action != 'delete') {
+                    $urlArgs = $entity->createUrlArgs();
+                    $url = new Zikula_ModUrl($this->name, FormUtil::getPassedValue('type', 'user', 'GETPOST'), 'display', ZLanguage::getLanguageCode(), $urlArgs);
+                }
+                if (!is_null($hookHelper)) {
+                    $hookHelper->callProcessHooks($entity, $hookType, $url);
+                }
             }
-            $hook = new Zikula_ProcessHook($hookAreaPrefix . '.' . $hookType, $entity->createCompositeIdentifier(), $url);
-            $this->notifyHooks($hook);
     
             // An item was created, updated or deleted, so we clear all cached pages for this item.
             $cacheArgs = array('ot' => $this->objectType, 'item' => $entity);
             ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
-    
+            
             // clear view cache to reflect our changes
             $this->view->clear_cache();
         }
     
-        if ($this->hasPageLockSupport === true && $this->mode == 'edit' && ModUtil::available('PageLock')) {
-            ModUtil::apiFunc('PageLock', 'user', 'releaseLock',
-                             array('lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()));
+        if (true === $this->hasPageLockSupport && $this->mode == 'edit' && ModUtil::available('PageLock')) {
+            ModUtil::apiFunc('PageLock', 'user', 'releaseLock', array(
+                'lockName' => $this->name . $this->objectTypeCapital . $this->createCompositeIdentifier()
+            ));
         }
     
         return $this->view->redirect($this->getRedirectUrl($args));
     }
     
     /**
+     * Prepare update of translations.
+     *
+     * @param Zikula_EntityAccess $entity   currently treated entity instance
+     * @param Array               $formData unmapped form data outside the entity scope
+     */
+    protected function processTranslationsForUpdate($entity, $formData)
+    {
+        $entityTransClass = $this->name . '_Entity_' . ucfirst($this->objectType) . 'Translation';
+        $transRepository = $this->entityManager->getRepository($entityTransClass);
+    
+        // persist translated fields
+        $translatableHelper = new MUVideo_Util_Translatable($this->view->getServiceManager());
+        $translations = $translatableHelper->processEntityAfterEditing($this->objectType, $formData);
+    
+        foreach ($translations as $locale => $translationFields) {
+            foreach ($translationFields as $fieldName => $value) {
+                $transRepository->translate($entity, $fieldName, $locale, $value);
+            }
+        }
+    
+        $this->entityManager->flush();
+    }
+    
+    /**
      * Get success or error message for default operations.
      *
-     * @param Array   $args    arguments from handleCommand method.
-     * @param Boolean $success true if this is a success, false for default error.
-     * @return String desired status or error message.
+     * @param array   $args    arguments from handleCommand method
+     * @param Boolean $success true if this is a success, false for default error
+     *
+     * @return String desired status or error message
      */
     protected function getDefaultMessage($args, $success = false)
     {
         $message = '';
         switch ($args['commandName']) {
             case 'create':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item created.');
-                    } else {
-                        $message = $this->__('Error! Creation attempt failed.');
-                    }
-                    break;
+                if (true === $success) {
+                    $message = $this->__('Done! Item created.');
+                } else {
+                    $message = $this->__('Error! Creation attempt failed.');
+                }
+                break;
             case 'update':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item updated.');
-                    } else {
-                        $message = $this->__('Error! Update attempt failed.');
-                    }
-                    break;
+                if (true === $success) {
+                    $message = $this->__('Done! Item updated.');
+                } else {
+                    $message = $this->__('Error! Update attempt failed.');
+                }
+                break;
             case 'delete':
-                    if ($success === true) {
-                        $message = $this->__('Done! Item deleted.');
-                    } else {
-                        $message = $this->__('Error! Deletion attempt failed.');
-                    }
-                    break;
+                if (true === $success) {
+                    $message = $this->__('Done! Item deleted.');
+                } else {
+                    $message = $this->__('Error! Deletion attempt failed.');
+                }
+                break;
         }
     
         return $message;
@@ -523,28 +593,30 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Add success or error message to session.
      *
-     * @param Array   $args    arguments from handleCommand method.
-     * @param Boolean $success true if this is a success, false for default error.
+     * @param array   $args    arguments from handleCommand method
+     * @param Boolean $success true if this is a success, false for default error
      */
     protected function addDefaultMessage($args, $success = false)
     {
         $message = $this->getDefaultMessage($args, $success);
-        if (!empty($message)) {
-            if ($success === true) {
-                LogUtil::registerStatus($message);
-            } else {
-                LogUtil::registerError($message);
-            }
+        if (empty($message)) {
+            return;
+        }
+    
+        if (true === $success) {
+            LogUtil::registerStatus($message);
+        } else {
+            LogUtil::registerError($message);
         }
     }
 
     /**
      * Input data processing called by handleCommand method.
      *
-     * @param Zikula_Form_View $view The form view instance.
-     * @param array            $args Additional arguments.
+     * @param Zikula_Form_View $view The form view instance
+     * @param array            $args Additional arguments
      *
-     * @return array form data after processing.
+     * @return array form data after processing
      */
     public function fetchInputData(Zikula_Form_View $view, &$args)
     {
@@ -557,15 +629,7 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
         // get treated entity reference from persisted member var
         $entity = $this->entityRef;
     
-    
         if ($args['commandName'] != 'cancel') {
-            if (count($this->uploadFields) > 0) {
-                $entityData = $this->handleUploads($entityData, $entity);
-                if ($entityData == false) {
-                    return false;
-                }
-            }
-    
             if (count($this->listFields) > 0) {
                 foreach ($this->listFields as $listField => $multiple) {
                     if (!$multiple) {
@@ -580,6 +644,15 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
                     }
                 }
             }
+            
+    
+            if (count($this->uploadFields) > 0) {
+                $entityData = $this->handleUploads($entityData, $entity);
+                if ($entityData == false) {
+                    return false;
+                }
+            }
+    
         } else {
             // remove fields for form options to prevent them being merged into the entity object
             if (count($this->uploadFields) > 0) {
@@ -597,6 +670,7 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
             }
             unset($entityData['repeatCreation']);
         }
+    
         if (isset($entityData['additionalNotificationRemarks'])) {
             SessionUtil::setVar($this->name . 'AdditionalNotificationRemarks', $entityData['additionalNotificationRemarks']);
             unset($entityData['additionalNotificationRemarks']);
@@ -622,11 +696,11 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Updates the entity with new relationship data.
      *
-     * @param Zikula_Form_View    $view       The form view instance.
-     * @param Zikula_EntityAccess $entity     Reference to the updated entity.
-     * @param array               $entityData Entity related form data.
+     * @param Zikula_Form_View    $view       The form view instance
+     * @param Zikula_EntityAccess $entity     Reference to the updated entity
+     * @param array               $entityData Entity related form data
      *
-     * @return array form data after processing.
+     * @return array Form data after processing
      */
     protected function writeRelationDataToEntity(Zikula_Form_View $view, $entity, $entityData)
     {
@@ -639,11 +713,11 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
      * Searches for relationship plugins to write their updated values
      * back to the given entity.
      *
-     * @param Zikula_EntityAccess $entity     Reference to the updated entity.
-     * @param array               $entityData Entity related form data.
-     * @param array               $plugins    List of form plugin which are searched.
+     * @param Zikula_EntityAccess $entity     Reference to the updated entity
+     * @param array               $entityData Entity related form data
+     * @param array               $plugins    List of form plugin which are searched
      *
-     * @return array form data after processing.
+     * @return array Form data after processing
      */
     protected function writeRelationDataToEntity_rec($entity, $entityData, $plugins)
     {
@@ -660,7 +734,7 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Persists any related items.
      *
-     * @param Zikula_Form_View $view The form view instance.
+     * @param Zikula_Form_View $view The form view instance
      */
     protected function persistRelationData(Zikula_Form_View $view)
     {
@@ -683,9 +757,9 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * This method executes a certain workflow action.
      *
-     * @param Array $args Arguments from handleCommand method.
+     * @param array $args Arguments from handleCommand method
      *
-     * @return bool Whether everything worked well or not.
+     * @return bool Whether everything worked well or not
      */
     public function applyAction(array $args = array())
     {
@@ -696,36 +770,36 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
     /**
      * Helper method to process upload fields.
      *
-     * @param array  $formData       The form input data.
-     * @param object $existingObject Data of existing entity object.
+     * @param        array        $formData The form input data
+     * @param Zikula_EntityAccess $entity   Existing entity object
      *
-     * @return array form data after processing.
+     * @return array Form data after processing
      */
-    protected function handleUploads($formData, $existingObject)
+    protected function handleUploads($formData, $entity)
     {
         if (!count($this->uploadFields)) {
             return $formData;
         }
     
         // initialise the upload handler
-        $uploadManager = new MUVideo_UploadHandler();
-        $existingObjectData = $existingObject->toArray();
+        $uploadHandler = new MUVideo_UploadHandler();
+        $existingObjectData = $entity->toArray();
     
-        $objectId = ($this->mode != 'create') ? $this->idValues[0] : 0;
+        $objectId = $this->mode != 'create' ? $this->idValues[0] : 0;
     
         // process all fields
         foreach ($this->uploadFields as $uploadField => $isMandatory) {
             // check if an existing file must be deleted
-            $hasOldFile = (!empty($existingObjectData[$uploadField]));
+            $hasOldFile = !empty($existingObjectData[$uploadField]);
             $hasBeenDeleted = !$hasOldFile;
             if ($this->mode != 'create') {
                 if (isset($formData[$uploadField . 'DeleteFile'])) {
                     if ($hasOldFile && $formData[$uploadField . 'DeleteFile'] === true) {
                         // remove upload file (and image thumbnails)
-                        $existingObjectData = $uploadManager->deleteUploadFile($this->objectType, $existingObjectData, $uploadField, $objectId);
+                        $existingObjectData = $uploadHandler->deleteUploadFile($this->objectType, $existingObjectData, $uploadField, $objectId);
                         if (empty($existingObjectData[$uploadField])) {
-                            $existingObject[$uploadField] = '';
-                            $existingObject[$uploadField . 'Meta'] = array();
+                            $entity[$uploadField] = '';
+                            $entity[$uploadField . 'Meta'] = array();
                         }
                     }
                     unset($formData[$uploadField . 'DeleteFile']);
@@ -741,17 +815,17 @@ class MUVideo_Form_Handler_Common_Base_Edit extends Zikula_Form_AbstractHandler
                 continue;
             }
     
-            if ($hasOldFile && $hasBeenDeleted !== true && $this->mode != 'create') {
+            if ($hasOldFile && true !== $hasBeenDeleted && $this->mode != 'create') {
                 // remove old upload file (and image thumbnails)
-                $existingObjectData = $uploadManager->deleteUploadFile($this->objectType, $existingObjectData, $uploadField, $objectId);
+                $existingObjectData = $uploadHandler->deleteUploadFile($this->objectType, $existingObjectData, $uploadField, $objectId);
                 if (empty($existingObjectData[$uploadField])) {
-                    $existingObject[$uploadField] = '';
-                    $existingObject[$uploadField . 'Meta'] = array();
+                    $entity[$uploadField] = '';
+                    $entity[$uploadField . 'Meta'] = array();
                 }
             }
     
             // do the actual upload (includes validation, physical file processing and reading meta data)
-            $uploadResult = $uploadManager->performFileUpload($this->objectType, $formData, $uploadField);
+            $uploadResult = $uploadHandler->performFileUpload($this->objectType, $formData, $uploadField);
             // assign the upload file name
             $formData[$uploadField] = $uploadResult['fileName'];
             // assign the meta data

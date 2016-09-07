@@ -19,14 +19,14 @@
 abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
 {
     /**
-     * @var Zikula_EntityAccess The entity instance which is treated by this validator.
+     * @var Zikula_EntityAccess The entity instance which is treated by this validator
      */
     protected $entity = null;
 
     /**
      * Constructor.
      *
-     * @param Zikula_EntityAccess $entity The entity to be validated.
+     * @param Zikula_EntityAccess $entity The entity to be validated
      */
     public function __construct(Zikula_EntityAccess $entity)
     {
@@ -37,6 +37,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a valid boolean.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isValidBoolean($fieldName)
@@ -48,6 +49,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a valid number.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isValidNumber($fieldName)
@@ -59,6 +61,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a valid integer.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isValidInteger($fieldName)
@@ -73,6 +76,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string $fieldName The name of the property to be checked
      * @param int    $value     The maximum allowed value
+     *
      * @return boolean result of this check
      */
     public function isIntegerNotLowerThan($fieldName, $value)
@@ -85,6 +89,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string $fieldName The name of the property to be checked
      * @param int    $value     The maximum allowed value
+     *
      * @return boolean result of this check
      */
     public function isIntegerNotHigherThan($fieldName, $value)
@@ -96,6 +101,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a valid user id.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isValidUser($fieldName)
@@ -112,6 +118,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if numeric field value has a value other than 0.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isNumberNotEmpty($fieldName)
@@ -123,6 +130,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if string field value has a value other than ''.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isStringNotEmpty($fieldName)
@@ -135,6 +143,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string $fieldName The name of the property to be checked
      * @param int    $length    The minimum length
+     *
      * @return boolean result of this check
      */
     public function isNumberNotShorterThan($fieldName, $length)
@@ -149,6 +158,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string $fieldName The name of the property to be checked
      * @param int    $length    The maximum allowed length
+     *
      * @return boolean result of this check
      */
     public function isNumberNotLongerThan($fieldName, $length)
@@ -163,6 +173,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string $fieldName The name of the property to be checked
      * @param int    $length    The minimum length
+     *
      * @return boolean result of this check
      */
     public function isStringNotShorterThan($fieldName, $length)
@@ -175,6 +186,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string $fieldName The name of the property to be checked
      * @param int    $length    The maximum allowed length
+     *
      * @return boolean result of this check
      */
     public function isStringNotLongerThan($fieldName, $length)
@@ -187,6 +199,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string $fieldName The name of the property to be checked
      * @param int    $length    The fixed length
+     *
      * @return boolean result of this check
      */
     public function isStringWithFixedLength($fieldName, $length)
@@ -200,6 +213,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * @param string  $fieldName The name of the property to be checked
      * @param string  $keyword   The char or string to search for
      * @param boolean $caseSensitive Whether the search should be case sensitive or not (default false)
+     *
      * @return boolean result of this check
      */
     public function isStringNotContaining($fieldName, $keyword, $caseSensitive = false)
@@ -216,6 +230,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string  $fieldName  The name of the property to be checked
      * @param string  $expression Regular expression string
+     *
      * @return boolean result of this check
      */
     public function isValidRegExp($fieldName, $expression)
@@ -228,12 +243,13 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string  $fieldName     The name of the property to be checked
      * @param boolean $onlyInstalled Whether to accept only installed languages (default false)
+     *
      * @return boolean result of this check
      */
     public function isValidLanguage($fieldName, $onlyInstalled = false)
     {
         $languageMap = ZLanguage::languagemap();
-        $result = in_array($this->entity[$fieldName], array_keys($languageMap));        
+        $result = in_array($this->entity[$fieldName], array_keys($languageMap));
         if (!$result || !$onlyInstalled) {
             return $result;
         } 
@@ -246,6 +262,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if string field value is a valid country code.
      *
      * @param string  $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isValidCountry($fieldName)
@@ -259,6 +276,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if string field value is a valid html colour.
      *
      * @param string  $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isValidHtmlColour($fieldName)
@@ -272,6 +290,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a valid email address.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isValidEmail($fieldName)
@@ -283,6 +302,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a valid url.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isValidUrl($fieldName)
@@ -294,6 +314,7 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a valid DateTime instance.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check
      */
     public function isValidDateTime($fieldName)
@@ -306,7 +327,8 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string  $fieldName The name of the property to be checked
      * @param string  $format    The date format used for comparison
-     * @param boolean $mandatory Whether the property is mandatory or not.
+     * @param boolean $mandatory Whether the property is mandatory or not
+     *
      * @return boolean result of this check
      */
     protected function isDateTimeValueInPast($fieldName, $format, $mandatory = true)
@@ -323,7 +345,8 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      *
      * @param string  $fieldName The name of the property to be checked
      * @param string  $format    The date format used for comparison
-     * @param boolean $mandatory Whether the property is mandatory or not.
+     * @param boolean $mandatory Whether the property is mandatory or not
+     *
      * @return boolean result of this check
      */
     protected function isDateTimeValueInFuture($fieldName, $format, $mandatory = true)
@@ -339,7 +362,8 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a datetime in the past.
      *
      * @param string  $fieldName The name of the property to be checked
-     * @param boolean $mandatory Whether the property is mandatory or not.
+     * @param boolean $mandatory Whether the property is mandatory or not
+     *
      * @return boolean result of this check
      */
     public function isDateTimeInPast($fieldName, $mandatory = true)
@@ -351,7 +375,8 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a datetime in the future.
      *
      * @param string  $fieldName The name of the property to be checked
-     * @param boolean $mandatory Whether the property is mandatory or not.
+     * @param boolean $mandatory Whether the property is mandatory or not
+     *
      * @return boolean result of this check
      */
     public function isDateTimeInFuture($fieldName, $mandatory = true)
@@ -363,7 +388,8 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a date in the past.
      *
      * @param string  $fieldName The name of the property to be checked
-     * @param boolean $mandatory Whether the property is mandatory or not.
+     * @param boolean $mandatory Whether the property is mandatory or not
+     *
      * @return boolean result of this check
      */
     public function isDateInPast($fieldName, $mandatory = true)
@@ -375,7 +401,8 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a date in the future.
      *
      * @param string  $fieldName The name of the property to be checked
-     * @param boolean $mandatory Whether the property is mandatory or not.
+     * @param boolean $mandatory Whether the property is mandatory or not
+     *
      * @return boolean result of this check
      */
     public function isDateInFuture($fieldName, $mandatory = true)
@@ -387,7 +414,8 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a time in the past.
      *
      * @param string  $fieldName The name of the property to be checked
-     * @param boolean $mandatory Whether the property is mandatory or not.
+     * @param boolean $mandatory Whether the property is mandatory or not
+     *
      * @return boolean result of this check
      */
     public function isTimeInPast($fieldName, $mandatory = true)
@@ -399,7 +427,8 @@ abstract class MUVideo_Base_Validator extends Zikula_AbstractBase
      * Checks if field value is a time in the future.
      *
      * @param string  $fieldName The name of the property to be checked
-     * @param boolean $mandatory Whether the property is mandatory or not.
+     * @param boolean $mandatory Whether the property is mandatory or not
+     *
      * @return boolean result of this check
      */
     public function isTimeInFuture($fieldName, $mandatory = true)

@@ -24,7 +24,7 @@ class MUVideo_Listener_Base_User
      * and the $themeName in the $event->data which can be modified.
      * Must $event->stop() if handler performs filter.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function getTheme(Zikula_Event $event)
     {
@@ -39,7 +39,7 @@ class MUVideo_Listener_Base_User
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the user record that was created.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function create(Zikula_Event $event)
     {
@@ -53,7 +53,7 @@ class MUVideo_Listener_Base_User
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the user record, with the updated values.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function update(Zikula_Event $event)
     {
@@ -62,13 +62,11 @@ class MUVideo_Listener_Base_User
     /**
      * Listener for the `user.account.delete` event.
      *
-     * Occurs after a user is deleted from the system.
-     * All handlers are notified.
+     * Occurs after a user is deleted from the system. All handlers are notified.
      * The full user record deleted is available as the subject.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The subject of the event is set to the user record that is being deleted.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function delete(Zikula_Event $event)
     {
@@ -76,6 +74,7 @@ class MUVideo_Listener_Base_User
     
         $userRecord = $event->getSubject();
         $uid = $userRecord['uid'];
+    
         $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->getService('doctrine.entitymanager');
         
@@ -91,6 +90,13 @@ class MUVideo_Listener_Base_User
         $repo->updateCreator($uid, 2);
         
         // set last editor to admin (2) for all movies updated by this user
+        $repo->updateLastEditor($uid, 2);
+        
+        $repo = $entityManager->getRepository('MUVideo_Entity_Playlist');
+        // set creator to admin (2) for all playlists created by this user
+        $repo->updateCreator($uid, 2);
+        
+        // set last editor to admin (2) for all playlists updated by this user
         $repo->updateLastEditor($uid, 2);
     }
 }

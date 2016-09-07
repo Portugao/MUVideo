@@ -23,14 +23,16 @@ class MUVideo_Api_Base_Search extends Zikula_AbstractApi
      */
     public function info()
     {
-        return array('title'     => $this->name,
-                     'functions' => array($this->name => 'search'));
+        return array(
+            'title'     => $this->name,
+            'functions' => array($this->name => 'search')
+        );
     }
     
     /**
      * Display the search form.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
      * @return string Template output
      */
@@ -42,8 +44,10 @@ class MUVideo_Api_Base_Search extends Zikula_AbstractApi
     
         $view = Zikula_View::getInstance($this->name);
     
-        $view->assign('active_collection', (!isset($args['active_collection']) || isset($args['active']['active_collection'])));
-        $view->assign('active_movie', (!isset($args['active_movie']) || isset($args['active']['active_movie'])));
+        $searchTypes = array('collection', 'movie', 'playlist');
+        foreach ($searchTypes as $searchType) {
+            $view->assign('active_' . $searchType, (!isset($args['mUVideoSearchTypes']) || in_array($searchType, $args['mUVideoSearchTypes'])));
+        }
     
         return $view->fetch('search/options.tpl');
     }
@@ -51,7 +55,7 @@ class MUVideo_Api_Base_Search extends Zikula_AbstractApi
     /**
      * Executes the actual search process.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
      * @return boolean
      *
@@ -100,6 +104,12 @@ class MUVideo_Api_Base_Search extends Zikula_AbstractApi
                     $whereArray[] = 'tbl.urlOfYoutube';
                     $whereArray[] = 'tbl.poster';
                     break;
+                case 'playlist':
+                    $whereArray[] = 'tbl.workflowState';
+                    $whereArray[] = 'tbl.title';
+                    $whereArray[] = 'tbl.description';
+                    $whereArray[] = 'tbl.urlOfYoutubePlaylist';
+                    break;
             }
             $where = Search_Api_User::construct_where($args, $whereArray, $languageField);
     
@@ -116,7 +126,7 @@ class MUVideo_Api_Base_Search extends Zikula_AbstractApi
             $idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', array('ot' => $objectType));
             $descriptionField = $repository->getDescriptionFieldName();
     
-            $entitiesWithDisplayAction = array('collection', 'movie');
+            $entitiesWithDisplayAction = array('collection', 'movie', 'playlist');
     
             foreach ($entities as $entity) {
                 $urlArgs = $entity->createUrlArgs();
@@ -162,7 +172,7 @@ class MUVideo_Api_Base_Search extends Zikula_AbstractApi
     /**
      * Assign URL to items.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
      * @return boolean
      */
@@ -173,7 +183,7 @@ class MUVideo_Api_Base_Search extends Zikula_AbstractApi
             $urlArgs = unserialize($datarow['extra']);
             $objectType = $urlArgs['type'];
             unset($urlArgs['type']);
-            if (in_array($objectType, array('collection', 'movie'))) {
+            if (in_array($objectType, array('collection', 'movie', 'playlist'))) {
                 $datarow['url'] = ModUtil::url($this->name, $objectType, 'display', $urlArgs);
             }
         }

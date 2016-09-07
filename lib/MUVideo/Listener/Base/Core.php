@@ -27,7 +27,7 @@ class MUVideo_Listener_Base_Core
      * Must exit if $event['method'] does not match whatever the handler expects.
      * Modify $event->data and $event->stop().
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function apiMethodNotFound(Zikula_Event $event)
     {
@@ -38,7 +38,7 @@ class MUVideo_Listener_Base_Core
      *
      * Occurs after the config.php is loaded.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function preInit(Zikula_Event $event)
     {
@@ -50,7 +50,7 @@ class MUVideo_Listener_Base_Core
      * Occurs after each `System::init()` stage, `$event['stage']` contains the stage.
      * To check if the handler should execute, do `if($event['stage'] & System::CORE_STAGES_*)`.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function init(Zikula_Event $event)
     {
@@ -61,7 +61,7 @@ class MUVideo_Listener_Base_Core
      *
      * Occurs just before System::init() exits from normal execution.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function postInit(Zikula_Event $event)
     {
@@ -78,7 +78,7 @@ class MUVideo_Listener_Base_Core
      * Must exit if `$event['method']` does not match whatever the handler expects.
      * Modify `$event->data` and `$event->stop()`.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function controllerMethodNotFound(Zikula_Event $event)
     {

@@ -19,9 +19,9 @@ class MUVideo_Api_Base_Selection extends Zikula_AbstractApi
     /**
      * Gets the list of identifier fields for a given object type.
      *
-     * @param string $args['ot'] The object type to be treated (optional).
+     * @param string $args['ot'] The object type to be treated (optional)
      *
-     * @return array List of identifier field names.
+     * @return array List of identifier field names
      */
     public function getIdFields(array $args = array())
     {
@@ -29,6 +29,7 @@ class MUVideo_Api_Base_Selection extends Zikula_AbstractApi
         $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);
     
         $meta = $this->entityManager->getClassMetadata($entityClass);
+    
         if ($this->hasCompositeKeys($objectType)) {
             $idFields = $meta->getIdentifierFieldNames();
         } else {
@@ -41,9 +42,9 @@ class MUVideo_Api_Base_Selection extends Zikula_AbstractApi
     /**
      * Checks whether a certain entity type uses composite keys or not.
      *
-     * @param string $objectType The object type to retrieve.
+     * @param string $objectType The object type to retrieve
      *
-     * @return boolean Whether composite keys are used or not.
+     * @return boolean Whether composite keys are used or not
      */
     protected function hasCompositeKeys($objectType)
     {
@@ -55,17 +56,18 @@ class MUVideo_Api_Base_Selection extends Zikula_AbstractApi
     /**
      * Selects a single entity.
      *
-     * @param string  $args['ot']       The object type to retrieve (optional).
-     * @param mixed   $args['id']       The id (or array of ids) to use to retrieve the object (default=null).
-     * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true).
-     * @param boolean $args['slimMode'] If activated only some basic fields are selected without using any joins (optional) (default=false).
+     * @param string  $args['ot']       The object type to retrieve (optional)
+     * @param mixed   $args['id']       The id (or array of ids) to use to retrieve the object (default=null)
+     * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true)
+     * @param boolean $args['slimMode'] If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return mixed Desired entity object or null.
+     * @return mixed Desired entity object or null
      */
     public function getEntity(array $args = array())
     {
         if (!isset($args['id'])) {
-            throw new \InvalidArgumentException(__('Invalid identifier received.'));
+            $dom = ZLanguage::getModuleDomain('MUVideo');
+            throw new \InvalidArgumentException(__('Invalid identifier received.', $dom));
         }
         $objectType = $this->determineObjectType($args, 'getEntity');
         $repository = $this->getRepository($objectType);
@@ -82,14 +84,14 @@ class MUVideo_Api_Base_Selection extends Zikula_AbstractApi
     /**
      * Selects a list of entities by different criteria.
      *
-     * @param string  $args['ot']       The object type to retrieve (optional).
-     * @param string  $args['idList']   A list of ids to select (optional) (default=array()).
-     * @param string  $args['where']    The where clause to use when retrieving the collection (optional) (default='').
-     * @param string  $args['orderBy']  The order-by clause to use when retrieving the collection (optional) (default='').
-     * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true).
-     * @param boolean $args['slimMode'] If activated only some basic fields are selected without using any joins (optional) (default=false).
+     * @param string  $args['ot']       The object type to retrieve (optional)
+     * @param string  $args['idList']   A list of ids to select (optional) (default=array())
+     * @param string  $args['where']    The where clause to use when retrieving the collection (optional) (default='')
+     * @param string  $args['orderBy']  The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param boolean $args['useJoins'] Whether to include joining related objects (optional) (default=true)
+     * @param boolean $args['slimMode'] If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return Array with retrieved collection.
+     * @return array with retrieved collection
      */
     public function getEntities(array $args = array())
     {
@@ -112,15 +114,15 @@ class MUVideo_Api_Base_Selection extends Zikula_AbstractApi
     /**
      * Selects a list of entities by different criteria.
      *
-     * @param string  $args['ot']             The object type to retrieve (optional).
-     * @param string  $args['where']          The where clause to use when retrieving the collection (optional) (default='').
-     * @param string  $args['orderBy']        The order-by clause to use when retrieving the collection (optional) (default='').
-     * @param integer $args['currentPage']    Where to start selection.
-     * @param integer $args['resultsPerPage'] Amount of items to select.
-     * @param boolean $args['useJoins']       Whether to include joining related objects (optional) (default=true).
-     * @param boolean $args['slimMode']       If activated only some basic fields are selected without using any joins (optional) (default=false).
+     * @param string  $args['ot']             The object type to retrieve (optional)
+     * @param string  $args['where']          The where clause to use when retrieving the collection (optional) (default='')
+     * @param string  $args['orderBy']        The order-by clause to use when retrieving the collection (optional) (default='')
+     * @param integer $args['currentPage']    Where to start selection
+     * @param integer $args['resultsPerPage'] Amount of items to select
+     * @param boolean $args['useJoins']       Whether to include joining related objects (optional) (default=true)
+     * @param boolean $args['slimMode']       If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return Array with retrieved collection and amount of total records affected by this query.
+     * @return array with retrieved collection and amount of total records affected by this query
      */
     public function getEntitiesPaginated(array $args = array())
     {
@@ -140,10 +142,10 @@ class MUVideo_Api_Base_Selection extends Zikula_AbstractApi
     /**
      * Determines object type using controller util methods.
      *
-     * @param string $args['ot'] The object type to retrieve (optional).
-     * @param string $methodName Name of calling method.
+     * @param string $args['ot'] The object type to retrieve (optional)
+     * @param string $methodName Name of calling method
      *
-     * @return string the object type.
+     * @return string the object type
      */
     protected function determineObjectType(array $args = array(), $methodName = '')
     {
@@ -160,14 +162,15 @@ class MUVideo_Api_Base_Selection extends Zikula_AbstractApi
     /**
      * Returns repository instance for a certain object type.
      *
-     * @param string $objectType The desired object type.
+     * @param string $objectType The desired object type
      *
-     * @return mixed Repository class instance or null.
+     * @return mixed Repository class instance or null
      */
     protected function getRepository($objectType = '')
     {
         if (empty($objectType)) {
-            throw new \InvalidArgumentException(__('Invalid object type received.'));
+            $dom = ZLanguage::getModuleDomain('MUVideo');
+            throw new \InvalidArgumentException(__('Invalid object type received.', $dom));
         }
     
         $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);

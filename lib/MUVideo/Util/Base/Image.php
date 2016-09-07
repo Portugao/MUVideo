@@ -19,12 +19,12 @@ class MUVideo_Util_Base_Image extends Zikula_AbstractBase
     /**
      * This method returns an Imagine preset for the given arguments.
      *
-     * @param string $objectType Currently treated entity type.
-     * @param string $fieldName  Name of upload field.
-     * @param string $context    Usage context (allowed values: controllerAction, api, actionHandler, block, contentType).
-     * @param array  $args       Additional arguments.
+     * @param string $objectType Currently treated entity type
+     * @param string $fieldName  Name of upload field
+     * @param string $context    Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
+     * @param array  $args       Additional arguments
      *
-     * @return SystemPlugin_Imagine_Preset The selected preset.
+     * @return SystemPlugin_Imagine_Preset The selected preset
      */
     public function getPreset($objectType = '', $fieldName = '', $context = '', $args = array())
     {
@@ -59,13 +59,13 @@ class MUVideo_Util_Base_Image extends Zikula_AbstractBase
     /**
      * This method returns an Imagine preset for the given arguments.
      *
-     * @param string $objectType Currently treated entity type.
-     * @param string $fieldName  Name of upload field.
-     * @param string $presetName Name of desired preset.
-     * @param string $context    Usage context (allowed values: controllerAction, api, actionHandler, block, contentType).
-     * @param array  $args       Additional arguments.
+     * @param string $objectType Currently treated entity type
+     * @param string $fieldName  Name of upload field
+     * @param string $presetName Name of desired preset
+     * @param string $context    Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
+     * @param array  $args       Additional arguments
      *
-     * @return SystemPlugin_Imagine_Preset The selected preset.
+     * @return SystemPlugin_Imagine_Preset The selected preset
      */
     public function getCustomPreset($objectType = '', $fieldName = '', $presetName = '', $context = '', $args = array())
     {

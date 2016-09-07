@@ -19,13 +19,12 @@ class MUVideo_Listener_Base_UserLogout
     /**
      * Listener for the `module.users.ui.logout.succeeded` event.
      *
-     * Occurs right after a successful logout.
-     * All handlers are notified.
-     * The event's subject contains the user's user record.
+     * Occurs right after a successful logout. All handlers are notified.
+     * The event's subject contains the user's UserEntity.
      * Args contain array of `array('authentication_method' => $authenticationMethod,
-     *                              'uid'                   => $uid));`
+     *                              'uid'                   => $uid);`
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function succeeded(Zikula_Event $event)
     {

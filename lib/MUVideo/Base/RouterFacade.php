@@ -37,7 +37,7 @@ class MUVideo_Base_RouterFacade
             'func'          => '\w+',
             'ot'            => '\w+',
             'slug'          => '[^/.]+', // slugs ([^/.]+ = all chars except / and .)
-            'displayending' => '(?:' . $displayDefaultEnding . '|json|kml|ics)',
+            'displayending' => '(?:' . $displayDefaultEnding . '|json|kml)',
             'viewending'    => '(?:\.csv|\.rss|\.atom|\.json|\.kml)?',
             'id'            => '\d+'
         );
@@ -109,8 +109,8 @@ class MUVideo_Base_RouterFacade
     /**
      * Get name of grouping folder for given object type and function.
      *
-     * @param string $objectType Name of treated entity type.
-     * @param string $func       Name of function.
+     * @param string $objectType Name of treated entity type
+     * @param string $func       Name of function
      *
      * @return string Name of the group folder
      */
@@ -127,6 +127,9 @@ class MUVideo_Base_RouterFacade
                 case 'movie':
                             $groupFolder = 'movies';
                             break;
+                case 'playlist':
+                            $groupFolder = 'playlists';
+                            break;
                 default: return '';
             }
         } else if ($func == 'display') {
@@ -136,6 +139,9 @@ class MUVideo_Base_RouterFacade
                             break;
                 case 'movie':
                             $groupFolder = 'movie';
+                            break;
+                case 'playlist':
+                            $groupFolder = 'playlist';
                             break;
                 default: return '';
             }
@@ -147,10 +153,10 @@ class MUVideo_Base_RouterFacade
     /**
      * Get name of object type based on given grouping folder.
      *
-     * @param string $groupFolder Name of group folder.
-     * @param string $func        Name of function.
+     * @param string $groupFolder Name of group folder
+     * @param string $func        Name of function
      *
-     * @return string Name of the object type.
+     * @return string Name of the object type
      */
     public function getObjectTypeFromGroupingFolder($groupFolder, $func)
     {
@@ -165,6 +171,9 @@ class MUVideo_Base_RouterFacade
                 case 'movies':
                             $objectType = 'movie';
                             break;
+                case 'playlists':
+                            $objectType = 'playlist';
+                            break;
                 default: return '';
             }
         } else if ($func == 'display') {
@@ -174,6 +183,9 @@ class MUVideo_Base_RouterFacade
                             break;
                 case 'movie':
                             $objectType = 'movie';
+                            break;
+                case 'playlist':
+                            $objectType = 'playlist';
                             break;
                 default: return '';
             }
@@ -185,12 +197,12 @@ class MUVideo_Base_RouterFacade
     /**
      * Get permalink value based on slug properties.
      *
-     * @param string  $objectType Name of treated entity type.
-     * @param string  $func       Name of function.
-     * @param array   $args       Additional parameters.
-     * @param integer $itemid     Identifier of treated item.
+     * @param string  $objectType Name of treated entity type
+     * @param string  $func       Name of function
+     * @param array   $args       Additional parameters
+     * @param integer $itemid     Identifier of treated item
      *
-     * @return string The resulting url ending.
+     * @return string The resulting url ending
      */
     public function getFormattedSlug($objectType, $func, $args, $itemid)
     {
@@ -203,13 +215,16 @@ class MUVideo_Base_RouterFacade
             case 'movie':
                 $slug = $itemid;
                         break;
+            case 'playlist':
+                $slug = $itemid;
+                        break;
         }
     
         return $slug;
     }
 
     /**
-     * Get router.
+     * Gets the router.
      *
      * @return Zikula_Routing_UrlRouter
      */
@@ -219,9 +234,9 @@ class MUVideo_Base_RouterFacade
     }
     
     /**
-     * Set router.
+     * Sets the router.
      *
-     * @param Zikula_Routing_UrlRouter $router.
+     * @param Zikula_Routing_UrlRouter $router
      *
      * @return void
      */

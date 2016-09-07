@@ -40,12 +40,12 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
     /**
      * Displays one item of a certain object type using a separate template for external usages.
      *
-     * @param string $ot          The currently treated object type.
-     * @param int    $id          Identifier of the entity to be shown.
-     * @param string $source      Source of this call (contentType or scribite).
-     * @param string $displayMode Display mode (link or embed).
+     * @param string $ot          The currently treated object type
+     * @param int    $id          Identifier of the entity to be shown
+     * @param string $source      Source of this call (contentType or scribite)
+     * @param string $displayMode Display mode (link or embed)
      *
-     * @return string Desired data output.
+     * @return string Desired data output
      */
     public function display(array $args = array())
     {
@@ -97,6 +97,7 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
         $instance = $entity->createCompositeIdentifier() . '::';
         
         $this->view->setCaching(Zikula_View::CACHE_ENABLED);
+        
         // set cache id
         $accessLevel = ACCESS_READ;
         if (SecurityUtil::checkPermission($component, $instance, ACCESS_COMMENT)) {
@@ -108,9 +109,9 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
         $this->view->setCacheId($objectType . '|' . $id . '|a' . $accessLevel);
         
         $this->view->assign('objectType', $objectType)
-                  ->assign('source', $source)
-                  ->assign($objectType, $entity)
-                  ->assign('displayMode', $displayMode);
+                   ->assign('source', $source)
+                   ->assign($objectType, $entity)
+                   ->assign('displayMode', $displayMode);
         
         return $this->view->fetch('external/' . $objectType . '/display.tpl');
     }
@@ -119,12 +120,12 @@ class MUVideo_Controller_Base_External extends Zikula_AbstractController
      * Popup selector for Scribite plugins.
      * Finds items of a certain object type.
      *
-     * @param string $objectType The object type.
-     * @param string $editor     Name of used Scribite editor.
-     * @param string $sort       Sorting field.
-     * @param string $sortdir    Sorting direction.
-     * @param int    $pos        Current pager position.
-     * @param int    $num        Amount of entries to display.
+     * @param string $objectType The object type
+     * @param string $editor     Name of used Scribite editor
+     * @param string $sort       Sorting field
+     * @param string $sortdir    Sorting direction
+     * @param int    $pos        Current pager position
+     * @param int    $num        Amount of entries to display
      *
      * @return output The external item finder page
      */

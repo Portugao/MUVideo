@@ -89,7 +89,7 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     /**
      * Returns the module providing this content type.
      *
-     * @return string The module name.
+     * @return string The module name
      */
     public function getModule()
     {
@@ -99,7 +99,7 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     /**
      * Returns the name of this content type.
      *
-     * @return string The content type name.
+     * @return string The content type name
      */
     public function getName()
     {
@@ -109,7 +109,7 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     /**
      * Returns the title of this content type.
      *
-     * @return string The content type title.
+     * @return string The content type title
      */
     public function getTitle()
     {
@@ -121,7 +121,7 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     /**
      * Returns the description of this content type.
      *
-     * @return string The content type description.
+     * @return string The content type description
      */
     public function getDescription()
     {
@@ -133,7 +133,7 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     /**
      * Loads the data.
      *
-     * @param array $data Data array with parameters.
+     * @param array $data Data array with parameters
      */
     public function loadData(&$data)
     {
@@ -217,13 +217,13 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     /**
      * Displays the data.
      *
-     * @return string The returned output.
+     * @return string The returned output
      */
     public function display()
     {
         $dom = ZLanguage::getModuleDomain('MUVideo');
-        ModUtil::initOOModule('MUVideo');
     
+        ModUtil::initOOModule('MUVideo');
         $entityClass = 'MUVideo_Entity_' . ucfirst($this->objectType);
         $serviceManager = ServiceUtil::getManager();
         $entityManager = $serviceManager->getService('doctrine.entitymanager');
@@ -270,15 +270,17 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
         list($query, $count) = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
         $entities = $repository->retrieveCollectionResult($query, $orderBy, true);
     
-        $data = array('objectType' => $this->objectType,
-                      'catids' => $this->catIds,
-                      'sorting' => $this->sorting,
-                      'amount' => $this->amount,
-                      'template' => $this->template,
-                      'customTemplate' => $this->customTemplate,
-                      'filter' => $this->filter);
+        $data = array(
+            'objectType' => $this->objectType,
+            'catids' => $this->catIds,
+            'sorting' => $this->sorting,
+            'amount' => $this->amount,
+            'template' => $this->template,
+            'customTemplate' => $this->customTemplate,
+            'filter' => $this->filter
+        );
     
-        // assign block vars and fetched data
+        // assign vars and fetched data
         $this->view->assign('vars', $data)
                    ->assign('objectType', $this->objectType)
                    ->assign('items', $entities)
@@ -296,7 +298,7 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     /**
      * Returns the template used for output.
      *
-     * @return string the template path.
+     * @return string the template path
      */
     protected function getDisplayTemplate()
     {
@@ -322,9 +324,9 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     /**
      * Determines the order by parameter for item selection.
      *
-     * @param Doctrine_Repository $repository The repository used for data fetching.
+     * @param Doctrine_Repository $repository The repository used for data fetching
      *
-     * @return string the sorting clause.
+     * @return string the sorting clause
      */
     protected function getSortParam($repository)
     {
@@ -363,16 +365,18 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
     /**
      * Returns the default data.
      *
-     * @return array Default data and parameters.
+     * @return array Default data and parameters
      */
     public function getDefaultData()
     {
-        return array('objectType' => 'collection',
-                     'sorting' => 'default',
-                     'amount' => 1,
-                     'template' => 'itemlist_display.tpl',
-                     'customTemplate' => '',
-                     'filter' => '');
+        return array(
+            'objectType' => 'collection',
+            'sorting' => 'default',
+            'amount' => 1,
+            'template' => 'itemlist_display.tpl',
+            'customTemplate' => '',
+            'filter' => ''
+        );
     }
     
     /**
@@ -387,8 +391,8 @@ class MUVideo_ContentType_Base_ItemList extends Content_AbstractContentType
         array_push($this->view->plugins_dir, 'modules/MUVideo/templates/plugins');
     
         // assign category data
-        $this->view->assign('registries', $this->catRegistries);
-        $this->view->assign('properties', $this->catProperties);
+        $this->view->assign('registries', $this->catRegistries)
+                   ->assign('properties', $this->catProperties);
     
         // assign categories lists for simulating category selectors
         $dom = ZLanguage::getModuleDomain('MUVideo');

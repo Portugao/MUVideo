@@ -19,20 +19,26 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
     /**
       * This method returns a list of possible object states.
       *
-      * @return array List of collected state information.
+      * @return array List of collected state information
       */
      public function getObjectStates()
      {
          $states = array();
-         $states[] = array('value' => 'initial',
-                           'text' => $this->__('Initial'),
-                           'ui' => 'red');
-         $states[] = array('value' => 'approved',
-                           'text' => $this->__('Approved'),
-                           'ui' => 'green');
-         $states[] = array('value' => 'deleted',
-                           'text' => $this->__('Deleted'),
-                           'ui' => 'red');
+         $states[] = array(
+             'value' => 'initial',
+             'text' => $this->__('Initial'),
+             'ui' => 'red'
+         );
+         $states[] = array(
+             'value' => 'approved',
+             'text' => $this->__('Approved'),
+             'ui' => 'green'
+         );
+         $states[] = array(
+             'value' => 'deleted',
+             'text' => $this->__('Deleted'),
+             'ui' => 'red'
+         );
     
          return $states;
      }
@@ -40,9 +46,9 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
     /**
      * This method returns information about a certain state.
      *
-     * @param string $state The given state value.
+     * @param string $state The given state value
      *
-     * @return array|null The corresponding state information.
+     * @return array|null The corresponding state information
      */
     public function getStateInfo($state = 'initial')
     {
@@ -62,9 +68,9 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
     /**
      * This method returns the workflow name for a certain object type.
      *
-     * @param string $objectType Name of treated object type.
+     * @param string $objectType Name of treated object type
      *
-     * @return string Name of the corresponding workflow.
+     * @return string Name of the corresponding workflow
      */
     public function getWorkflowName($objectType = '')
     {
@@ -76,6 +82,9 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
             case 'movie':
                 $result = 'none';
                 break;
+            case 'playlist':
+                $result = 'none';
+                break;
         }
     
         return $result;
@@ -84,7 +93,7 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
     /**
      * This method returns the workflow schema for a certain object type.
      *
-     * @param string $objectType Name of treated object type.
+     * @param string $objectType Name of treated object type
      *
      * @return array|null The resulting workflow schema
      */
@@ -102,9 +111,9 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
     /**
      * Retrieve the available actions for a given entity object.
      *
-     * @param \Zikula_EntityAccess $entity The given entity instance.
+     * @param Zikula_EntityAccess $entity The given entity instance
      *
-     * @return array List of available workflow actions.
+     * @return array List of available workflow actions
      */
     public function getActionsForObject($entity)
     {
@@ -146,7 +155,9 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
     /**
      * Returns a button class for a certain action.
      *
-     * @param string $actionId Id of the treated action.
+     * @param string $actionId Id of the treated action
+     *
+     * @return string The button class
      */
     protected function getButtonClassForAction($actionId)
     {
@@ -173,11 +184,11 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
     /**
      * Executes a certain workflow action for a given entity object.
      *
-     * @param \Zikula_EntityAccess $entity   The given entity instance.
-     * @param string               $actionId Name of action to be executed.
-     * @param bool                 $recursive true if the function called itself.  
+     * @param Zikula_EntityAccess $entity   The given entity instance
+     * @param string               $actionId Name of action to be executed
+     * @param bool                 $recursive true if the function called itself
      *
-     * @return bool False on error or true if everything worked well.
+     * @return bool False on error or true if everything worked well
      */
     public function executeAction($entity, $actionId = '', $recursive = false)
     {
@@ -203,12 +214,11 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
     /**
      * Collects amount of moderation items foreach object type.
      *
-     * @return array List of collected amounts.
+     * @return array List of collected amounts
      */
     public function collectAmountOfModerationItems()
     {
         $amounts = array();
-        $modname = 'MUVideo';
     
         // nothing required here as no entities use enhanced workflows including approval actions
     
@@ -219,10 +229,10 @@ class MUVideo_Util_Base_Workflow extends Zikula_AbstractBase
      * Retrieves the amount of moderation items for a given object type
      * and a certain workflow state.
      *
-     * @param string $objectType Name of treated object type.
-     * @param string $state The given state value.
+     * @param string $objectType Name of treated object type
+     * @param string $state The given state value
      *
-     * @return integer The affected amount of objects.
+     * @return integer The affected amount of objects
      */
     public function getAmountOfModerationItems($objectType, $state)
     {

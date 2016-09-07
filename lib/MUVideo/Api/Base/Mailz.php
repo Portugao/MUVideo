@@ -19,9 +19,9 @@ class MUVideo_Api_Base_Mailz extends Zikula_AbstractApi
     /**
      * Returns existing Mailz plugins with type / title.
      *
-     * @param array $args List of arguments.
+     * @param array $args List of arguments
      *
-     * @return array List of provided plugin functions.
+     * @return array List of provided plugin functions
      */
     public function getPlugins(array $args = array())
     {
@@ -45,14 +45,14 @@ class MUVideo_Api_Base_Mailz extends Zikula_AbstractApi
     /**
      * Returns the content for a given Mailz plugin.
      *
-     * @param array    $args                List of arguments.
-     * @param int      $args['pluginid']    id number of plugin (internal id for this module, see getPlugins method).
-     * @param string   $args['params']      optional, show specific one or all otherwise.
-     * @param int      $args['uid']         optional, user id for user specific content.
-     * @param string   $args['contenttype'] h or t for html or text.
-     * @param datetime $args['last']        timestamp of last newsletter.
+     * @param array    $args                List of arguments
+     * @param int      $args['pluginid']    id number of plugin (internal id for this module, see getPlugins method)
+     * @param string   $args['params']      optional, show specific one or all otherwise
+     * @param int      $args['uid']         optional, user id for user specific content
+     * @param string   $args['contenttype'] h or t for html or text
+     * @param datetime $args['last']        timestamp of last newsletter
      *
-     * @return string output of plugin template.
+     * @return string output of plugin template
      */
     public function getContent(array $args = array())
     {
@@ -97,6 +97,8 @@ class MUVideo_Api_Base_Mailz extends Zikula_AbstractApi
         );
         list($entities, $objectCount) = ModUtil::apiFunc('MUVideo', 'selection', 'getEntitiesPaginated', $selectionArgs);
     
+        $templateType = $args['contenttype'] == 't' ? 'text' : 'html';
+    
         $view = Zikula_View::getInstance('MUVideo', true);
     
         //$data = array('sorting' => $this->sorting, 'amount' => $this->amount, 'filter' => $this->filter, 'template' => $this->template);
@@ -106,11 +108,6 @@ class MUVideo_Api_Base_Mailz extends Zikula_AbstractApi
              ->assign('items', $entities)
              ->assign($repository->getAdditionalTemplateParameters('api', array('name' => 'mailz')));
     
-        if ($args['contenttype'] == 't') { /* text */
-            return $view->fetch('mailz/itemlist_collection_text.tpl');
-        }
-    
-        //return $view->fetch('contenttype/itemlist_display.html');
-        return $view->fetch('mailz/itemlist_collection_html.tpl');
+        return $view->fetch('mailz/itemlist_collection_' . $templateType . '.tpl');
     }
 }

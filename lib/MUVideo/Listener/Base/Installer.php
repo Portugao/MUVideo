@@ -22,7 +22,7 @@ class MUVideo_Listener_Base_Installer
      * Called after a module has been successfully installed.
      * Receives `$modinfo` as args.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function moduleInstalled(Zikula_Event $event)
     {
@@ -34,7 +34,7 @@ class MUVideo_Listener_Base_Installer
      * Called after a module has been successfully upgraded.
      * Receives `$modinfo` as args.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function moduleUpgraded(Zikula_Event $event)
     {
@@ -46,7 +46,7 @@ class MUVideo_Listener_Base_Installer
      * Called after a module has been successfully uninstalled.
      * Receives `$modinfo` as args.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function moduleUninstalled(Zikula_Event $event)
     {
@@ -58,7 +58,7 @@ class MUVideo_Listener_Base_Installer
      * Called after a hook subscriber area has been unregistered.
      * Receives args['areaid'] as the areaId. Use this to remove orphan data associated with this area.
      *
-     * @param Zikula_Event $event The event instance.
+     * @param Zikula_Event $event The event instance
      */
     public static function subscriberAreaUninstalled(Zikula_Event $event)
     {

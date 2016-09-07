@@ -30,10 +30,10 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
     }
 
     /**
-     * This method is the default function handling the main area called without defining arguments.
+     * This is the default action handling the main area called without defining arguments.
      *
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     public function main()
     {
@@ -56,7 +56,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
             return $this->redirect($redirectUrl);
         }
         
-        if ($legacyControllerType != 'admin') {
+        if ($legacyControllerType == 'admin') {
             
             $redirectUrl = ModUtil::url($this->name, 'collection', 'view', array('lct' => $legacyControllerType));
             
@@ -64,23 +64,23 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         }
         
         // set caching id
+        $view = Zikula_View::getInstance('MUVideo', false);
         $this->view->setCacheId('collection_main');
         
         // return main template
         return $this->view->fetch('collection/main.tpl');
     }
-    
     /**
-     * This method provides a item list overview.
+     * This action provides an item list overview.
      *
-     * @param string  $sort         Sorting field.
-     * @param string  $sortdir      Sorting direction.
-     * @param int     $pos          Current pager position.
-     * @param int     $num          Amount of entries to display.
-     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
-     * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output).
+     * @param string  $sort         Sorting field
+     * @param string  $sortdir      Sorting direction
+     * @param int     $pos          Current pager position
+     * @param int     $num          Amount of entries to display
+     * @param string  $tpl          Name of alternative template (to be used instead of the default template)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output)
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     public function view()
     {
@@ -100,29 +100,9 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $repository->setControllerArguments(array());
         $viewHelper = new MUVideo_Util_View($this->serviceManager);
         
-        // parameter for used sorting field
-        $sort = $this->request->query->filter('sort', '', FILTER_SANITIZE_STRING);
-        if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
-            $sort = $repository->getDefaultSortingField();
-        }
-        
-        // parameter for used sort order
-        $sortdir = $this->request->query->filter('sortdir', '', FILTER_SANITIZE_STRING);
-        $sortdir = strtolower($sortdir);
-        if ($sortdir != 'asc' && $sortdir != 'desc') {
-            $sortdir = 'asc';
-        }
-        
         // convenience vars to make code clearer
         $currentUrlArgs = array();
-        
         $where = '';
-        
-        $selectionArgs = array(
-            'ot' => $objectType,
-            'where' => $where,
-            'orderBy' => $sort . ' ' . $sortdir
-        );
         
         $showOwnEntries = (int) $this->request->query->filter('own', $this->getVar('showOnlyOwnEntries', 0), FILTER_VALIDATE_INT);
         $showAllEntries = (int) $this->request->query->filter('all', 0, FILTER_VALIDATE_INT);
@@ -143,6 +123,36 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
             $currentUrlArgs['all'] = 1;
         }
         
+        $additionalParameters = $repository->getAdditionalTemplateParameters($imageHelper, 'controllerAction', $utilArgs);
+        
+        $resultsPerPage = 0;
+        if ($showAllEntries != 1) {
+            // the number of items displayed on a page for pagination
+            $resultsPerPage = (int) $this->request->query->filter('num', 0, FILTER_VALIDATE_INT);
+            if ($resultsPerPage == 0) {
+                $resultsPerPage = $this->getVar('pageSize', 10);
+            }
+        }
+        
+        // parameter for used sorting field
+        $sort = $this->request->query->filter('sort', '', FILTER_SANITIZE_STRING);
+        if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
+            $sort = $repository->getDefaultSortingField();
+        }
+        
+        // parameter for used sort order
+        $sortdir = $this->request->query->filter('sortdir', '', FILTER_SANITIZE_STRING);
+        $sortdir = strtolower($sortdir);
+        if ($sortdir != 'asc' && $sortdir != 'desc') {
+            $sortdir = 'asc';
+        }
+        
+        $selectionArgs = array(
+            'ot' => $objectType,
+            'where' => $where,
+            'orderBy' => $sort . ' ' . $sortdir
+        );
+        
         // prepare access level for cache id
         $accessLevel = ACCESS_READ;
         $component = 'MUVideo:' . ucfirst($objectType) . ':';
@@ -156,7 +166,6 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         
         $templateFile = $viewHelper->getViewTemplate($this->view, $objectType, 'view', array());
         $cacheId = $objectType . '_view|_sort_' . $sort . '_' . $sortdir;
-        $resultsPerPage = 0;
         if ($showAllEntries == 1) {
             // set cache id
             $this->view->setCacheId($cacheId . '_all_1_own_' . $showOwnEntries . '_' . $accessLevel);
@@ -171,12 +180,6 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         } else {
             // the current offset which is used to calculate the pagination
             $currentPage = (int) $this->request->query->filter('pos', 1, FILTER_VALIDATE_INT);
-        
-            // the number of items displayed on a page for pagination
-            $resultsPerPage = (int) $this->request->query->filter('num', 0, FILTER_VALIDATE_INT);
-            if ($resultsPerPage == 0) {
-                $resultsPerPage = $this->getVar('pageSize', 10);
-            }
         
             // set cache id
             $this->view->setCacheId($cacheId . '_amount_' . $resultsPerPage . '_page_' . $currentPage . '_own_' . $showOwnEntries . '_' . $accessLevel);
@@ -209,7 +212,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
                    ->assign('sdir', $sortdir)
                    ->assign('pageSize', $resultsPerPage)
                    ->assign('currentUrlObject', $currentUrlObject)
-                   ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
+                   ->assign($additionalParameters);
         
         $modelHelper = new MUVideo_Util_Model($this->serviceManager);
         $this->view->assign('canBeCreated', $modelHelper->canBeCreated($objectType));
@@ -217,15 +220,14 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($this->view, $objectType, 'view', array(), $templateFile);
     }
-    
     /**
-     * This method provides a item detail view.
+     * This action provides a item detail view.
      *
-     * @param int     $id           Identifier of entity to be shown.
-     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
-     * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output).
+     * @param int     $id           Identifier of entity to be shown
+     * @param string  $tpl          Name of alternative template (to be used instead of the default template)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output)
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     public function display()
     {
@@ -305,14 +307,13 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($this->view, $objectType, 'display', array(), $templateFile);
     }
-    
     /**
-     * This method provides a handling of edit requests.
+     * This action provides a handling of edit requests.
      *
-     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
-     * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output).
+     * @param string  $tpl          Name of alternative template (to be used instead of the default template)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output)
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     public function edit()
     {
@@ -327,7 +328,6 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $utilArgs = array('controller' => 'collection', 'action' => 'edit');
         $permLevel = $legacyControllerType == 'admin' ? ACCESS_ADMIN : ACCESS_EDIT;
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
-        
         // create new Form reference
         $view = FormUtil::newForm($this->name, $this);
         
@@ -341,16 +341,15 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         // execute form using supplied template and page event handler
         return $view->execute($template, new $handlerClass());
     }
-    
     /**
-     * This method provides a handling of simple delete requests.
+     * This action provides a handling of simple delete requests.
      *
-     * @param int     $id           Identifier of entity to be shown.
-     * @param boolean $confirmation Confirm the deletion, else a confirmation page is displayed.
-     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
-     * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output).
+     * @param int     $id           Identifier of entity to be deleted
+     * @param boolean $confirmation Confirm the deletion, else a confirmation page is displayed
+     * @param string  $tpl          Name of alternative template (to be used instead of the default template)
+     * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output)
      *
-     * @return mixed Output.
+     * @return mixed Output
      */
     public function delete()
     {
@@ -387,6 +386,14 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! Could not determine workflow actions.'));
         }
         
+        if ($legacyControllerType == 'admin') {
+            // redirect to the list of collections
+            $redirectUrl = ModUtil::url($this->name, 'collection', 'view', array('lct' => $legacyControllerType));
+        } else {
+            // redirect to the list of collections
+            $redirectUrl = ModUtil::url($this->name, 'collection', 'view', array('lct' => $legacyControllerType));
+        }
+        
         // check whether deletion is allowed
         $deleteActionId = 'delete';
         $deleteAllowed = false;
@@ -402,43 +409,36 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         }
         
         $confirmation = (bool) $this->request->request->filter('confirmation', false, FILTER_VALIDATE_BOOLEAN);
-        if ($confirmation && $deleteAllowed) {
+        if ($confirmation) {
             $this->checkCsrfToken();
-        
-            $hookAreaPrefix = $entity->getHookAreaPrefix();
-            $hookType = 'validate_delete';
+            
+            $hookHelper = new MUVideo_Util_Hook($this->serviceManager);
             // Let any hooks perform additional validation actions
-            $hook = new Zikula_ValidationHook($hookAreaPrefix . '.' . $hookType, new Zikula_Hook_ValidationProviders());
-            $validators = $this->notifyHooks($hook)->getValidators();
-            if (!$validators->hasErrors()) {
+            $hookType = 'validate_delete';
+            $validationHooksPassed = $hookHelper->callValidationHooks($entity, $hookType);
+            if ($validationHooksPassed) {
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $deleteActionId);
                 if ($success) {
                     $this->registerStatus($this->__('Done! Item deleted.'));
                 }
-        
-                // Let any hooks know that we have created, updated or deleted the collection
+                
+                // Let any hooks know that we have deleted the collection
                 $hookType = 'process_delete';
-                $hook = new Zikula_ProcessHook($hookAreaPrefix . '.' . $hookType, $entity->createCompositeIdentifier());
-                $this->notifyHooks($hook);
-        
+                $hookHelper->callProcessHooks($entity, $hookType, null);
+                
                 // The collection was deleted, so we clear all cached pages this item.
                 $cacheArgs = array('ot' => $objectType, 'item' => $entity);
                 ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
-        
-                if ($legacyControllerType == 'admin') {
-                    // redirect to the list of collections
-                    $redirectUrl = ModUtil::url($this->name, 'collection', 'view', array('lct' => $legacyControllerType));
-                } else {
-                    // redirect to the list of collections
-                    $redirectUrl = ModUtil::url($this->name, 'collection', 'view', array('lct' => $legacyControllerType));
-                }
+                
                 return $this->redirect($redirectUrl);
             }
         }
         
         $entityClass = $this->name . '_Entity_' . ucfirst($objectType);
         $repository = $this->entityManager->getRepository($entityClass);
+        
+        $viewHelper = new MUVideo_Util_View($this->serviceManager);
         
         // set caching id
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
@@ -448,11 +448,8 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
                    ->assign($repository->getAdditionalTemplateParameters('controllerAction', $utilArgs));
         
         // fetch and return the appropriate template
-        $viewHelper = new MUVideo_Util_View($this->serviceManager);
-        
         return $viewHelper->processTemplate($this->view, $objectType, 'delete', array());
     }
-    
 
     /**
      * Process status changes for multiple items.
@@ -460,16 +457,13 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
      * This function processes the items selected in the admin view page.
      * Multiple items may have their state changed or be deleted.
      *
-     * @param string $action The action to be executed.
-     * @param array  $items  Identifier list of the items to be processed.
+     * @param Request $request Current request instance
      *
-     * @return bool true on sucess, false on failure.
+     * @return bool true on sucess, false on failure
      */
-    public function handleSelectedEntries()
+    public function adminHandleSelectedEntries()
     {
         $this->checkCsrfToken();
-        
-        $redirectUrl = ModUtil::url($this->name, 'admin', 'main', array('ot' => 'collection'));
         
         $objectType = 'collection';
         
@@ -480,13 +474,16 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         $action = strtolower($action);
         
         $workflowHelper = new MUVideo_Util_Workflow($this->serviceManager);
+        $hookHelper = new MUVideo_Util_Hook($this->serviceManager);
         
         // process each item
         foreach ($items as $itemid) {
             // check if item exists, and get record instance
-            $selectionArgs = array('ot' => $objectType,
-                                   'id' => $itemid,
-                                   'useJoins' => false);
+            $selectionArgs = array(
+                'ot' => $objectType,
+                'id' => $itemid,
+                'useJoins' => false
+            );
             $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', $selectionArgs);
         
             $entity->initWorkflow();
@@ -499,18 +496,18 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
                 continue;
             }
         
-            $hookAreaPrefix = $entity->getHookAreaPrefix();
-        
             // Let any hooks perform additional validation actions
             $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
-            $hook = new Zikula_ValidationHook($hookAreaPrefix . '.' . $hookType, new Zikula_Hook_ValidationProviders());
-            $validators = $this->notifyHooks($hook)->getValidators();
-            if ($validators->hasErrors()) {
+            $validationHooksPassed = $hookHelper->callValidationHooks($entity, $hookType);
+            if (!$validationHooksPassed) {
                 continue;
             }
         
             $success = false;
             try {
+                if (!$entity->validate()) {
+                    continue;
+                }
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
             } catch(\Exception $e) {
@@ -534,8 +531,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
                 $urlArgs = $entity->createUrlArgs();
                 $url = new Zikula_ModUrl($this->name, 'collection', 'display', ZLanguage::getLanguageCode(), $urlArgs);
             }
-            $hook = new Zikula_ProcessHook($hookAreaPrefix . '.' . $hookType, $entity->createCompositeIdentifier(), $url);
-            $this->notifyHooks($hook);
+            $hookHelper->callProcessHooks($entity, $hookType, $url);
         
             // An item was updated or deleted, so we clear all cached pages for this item.
             $cacheArgs = array('ot' => $objectType, 'item' => $entity);
@@ -545,34 +541,102 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
         // clear view cache to reflect our changes
         $this->view->clear_cache();
         
+        $redirectUrl = ModUtil::url($this->name, 'admin', 'main', array('ot' => 'collection'));
+        
         return $this->redirect($redirectUrl);
     }
-
     /**
-     * This method cares for a redirect within an inline frame.
+     * Process status changes for multiple items.
      *
-     * @param string  $idPrefix    Prefix for inline window element identifier.
-     * @param string  $commandName Name of action to be performed (create or edit).
-     * @param integer $id          Id of created item (used for activating auto completion after closing the modal window).
+     * This function processes the items selected in the admin view page.
+     * Multiple items may have their state changed or be deleted.
      *
-     * @return boolean Whether the inline redirect has been performed or not.
+     * @param Request $request Current request instance
+     *
+     * @return bool true on sucess, false on failure
      */
-    public function handleInlineRedirect()
+    public function handleSelectedEntries()
     {
-        $id = (int) $this->request->query->filter('id', 0, FILTER_VALIDATE_INT);
-        $idPrefix = $this->request->query->filter('idPrefix', '', FILTER_SANITIZE_STRING);
-        $commandName = $this->request->query->filter('commandName', '', FILTER_SANITIZE_STRING);
-        if (empty($idPrefix)) {
-            return false;
+        $this->checkCsrfToken();
+        
+        $objectType = 'collection';
+        
+        // Get parameters
+        $action = $this->request->request->get('action', null);
+        $items = $this->request->request->get('items', null);
+        
+        $action = strtolower($action);
+        
+        $workflowHelper = new MUVideo_Util_Workflow($this->serviceManager);
+        $hookHelper = new MUVideo_Util_Hook($this->serviceManager);
+        
+        // process each item
+        foreach ($items as $itemid) {
+            // check if item exists, and get record instance
+            $selectionArgs = array(
+                'ot' => $objectType,
+                'id' => $itemid,
+                'useJoins' => false
+            );
+            $entity = ModUtil::apiFunc($this->name, 'selection', 'getEntity', $selectionArgs);
+        
+            $entity->initWorkflow();
+        
+            // check if $action can be applied to this entity (may depend on it's current workflow state)
+            $allowedActions = $workflowHelper->getActionsForObject($entity);
+            $actionIds = array_keys($allowedActions);
+            if (!in_array($action, $actionIds)) {
+                // action not allowed, skip this object
+                continue;
+            }
+        
+            // Let any hooks perform additional validation actions
+            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
+            $validationHooksPassed = $hookHelper->callValidationHooks($entity, $hookType);
+            if (!$validationHooksPassed) {
+                continue;
+            }
+        
+            $success = false;
+            try {
+                if (!$entity->validate()) {
+                    continue;
+                }
+                // execute the workflow action
+                $success = $workflowHelper->executeAction($entity, $action);
+            } catch(\Exception $e) {
+                LogUtil::registerError($this->__f('Sorry, but an unknown error occured during the %s action. Please apply the changes again!', array($action)));
+            }
+        
+            if (!$success) {
+                continue;
+            }
+        
+            if ($action == 'delete') {
+                LogUtil::registerStatus($this->__('Done! Item deleted.'));
+            } else {
+                LogUtil::registerStatus($this->__('Done! Item updated.'));
+            }
+        
+            // Let any hooks know that we have updated or deleted an item
+            $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
+            $url = null;
+            if ($action != 'delete') {
+                $urlArgs = $entity->createUrlArgs();
+                $url = new Zikula_ModUrl($this->name, 'collection', 'display', ZLanguage::getLanguageCode(), $urlArgs);
+            }
+            $hookHelper->callProcessHooks($entity, $hookType, $url);
+        
+            // An item was updated or deleted, so we clear all cached pages for this item.
+            $cacheArgs = array('ot' => $objectType, 'item' => $entity);
+            ModUtil::apiFunc($this->name, 'cache', 'clearItemCache', $cacheArgs);
         }
         
-        $this->view->assign('itemId', $id)
-                   ->assign('idPrefix', $idPrefix)
-                   ->assign('commandName', $commandName)
-                   ->assign('jcssConfig', JCSSUtil::getJSConfig());
+        // clear view cache to reflect our changes
+        $this->view->clear_cache();
         
-        $this->view->display('collection/inlineRedirectHandler.tpl');
+        $redirectUrl = ModUtil::url($this->name, 'admin', 'main', array('ot' => 'collection'));
         
-        return true;
+        return $this->redirect($redirectUrl);
     }
 }

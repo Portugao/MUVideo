@@ -25,7 +25,11 @@ class MUVideo_Entity_Validator_Base_Movie extends MUVideo_Validator
      */
     public function validateAll()
     {
-        $errorInfo = array('message' => '', 'code' => 0, 'debugArray' => array());
+        $errorInfo = array(
+            'message' => '',
+            'code' => 0,
+            'debugArray' => array()
+        );
         $dom = ZLanguage::getModuleDomain('MUVideo');
         if (!$this->isStringNotEmpty('workflowState')) {
             $errorInfo['message'] = __f('Error! Field value must not be empty (%s).', array('workflow state'), $dom);
@@ -88,11 +92,12 @@ class MUVideo_Entity_Validator_Base_Movie extends MUVideo_Validator
     }
     
     /**
-     * Check for unique values.
+     * Checks for unique values.
      *
      * This method determines if there already exist movies with the same movie.
      *
      * @param string $fieldName The name of the property to be checked
+     *
      * @return boolean result of this check, true if the given movie does not already exist
      */
     public function isUniqueValue($fieldName)
@@ -112,7 +117,7 @@ class MUVideo_Entity_Validator_Base_Movie extends MUVideo_Validator
     }
     
     /**
-     * Get entity.
+     * Gets the entity.
      *
      * @return Zikula_EntityAccess
      */
@@ -122,9 +127,9 @@ class MUVideo_Entity_Validator_Base_Movie extends MUVideo_Validator
     }
     
     /**
-     * Set entity.
+     * Sets the entity.
      *
-     * @param Zikula_EntityAccess $entity.
+     * @param Zikula_EntityAccess $entity
      *
      * @return void
      */

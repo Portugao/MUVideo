@@ -19,10 +19,10 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     /**
      * Returns an array of all allowed object types in MUVideo.
      *
-     * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType, util).
-     * @param array  $args    Additional arguments.
+     * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType, util)
+     * @param array  $args    Additional arguments
      *
-     * @return array List of allowed object types.
+     * @return array List of allowed object types
      */
     public function getObjectTypes($context = '', $args = array())
     {
@@ -33,6 +33,7 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
         $allowedObjectTypes = array();
         $allowedObjectTypes[] = 'collection';
         $allowedObjectTypes[] = 'movie';
+        $allowedObjectTypes[] = 'playlist';
     
         return $allowedObjectTypes;
     }
@@ -40,10 +41,10 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     /**
      * Returns the default object type in MUVideo.
      *
-     * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType, util).
-     * @param array  $args    Additional arguments.
+     * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType, util)
+     * @param array  $args    Additional arguments
      *
-     * @return string The name of the default object type.
+     * @return string The name of the default object type
      */
     public function getDefaultObjectType($context = '', $args = array())
     {
@@ -59,9 +60,9 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     /**
      * Checks whether a certain entity type uses composite keys or not.
      *
-     * @param string $objectType The object type to retrieve.
+     * @param string $objectType The object type to retrieve
      *
-     * @return boolean Whether composite keys are used or not.
+     * @return Boolean Whether composite keys are used or not
      */
     public function hasCompositeKeys($objectType)
     {
@@ -69,6 +70,8 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
             case 'collection':
                 return false;
             case 'movie':
+                return false;
+            case 'playlist':
                 return false;
                 default:
                     return false;
@@ -78,12 +81,12 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     /**
      * Retrieve identifier parameters for a given object type.
      *
-     * @param Zikula_Request_Http $request    Instance of Zikula_Request_Http.
-     * @param array               $args       List of arguments used as fallback if request does not contain a field.
-     * @param string              $objectType Name of treated entity type.
-     * @param array               $idFields   List of identifier field names.
+     * @param Zikula_Request_Http $request    The current request
+     * @param array   $args       List of arguments used as fallback if request does not contain a field
+     * @param string  $objectType Name of treated entity type
+     * @param array   $idFields   List of identifier field names
      *
-     * @return array List of fetched identifiers.
+     * @return array List of fetched identifiers
      */
     public function retrieveIdentifier(Zikula_Request_Http $request, array $args, $objectType = '', array $idFields)
     {
@@ -93,7 +96,7 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
             if ($this->hasCompositeKeys($objectType)) {
                 // composite key may be alphanumeric
     if ($request->query->has($idField)) {
-                    $id = $request->query->filter($idField, $defaultValue);
+                    $id = $request->query->get($idField, $defaultValue);
                 } else {
                     $id = $defaultValue;
                 }
@@ -124,9 +127,9 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     /**
      * Checks if all identifiers are set properly.
      *
-     * @param array  $idValues List of identifier field values.
+     * @param array  $idValues List of identifier field values
      *
-     * @return boolean Whether all identifiers are set or not.
+     * @return boolean Whether all identifiers are set or not
      */
     public function isValidIdentifier(array $idValues)
     {
@@ -146,16 +149,18 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     /**
      * Create nice permalinks.
      *
-     * @param string $name The given object title.
+     * @param string $name The given object title
      *
-     * @return string processed permalink.
-     * @deprecated made obsolete by Doctrine extensions.
+     * @return string processed permalink
+     * @deprecated made obsolete by Doctrine extensions
      */
     public function formatPermalink($name)
     {
-        $name = str_replace(array('?', '?', '?', '?', '?', '?', '?', '.', '?', '"', '/', ':', '?', '?', '?'),
-                            array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'),
-                            $name);
+        $name = str_replace(
+            array('?', '?', '?', '?', '?', '?', '?', '.', '?', '"', '/', ':', '?', '?', '?'),
+            array('ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'),
+            $name
+        );
         $name = DataUtil::formatPermalink($name);
     
         return strtolower($name);
@@ -164,12 +169,13 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     /**
      * Retrieve the base path for given object type and upload field combination.
      *
-     * @param string  $objectType   Name of treated entity type.
-     * @param string  $fieldName    Name of upload field.
-     * @param boolean $ignoreCreate Whether to ignore the creation of upload folders on demand or not.
+     * @param string  $objectType   Name of treated entity type
+     * @param string  $fieldName    Name of upload field
+     * @param boolean $ignoreCreate Whether to ignore the creation of upload folders on demand or not
      *
-     * @return mixed Output.
-     * @throws Exception if invalid object type is given.
+     * @return mixed Output
+     *
+     * @throws Exception If an invalid object type is used
      */
     public function getFileBaseFolder($objectType, $fieldName, $ignoreCreate = false)
     {
@@ -193,7 +199,7 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
             break;
         }
     
-        $result = DataUtil::formatForOS($basePath);
+        $result = $basePath;
         if (substr($result, -1, 1) != '/') {
             // reappend the removed slash
             $result .= '/';
@@ -209,7 +215,7 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     /**
      * Creates all required upload folders for this application.
      *
-     * @return Boolean whether everything went okay or not.
+     * @return Boolean Whether everything went okay or not
      */
     public function checkAndCreateAllUploadFolders()
     {
@@ -224,11 +230,11 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
     /**
      * Creates upload folder including a subfolder for thumbnail and an .htaccess file within it.
      *
-     * @param string $objectType        Name of treated entity type.
-     * @param string $fieldName         Name of upload field.
-     * @param string $allowedExtensions String with list of allowed file extensions (separated by ", ").
+     * @param string $objectType        Name of treated entity type
+     * @param string $fieldName         Name of upload field
+     * @param string $allowedExtensions String with list of allowed file extensions (separated by ", ")
      *
-     * @return Boolean whether everything went okay or not.
+     * @return Boolean Whether everything went okay or not
      */
     protected function checkAndCreateUploadFolder($objectType, $fieldName, $allowedExtensions = '')
     {
@@ -237,12 +243,14 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
         // Check if directory exist and try to create it if needed
         if (!is_dir($uploadPath) && !FileUtil::mkdirs($uploadPath, 0777)) {
             LogUtil::registerStatus($this->__f('The upload directory "%s" does not exist and could not be created. Try to create it yourself and make sure that this folder is accessible via the web and writable by the webserver.', array($uploadPath)));
+    
             return false;
         }
     
         // Check if directory is writable and change permissions if needed
         if (!is_writable($uploadPath) && !chmod($uploadPath, 0777)) {
             LogUtil::registerStatus($this->__f('Warning! The upload directory at "%s" exists but is not writable by the webserver.', array($uploadPath)));
+    
             return false;
         }
     
@@ -254,6 +262,7 @@ class MUVideo_Util_Base_Controller extends Zikula_AbstractBase
             $htaccessContent = str_replace('__EXTENSIONS__', $extensions, FileUtil::readFile($htaccessFileTemplate));
             if (!FileUtil::writeFile($htaccessFilePath, $htaccessContent)) {
                 LogUtil::registerStatus($this->__f('Warning! Could not write the .htaccess file at "%s".', array($htaccessFilePath)));
+    
                 return false;
             }
         }

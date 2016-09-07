@@ -23,7 +23,7 @@ class MUVideo_ContentType_Base_Item extends Content_AbstractContentType
     /**
      * Returns the module providing this content type.
      *
-     * @return string The module name.
+     * @return string The module name
      */
     public function getModule()
     {
@@ -33,7 +33,7 @@ class MUVideo_ContentType_Base_Item extends Content_AbstractContentType
     /**
      * Returns the name of this content type.
      *
-     * @return string The content type name.
+     * @return string The content type name
      */
     public function getName()
     {
@@ -43,7 +43,7 @@ class MUVideo_ContentType_Base_Item extends Content_AbstractContentType
     /**
      * Returns the title of this content type.
      *
-     * @return string The content type title.
+     * @return string The content type title
      */
     public function getTitle()
     {
@@ -55,7 +55,7 @@ class MUVideo_ContentType_Base_Item extends Content_AbstractContentType
     /**
      * Returns the description of this content type.
      *
-     * @return string The content type description.
+     * @return string The content type description
      */
     public function getDescription()
     {
@@ -67,7 +67,7 @@ class MUVideo_ContentType_Base_Item extends Content_AbstractContentType
     /**
      * Loads the data.
      *
-     * @param array $data Data array with parameters.
+     * @param array $data Data array with parameters
      */
     public function loadData(&$data)
     {
@@ -95,11 +95,11 @@ class MUVideo_ContentType_Base_Item extends Content_AbstractContentType
     /**
      * Displays the data.
      *
-     * @return string The returned output.
+     * @return string The returned output
      */
     public function display()
     {
-        if ($this->id != null && !empty($this->displayMode)) {
+        if (null !== $this->id && !empty($this->displayMode)) {
             return ModUtil::func('MUVideo', 'external', 'display', $this->getDisplayArguments());
         }
     
@@ -111,9 +111,10 @@ class MUVideo_ContentType_Base_Item extends Content_AbstractContentType
      */
     public function displayEditing()
     {
-        if ($this->id != null && !empty($this->displayMode)) {
+        if (null !== $this->id && !empty($this->displayMode)) {
             return ModUtil::func('MUVideo', 'external', 'display', $this->getDisplayArguments());
         }
+    
         $dom = ZLanguage::getModuleDomain('MUVideo');
     
         return __('No item selected.', $dom);
@@ -122,27 +123,30 @@ class MUVideo_ContentType_Base_Item extends Content_AbstractContentType
     /**
      * Returns common arguments for display data selection with the external api.
      *
-     * @return array Display arguments.
+     * @return array Display arguments
      */
     protected function getDisplayArguments()
     {
-        return array('objectType' => $this->objectType,
-                     'source' => 'contentType',
-                     'displayMode' => $this->displayMode,
-                     'id' => $this->id
+        return array(
+            'objectType' => $this->objectType,
+            'source' => 'contentType',
+            'displayMode' => $this->displayMode,
+            'id' => $this->id
         );
     }
     
     /**
      * Returns the default data.
      *
-     * @return array Default data and parameters.
+     * @return array Default data and parameters
      */
     public function getDefaultData()
     {
-        return array('objectType' => 'collection',
-                     'id' => null,
-                     'displayMode' => 'embed');
+        return array(
+            'objectType' => 'collection',
+             'id' => null,
+             'displayMode' => 'embed'
+         );
     }
     
     /**
