@@ -28,7 +28,7 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
      */
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('MUVideo:ItemListBlock:', 'Block title::');
+        //SecurityUtil::registerPermissionSchema('MUVideo:ItemListBlock:', 'Block title::');
     
         $this->categorisableObjectTypes = array('collection', 'movie');
     }
@@ -46,19 +46,21 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
             $requirementMessage .= $this->__('Notice: This block will not be displayed until you activate the MUVideo module.');
         }
     
-        return array('module'          => 'MUVideo',
-                     'text_type'       => $this->__('MUVideo list view'),
-                     'text_type_long'  => $this->__('Display list of MUVideo objects.'),
-                     'allow_multiple'  => true,
-                     'form_content'    => false,
-                     'form_refresh'    => false,
-                     'show_preview'    => true,
-                     'admin_tableless' => true,
-                     'requirement'     => $requirementMessage);
+        return array(
+            'module'          => 'MUVideo',
+            'text_type'       => $this->__('MUVideo list view'),
+            'text_type_long'  => $this->__('Display list of MUVideo objects.'),
+            'allow_multiple'  => true,
+            'form_content'    => false,
+            'form_refresh'    => false,
+            'show_preview'    => true,
+            'admin_tableless' => true,
+            'requirement'     => $requirementMessage
+        );
     }
     
     /**
-     * Display the block.
+     * Display the block content.
      *
      * @param array $blockinfo the blockinfo structure
      *
@@ -77,50 +79,24 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
         }
     
         // get current block content
-        $vars = BlockUtil::varsFromContent($blockinfo['content']);
-        $vars['bid'] = $blockinfo['bid'];
+        $properties = BlockUtil::varsFromContent($blockinfo['content']);
+        $properties['bid'] = $blockinfo['bid'];
     
         // set default values for all params which are not properly set
-        if (!isset($vars['objectType']) || empty($vars['objectType'])) {
-            $vars['objectType'] = 'collection';
-        }
-        if (!isset($vars['sorting']) || empty($vars['sorting'])) {
-            $vars['sorting'] = 'default';
-        }
-        if (!isset($vars['amount']) || !is_numeric($vars['amount'])) {
-            $vars['amount'] = 5;
-        }
-        if (!isset($vars['template'])) {
-            $vars['template'] = 'itemlist_' . DataUtil::formatForOS($vars['objectType']) . '_display.tpl';
-        }
-        if (!isset($vars['customTemplate'])) {
-            $vars['customTemplate'] = '';
-        }
-        if (!isset($vars['filter'])) {
-            $vars['filter'] = '';
-        }
+        $defaults = $this->getDefaults();
+        $properties = array_merge($defaults, $properties);
     
-        if (!isset($vars['catIds'])) {
-            $primaryRegistry = ModUtil::apiFunc('MUVideo', 'category', 'getPrimaryProperty', array('ot' => $vars['objectType']));
-            $vars['catIds'] = array($primaryRegistry => array());
-            // backwards compatibility
-            if (isset($vars['catId'])) {
-                $vars['catIds'][$primaryRegistry][] = $vars['catId'];
-                unset($vars['catId']);
-            }
-        } elseif (!is_array($vars['catIds'])) {
-            $vars['catIds'] = explode(',', $vars['catIds']);
-        }
+        $properties = $this->resolveCategoryIds($properties);
     
         ModUtil::initOOModule('MUVideo');
     
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
         $utilArgs = array('name' => 'list');
-        if (!isset($vars['objectType']) || !in_array($vars['objectType'], $controllerHelper->getObjectTypes('block', $utilArgs))) {
-            $vars['objectType'] = $controllerHelper->getDefaultObjectType('block', $utilArgs);
+        if (!isset($properties['objectType']) || !in_array($properties['objectType'], $controllerHelper->getObjectTypes('block', $utilArgs))) {
+            $properties['objectType'] = $controllerHelper->getDefaultObjectType('block', $utilArgs);
         }
     
-        $objectType = $vars['objectType'];
+        $objectType = $properties['objectType'];
     
         $entityClass = 'MUVideo_Entity_' . ucfirst($objectType);
         $entityManager = $this->serviceManager->getService('doctrine.entitymanager');
@@ -137,54 +113,53 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
         if (SecurityUtil::checkPermission($component, $instance, ACCESS_EDIT)) {
             $accessLevel = ACCESS_EDIT;
         }
-        $this->view->setCacheId('view|ot_' . $objectType . '_sort_' . $vars['sorting'] . '_amount_' . $vars['amount'] . '_' . $accessLevel);
+        $this->view->setCacheId('view|ot_' . $objectType . '_sort_' . $properties['sorting'] . '_amount_' . $properties['amount'] . '_' . $accessLevel);
     
-        $template = $this->getDisplayTemplate($vars);
+        $template = $this->getDisplayTemplate($properties);
     
         // if page is cached return cached content
         if ($this->view->is_cached($template)) {
             $blockinfo['content'] = $this->view->fetch($template);
+    
             return BlockUtil::themeBlock($blockinfo);
         }
     
         // create query
-        $where = $vars['filter'];
-        $orderBy = $this->getSortParam($vars, $repository);
+        $where = $properties['filter'];
+        $orderBy = $this->getSortParam($properties, $repository);
         $qb = $repository->genericBaseQuery($where, $orderBy);
     
-        $properties = null;
-        if (in_array($vars['objectType'], $this->categorisableObjectTypes)) {
-            $properties = ModUtil::apiFunc('MUVideo', 'category', 'getAllProperties', array('ot' => $objectType));
-        }
-    
-        // apply category filters
+        // fetch category registries
+        $catProperties = null;
         if (in_array($objectType, $this->categorisableObjectTypes)) {
-            if (is_array($vars['catIds']) && count($vars['catIds']) > 0) {
-                $qb = ModUtil::apiFunc('MUVideo', 'category', 'buildFilterClauses', array('qb' => $qb, 'ot' => $objectType, 'catids' => $vars['catIds']));
+            $catProperties = ModUtil::apiFunc('MUVideo', 'category', 'getAllProperties', array('ot' => $objectType));
+            // apply category filters
+            if (is_array($properties['catIds']) && count($properties['catIds']) > 0) {
+                $qb = ModUtil::apiFunc('MUVideo', 'category', 'buildFilterClauses', array('qb' => $qb, 'ot' => $objectType, 'catids' => $properties['catIds']));
             }
         }
     
         // get objects from database
         $currentPage = 1;
-        $resultsPerPage = $vars['amount'];
+        $resultsPerPage = $properties['amount'];
         list($query, $count) = $repository->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
         $entities = $repository->retrieveCollectionResult($query, $orderBy, true);
     
         // assign block vars and fetched data
-        $this->view->assign('vars', $vars)
+        $this->view->assign('vars', $properties)
                    ->assign('objectType', $objectType)
                    ->assign('items', $entities)
                    ->assign($repository->getAdditionalTemplateParameters('block'));
     
-        // assign category properties
-        $this->view->assign('properties', $properties);
+        // assign category registries
+        $this->view->assign('properties', $catProperties);
     
         // set a block title
         if (empty($blockinfo['title'])) {
             $blockinfo['title'] = $this->__('MUVideo items');
         }
     
-        $blockinfo['content'] = $this->view->fetch($template);;
+        $blockinfo['content'] = $this->view->fetch($template);
     
         // return the block to the theme
         return BlockUtil::themeBlock($blockinfo);
@@ -193,18 +168,18 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
     /**
      * Returns the template used for output.
      *
-     * @param array $vars List of block variables.
+     * @param array $properties The block properties array
      *
-     * @return string the template path.
+     * @return string the template path
      */
-    protected function getDisplayTemplate($vars)
+    protected function getDisplayTemplate(array $properties)
     {
-        $templateFile = $vars['template'];
+        $templateFile = $properties['template'];
         if ($templateFile == 'custom') {
-            $templateFile = $vars['customTemplate'];
+            $templateFile = $properties['customTemplate'];
         }
     
-        $templateForObjectType = str_replace('itemlist_', 'itemlist_' . DataUtil::formatForOS($vars['objectType']) . '_', $templateFile);
+        $templateForObjectType = str_replace('itemlist_', 'itemlist_' . $properties['objectType'] . '_', $templateFile);
     
         $template = '';
         if ($this->view->template_exists('contenttype/' . $templateForObjectType)) {
@@ -225,20 +200,20 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
     /**
      * Determines the order by parameter for item selection.
      *
-     * @param array               $vars       List of block variables.
-     * @param Doctrine_Repository $repository The repository used for data fetching.
+     * @param array               $properties The block properties array
+     * @param Doctrine_Repository $repository The repository used for data fetching
      *
-     * @return string the sorting clause.
+     * @return string the sorting clause
      */
-    protected function getSortParam($vars, $repository)
+    protected function getSortParam(array $properties, $repository)
     {
-        if ($vars['sorting'] == 'random') {
+        if ($properties['sorting'] == 'random') {
             return 'RAND()';
         }
     
         $sortParam = '';
-        if ($vars['sorting'] == 'newest') {
-            $idFields = ModUtil::apiFunc('MUVideo', 'selection', 'getIdFields', array('ot' => $vars['objectType']));
+        if ($properties['sorting'] == 'newest') {
+            $idFields = ModUtil::apiFunc('MUVideo', 'selection', 'getIdFields', array('ot' => $properties['objectType']));
             if (count($idFields) == 1) {
                 $sortParam = $idFields[0] . ' DESC';
             } else {
@@ -249,7 +224,7 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
                     $sortParam .= $idField . ' DESC';
                 }
             }
-        } elseif ($vars['sorting'] == 'default') {
+        } elseif ($properties['sorting'] == 'default') {
             $sortParam = $repository->getDefaultSortingField() . ' ASC';
         }
     
@@ -261,55 +236,23 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
      *
      * @param array $blockinfo the blockinfo structure
      *
-     * @return string output of the block editing form.
+     * @return string output of the block editing form
      */
     public function modify($blockinfo)
     {
         // Get current content
-        $vars = BlockUtil::varsFromContent($blockinfo['content']);
+        $properties = BlockUtil::varsFromContent($blockinfo['content']);
     
         // set default values for all params which are not properly set
-        if (!isset($vars['objectType']) || empty($vars['objectType'])) {
-            $vars['objectType'] = 'collection';
-        }
-        if (!isset($vars['sorting']) || empty($vars['sorting'])) {
-            $vars['sorting'] = 'default';
-        }
-        if (!isset($vars['amount']) || !is_numeric($vars['amount'])) {
-            $vars['amount'] = 5;
-        }
-        if (!isset($vars['template'])) {
-            $vars['template'] = 'itemlist_' . DataUtil::formatForOS($vars['objectType']) . '_display.tpl';
-        }
-        if (!isset($vars['customTemplate'])) {
-            $vars['customTemplate'] = '';
-        }
-        if (!isset($vars['filter'])) {
-            $vars['filter'] = '';
-        }
+        $defaults = $this->getDefaults();
+        $properties = array_merge($defaults, $properties);
     
-        if (!isset($vars['catIds'])) {
-            $primaryRegistry = ModUtil::apiFunc('MUVideo', 'category', 'getPrimaryProperty', array('ot' => $vars['objectType']));
-            $vars['catIds'] = array($primaryRegistry => array());
-            // backwards compatibility
-            if (isset($vars['catId'])) {
-                $vars['catIds'][$primaryRegistry][] = $vars['catId'];
-                unset($vars['catId']);
-            }
-        } elseif (!is_array($vars['catIds'])) {
-            $vars['catIds'] = explode(',', $vars['catIds']);
-        }
+        $properties = $this->resolveCategoryIds($properties);
     
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
     
         // assign the appropriate values
-        $this->view->assign($vars);
-    
-        // clear the block cache
-        $this->view->clear_cache('block/itemlist_display.tpl');
-        $this->view->clear_cache('block/itemlist_' . DataUtil::formatForOS($vars['objectType']) . '_display.tpl');
-        $this->view->clear_cache('block/itemlist_display_description.tpl');
-        $this->view->clear_cache('block/itemlist_' . DataUtil::formatForOS($vars['objectType']) . '_display_description.tpl');
+        $this->view->assign($properties);
     
         // Return the output that has been generated by this function
         return $this->view->fetch('block/itemlist_modify.tpl');
@@ -320,40 +263,84 @@ class MUVideo_Block_Base_ItemList extends Zikula_Controller_AbstractBlock
      *
      * @param array $blockinfo the blockinfo structure
      *
-     * @return array the modified blockinfo structure.
+     * @return array the modified blockinfo structure
      */
     public function update($blockinfo)
     {
         // Get current content
-        $vars = BlockUtil::varsFromContent($blockinfo['content']);
+        $properties = BlockUtil::varsFromContent($blockinfo['content']);
     
-        $vars['objectType'] = $this->request->request->filter('objecttype', 'collection', FILTER_SANITIZE_STRING);
-        $vars['sorting'] = $this->request->request->filter('sorting', 'default', FILTER_SANITIZE_STRING);
-        $vars['amount'] = (int) $this->request->request->filter('amount', 5, FILTER_VALIDATE_INT);
-        $vars['template'] = $this->request->request->get('template', '');
-        $vars['customTemplate'] = $this->request->request->get('customtemplate', '');
-        $vars['filter'] = $this->request->request->get('filter', '');
+        $properties['objectType'] = $this->request->request->filter('objecttype', 'collection', FILTER_SANITIZE_STRING);
+        $properties['sorting'] = $this->request->request->filter('sorting', 'default', FILTER_SANITIZE_STRING);
+        $properties['amount'] = (int) $this->request->request->filter('amount', 5, FILTER_VALIDATE_INT);
+        $properties['template'] = $this->request->request->get('template', '');
+        $properties['customTemplate'] = $this->request->request->get('customtemplate', '');
+        $properties['filter'] = $this->request->request->get('filter', '');
     
         $controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
-        if (!in_array($vars['objectType'], $controllerHelper->getObjectTypes('block'))) {
-            $vars['objectType'] = $controllerHelper->getDefaultObjectType('block');
+        if (!in_array($properties['objectType'], $controllerHelper->getObjectTypes('block'))) {
+            $properties['objectType'] = $controllerHelper->getDefaultObjectType('block');
         }
     
-        $primaryRegistry = ModUtil::apiFunc('MUVideo', 'category', 'getPrimaryProperty', array('ot' => $vars['objectType']));
-        $vars['catIds'] = array($primaryRegistry => array());
-        if (in_array($vars['objectType'], $this->categorisableObjectTypes)) {
-            $vars['catIds'] = ModUtil::apiFunc('MUVideo', 'category', 'retrieveCategoriesFromRequest', array('ot' => $vars['objectType']));
+        $primaryRegistry = ModUtil::apiFunc('MUVideo', 'category', 'getPrimaryProperty', array('ot' => $properties['objectType']));
+        $properties['catIds'] = array($primaryRegistry => array());
+        if (in_array($properties['objectType'], $this->categorisableObjectTypes)) {
+            $properties['catIds'] = ModUtil::apiFunc('MUVideo', 'category', 'retrieveCategoriesFromRequest', array('ot' => $properties['objectType']));
         }
     
         // write back the new contents
-        $blockinfo['content'] = BlockUtil::varsToContent($vars);
+        $blockinfo['content'] = BlockUtil::varsToContent($properties);
     
         // clear the block cache
         $this->view->clear_cache('block/itemlist_display.tpl');
-        $this->view->clear_cache('block/itemlist_' . ucfirst($vars['objectType']) . '_display.tpl');
+        $this->view->clear_cache('block/itemlist_' . $properties['objectType'] . '_display.tpl');
         $this->view->clear_cache('block/itemlist_display_description.tpl');
-        $this->view->clear_cache('block/itemlist_' . ucfirst($vars['objectType']) . '_display_description.tpl');
+        $this->view->clear_cache('block/itemlist_' . $properties['objectType'] . '_display_description.tpl');
     
         return $blockinfo;
+    }
+    
+    /**
+     * Returns default settings for this block.
+     *
+     * @return array The default settings
+     */
+    protected function getDefaults()
+    {
+        $defaults = array(
+            'objectType' => 'collection',
+            'sorting' => 'default',
+            'amount' => 5,
+            'template' => 'itemlist_display.tpl',
+            'customTemplate' => '',
+            'filter' => ''
+        );
+    
+        return $defaults;
+    }
+    
+    
+    /**
+     * Resolves category filter ids.
+     *
+     * @param array $properties The block properties array
+     *
+     * @return array The updated block properties
+     */
+    protected function resolveCategoryIds(array $properties)
+    {
+        if (!isset($properties['catIds'])) {
+            $primaryRegistry = ModUtil::apiFunc('MUVideo', 'category', 'getPrimaryProperty', array('ot' => $properties['objectType']));
+            $properties['catIds'] = array($primaryRegistry => array());
+            // backwards compatibility
+            if (isset($properties['catId'])) {
+                $properties['catIds'][$primaryRegistry][] = $properties['catId'];
+                unset($properties['catId']);
+            }
+        } elseif (!is_array($properties['catIds'])) {
+            $properties['catIds'] = explode(',', $properties['catIds']);
+        }
+    
+        return $properties;
     }
 }
