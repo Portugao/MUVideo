@@ -1,9 +1,9 @@
-{* Purpose of this template: Display one certain collection within an external context *}
-<div id="collection{$collection.id}" class="muvideo-external-collection">
+{* Purpose of this template: Display one certain playlist within an external context *}
+<div id="playlist{$playlist.id}" class="muvideo-external-playlist">
 {if $displayMode eq 'link'}
     <p class="muvideo-external-link">
-    <a href="{modurl modname='MUVideo' type='user' func='display' ot='collection'  id=$collection.id}" title="{$collection->getTitleFromDisplayPattern()|replace:"\"":""}">
-    {$collection->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filter_hooks.collections.filter'}
+    <a href="{modurl modname='MUVideo' type='user' func='display' ot='playlist'  id=$playlist.id}" title="{$playlist->getTitleFromDisplayPattern()|replace:"\"":""}">
+    {$playlist->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filter_hooks.playlists.filter'}
     </a>
     </p>
 {/if}
@@ -11,7 +11,7 @@
     {* for normal users without edit permission show only the actual file per default *}
     {if $displayMode eq 'embed'}
         <p class="muvideo-external-title">
-            <strong>{$collection->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filter_hooks.collections.filter'}</strong>
+            <strong>{$playlist->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filter_hooks.playlists.filter'}</strong>
         </p>
     {/if}
 {/checkpermissionblock}
@@ -32,8 +32,7 @@
     {* you can enable more details about the item: *}
     {*
         <p class="muvideo-external-description">
-            {if $collection.description ne ''}{$collection.description}<br />{/if}
-            {assignedcategorieslist categories=$collection.categories doctrine2=true}
+            {if $playlist.description ne ''}{$playlist.description}<br />{/if}
         </p>
     *}
 {/if}

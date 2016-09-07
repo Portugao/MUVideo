@@ -13,22 +13,17 @@
 
 /**
  * Update operation.
- * @param object $entity The treated object.
- * @param array  $params Additional arguments.
  *
- * @return bool False on failure or true if everything worked well.
+ * @param object $entity The treated object
+ * @param array  $params Additional arguments
+ *
+ * @return bool False on failure or true if everything worked well
  */
 function MUVideo_operation_update(&$entity, $params)
 {
     $dom = ZLanguage::getModuleDomain('MUVideo');
 
 
-    // initialise the result flag
-    $result = false;
-
-    $objectType = $entity['_objectType'];
-    $currentState = $entity['workflowState'];
-    
     // get attributes read from the workflow
     if (isset($params['nextstate']) && !empty($params['nextstate'])) {
         // assign value to the data object
@@ -42,7 +37,6 @@ function MUVideo_operation_update(&$entity, $params)
     // get entity manager
     $serviceManager = ServiceUtil::getManager();
     $entityManager = $serviceManager->getService('doctrine.entitymanager');
-    
     // save entity data
     try {
         //$this->entityManager->transactional(function($entityManager) {

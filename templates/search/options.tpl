@@ -8,3 +8,7 @@
     <input type="checkbox" id="active_mUVideoMovies" name="mUVideoSearchTypes[]" value="movie"{if $active_movie} checked="checked"{/if} />
     <label for="active_mUVideoMovies">{gt text='Movies' domain='module_muvideo'}</label>
 </div>
+<div>
+    <input type="checkbox" id="active_mUVideoPlaylists" name="mUVideoSearchTypes[]" value="playlist"{if $active_playlist} checked="checked"{/if} />
+    <label for="active_mUVideoPlaylists">{gt text='Playlists' domain='module_muvideo'}</label>
+</div>

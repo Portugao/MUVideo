@@ -1,11 +1,12 @@
 {* Purpose of this template: Edit block for generic item list *}
 <div class="z-formrow">
     <label for="mUVideoObjectType">{gt text='Object type'}:</label>
-        <select id="mUVideoObjectType" name="objecttype" size="1">
-            <option value="collection"{if $objectType eq 'collection'} selected="selected"{/if}>{gt text='Collections'}</option>
-            <option value="movie"{if $objectType eq 'movie'} selected="selected"{/if}>{gt text='Movies'}</option>
-        </select>
-        <span class="z-sub z-formnote">{gt text='If you change this please save the block once to reload the parameters below.'}</span>
+    <select id="mUVideoObjectType" name="objecttype" size="1">
+        <option value="collection"{if $objectType eq 'collection'} selected="selected"{/if}>{gt text='Collections'}</option>
+        <option value="movie"{if $objectType eq 'movie'} selected="selected"{/if}>{gt text='Movies'}</option>
+        <option value="playlist"{if $objectType eq 'playlist'} selected="selected"{/if}>{gt text='Playlists'}</option>
+    </select>
+    <span class="z-sub z-formnote">{gt text='If you change this please save the block once to reload the parameters below.'}</span>
 </div>
 
 {if $catIds ne null && is_array($catIds)}
@@ -26,8 +27,8 @@
             {/if}
             <label for="{$categorySelectorId}{$propertyName}">{$categoryLabel}</label>
             &nbsp;
-                {selector_category name="`$categorySelectorName``$propertyName`" field='id' selectedValue=$catIds.$propertyName categoryRegistryModule='MUVideo' categoryRegistryTable=$objectType categoryRegistryProperty=$propertyName defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
-                <span class="z-sub z-formnote">{gt text='This is an optional filter.'}</span>
+            {selector_category name="`$categorySelectorName``$propertyName`" field='id' selectedValue=$catIds.$propertyName categoryRegistryModule='MUVideo' categoryRegistryTable=$objectType categoryRegistryProperty=$propertyName defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
+            <span class="z-sub z-formnote">{gt text='This is an optional filter.'}</span>
         </div>
     {/foreach}
     {/nocache}
@@ -35,39 +36,39 @@
 
 <div class="z-formrow">
     <label for="mUVideoSorting">{gt text='Sorting'}:</label>
-        <select id="mUVideoSorting" name="sorting">
-            <option value="random"{if $sorting eq 'random'} selected="selected"{/if}>{gt text='Random'}</option>
-            <option value="newest"{if $sorting eq 'newest'} selected="selected"{/if}>{gt text='Newest'}</option>
-            <option value="alpha"{if $sorting eq 'default' || ($sorting != 'random' && $sorting != 'newest')} selected="selected"{/if}>{gt text='Default'}</option>
-        </select>
+    <select id="mUVideoSorting" name="sorting">
+        <option value="random"{if $sorting eq 'random'} selected="selected"{/if}>{gt text='Random'}</option>
+        <option value="newest"{if $sorting eq 'newest'} selected="selected"{/if}>{gt text='Newest'}</option>
+        <option value="default"{if $sorting eq 'default' || ($sorting ne 'random' && $sorting ne 'newest')} selected="selected"{/if}>{gt text='Default'}</option>
+    </select>
 </div>
 
 <div class="z-formrow">
     <label for="mUVideoAmount">{gt text='Amount'}:</label>
-        <input type="text" id="mUVideoAmount" name="amount" maxlength="2" size="10" value="{$amount|default:"5"}" />
+    <input type="text" id="mUVideoAmount" name="amount" maxlength="2" size="10" value="{$amount|default:"5"}" />
 </div>
 
 <div class="z-formrow">
     <label for="mUVideoTemplate">{gt text='Template'}:</label>
-        <select id="mUVideoTemplate" name="template">
-            <option value="itemlist_display.tpl"{if $template eq 'itemlist_display.tpl'} selected="selected"{/if}>{gt text='Only item titles'}</option>
-            <option value="itemlist_display_description.tpl"{if $template eq 'itemlist_display_description.tpl'} selected="selected"{/if}>{gt text='With description'}</option>
-            <option value="custom"{if $template eq 'custom'} selected="selected"{/if}>{gt text='Custom template'}</option>
-        </select>
+    <select id="mUVideoTemplate" name="template">
+        <option value="itemlist_display.tpl"{if $template eq 'itemlist_display.tpl'} selected="selected"{/if}>{gt text='Only item titles'}</option>
+        <option value="itemlist_display_description.tpl"{if $template eq 'itemlist_display_description.tpl'} selected="selected"{/if}>{gt text='With description'}</option>
+        <option value="custom"{if $template eq 'custom'} selected="selected"{/if}>{gt text='Custom template'}</option>
+    </select>
 </div>
 
 <div id="customTemplateArea" class="z-formrow z-hide">
     <label for="mUVideoCustomTemplate">{gt text='Custom template'}:</label>
-        <input type="text" id="mUVideoCustomTemplate" name="customtemplate" size="40" maxlength="80" value="{$customTemplate|default:''}" />
-        <span class="z-sub z-formnote">{gt text='Example'}: <em>itemlist_[objectType]_display.tpl</em></span>
+    <input type="text" id="mUVideoCustomTemplate" name="customtemplate" size="40" maxlength="80" value="{$customTemplate|default:''}" />
+    <span class="z-sub z-formnote">{gt text='Example'}: <em>itemlist_[objectType]_display.tpl</em></span>
 </div>
 
 <div class="z-formrow z-hide">
     <label for="mUVideoFilter">{gt text='Filter (expert option)'}:</label>
-        <input type="text" id="mUVideoFilter" name="filter" size="40" value="{$filterValue|default:''}" />
-        <span class="z-sub z-formnote">
-            ({gt text='Syntax examples'}: <kbd>name:like:foobar</kbd> {gt text='or'} <kbd>status:ne:3</kbd>)
-        </span>
+    <input type="text" id="mUVideoFilter" name="filter" size="40" value="{$filter|default:''}" />
+    <span class="z-sub z-formnote">
+        ({gt text='Syntax examples'}: <kbd>name:like:foobar</kbd> {gt text='or'} <kbd>status:ne:3</kbd>)
+    </span>
 </div>
 
 {pageaddvar name='javascript' value='prototype'}

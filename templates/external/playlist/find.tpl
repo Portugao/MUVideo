@@ -1,8 +1,8 @@
-{* Purpose of this template: Display a popup selector of movies for scribite integration *}
+{* Purpose of this template: Display a popup selector of playlists for scribite integration *}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}" lang="{lang}">
 <head>
-    <title>{gt text='Search and select movie'}</title>
+    <title>{gt text='Search and select playlist'}</title>
     <link type="text/css" rel="stylesheet" href="{$baseurl}style/core.css" />
     <link type="text/css" rel="stylesheet" href="{$baseurl}modules/MUVideo/style/style.css" />
     <link type="text/css" rel="stylesheet" href="{$baseurl}modules/MUVideo/style/finder.css" />
@@ -24,7 +24,7 @@
 <body>
     <p>{gt text='Switch to'}:
     <a href="{modurl modname='MUVideo' type='external' func='finder' objectType='collection' editor=$editorName}" title="{gt text='Search and select collection'}">{gt text='Collections'}</a> | 
-    <a href="{modurl modname='MUVideo' type='external' func='finder' objectType='playlist' editor=$editorName}" title="{gt text='Search and select playlist'}">{gt text='Playlists'}</a>
+    <a href="{modurl modname='MUVideo' type='external' func='finder' objectType='movie' editor=$editorName}" title="{gt text='Search and select movie'}">{gt text='Movies'}</a>
     </p>
     <form action="{$ourEntry|default:'index.php'}" id="mUVideoSelectorForm" method="get" class="z-form">
     <div>
@@ -35,53 +35,28 @@
         <input type="hidden" name="editor" id="editorName" value="{$editorName}" />
 
         <fieldset>
-            <legend>{gt text='Search and select movie'}</legend>
+            <legend>{gt text='Search and select playlist'}</legend>
 
-            {if $properties ne null && is_array($properties)}
-                {gt text='All' assign='lblDefault'}
-                {nocache}
-                {foreach key='propertyName' item='propertyId' from=$properties}
-                    <div class="z-formrow category-selector">
-                        {modapifunc modname='MUVideo' type='category' func='hasMultipleSelection' ot=$objectType registry=$propertyName assign='hasMultiSelection'}
-                        {gt text='Category' assign='categoryLabel'}
-                        {assign var='categorySelectorId' value='catid'}
-                        {assign var='categorySelectorName' value='catid'}
-                        {assign var='categorySelectorSize' value='1'}
-                        {if $hasMultiSelection eq true}
-                            {gt text='Categories' assign='categoryLabel'}
-                            {assign var='categorySelectorName' value='catids'}
-                            {assign var='categorySelectorId' value='catids__'}
-                            {assign var='categorySelectorSize' value='8'}
-                        {/if}
-                        <label for="{$categorySelectorId}{$propertyName}">{$categoryLabel}</label>
-                        &nbsp;
-                        {selector_category name="`$categorySelectorName``$propertyName`" field='id' selectedValue=$catIds.$propertyName categoryRegistryModule='MUVideo' categoryRegistryTable=$objectType categoryRegistryProperty=$propertyName defaultText=$lblDefault editLink=false multipleSize=$categorySelectorSize}
-                        <span class="z-sub z-formnote">{gt text='This is an optional filter.'}</span>
-                    </div>
-                {/foreach}
-                {/nocache}
-            {/if}
             <div class="z-formrow">
                 <label for="mUVideoPasteAs">{gt text='Paste as'}:</label>
                 <select id="mUVideoPasteAs" name="pasteas">
-                    <option value="4">{gt text='Embed movie'}</option>
-                    <option value="1">{gt text='Link to the movie'}</option>
-                    <option value="2">{gt text='ID of movie'}</option>
+                    <option value="1">{gt text='Link to the playlist'}</option>
+                    <option value="2">{gt text='ID of playlist'}</option>
                 </select>
             </div>
             <br />
 
             <div class="z-formrow">
-                <label for="mUVideoObjectId">{gt text='Movie'}:</label>
+                <label for="mUVideoObjectId">{gt text='Playlist'}:</label>
                     <div id="muvideoItemContainer">
                         <ul>
-                        {foreach item='movie' from=$items}
+                        {foreach item='playlist' from=$items}
                             <li>
-                                {assign var='itemId' value=$movie.id}
-                                <a href="#" onclick="mUVideo.finder.selectItem({$itemId})" onkeypress="mUVideo.finder.selectItem({$itemId})">{$movie->getTitleFromDisplayPattern()}</a>
-                                <input type="hidden" id="url{$itemId}" value="{modurl modname='MUVideo' type='user' func='display' ot='movie'  id=$movie.id fqurl=true}" />
-                                <input type="hidden" id="title{$itemId}" value="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}" />
-                                <input type="hidden" id="desc{$itemId}" value="{capture assign='description'}{% if movie.description is not empty %}{{ movie.description }}{% endif %}
+                                {assign var='itemId' value=$playlist.id}
+                                <a href="#" onclick="mUVideo.finder.selectItem({$itemId})" onkeypress="mUVideo.finder.selectItem({$itemId})">{$playlist->getTitleFromDisplayPattern()}</a>
+                                <input type="hidden" id="url{$itemId}" value="{modurl modname='MUVideo' type='user' func='display' ot='playlist'  id=$playlist.id fqurl=true}" />
+                                <input type="hidden" id="title{$itemId}" value="{$playlist->getTitleFromDisplayPattern()|replace:"\"":""}" />
+                                <input type="hidden" id="desc{$itemId}" value="{capture assign='description'}{% if playlist.description is not empty %}{{ playlist.description }}{% endif %}
                                 {/capture}{$description|strip_tags|replace:"\"":""}" />
                             </li>
                         {foreachelse}
@@ -97,11 +72,7 @@
                     <option value="id"{if $sort eq 'id'} selected="selected"{/if}>{gt text='Id'}</option>
                     <option value="title"{if $sort eq 'title'} selected="selected"{/if}>{gt text='Title'}</option>
                     <option value="description"{if $sort eq 'description'} selected="selected"{/if}>{gt text='Description'}</option>
-                    <option value="uploadOfMovie"{if $sort eq 'uploadOfMovie'} selected="selected"{/if}>{gt text='Upload of movie'}</option>
-                    <option value="urlOfYoutube"{if $sort eq 'urlOfYoutube'} selected="selected"{/if}>{gt text='Url of youtube'}</option>
-                    <option value="poster"{if $sort eq 'poster'} selected="selected"{/if}>{gt text='Poster'}</option>
-                    <option value="widthOfMovie"{if $sort eq 'widthOfMovie'} selected="selected"{/if}>{gt text='Width of movie'}</option>
-                    <option value="heightOfMovie"{if $sort eq 'heightOfMovie'} selected="selected"{/if}>{gt text='Height of movie'}</option>
+                    <option value="urlOfYoutubePlaylist"{if $sort eq 'urlOfYoutubePlaylist'} selected="selected"{/if}>{gt text='Url of youtube playlist'}</option>
                     <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
                     <option value="createdUserId"{if $sort eq 'createdUserId'} selected="selected"{/if}>{gt text='Creator'}</option>
                     <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>

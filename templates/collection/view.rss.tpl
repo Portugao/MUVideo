@@ -12,13 +12,11 @@
     xmlns:content="http://purl.org/rss/1.0/modules/content/"
     xmlns:atom="http://www.w3.org/2005/Atom">
 {*<rss version="0.92">*}
-{gt text='Latest collections' assign='channelTitle'}
-{gt text='A direct feed showing the list of collections' assign='channelDesc'}
     <channel>
-        <title>{$channelTitle}</title>
+        <title>{gt text='Latest collections'}</title>
         <link>{$baseurl|escape:'html'}</link>
         <atom:link href="{php}echo substr(\System::getBaseUrl(), 0, strlen(\System::getBaseUrl())-1);{/php}{getcurrenturi}" rel="self" type="application/rss+xml" />
-        <description>{$channelDesc} - {$modvars.ZConfig.slogan}</description>
+        <description>{gt text='A direct feed showing the list of collections'} - {$modvars.ZConfig.slogan}</description>
         <language>{lang}</language>
         {* commented out as $imagepath is not defined and we can't know whether this logo exists or not
         <image>
@@ -29,7 +27,7 @@
         *}
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <copyright>Copyright (c) {php}echo date('Y');{/php}, {$baseurl}</copyright>
-        <webMaster>{$modvars.ZConfig.adminmail|escape:'html'} ({usergetvar name='uname' uid=2})</webMaster>
+        <webMaster>{$modvars.ZConfig.adminmail|escape:'html'} ({usergetvar name='name' uid=2 default='admin'})</webMaster>
 
 {foreach item='collection' from=$items}
     <item>

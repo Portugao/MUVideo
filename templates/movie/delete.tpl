@@ -33,10 +33,10 @@
 
             {notifydisplayhooks eventname='muvideo.ui_hooks.movies.form_delete' id="`$movie.id`" assign='hooks'}
             {foreach key='providerArea' item='hook' from=$hooks}
-            <fieldset>
-                <legend>{$hookName}</legend>
-                {$hook}
-            </fieldset>
+                <fieldset>
+                    {*<legend>{$hookName}</legend>*}
+                    {$hook}
+                </fieldset>
             {/foreach}
         </div>
     </form>

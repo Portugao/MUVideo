@@ -17,10 +17,10 @@
  *    {$item.workflowState|muvideoObjectState}       {* with visual feedback *}
  *    {$item.workflowState|muvideoObjectState:false} {* no ui feedback *}
  *
- * @param string  $state      Name of given workflow state.
- * @param boolean $uiFeedback Whether the output should include some visual feedback about the state.
+ * @param string  $state      Name of given workflow state
+ * @param boolean $uiFeedback Whether the output should include some visual feedback about the state
  *
- * @return string Enriched and translated workflow state ready for display.
+ * @return string Enriched and translated workflow state ready for display
  */
 function smarty_modifier_muvideoObjectState($state = 'initial', $uiFeedback = true)
 {

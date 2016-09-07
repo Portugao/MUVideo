@@ -17,11 +17,11 @@
  * Available parameters:
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out.
  *
- * @param array            $params  All attributes passed to this function from the template.
- * @param string           $content The content of the block.
- * @param Zikula_Form_View $view    Reference to the view object.
+ * @param array            $params  All attributes passed to this function from the template
+ * @param string           $content The content of the block
+ * @param Zikula_Form_View $view    Reference to the view object
  *
- * @return string The output of the plugin.
+ * @return string The output of the plugin
  */
 function smarty_block_muvideoFormFrame($params, $content, $view)
 {

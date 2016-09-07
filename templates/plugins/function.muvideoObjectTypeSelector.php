@@ -17,10 +17,10 @@
  * Available parameters:
  *   - assign: If set, the results are assigned to the corresponding variable instead of printed out.
  *
- * @param  array            $params All attributes passed to this function from the template.
- * @param  Zikula_Form_View $view   Reference to the view object.
+ * @param  array            $params All attributes passed to this function from the template
+ * @param  Zikula_Form_View $view   Reference to the view object
  *
- * @return string The output of the plugin.
+ * @return string The output of the plugin
  */
 function smarty_function_muvideoObjectTypeSelector($params, $view)
 {
@@ -29,6 +29,7 @@ function smarty_function_muvideoObjectTypeSelector($params, $view)
 
     $result[] = array('text' => __('Collections', $dom), 'value' => 'collection');
     $result[] = array('text' => __('Movies', $dom), 'value' => 'movie');
+    $result[] = array('text' => __('Playlists', $dom), 'value' => 'playlist');
 
     if (array_key_exists('assign', $params)) {
         $view->assign($params['assign'], $result);

@@ -18,12 +18,12 @@
  * Available parameters:
  *   - contentType:  Content type for corresponding http header.
  *   - asAttachment: If set to true the file will be offered for downloading.
- *   - filename:     Name of download file.
+ *   - fileName:     Name of download file.
  *
- * @param  array       $params All attributes passed to this function from the template.
- * @param  Zikula_View $view   Reference to the view object.
+ * @param  array       $params All attributes passed to this function from the template
+ * @param  Zikula_View $view   Reference to the view object
  *
- * @return boolean false.
+ * @return boolean false
  */
 function smarty_function_muvideoTemplateHeaders($params, $view)
 {
@@ -36,8 +36,8 @@ function smarty_function_muvideoTemplateHeaders($params, $view)
 
     // if desired let the browser offer the given file as a download
     if (isset($params['asAttachment']) && $params['asAttachment']
-     && isset($params['filename']) && !empty($params['filename'])) {
-        header('Content-Disposition: attachment; filename=' . $params['filename']);
+     && isset($params['fileName']) && !empty($params['fileName'])) {
+        header('Content-Disposition: attachment; filename=' . $params['fileName']);
     }
 
     return;

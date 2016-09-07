@@ -18,7 +18,7 @@
  * @param string $urlFunc      The url func (view, display, edit, etc.)
  * @param array  $urlArguments The argument array containing ids and other additional parameters
  *
- * @return string Desired url in encoded form.
+ * @return string Desired url in encoded form
  */
 function smarty_modifier_muvideoActionUrl($urlType, $urlFunc, $urlArguments)
 {

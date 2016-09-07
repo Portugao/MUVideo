@@ -13,23 +13,20 @@
 
 /**
  * Delete operation.
- * @param object $entity The treated object.
- * @param array  $params Additional arguments.
  *
- * @return bool False on failure or true if everything worked well.
+ * @param object $entity The treated object
+ * @param array  $params Additional arguments
+ *
+ * @return bool False on failure or true if everything worked well
  */
 function MUVideo_operation_delete(&$entity, $params)
 {
     $dom = ZLanguage::getModuleDomain('MUVideo');
 
 
-    // initialise the result flag
-    $result = false;
-
     // get entity manager
     $serviceManager = ServiceUtil::getManager();
     $entityManager = $serviceManager->getService('doctrine.entitymanager');
-    
     // delete entity
     try {
         $entityManager->remove($entity);

@@ -75,7 +75,7 @@
     {formlabel for='mUVideoFilter' text=$filterLabel}
         {formtextinput id='mUVideoFilter' dataField='filter' group='data' mandatory=false maxLength=255}
         <span class="z-sub z-formnote">
-            ({gt text='Syntax examples'}: <kbd>name:like:foobar</kbd> {gt text='or'} <kbd>status:ne:3</kbd>)
+            ({gt text='Syntax examples' domain='module_muvideo'}: <kbd>name:like:foobar</kbd> {gt text='or'} <kbd>status:ne:3</kbd>)
         </span>
 </div>
 

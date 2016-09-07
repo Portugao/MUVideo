@@ -14,17 +14,19 @@
 /**
  * The muvideoGetListEntry modifier displays the name
  * or names for a given list item.
+ * Example:
+ *     {$entity.listField|muvideoGetListEntry:'entityName':'fieldName'}
  *
- * @param string $value      The dropdown value to process.
- * @param string $objectType The treated object type.
- * @param string $fieldName  The list field's name.
- * @param string $delimiter  String used as separator for multiple selections.
+ * @param string $value      The dropdown value to process
+ * @param string $objectType The treated object type
+ * @param string $fieldName  The list field's name
+ * @param string $delimiter  String used as separator for multiple selections
  *
- * @return string List item name.
+ * @return string List item name
  */
 function smarty_modifier_muvideoGetListEntry($value, $objectType = '', $fieldName = '', $delimiter = ', ')
 {
-    if (empty($value) || empty($objectType) || empty($fieldName)) {
+    if ((empty($value) && $value != '0') || empty($objectType) || empty($fieldName)) {
         return $value;
     }
 

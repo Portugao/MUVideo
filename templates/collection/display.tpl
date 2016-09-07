@@ -28,18 +28,39 @@
             {/if}
             
             {if isset($collection.movie) && $collection.movie ne null}
-                {include file='movie/include_displayItemListMany.tpl' items=$collection.movie}
+                {include file='movie/includeDisplayItemListMany.tpl' items=$collection.movie}
             {/if}
             
             {assign var='permLevel' value='ACCESS_EDIT'}
             {if $lct eq 'admin'}
                 {assign var='permLevel' value='ACCESS_ADMIN'}
             {/if}
-            {checkpermission component='MUVideo:Collection:' instance="`$collection.id`::" level=$permLevel assign='mayManage'}
+            {checkpermission component='MUVideo:Collection:' instance='`$collection.id`::' level=$permLevel assign='mayManage'}
             {if $mayManage || (isset($uid) && isset($collection.createdUserId) && $collection.createdUserId eq $uid)}
             <p class="managelink">
                 {gt text='Create movie' assign='createTitle'}
                 <a href="{modurl modname='MUVideo' type=$lct func='edit' ot='movie' collection="`$collection.id`" returnTo="`$lct`DisplayCollection"'}" title="{$createTitle}" class="z-icon-es-add">{$createTitle}</a>
+            </p>
+            {/if}
+            {if $lct eq 'admin'}
+                <h4>{gt text='Playlists'}</h4>
+            {else}
+                <h3>{gt text='Playlists'}</h3>
+            {/if}
+            
+            {if isset($collection.playlists) && $collection.playlists ne null}
+                {include file='playlist/includeDisplayItemListMany.tpl' items=$collection.playlists}
+            {/if}
+            
+            {assign var='permLevel' value='ACCESS_EDIT'}
+            {if $lct eq 'admin'}
+                {assign var='permLevel' value='ACCESS_ADMIN'}
+            {/if}
+            {checkpermission component='MUVideo:Collection:' instance='`$collection.id`::' level=$permLevel assign='mayManage'}
+            {if $mayManage || (isset($uid) && isset($collection.createdUserId) && $collection.createdUserId eq $uid)}
+            <p class="managelink">
+                {gt text='Create playlist' assign='createTitle'}
+                <a href="{modurl modname='MUVideo' type=$lct func='edit' ot='playlist' collection="`$collection.id`" returnTo="`$lct`DisplayCollection"'}" title="{$createTitle}" class="z-icon-es-add">{$createTitle}</a>
             </p>
             {/if}
         </div>
@@ -52,13 +73,14 @@
         <dd>{$collection.description}</dd>
         
     </dl>
-    {include file='helper/include_categories_display.tpl' obj=$collection}
-    {include file='helper/include_standardfields_display.tpl' obj=$collection}
     
     {checkpermission component="MUVideo::" instance=".*" level="ACCESS_ADD" assign="auth"}
     {if $auth eq true}
     	<a class="z-icon-es-add" href="{modurl modname='MUVideo' type='user' func='getVideos' ot='collection' collectionId=$collection.id}">{gt text='Get videos into this collection'}</a>
 	{/if}
+    {include file='helper/includeCategoriesDisplay.tpl' obj=$collection}
+    {include file='helper/includeStandardFieldsDisplay.tpl' obj=$collection}
+
     {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
         {* include display hooks *}
         {notifydisplayhooks eventname='muvideo.ui_hooks.collections.display_view' id=$collection.id urlobject=$currentUrlObject assign='hooks'}
