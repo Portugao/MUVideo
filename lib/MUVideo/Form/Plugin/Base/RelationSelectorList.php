@@ -30,8 +30,8 @@ class MUVideo_Form_Plugin_Base_RelationSelectorList extends MUVideo_Form_Plugin_
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @return void
      */
@@ -57,7 +57,7 @@ class MUVideo_Form_Plugin_Base_RelationSelectorList extends MUVideo_Form_Plugin_
     /**
      * Decode event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */

@@ -44,10 +44,11 @@ class MUVideo_Form_Plugin_Base_ItemSelector extends Zikula_Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
+     *
      * @return void
      */
     public function create(Zikula_Form_View $view, &$params)
@@ -69,13 +70,14 @@ class MUVideo_Form_Plugin_Base_ItemSelector extends Zikula_Form_Plugin_TextInput
     protected function getStyleClass()
     {
         $class = parent::getStyleClass();
+
         return str_replace('z-form-text', 'z-form-itemlist ' . strtolower($this->objectType), $class);
     }
 
     /**
      * Render event handler.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return string The rendered output
      */
@@ -137,7 +139,7 @@ class MUVideo_Form_Plugin_Base_ItemSelector extends Zikula_Form_Plugin_TextInput
     /**
      * Decode event handler.
      *
-     * @param Zikula_Form_View $view Zikula_Form_View object.
+     * @param Zikula_Form_View $view Zikula_Form_View object
      *
      * @return void
      */

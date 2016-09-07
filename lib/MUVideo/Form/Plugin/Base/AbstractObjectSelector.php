@@ -111,10 +111,11 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @see    Zikula_Form_AbstractPlugin
+     *
      * @return void
      */
     public function create(Zikula_Form_View $view, &$params)
@@ -176,8 +177,8 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @return void
      */
@@ -212,14 +213,14 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Render attributes.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return string
      */
     public function renderAttributes(Zikula_Form_View $view)
     {
+        unset($this->attributes['linkingItem']);
         $attributes = parent::renderAttributes($view);
-        $attributes = str_replace(' linkingItem="Array"', '', $attributes);
     
         return $attributes;
     }
@@ -227,9 +228,9 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Performs the actual data selection.
      *
-     * @param array &$params Parameters passed from the Smarty plugin function.
+     * @param array &$params Parameters passed from the Smarty plugin function
      *
-     * @return array List of selected objects.
+     * @return array List of selected objects
      */
     protected function loadItems(&$params)
     {
@@ -259,7 +260,7 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Validates the input.
      *
-     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object
      *
      * @return void
      */
@@ -271,7 +272,7 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Set the selected value.
      *
-     * @param mixed $value Selected value.
+     * @param mixed $value Selected value
      *
      * @return void
      */
@@ -310,8 +311,8 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Pre-process relationship identifiers.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
-     * @param array            &$params Parameters passed from the Smarty plugin function.
+     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object
+     * @param array            &$params Parameters passed from the Smarty plugin function
      *
      * @return void
      */
@@ -321,7 +322,7 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     
         $alias = $this->id;
         $itemIds = array();
-        $many = ($this->selectionMode == 'multiple');
+        $many = $this->selectionMode == 'multiple';
     
         if (isset($entityData[$alias])) {
             $relatedItems = $entityData[$alias];
@@ -351,8 +352,8 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Post-process submitted data.
      *
-     * @param Zikula_Form_View $view   Reference to Zikula_Form_View object.
-     * @param string           $source The data source used (GET or POST).
+     * @param Zikula_Form_View $view   Reference to Zikula_Form_View object
+     * @param string           $source The data source used (GET or POST)
      *
      * @return void
      */
@@ -390,8 +391,8 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Reassign related items to the edited entity.
      *
-     * @param Zikula_Form_View $view       Reference to Zikula_Form_View object.
-     * @param array|string     $inputValue The input data fetched in processRequestData().
+     * @param Zikula_Form_View $view       Reference to Zikula_Form_View object
+     * @param array|string     $inputValue The input data fetched in processRequestData()
      *
      * @return void
      */
@@ -416,10 +417,10 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Reassign related items to the edited entity.
      *
-     * @param Zikula_EntityAccess $entity     Reference to the updated entity.
-     * @param array               $entityData Entity related form data.
+     * @param Zikula_EntityAccess $entity     Reference to the updated entity
+     * @param array               $entityData Entity related form data
      *
-     * @return array form data after processing.
+     * @return array Form data after processing
      */
     public function assignRelatedItemsToEntity($entity, $entityData)
     {
@@ -520,9 +521,9 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
      * Determines whether a certain list item should be included or not.
      * Allows to exclude undesired items after the selection has happened.
      *
-     * @param Doctrine\ORM\Entity $item The treated entity.
+     * @param Doctrine\ORM\Entity $item The treated entity
      *
-     * @return boolean Whether this entity should be included into the list.
+     * @return boolean Whether this entity should be included into the list
      */
     protected function isIncluded($item)
     {
@@ -532,9 +533,9 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Calculates the label for a certain list item.
      *
-     * @param Doctrine\ORM\Entity $item The treated entity.
+     * @param Doctrine\ORM\Entity $item The treated entity
      *
-     * @return string The created label string.
+     * @return string The created label string
      */
     protected function createItemLabel($item)
     {
@@ -544,28 +545,22 @@ abstract class MUVideo_Form_Plugin_Base_AbstractObjectSelector extends Zikula_Fo
     /**
      * Calculates the identifier for a certain list item.
      *
-     * @param Doctrine\ORM\Entity $item The treated entity.
+     * @param Doctrine\ORM\Entity $item The treated entity
      *
-     * @return string The created identifier string.
+     * @return string The created identifier string
      */
     protected function createItemIdentifier($item)
     {
-        // create concatenated list of identifiers (for composite keys)
-        $itemId = '';
-        foreach ($this->idFields as $idField) {
-            $itemId .= ((!empty($itemId)) ? '_' : '') . $item[$idField];
-        }
-    
-        return $itemId;
+        return $item->createCompositeIdentifier();
     }
     
     /**
      * Decode a list of concatenated identifier strings (for composite keys).
      * This method is used for reading selected relationships.
      *
-     * @param Array $itemIds List of concatenated identifiers.
+     * @param Array $itemIds List of concatenated identifiers
      *
-     * @return Array with list of single identifiers.
+     * @return Array with list of single identifiers
      */
     protected function decodeCompositeIdentifier($itemIds)
     {
