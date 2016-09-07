@@ -1,10 +1,10 @@
 {* purpose of this template: reusable display of standard fields *}
 {if (isset($obj.createdUserId) && $obj.createdUserId) || (isset($obj.updatedUserId) && $obj.updatedUserId)}
     {if isset($panel) && $panel eq true}
-        <h3 class="standardfields z-panel-header z-panel-indicator z-pointer">{gt text='Creation and update'}</h3>
-        <div class="standardfields z-panel-content" style="display: none">
+        <h3 class="standard-fields z-panel-header z-panel-indicator z-pointer">{gt text='Creation and update'}</h3>
+        <div class="standard-fields z-panel-content" style="display: none">
     {else}
-        <h3 class="standardfields">{gt text='Creation and update'}</h3>
+        <h3 class="standard-fields">{gt text='Creation and update'}</h3>
     {/if}
     <dl class="propertylist">
     {if isset($obj.createdUserId) && $obj.createdUserId}
@@ -20,7 +20,7 @@
             {assign var='profileLink' value=$cr_uname}
         {/if}
         <dd class="avatar">{useravatar uid=$obj.createdUserId rating='g'}</dd>
-        <dd>{gt text='Created by %1$s on %2$s' tag1=$profileLink tag2=$obj.createdDate|dateformat html=true}</dd>
+        <dd>{gt text='Created by %1$s on %2$s' tag1=$profileLink tag2=$obj.createdDate|dateformat:'datetimebrief' html=true}</dd>
     {/if}
     {if isset($obj.updatedUserId) && $obj.updatedUserId}
         <dt>{gt text='Last update'}</dt>
@@ -35,7 +35,7 @@
             {assign var='profileLink' value=$lu_uname}
         {/if}
         <dd class="avatar">{useravatar uid=$obj.updatedUserId rating='g'}</dd>
-        <dd>{gt text='Updated by %1$s on %2$s' tag1=$profileLink tag2=$obj.updatedDate|dateformat html=true}</dd>
+        <dd>{gt text='Updated by %1$s on %2$s' tag1=$profileLink tag2=$obj.updatedDate|dateformat:'datetimebrief' html=true}</dd>
     {/if}
     </dl>
     {if isset($panel) && $panel eq true}

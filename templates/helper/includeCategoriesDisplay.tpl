@@ -7,7 +7,7 @@
         <h3 class="categories">{gt text='Categories'}</h3>
     {/if}
     {*
-    <dl class="propertylist">
+    <dl class="category-list">
     {foreach key='propName' item='catMapping' from=$obj.categories}
         <dt>{$propName}</dt>
         <dd>{$catMapping.category.name|safetext}</dd>

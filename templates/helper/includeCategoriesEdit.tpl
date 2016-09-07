@@ -1,4 +1,4 @@
-{* purpose of this template: reusable editing of entity attributes *}
+{* purpose of this template: reusable editing of entity categories *}
 {if isset($panel) && $panel eq true}
     <h3 class="categories z-panel-header z-panel-indicator z-pointer">{gt text='Categories'}</h3>
     <fieldset class="categories z-panel-content" style="display: none">
@@ -16,9 +16,9 @@
         {/if}
         <div class="z-formrow">
             {formlabel for="category_`$registryId`" text=$categorySelectorLabel}
-                {formcategoryselector id="category_`$registryId`" category=$registryCid
-                                      dataField='categories' group=$groupName registryId=$registryId doctrine2=true
-                                      selectionMode=$selectionMode}
+            {formcategoryselector id="category_`$registryId`" category=$registryCid
+                                  dataField='categories' group=$groupName registryId=$registryId doctrine2=true
+                                  selectionMode=$selectionMode}
         </div>
     {/foreach}
     {/formvolatile}
