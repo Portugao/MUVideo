@@ -24,14 +24,16 @@
     {if $lct eq 'admin'}
         <div class="z-admin-content-pagetitle">
             {icon type='display' size='small' __alt='Details'}
-            <h3>{$templateTitle|notifyfilters:'muvideo.filter_hooks.movies.filter'} {icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h3>
+            <h3>{$templateTitle|notifyfilters:'muvideo.filter_hooks.movies.filter'}{icon id="itemActions`$movie.id`Trigger" type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}
+            </h3>
         </div>
     {else}
-        <h2>{$templateTitle|notifyfilters:'muvideo.filter_hooks.movies.filter'} {icon id='itemActionsTrigger' type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}</h2>
+        <h2>{$templateTitle|notifyfilters:'muvideo.filter_hooks.movies.filter'}{icon id="itemActions`$movie.id`Trigger" type='options' size='extrasmall' __alt='Actions' class='z-pointer z-hide'}
+        </h2>
     {/if}
-
     <dl>
        {* <dt>{gt text='Title'}</dt>
+        <dt>{gt text='Title'}</dt>
         <dd>{$movie.title}</dd>
         <dt>{gt text='Description'}</dt> *}
         {if $movie.description ne ''}
@@ -58,13 +60,13 @@
         {/if}
        {* <dt>{gt text='Upload of movie'}</dt>
         <dd>{if $movie.uploadOfMovie ne ''}
-          <a href="{$movie.uploadOfMovieFullPathURL}" title="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}"{if $movie.uploadOfMovieMeta.isImage} rel="imageviewer[movie]"{/if}>
-          {if $movie.uploadOfMovieMeta.isImage}
-              {thumb image=$movie.uploadOfMovieFullPath objectid="movie-`$movie.id`" preset=$movieThumbPresetUploadOfMovie tag=true img_alt=$movie->getTitleFromDisplayPattern()}
-          {else}
-              {gt text='Download'} ({$movie.uploadOfMovieMeta.size|muvideoGetFileSize:$movie.uploadOfMovieFullPath:false:false})
-          {/if}
-          </a>
+        <a href="{$movie.uploadOfMovieFullPathURL}" title="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}"{if $movie.uploadOfMovieMeta.isImage} rel="imageviewer[movie]"{/if}>
+        {if $movie.uploadOfMovieMeta.isImage}
+            {thumb image=$movie.uploadOfMovieFullPath objectid="movie-`$movie.id`" preset=$movieThumbPresetUploadOfMovie tag=true img_alt=$movie->getTitleFromDisplayPattern()}
+        {else}
+            {gt text='Download'} ({$movie.uploadOfMovieMeta.size|muvideoGetFileSize:$movie.uploadOfMovieFullPath:false:false})
+        {/if}
+        </a>
         {else}&nbsp;{/if}
         </dd>
         <dt>{gt text='Url of youtube'}</dt>
@@ -78,85 +80,66 @@
         </dd>
         <dt>{gt text='Poster'}</dt>
         <dd>{if $movie.poster ne ''}
-          <a href="{$movie.posterFullPathURL}" title="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}"{if $movie.posterMeta.isImage} rel="imageviewer[movie]"{/if}>
-          {if $movie.posterMeta.isImage}
-              {thumb image=$movie.posterFullPath objectid="movie-`$movie.id`" preset=$movieThumbPresetPoster tag=true img_alt=$movie->getTitleFromDisplayPattern()}
-          {else}
-              {gt text='Download'} ({$movie.posterMeta.size|muvideoGetFileSize:$movie.posterFullPath:false:false})
-          {/if}
-          </a>
+        <a href="{$movie.posterFullPathURL}" title="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}"{if $movie.posterMeta.isImage} rel="imageviewer[movie]"{/if}>
+        {if $movie.posterMeta.isImage}
+            {thumb image=$movie.posterFullPath objectid="movie-`$movie.id`" preset=$movieThumbPresetPoster tag=true img_alt=$movie->getTitleFromDisplayPattern()}
+        {else}
+            {gt text='Download'} ({$movie.posterMeta.size|muvideoGetFileSize:$movie.posterFullPath:false:false})
+        {/if}
+        </a>
         {else}&nbsp;{/if}
         </dd>
+        <dt>{gt text='Width of movie'}</dt>
+        <dd>{$movie.widthOfMovie}</dd>
+        <dt>{gt text='Height of movie'}</dt>
+        <dd>{$movie.heightOfMovie}</dd>
         <dt>{gt text='Collection'}</dt>
         <dd>
-        {if isset($movie.Collection) && $movie.Collection ne null}
+        {if isset($movie.collection) && $movie.collection ne null}
           {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-          <a href="{modurl modname='MUVideo' type=$lct func='display' id=$movie.Collection.id ot='collection'}">{strip}
-            {$movie.Collection->getTitleFromDisplayPattern()|default:""}
+          <a href="{modurl modname='MUVideo' type=$lct func='display' ot='collection'  id=$movie.collection.id}">{strip}
+            {$movie.collection->getTitleFromDisplayPattern()}
           {/strip}</a>
-          <a id="collectionItem{$movie.Collection.id}Display" href="{modurl modname='MUVideo' type=$lct func='display' id=$movie.Collection.id ot='collection' theme='Printer' forcelongurl=true}" title="{gt text='Open quick view window'}" class="z-hide">{icon type='view' size='extrasmall' __alt='Quick view'}</a>
+          <a id="collectionItem{$movie.collection.id}Display" href="{modurl modname='MUVideo' type=$lct func='display' ot='collection'  id=$movie.collection.id theme='Printer' forcelongurl=true}" title="{gt text='Open quick view window'}" class="z-hide">{icon type='view' size='extrasmall' __alt='Quick view'}</a>
           <script type="text/javascript">
           /* <![CDATA[ */
               document.observe('dom:loaded', function() {
-                  muvideoInitInlineWindow($('collectionItem{{$movie.Collection.id}}Display'), '{{$movie.Collection->getTitleFromDisplayPattern()|replace:"'":""}}');
+                  mUMUVideoInitInlineWindow($('collectionItem{{$movie.collection.id}}Display'), '{{$movie.collection->getTitleFromDisplayPattern()|replace:"'":""}}');
               });
           /* ]]> */
           </script>
           {else}
-            {$movie.Collection->getTitleFromDisplayPattern()|default:""}
+            {$movie.collection->getTitleFromDisplayPattern()}
           {/if}
         {else}
             {gt text='Not set.'}
         {/if}
-        </dd> *}
+        </dd>
         
     </dl>
-
-    {if isset($movie.Collection) && $movie.Collection ne null}
-          <dl>
-          <dt>{gt text='Collection'}</dt>
-          <dd>
-          {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
-          <a href="{modurl modname='MUVideo' type=$lct func='display' id=$movie.Collection.id ot='collection'}">{strip}
-            {$movie.Collection->getTitleFromDisplayPattern()|default:""}
-          {/strip}</a>
-          <a id="collectionItem{$movie.Collection.id}Display" href="{modurl modname='MUVideo' type=$lct func='display' id=$movie.Collection.id ot='collection' theme='Printer' forcelongurl=true}" title="{gt text='Open quick view window'}" class="z-hide">{icon type='view' size='extrasmall' __alt='Quick view'}</a>
-          <script type="text/javascript">
-          /* <![CDATA[ */
-              document.observe('dom:loaded', function() {
-                  mUMUVideoInitInlineWindow($('collectionItem{{$movie.Collection.id}}Display'), '{{$movie.Collection->getTitleFromDisplayPattern()|replace:"'":""}}');
-              });
-          /* ]]> */
-          </script>
-          {else}
-            {$movie.Collection->getTitleFromDisplayPattern()|default:""}
-          {/if}
-        {else}
-            {gt text='Not set.'}
-        {/if}
-        <dd>
-        </dl>
-    {include file='helper/include_categories_display.tpl' obj=$movie}
-    {include file='helper/include_standardfields_display.tpl' obj=$movie}
+    {include file='helper/includeCategoriesDisplay.tpl' obj=$movie}
+    {include file='helper/includeStandardFieldsDisplay.tpl' obj=$movie}
 
     {if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
         {* include display hooks *}
         {notifydisplayhooks eventname='muvideo.ui_hooks.movies.display_view' id=$movie.id urlobject=$currentUrlObject assign='hooks'}
-        {foreach key='providerArea' item='hook' from=$hooks}
-            {$hook}
+        {foreach name='hookLoop' key='providerArea' item='hook' from=$hooks}
+            {if $providerArea ne 'provider.scribite.ui_hooks.editor'}{* fix for #664 *}
+                {$hook}
+            {/if}
         {/foreach}
         {if count($movie._actions) gt 0}
-            <p id="itemActions">
-            {foreach item='option' from=$movie._actions}
-                <a href="{$option.url.type|muvideoActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" class="z-icon-es-{$option.icon}">{$option.linkText|safetext}</a>
-            {/foreach}
+            <p id="itemActions{$movie.id}">
+                {foreach item='option' from=$movie._actions}
+                    <a href="{$option.url.type|muvideoActionUrl:$option.url.func:$option.url.arguments}" title="{$option.linkTitle|safetext}" class="z-icon-es-{$option.icon}">{$option.linkText|safetext}</a>
+                {/foreach}
             </p>
             <script type="text/javascript">
             /* <![CDATA[ */
                 document.observe('dom:loaded', function() {
-                    mUMUVideoInitItemActions('movie', 'display', 'itemActions');
+                    mUMUVideoInitItemActions('movie', 'display', 'itemActions{{$movie.id}}');
                 });
-                   
+        
         var MU = jQuery.noConflict(); 
                
         MU(document).ready(function() {
