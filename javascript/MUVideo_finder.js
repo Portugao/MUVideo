@@ -96,7 +96,7 @@ function mUMUVideoGetPasteSnippet(mode, itemId)
     itemTitle = $F('title' + itemId).replace(quoteFinder, '');
     itemDescription = $F('desc' + itemId).replace(quoteFinder, '');
     pasteMode = $F('mUVideoPasteAs');
-    
+
     if (pasteMode === '4') {
     	return 'YOUTUBE[' + itemId + ']';
     }
