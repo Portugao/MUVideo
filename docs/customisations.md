@@ -19,16 +19,10 @@ MUVideo
 * lib/MUVideo/ContentType/Item.php
 
 * lib/MUVideo/Controller/Admin.php
-* lib/MUVideo/Controller/Collection.php
 * lib/MUVideo/Controller/External.php
 * lib/MUVideo/Controller/Movie.php
 * lib/MUVideo/Controller/User.php
 
 * lib/MUVideo/Entity/Movie.php
 
-* lib/MUVideo/Listener/ModuleDispatch.php
-
 * lib/MUVideo/Util/Controller.php
-* lib/MUvideo/util/Model.php
-
-* templates/user/header.tpl
