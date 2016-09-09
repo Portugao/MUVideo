@@ -123,7 +123,7 @@ class MUVideo_Controller_Base_Collection extends Zikula_AbstractController
             $currentUrlArgs['all'] = 1;
         }
         
-        $additionalParameters = $repository->getAdditionalTemplateParameters($imageHelper, 'controllerAction', $utilArgs);
+        $additionalParameters = $repository->getAdditionalTemplateParameters('controllerAction', $utilArgs);
         
         $resultsPerPage = 0;
         if ($showAllEntries != 1) {

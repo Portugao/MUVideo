@@ -34,14 +34,7 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
         try {
             DoctrineHelper::createSchema($this->entityManager, $this->listEntityClasses());
         } catch (\Exception $e) {
-            if (System::isDevelopmentMode()) {
-                return LogUtil::registerError($this->__('Doctrine Exception') . ': ' . $e->getMessage());
-            }
-            $returnMessage = $this->__f('An error was encountered while creating the tables for the %s extension.', array($this->getName()));
-            if (!System::isDevelopmentMode()) {
-                $returnMessage .= ' ' . $this->__('Please enable the development mode by editing the /config/config.php file in order to reveal the error details.');
-            }
-            return LogUtil::registerError($returnMessage);
+            return LogUtil::registerError($this->__('Doctrine Exception') . ': ' . $e->getMessage());
         }
     
         // set up all our vars with initial values
@@ -119,10 +112,7 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
                 try {
                     DoctrineHelper::updateSchema($this->entityManager, $this->listEntityClasses());
                 } catch (\Exception $e) {
-                    if (System::isDevelopmentMode()) {
-                        return LogUtil::registerError($this->__('Doctrine Exception') . ': ' . $e->getMessage());
-                    }
-                    return LogUtil::registerError($this->__f('An error was encountered while updating tables for the %s extension.', array($this->getName())));
+                    return LogUtil::registerError($this->__('Doctrine Exception') . ': ' . $e->getMessage());
                 }
         }
     */
@@ -147,10 +137,7 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
         try {
             DoctrineHelper::dropSchema($this->entityManager, $this->listEntityClasses());
         } catch (\Exception $e) {
-            if (System::isDevelopmentMode()) {
-                return LogUtil::registerError($this->__('Doctrine Exception') . ': ' . $e->getMessage());
-            }
-            return LogUtil::registerError($this->__f('An error was encountered while dropping tables for the %s extension.', array($this->getName())));
+            return LogUtil::registerError($this->__('Doctrine Exception') . ': ' . $e->getMessage());
         }
     
         // unregister persistent event handlers
@@ -320,31 +307,31 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
         $movie5->getCategories()->add(new \MUVideo_Entity_MovieCategory($categoryRegistryIdsPerEntity['movie'], $category, $movie5));
         
         $playlist1->setWorkflowState('initial');
-        $playlist1->setTitle('Playlist title 1');
+        $playlist1->setTitle('Playlisttitle1');
         $playlist1->setDescription('Playlist description 1');
         $playlist1->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
         
         $playlist1->setCollection($collection1);
         $playlist2->setWorkflowState('initial');
-        $playlist2->setTitle('Playlist title 2');
+        $playlist2->setTitle('Playlisttitle2');
         $playlist2->setDescription('Playlist description 2');
         $playlist2->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
         
         $playlist2->setCollection($collection2);
         $playlist3->setWorkflowState('initial');
-        $playlist3->setTitle('Playlist title 3');
+        $playlist3->setTitle('Playlisttitle3');
         $playlist3->setDescription('Playlist description 3');
         $playlist3->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
         
         $playlist3->setCollection($collection3);
         $playlist4->setWorkflowState('initial');
-        $playlist4->setTitle('Playlist title 4');
+        $playlist4->setTitle('Playlisttitle4');
         $playlist4->setDescription('Playlist description 4');
         $playlist4->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
         
         $playlist4->setCollection($collection4);
         $playlist5->setWorkflowState('initial');
-        $playlist5->setTitle('Playlist title 5');
+        $playlist5->setTitle('Playlisttitle5');
         $playlist5->setDescription('Playlist description 5');
         $playlist5->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
         
@@ -400,7 +387,7 @@ class MUVideo_Base_Installer extends Zikula_AbstractInstaller
                 $success = $workflowHelper->executeAction($playlist5, $action);
             }
         } catch(\Exception $e) {
-            LogUtil::registerError($this->__('Sorry, but an unknown error occured during example data creation. Possibly not all data could be created properly!'));
+            return LogUtil::registerError($this->__('Exception during example data creation') . ': ' . $e->getMessage());
         }
     }
     

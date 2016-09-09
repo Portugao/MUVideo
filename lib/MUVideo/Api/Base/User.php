@@ -66,13 +66,12 @@ class MUVideo_Api_Base_User extends Zikula_AbstractApi
                  'title' => $this->__('Playlist list')
              );
         }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $links[] = [
-                'url' => $this->router->generate('muvideo_admin_config'),
+        if (SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+            $links[] = array(
+                'url' => ModUtil::url($this->name, 'admin', 'config'),
                 'text' => $this->__('Configuration'),
-                'title' => $this->__('Manage settings for this application'),
-                'icon' => 'wrench'
-            ];
+                'title' => $this->__('Manage settings for this application')
+            );
         }
 
         return $links;
