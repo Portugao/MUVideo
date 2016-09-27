@@ -86,7 +86,7 @@
                     </td>
                 {/if}
                 <td headers="hTitle" class="z-left">
-                    <a href="{modurl modname='MUVideo' type=$lct func='display' ot='playlist'  id=$playlist.id}" title="{gt text='View detail page'}">{$playlist.title|notifyfilters:'muvideo.filterhook.playlists'}</a>
+                    {$playlist.title|notifyfilters:'muvideo.filterhook.playlists'}
                 </td>
                 <td headers="hDescription" class="z-left">
                     {$playlist.description}

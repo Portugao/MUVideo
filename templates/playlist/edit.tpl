@@ -46,13 +46,6 @@
                             <legend>{$language|getlanguagename|safehtml}</legend>
                             
                             <div class="z-formrow">
-                                {formlabel for='title' __text='Title' mandatorysym='1' cssClass=''}
-                                {formtextinput group='playlist' id='title' mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required validate-nospace'}
-                                {muvideoValidationError id='title' class='required'}
-                                {muvideoValidationError id='title' class='validate-nospace'}
-                            </div>
-                            
-                            <div class="z-formrow">
                                 {formlabel for='description' __text='Description' cssClass=''}
                                 {formtextinput group='playlist' id='description' mandatory=false __title='Enter the description of the playlist' textMode='multiline' rows='6' cols='50' cssClass=''}
                             </div>
@@ -63,13 +56,6 @@
                     {if $language ne $currentLanguage}
                         <fieldset>
                             <legend>{$language|getlanguagename|safehtml}</legend>
-                            
-                            <div class="z-formrow">
-                                {formlabel for="title`$language`" __text='Title' mandatorysym='1' cssClass=''}
-                                {formtextinput group="playlist`$language`" id="title`$language`" mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required validate-nospace'}
-                                {muvideoValidationError id="title`$language`" class='required'}
-                                {muvideoValidationError id="title`$language`" class='validate-nospace'}
-                            </div>
                             
                             <div class="z-formrow">
                                 {formlabel for="description`$language`" __text='Description' cssClass=''}
@@ -87,13 +73,6 @@
                 <legend>{$language|getlanguagename|safehtml}</legend>
                 
                 <div class="z-formrow">
-                    {formlabel for='title' __text='Title' mandatorysym='1' cssClass=''}
-                    {formtextinput group='playlist' id='title' mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required validate-nospace'}
-                    {muvideoValidationError id='title' class='required'}
-                    {muvideoValidationError id='title' class='validate-nospace'}
-                </div>
-                
-                <div class="z-formrow">
                     {formlabel for='description' __text='Description' cssClass=''}
                     {formtextinput group='playlist' id='description' mandatory=false __title='Enter the description of the playlist' textMode='multiline' rows='6' cols='50' cssClass=''}
                 </div>
@@ -102,6 +81,13 @@
     {/formvolatile}
     <fieldset>
         <legend>{gt text='Further properties'}</legend>
+        
+        <div class="z-formrow">
+            {formlabel for='title' __text='Title' mandatorysym='1' cssClass=''}
+            {formtextinput group='playlist' id='title' mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required validate-nospace'}
+            {muvideoValidationError id='title' class='required'}
+            {muvideoValidationError id='title' class='validate-nospace'}
+        </div>
         
         <div class="z-formrow">
             {formlabel for='urlOfYoutubePlaylist' __text='Url of youtube playlist' mandatorysym='1' cssClass=''}

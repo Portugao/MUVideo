@@ -32,8 +32,8 @@
 {foreach item='playlist' from=$items}
     <item>
         <title><![CDATA[{if isset($playlist.updatedDate) && $playlist.updatedDate ne null}{$playlist.updatedDate|dateformat} - {/if}{$playlist->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filterhook.playlists'}]]></title>
-        <link>{modurl modname='MUVideo' type=$lct func='display' ot='playlist'  id=$playlist.id fqurl=true}</link>
-        <guid>{modurl modname='MUVideo' type=$lct func='display' ot='playlist'  id=$playlist.id fqurl=true}</guid>
+        <link>{modurl modname='MUVideo' type=$lct func='view' ot='playlist' fqurl=true}</link>
+        <guid>{modurl modname='MUVideo' type=$lct func='view' ot='playlist' fqurl=true}</guid>
         {if isset($playlist.createdUserId)}
             {usergetvar name='uname' uid=$playlist.createdUserId assign='cr_uname'}
             {usergetvar name='name' uid=$playlist.createdUserId assign='cr_name'}

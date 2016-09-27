@@ -12,7 +12,7 @@
     </author>
 {assign var='amountOfItems' value=$items|@count}
 {if $amountOfItems gt 0}
-{capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$items[0].createdDate|dateformat:'%Y-%m-%d'}:{modurl modname='MUVideo' type=$lct func='display' ot='playlist' id=$items[0].id}{/capture}
+{capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$items[0].createdDate|dateformat:'%Y-%m-%d'}:{modurl modname='MUVideo' type=$lct func='view' ot='playlist'}{/capture}
     <id>{$uniqueID}</id>
     <updated>{$items[0].updatedDate|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</updated>
 {/if}
@@ -23,8 +23,8 @@
 {foreach item='playlist' from=$items}
     <entry>
         <title type="html">{$playlist->getTitleFromDisplayPattern()|notifyfilters:'muvideo.filterhook.playlists'}</title>
-        <link rel="alternate" type="text/html" href="{modurl modname='MUVideo' type=$lct func='display' ot='playlist' id=$playlist.id fqurl=true}" />
-        {capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$playlist.createdDate|dateformat:'%Y-%m-%d'}:{modurl modname='MUVideo' type=$lct func='display' ot='playlist' id=$playlist.id}{/capture}
+        <link rel="alternate" type="text/html" href="{modurl modname='MUVideo' type=$lct func='view' ot='playlist' fqurl=true}" />
+        {capture assign='uniqueID'}tag:{$baseurl|replace:'http://':''|replace:'/':''},{$playlist.createdDate|dateformat:'%Y-%m-%d'}:{modurl modname='MUVideo' type=$lct func='view' ot='playlist'}{/capture}
         <id>{$uniqueID}</id>
         {if isset($playlist.updatedDate) && $playlist.updatedDate ne null}
             <updated>{$playlist.updatedDate|dateformat:'%Y-%m-%dT%H:%M:%SZ'}</updated>
