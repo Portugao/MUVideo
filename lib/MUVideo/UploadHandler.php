@@ -14,7 +14,7 @@
 /**
  * Upload handler implementation class.
  */
-class MUVideo_UploadHandler extends MUVideo_Base_UploadHandler
+class MUVideo_UploadHandler extends MUVideo_Base_AbstractUploadHandler
 {
     /**
      * Constructor initialising the supported object types.

@@ -15,7 +15,7 @@
  * This handler class handles the page events of the Form called by the mUVideo_collection_edit() function.
  * It aims on the collection object type.
  */
-class MUVideo_Form_Handler_Collection_Edit extends MUVideo_Form_Handler_Collection_Base_Edit
+class MUVideo_Form_Handler_Collection_Edit extends MUVideo_Form_Handler_Collection_Base_AbstractEdit
 {
     // feel free to extend the base handler class here
 }

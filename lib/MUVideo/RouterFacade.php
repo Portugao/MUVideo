@@ -14,7 +14,7 @@
 /**
  * Url router facade implementation class.
  */
-class MUVideo_RouterFacade extends MUVideo_Base_RouterFacade
+class MUVideo_RouterFacade extends MUVideo_Base_AbstractRouterFacade
 {
     // here you can customise the data which is provided to the url router.
 }

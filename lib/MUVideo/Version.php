@@ -14,7 +14,7 @@
 /**
  * Version information implementation class.
  */
-class MUVideo_Version extends MUVideo_Base_Version
+class MUVideo_Version extends MUVideo_Base_AbstractVersion
 {
     /**
      * Retrieves meta data information for this application.

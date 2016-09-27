@@ -16,7 +16,7 @@
  *
  * This is the concrete validation class with general checks.
  */
-class MUVideo_Validator extends MUVideo_Base_Validator
+class MUVideo_Validator extends MUVideo_Base_AbstractValidator
 {
     // here you can add custom validation methods or override existing checks
 }

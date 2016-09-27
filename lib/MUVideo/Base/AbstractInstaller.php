@@ -218,7 +218,7 @@ abstract class MUVideo_Base_AbstractInstaller extends Zikula_AbstractInstaller
         $playlist2 = new \MUVideo_Entity_Playlist();
         $playlist3 = new \MUVideo_Entity_Playlist();
         $playlist4 = new \MUVideo_Entity_Playlist();
-        $playlist5 = new \MUVideo_Entity_Playlist();*/
+        $playlist5 = new \MUVideo_Entity_Playlist();
         
         $categoryId = 41; // Business and work
         $category = $this->entityManager->find('Zikula_Doctrine2_Entity_Category', $categoryId);
@@ -388,7 +388,7 @@ abstract class MUVideo_Base_AbstractInstaller extends Zikula_AbstractInstaller
             }
         } catch(\Exception $e) {
             return LogUtil::registerError($this->__('Exception during example data creation') . ': ' . $e->getMessage());
-        }
+        }*/
     }
     
     /**

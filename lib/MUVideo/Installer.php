@@ -14,7 +14,7 @@
 /**
  * Installer implementation class.
  */
-class MUVideo_Installer extends MUVideo_Base_Installer
+class MUVideo_Installer extends MUVideo_Base_AbstractInstaller
 {
     /**
      * Upgrade the MUVideo application from an older version.
