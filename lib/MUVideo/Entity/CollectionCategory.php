@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  */
-class MUVideo_Entity_CollectionCategory extends MUVideo_Entity_Base_CollectionCategory
+class MUVideo_Entity_CollectionCategory extends MUVideo_Entity_Base_AbstractCollectionCategory
 {
     // feel free to add your own methods here
 }

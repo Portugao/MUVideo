@@ -14,7 +14,7 @@
 /**
  * Utility implementation class for view helper methods.
  */
-class MUVideo_Util_View extends MUVideo_Util_Base_View
+class MUVideo_Util_View extends MUVideo_Util_Base_AbstractView
 {
     // feel free to add your own convenience methods here
 }

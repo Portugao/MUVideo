@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for frontend controller interaction events.
  */
-class MUVideo_Listener_FrontController extends MUVideo_Listener_Base_FrontController
+class MUVideo_Listener_FrontController extends MUVideo_Listener_Base_AbstractFrontController
 {
     /**
      * {@inheritdoc}

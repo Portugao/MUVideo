@@ -14,7 +14,7 @@
 /**
  * Mailz api implementation class.
  */
-class MUVideo_Api_Mailz extends MUVideo_Api_Base_Mailz
+class MUVideo_Api_Mailz extends MUVideo_Api_Base_AbstractMailz
 {
     // feel free to extend the mailz api here
 }

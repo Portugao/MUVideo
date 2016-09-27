@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for group-related events.
  */
-class MUVideo_Listener_Group extends MUVideo_Listener_Base_Group
+class MUVideo_Listener_Group extends MUVideo_Listener_Base_AbstractGroup
 {
     /**
      * {@inheritdoc}

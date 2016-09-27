@@ -13,12 +13,12 @@
 
 namespace \Form\Type\Finder;
 
-use \Form\Type\Finder\Base\MovieFinderType as BaseMovieFinderType;
+use \Form\Type\Finder\Base\AbstractMovieFinderType;
 
 /**
  * Movie finder form type implementation class.
  */
-class MovieFinderType extends BaseMovieFinderType
+class MovieFinderType extends AbstractMovieFinderType
 {
     // feel free to extend the base form type class here
 }

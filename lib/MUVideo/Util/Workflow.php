@@ -14,7 +14,7 @@
 /**
  * Utility implementation class for workflow helper methods.
  */
-class MUVideo_Util_Workflow extends MUVideo_Util_Base_Workflow
+class MUVideo_Util_Workflow extends MUVideo_Util_Base_AbstractWorkflow
 {
     // feel free to add your own convenience methods here
 }

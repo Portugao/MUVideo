@@ -16,7 +16,7 @@
  *
  * This is the concrete repository class for playlist translation entities.
  */
-class MUVideo_Entity_Repository_PlaylistTranslation extends MUVideo_Entity_Repository_Base_PlaylistTranslation
+class MUVideo_Entity_Repository_PlaylistTranslation extends MUVideo_Entity_Repository_Base_AbstractPlaylistTranslation
 {
     // feel free to add your own methods here
 }

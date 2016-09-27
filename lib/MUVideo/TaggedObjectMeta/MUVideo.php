@@ -14,7 +14,7 @@
 /**
  * This class provides object meta data for the Tag module.
  */
-class MUVideo_TaggedObjectMeta_MUVideo extends MUVideo_TaggedObjectMeta_Base_MUVideo
+class MUVideo_TaggedObjectMeta_MUVideo extends MUVideo_TaggedObjectMeta_Base_AbstractMUVideo
 {
     // feel free to extend the tag support here
 }

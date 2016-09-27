@@ -14,7 +14,7 @@
 /**
  * Generic item list content plugin implementation class.
  */
-class MUVideo_ContentType_ItemList extends MUVideo_ContentType_Base_ItemList
+class MUVideo_ContentType_ItemList extends MUVideo_ContentType_Base_AbstractItemList
 {
     // feel free to extend the content type here
 }

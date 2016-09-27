@@ -13,12 +13,12 @@
 
 namespace \Form\Type\Finder;
 
-use \Form\Type\Finder\Base\CollectionFinderType as BaseCollectionFinderType;
+use \Form\Type\Finder\Base\AbstractCollectionFinderType;
 
 /**
  * Collection finder form type implementation class.
  */
-class CollectionFinderType extends BaseCollectionFinderType
+class CollectionFinderType extends AbstractCollectionFinderType
 {
     // feel free to extend the base form type class here
 }

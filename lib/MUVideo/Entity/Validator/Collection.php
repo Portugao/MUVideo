@@ -16,7 +16,7 @@
  *
  * This is the concrete validation class for collection entities.
  */
-class MUVideo_Entity_Validator_Collection extends MUVideo_Entity_Validator_Base_Collection
+class MUVideo_Entity_Validator_Collection extends MUVideo_Entity_Validator_Base_AbstractCollection
 {
     // here you can add custom validation methods or override existing checks
 }

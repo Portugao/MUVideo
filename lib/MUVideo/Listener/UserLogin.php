@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for user login events.
  */
-class MUVideo_Listener_UserLogin extends MUVideo_Listener_Base_UserLogin
+class MUVideo_Listener_UserLogin extends MUVideo_Listener_Base_AbstractUserLogin
 {
     /**
      * {@inheritdoc}

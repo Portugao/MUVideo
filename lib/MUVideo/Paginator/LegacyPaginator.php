@@ -14,7 +14,7 @@
 /**
  * Paginator switch implementation class for 1.3.x modules.
  */
-class MUVideo_Paginator_LegacyPaginator extends MUVideo_Paginator_Base_LegacyPaginator
+class MUVideo_Paginator_LegacyPaginator extends MUVideo_Paginator_Base_AbstractLegacyPaginator
 {
     // extend the paginator class here if desired
 }

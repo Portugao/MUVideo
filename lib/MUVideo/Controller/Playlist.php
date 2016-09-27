@@ -14,7 +14,7 @@
 /**
  * Playlist controller class providing navigation and interaction functionality.
  */
-class MUVideo_Controller_Playlist extends MUVideo_Controller_Base_Playlist
+class MUVideo_Controller_Playlist extends MUVideo_Controller_Base_AbstractPlaylist
 {
     // feel free to add your own controller methods here
 }

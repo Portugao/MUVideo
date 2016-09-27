@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for events of the Users module.
  */
-class MUVideo_Listener_Users extends MUVideo_Listener_Base_Users
+class MUVideo_Listener_Users extends MUVideo_Listener_Base_AbstractUsers
 {
     /**
      * {@inheritdoc}

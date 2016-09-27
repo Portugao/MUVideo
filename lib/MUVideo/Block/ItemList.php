@@ -14,7 +14,7 @@
 /**
  * Generic item list block implementation class.
  */
-class MUVideo_Block_ItemList extends MUVideo_Block_Base_ItemList
+class MUVideo_Block_ItemList extends MUVideo_Block_Base_AbstractItemList
 {
     // feel free to extend the item list block here
 }

@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for view-related events.
  */
-class MUVideo_Listener_View extends MUVideo_Listener_Base_View
+class MUVideo_Listener_View extends MUVideo_Listener_Base_AbstractView
 {
     /**
      * {@inheritdoc}

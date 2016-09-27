@@ -14,7 +14,7 @@
 /**
  * Utility implementation class for image helper methods.
  */
-class MUVideo_Util_Image extends MUVideo_Util_Base_Image
+class MUVideo_Util_Image extends MUVideo_Util_Base_AbstractImage
 {
     // feel free to add your own convenience methods here
 }

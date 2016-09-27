@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for special purposes and 3rd party api support.
  */
-class MUVideo_Listener_ThirdParty extends MUVideo_Listener_Base_ThirdParty
+class MUVideo_Listener_ThirdParty extends MUVideo_Listener_Base_AbstractThirdParty
 {
     
     /**

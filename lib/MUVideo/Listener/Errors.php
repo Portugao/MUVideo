@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for error-related events.
  */
-class MUVideo_Listener_Errors extends MUVideo_Listener_Base_Errors
+class MUVideo_Listener_Errors extends MUVideo_Listener_Base_AbstractErrors
 {
     /**
      * {@inheritdoc}

@@ -28,7 +28,7 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class MUVideo_Entity_Playlist extends MUVideo_Entity_Base_Playlist
+class MUVideo_Entity_Playlist extends MUVideo_Entity_Base_AbstractPlaylist
 {
     // feel free to add your own methods here
 

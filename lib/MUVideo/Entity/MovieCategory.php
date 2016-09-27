@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  */
-class MUVideo_Entity_MovieCategory extends MUVideo_Entity_Base_MovieCategory
+class MUVideo_Entity_MovieCategory extends MUVideo_Entity_Base_AbstractMovieCategory
 {
     // feel free to add your own methods here
 }

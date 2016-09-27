@@ -14,7 +14,7 @@
 /**
  * This is the Ajax api helper class.
  */
-class MUVideo_Api_Ajax extends MUVideo_Api_Base_Ajax
+class MUVideo_Api_Ajax extends MUVideo_Api_Base_AbstractAjax
 {
     // feel free to add own api methods here
 }

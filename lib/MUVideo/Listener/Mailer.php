@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for mailing events.
  */
-class MUVideo_Listener_Mailer extends MUVideo_Listener_Base_Mailer
+class MUVideo_Listener_Mailer extends MUVideo_Listener_Base_AbstractMailer
 {
     /**
      * {@inheritdoc}

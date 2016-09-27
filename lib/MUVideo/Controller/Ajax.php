@@ -14,7 +14,7 @@
 /**
  * Ajax controller class providing navigation and interaction functionality.
  */
-class MUVideo_Controller_Ajax extends MUVideo_Controller_Base_Ajax
+class MUVideo_Controller_Ajax extends MUVideo_Controller_Base_AbstractAjax
 {
     // feel free to add your own controller methods here
 }

@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  */
-class MUVideo_Entity_CollectionTranslation extends MUVideo_Entity_Base_CollectionTranslation
+class MUVideo_Entity_CollectionTranslation extends MUVideo_Entity_Base_AbstractCollectionTranslation
 {
     // feel free to add your own methods here
 }

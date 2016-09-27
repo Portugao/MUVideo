@@ -13,12 +13,12 @@
 
 namespace \Form\Type\Finder;
 
-use \Form\Type\Finder\Base\PlaylistFinderType as BasePlaylistFinderType;
+use \Form\Type\Finder\Base\AbstractPlaylistFinderType;
 
 /**
  * Playlist finder form type implementation class.
  */
-class PlaylistFinderType extends BasePlaylistFinderType
+class PlaylistFinderType extends AbstractPlaylistFinderType
 {
     // feel free to extend the base form type class here
 }

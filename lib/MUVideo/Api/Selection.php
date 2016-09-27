@@ -14,7 +14,7 @@
 /**
  * Selection api implementation class.
  */
-class MUVideo_Api_Selection extends MUVideo_Api_Base_Selection
+class MUVideo_Api_Selection extends MUVideo_Api_Base_AbstractSelection
 {
     // feel free to extend the selection api here
 }

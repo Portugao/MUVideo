@@ -16,7 +16,7 @@
  *
  * This is the concrete repository class for movie translation entities.
  */
-class MUVideo_Entity_Repository_MovieTranslation extends MUVideo_Entity_Repository_Base_MovieTranslation
+class MUVideo_Entity_Repository_MovieTranslation extends MUVideo_Entity_Repository_Base_AbstractMovieTranslation
 {
     // feel free to add your own methods here
 }

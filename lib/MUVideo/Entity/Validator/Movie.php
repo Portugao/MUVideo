@@ -16,7 +16,7 @@
  *
  * This is the concrete validation class for movie entities.
  */
-class MUVideo_Entity_Validator_Movie extends MUVideo_Entity_Validator_Base_Movie
+class MUVideo_Entity_Validator_Movie extends MUVideo_Entity_Validator_Base_AbstractMovie
 {
     // here you can add custom validation methods or override existing checks
 }

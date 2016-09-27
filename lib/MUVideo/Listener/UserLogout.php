@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for user logout events.
  */
-class MUVideo_Listener_UserLogout extends MUVideo_Listener_Base_UserLogout
+class MUVideo_Listener_UserLogout extends MUVideo_Listener_Base_AbstractUserLogout
 {
     /**
      * {@inheritdoc}

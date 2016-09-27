@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for theme-related events.
  */
-class MUVideo_Listener_Theme extends MUVideo_Listener_Base_Theme
+class MUVideo_Listener_Theme extends MUVideo_Listener_Base_AbstractTheme
 {
     /**
      * {@inheritdoc}

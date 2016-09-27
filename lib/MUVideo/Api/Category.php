@@ -14,7 +14,7 @@
 /**
  * Category api implementation class.
  */
-class MUVideo_Api_Category extends MUVideo_Api_Base_Category
+class MUVideo_Api_Category extends MUVideo_Api_Base_AbstractCategory
 {
     // feel free to extend the category api at this place
 }

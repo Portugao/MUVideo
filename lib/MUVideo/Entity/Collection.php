@@ -29,7 +29,7 @@ use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class MUVideo_Entity_Collection extends MUVideo_Entity_Base_Collection
+class MUVideo_Entity_Collection extends MUVideo_Entity_Base_AbstractCollection
 {
     // feel free to add your own methods here
 

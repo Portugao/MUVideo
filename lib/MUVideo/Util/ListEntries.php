@@ -14,7 +14,7 @@
 /**
  * Utility implementation class for list field entries related methods.
  */
-class MUVideo_Util_ListEntries extends MUVideo_Util_Base_ListEntries
+class MUVideo_Util_ListEntries extends MUVideo_Util_Base_AbstractListEntries
 {
     // feel free to add your own convenience methods here
 }

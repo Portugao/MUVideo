@@ -14,7 +14,7 @@
 /**
  * This is the Admin api helper class.
  */
-class MUVideo_Api_Admin extends MUVideo_Api_Base_Admin
+class MUVideo_Api_Admin extends MUVideo_Api_Base_AbstractAdmin
 {
     // feel free to add own api methods here
 }

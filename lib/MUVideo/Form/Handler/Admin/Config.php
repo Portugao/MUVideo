@@ -14,7 +14,7 @@
 /**
  * Configuration handler implementation class.
  */
-class MUVideo_Form_Handler_Admin_Config extends MUVideo_Form_Handler_Admin_Base_Config
+class MUVideo_Form_Handler_Admin_Config extends MUVideo_Form_Handler_Admin_Base_AbstractConfig
 {
     // feel free to extend the base handler class here
 }

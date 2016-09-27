@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for page-related events.
  */
-class MUVideo_Listener_Page extends MUVideo_Listener_Base_Page
+class MUVideo_Listener_Page extends MUVideo_Listener_Base_AbstractPage
 {
     /**
      * {@inheritdoc}

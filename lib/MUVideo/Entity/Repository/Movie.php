@@ -16,7 +16,7 @@
  *
  * This is the concrete repository class for movie entities.
  */
-class MUVideo_Entity_Repository_Movie extends MUVideo_Entity_Repository_Base_Movie
+class MUVideo_Entity_Repository_Movie extends MUVideo_Entity_Repository_Base_AbstractMovie
 {
     // feel free to add your own methods here, like for example reusable DQL queries
 }

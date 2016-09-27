@@ -14,7 +14,7 @@
 /**
  * Cache api implementation class.
  */
-class MUVideo_Api_Cache extends MUVideo_Api_Base_Cache
+class MUVideo_Api_Cache extends MUVideo_Api_Base_AbstractCache
 {
     // feel free to extend the cache api here
 }

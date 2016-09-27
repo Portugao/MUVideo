@@ -16,7 +16,7 @@
  *
  * This is the concrete repository class for collection category entities.
  */
-class MUVideo_Entity_Repository_CollectionCategory extends MUVideo_Entity_Repository_Base_CollectionCategory
+class MUVideo_Entity_Repository_CollectionCategory extends MUVideo_Entity_Repository_Base_AbstractCollectionCategory
 {
     // feel free to add your own methods here
 }

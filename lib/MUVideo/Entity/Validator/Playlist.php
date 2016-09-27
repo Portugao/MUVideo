@@ -16,7 +16,7 @@
  *
  * This is the concrete validation class for playlist entities.
  */
-class MUVideo_Entity_Validator_Playlist extends MUVideo_Entity_Validator_Base_Playlist
+class MUVideo_Entity_Validator_Playlist extends MUVideo_Entity_Validator_Base_AbstractPlaylist
 {
     // here you can add custom validation methods or override existing checks
 }

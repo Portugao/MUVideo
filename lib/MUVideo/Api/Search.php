@@ -14,7 +14,7 @@
 /**
  * Search api implementation class.
  */
-class MUVideo_Api_Search extends MUVideo_Api_Base_Search
+class MUVideo_Api_Search extends MUVideo_Api_Base_AbstractSearch
 {
     // feel free to extend the search api here
 }

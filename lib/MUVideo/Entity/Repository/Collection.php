@@ -16,7 +16,7 @@
  *
  * This is the concrete repository class for collection entities.
  */
-class MUVideo_Entity_Repository_Collection extends MUVideo_Entity_Repository_Base_Collection
+class MUVideo_Entity_Repository_Collection extends MUVideo_Entity_Repository_Base_AbstractCollection
 {
     // feel free to add your own methods here, like for example reusable DQL queries
 }

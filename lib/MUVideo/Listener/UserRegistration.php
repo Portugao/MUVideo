@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for user registration events.
  */
-class MUVideo_Listener_UserRegistration extends MUVideo_Listener_Base_UserRegistration
+class MUVideo_Listener_UserRegistration extends MUVideo_Listener_Base_AbstractUserRegistration
 {
     /**
      * {@inheritdoc}

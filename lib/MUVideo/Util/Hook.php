@@ -14,7 +14,7 @@
 /**
  * Utility implementation class for hook related helper methods.
  */
-class MUVideo_Util_Hook extends MUVideo_Util_Base_Hook
+class MUVideo_Util_Hook extends MUVideo_Util_Base_AbstractHook
 {
     // feel free to add your own convenience methods here
 }

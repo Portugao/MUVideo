@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for module installer events.
  */
-class MUVideo_Listener_Installer extends MUVideo_Listener_Base_Installer
+class MUVideo_Listener_Installer extends MUVideo_Listener_Base_AbstractInstaller
 {
     /**
      * {@inheritdoc}

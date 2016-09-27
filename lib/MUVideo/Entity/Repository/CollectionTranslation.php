@@ -16,7 +16,7 @@
  *
  * This is the concrete repository class for collection translation entities.
  */
-class MUVideo_Entity_Repository_CollectionTranslation extends MUVideo_Entity_Repository_Base_CollectionTranslation
+class MUVideo_Entity_Repository_CollectionTranslation extends MUVideo_Entity_Repository_Base_AbstractCollectionTranslation
 {
     // feel free to add your own methods here
 }

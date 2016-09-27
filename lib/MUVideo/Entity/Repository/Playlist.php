@@ -16,7 +16,7 @@
  *
  * This is the concrete repository class for playlist entities.
  */
-class MUVideo_Entity_Repository_Playlist extends MUVideo_Entity_Repository_Base_Playlist
+class MUVideo_Entity_Repository_Playlist extends MUVideo_Entity_Repository_Base_AbstractPlaylist
 {
     // feel free to add your own methods here, like for example reusable DQL queries
 }

@@ -35,6 +35,7 @@ function mUMUVideoToday(format)
         }
         todayDate += hours + ':' + minutes;// + ':' + seconds;
     }
+
     return todayDate;
 }
 
@@ -52,6 +53,7 @@ function mUMUVideoReadDate(val, includeTime)
         if (includeTime === true) {
             newVal += ' ' + val.substr(11, 5);
         }
+
         return newVal;
     }
 }
@@ -70,6 +72,7 @@ function mUMUVideoValidateUploadExtension(val, elem)
     if (val === '') {
         return true;
     }
+
     fileExtension = '.' + val.substr(val.lastIndexOf('.') + 1);
     allowedExtensions = $(elem.id + 'FileExtensions').innerHTML;
     allowedExtensions = '(.' + allowedExtensions.replace(/, /g, '|.').replace(/,/g, '|.') + ')$';

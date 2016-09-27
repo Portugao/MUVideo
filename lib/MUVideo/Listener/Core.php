@@ -14,7 +14,7 @@
 /**
  * Event handler implementation class for core events.
  */
-class MUVideo_Listener_Core extends MUVideo_Listener_Base_Core
+class MUVideo_Listener_Core extends MUVideo_Listener_Base_AbstractCore
 {
     /**
      * {@inheritdoc}

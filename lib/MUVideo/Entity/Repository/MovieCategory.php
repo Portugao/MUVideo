@@ -16,7 +16,7 @@
  *
  * This is the concrete repository class for movie category entities.
  */
-class MUVideo_Entity_Repository_MovieCategory extends MUVideo_Entity_Repository_Base_MovieCategory
+class MUVideo_Entity_Repository_MovieCategory extends MUVideo_Entity_Repository_Base_AbstractMovieCategory
 {
     // feel free to add your own methods here
 }

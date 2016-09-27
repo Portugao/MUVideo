@@ -15,7 +15,7 @@
  * This handler class handles the page events of editing forms.
  * It collects common functionality required by different object types.
  */
-class MUVideo_Form_Handler_Common_Edit extends MUVideo_Form_Handler_Common_Base_Edit
+abstract class MUVideo_Form_Handler_Common_Edit extends MUVideo_Form_Handler_Common_Base_AbstractEdit
 {
     // feel free to extend the base handler class here
 }

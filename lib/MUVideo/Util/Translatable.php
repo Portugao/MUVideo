@@ -14,7 +14,7 @@
 /**
  * Utility implementation class for translatable helper methods.
  */
-class MUVideo_Util_Translatable extends MUVideo_Util_Base_Translatable
+class MUVideo_Util_Translatable extends MUVideo_Util_Base_AbstractTranslatable
 {
     // feel free to add your own convenience methods here
 }
