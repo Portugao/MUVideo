@@ -53,8 +53,8 @@
                 <col id="cUploadOfMovie" />
                 <col id="cUrlOfYoutube" />
                 <col id="cPoster" />
-                <col id="cWidthOfMovie" />
-                <col id="cHeightOfMovie" />
+                {*<col id="cWidthOfMovie" />
+                <col id="cHeightOfMovie" />*}
                 <col id="cCollection" />
                 <col id="cItemActions" />
             </colgroup>
@@ -81,12 +81,12 @@
                 <th id="hPoster" scope="col" class="z-left">
                     {sortlink __linktext='Poster' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='poster' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState q=$q pageSize=$pageSize ot='movie'}
                 </th>
-                <th id="hWidthOfMovie" scope="col" class="z-right">
+                {*<th id="hWidthOfMovie" scope="col" class="z-right">
                     {sortlink __linktext='Width of movie' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='widthOfMovie' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState q=$q pageSize=$pageSize ot='movie'}
                 </th>
                 <th id="hHeightOfMovie" scope="col" class="z-right">
                     {sortlink __linktext='Height of movie' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='heightOfMovie' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState q=$q pageSize=$pageSize ot='movie'}
-                </th>
+                </th>*}
                 <th id="hCollection" scope="col" class="z-left">
                     {sortlink __linktext='Collection' currentsort=$sort modname='MUVideo' type=$lct func='view' sort='collection' sortdir=$sdir all=$all own=$own catidMain=$catIdListMainString collection=$collection workflowState=$workflowState q=$q pageSize=$pageSize ot='movie'}
                 </th>
@@ -135,12 +135,12 @@
                     </a>
                     {else}&nbsp;{/if}
                 </td>
-                <td headers="hWidthOfMovie" class="z-right">
+                {*<td headers="hWidthOfMovie" class="z-right">
                     {$movie.widthOfMovie}
                 </td>
                 <td headers="hHeightOfMovie" class="z-right">
                     {$movie.heightOfMovie}
-                </td>
+                </td>*}
                 <td headers="hCollection" class="z-left">
                     {if isset($movie.collection) && $movie.collection ne null}
                         <a href="{modurl modname='MUVideo' type=$lct func='display' ot='collection'  id=$movie.collection.id}">{strip}

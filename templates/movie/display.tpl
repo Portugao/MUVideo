@@ -165,6 +165,5 @@
             /* ]]> */
             </script>
         {/if}
-    {/if}
 </div>
 {include file="`$lct`/footer.tpl"}
