@@ -14,7 +14,7 @@
 /**
  * Relation selector plugin implementation class.
  */
-class MUVideo_Form_Plugin_RelationSelectorList extends MUVideo_Form_Plugin_Base_RelationSelectorList
+class MUVideo_Form_Plugin_RelationSelectorList extends MUVideo_Form_Plugin_Base_AbstractRelationSelectorList
 {
     // feel free to add your customisation here
 }

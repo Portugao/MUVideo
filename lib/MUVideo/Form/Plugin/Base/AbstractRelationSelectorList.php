@@ -14,7 +14,7 @@
 /**
  * Relation selector plugin base class.
  */
-class MUVideo_Form_Plugin_Base_RelationSelectorList extends MUVideo_Form_Plugin_AbstractObjectSelector
+class MUVideo_Form_Plugin_Base_AbstractRelationSelectorList extends MUVideo_Form_Plugin_AbstractObjectSelector
 {
     /**
      * Get filename of this file.

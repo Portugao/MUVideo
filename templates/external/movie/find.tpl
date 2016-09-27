@@ -81,7 +81,7 @@
                                 <a href="#" onclick="mUVideo.finder.selectItem({$itemId})" onkeypress="mUVideo.finder.selectItem({$itemId})">{$movie->getTitleFromDisplayPattern()}</a>
                                 <input type="hidden" id="url{$itemId}" value="{modurl modname='MUVideo' type='user' func='display' ot='movie'  id=$movie.id fqurl=true}" />
                                 <input type="hidden" id="title{$itemId}" value="{$movie->getTitleFromDisplayPattern()|replace:"\"":""}" />
-                                <input type="hidden" id="desc{$itemId}" value="{capture assign='description'}{% if movie.description is not empty %}{{ movie.description }}{% endif %}
+                                <input type="hidden" id="desc{$itemId}" value="{capture assign='description'}{if $movie.description != ''}{$movie.description}}{/if}
                                 {/capture}{$description|strip_tags|replace:"\"":""}" />
                             </li>
                         {foreachelse}

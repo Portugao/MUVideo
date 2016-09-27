@@ -75,7 +75,7 @@ function MUVideo_needleapi_movie_base($args)
         return $cache[$nid];
     }
 
-    $entity = \ModUtil::apiFunc('MUVideo', 'selection', 'getEntity', array('ot' => 'movie, 'id' => $entityId));
+    $entity = \ModUtil::apiFunc('MUVideo', 'selection', 'getEntity', array('ot' => 'movie', 'id' => $entityId));
     if (null === $entity) {
         $cache[$nid] = '<em>' . __f('Movie with id %s could not be found', array($entityId), $dom) . '</em>';
 

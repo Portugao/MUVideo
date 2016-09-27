@@ -15,7 +15,7 @@
  * This handler class handles the page events of the Form called by the mUVideo_movie_edit() function.
  * It aims on the movie object type.
  */
-class MUVideo_Form_Handler_Movie_Edit extends MUVideo_Form_Handler_Movie_Base_Edit
+class MUVideo_Form_Handler_Movie_Edit extends MUVideo_Form_Handler_Movie_Base_AbstractEdit
 {
     // feel free to extend the base handler class here
 }

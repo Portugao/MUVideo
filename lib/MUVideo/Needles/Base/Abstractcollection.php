@@ -75,7 +75,7 @@ function MUVideo_needleapi_collection_base($args)
         return $cache[$nid];
     }
 
-    $entity = \ModUtil::apiFunc('MUVideo', 'selection', 'getEntity', array('ot' => 'collection, 'id' => $entityId));
+    $entity = \ModUtil::apiFunc('MUVideo', 'selection', 'getEntity', array('ot' => 'collection', 'id' => $entityId));
     if (null === $entity) {
         $cache[$nid] = '<em>' . __f('Collection with id %s could not be found', array($entityId), $dom) . '</em>';
 
