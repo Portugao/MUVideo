@@ -20,7 +20,7 @@
             
                 <div class="z-formrow">
                 	{gt text='Here you can choose a channel' assign='toolTip'}
-                    	{formlabel for='channelId' __text='Id of channel' cssClass='muimage-form-tooltips' title=$toolTip}
+                    	{formlabel for='channelId' __text='Name of channel' cssClass='muimage-form-tooltips' title=$toolTip}
                         {formdropdownlist id='channelId' group='getVideos' __title='Choose the channel'}
                 </div>
             </fieldset>
