@@ -9,7 +9,7 @@
 {foreach name='relLoop' item='item' from=$items}
     {if $hasAdminPermission || $item.workflowState eq 'approved'}
     <li>
-    {$item->getTitleFromDisplayPattern()}
+    <a href="{modurl modname='MUVideo' type=$lct func='display' ot='playlist' id=$item.id}">{$item->getTitleFromDisplayPattern()}</a>
     </li>
     {/if}
 {/foreach}
