@@ -76,7 +76,8 @@
     
     {checkpermission component="MUVideo::" instance=".*" level="ACCESS_ADD" assign="auth"}
     {if $auth eq true}
-    	<a class="z-icon-es-add" href="{modurl modname='MUVideo' type='user' func='getVideos' ot='collection' collectionId=$collection.id}">{gt text='Get videos into this collection'}</a>
+    	<a class="z-icon-es-add" href="{modurl modname='MUVideo' type='user' func='getVideos' ot='collection' collectionId=$collection.id}">{gt text='Get videos into this collection'}</a><br />
+    	<a class="z-icon-es-add" href="{modurl modname='MUVideo' type='user' func='getPlaylists' ot='collection' collectionId=$collection.id}">{gt text='Get playlists into this collection'}</a>
 	{/if}
     {include file='helper/includeCategoriesDisplay.tpl' obj=$collection}
     {include file='helper/includeStandardFieldsDisplay.tpl' obj=$collection}

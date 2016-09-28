@@ -64,4 +64,33 @@ class MUVideo_Controller_User extends MUVideo_Controller_Base_AbstractUser
     
         return ModUtil::func($this->name, $objectType, 'getVideos', array('lct' => 'user'));
     }
+    /**
+     * This method provides a handling of edit requests.
+     *
+     * @param string  $ot           Treated object type.
+     * @param string  $tpl          Name of alternative template (to be used instead of the default template).
+     * @param boolean $raw          Optional way to display a template instead of fetching it (required for standalone output).
+     *
+     * @return mixed Output.
+     */
+    public function getPlaylists()
+    {
+    	$controllerHelper = new MUVideo_Util_Controller($this->serviceManager);
+    
+    	// parameter specifying which type of objects we are treating
+    	$objectType = $this->request->query->filter('ot', 'collection', FILTER_SANITIZE_STRING);
+    	$utilArgs = array('controller' => 'user', 'action' => 'getPlaylists');
+    	if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $utilArgs))) {
+    		$objectType = $controllerHelper->getDefaultObjectType('controllerAction', $utilArgs);
+    	}
+    	$permLevel = ACCESS_EDIT;
+    	$this->throwForbiddenUnless(SecurityUtil::checkPermission($this->name . ':' . ucfirst($objectType) . ':', '::', $permLevel), LogUtil::getErrorMsgPermission());
+    
+    	// redirect to entity controller
+    
+    	System::queryStringSetVar('lct', 'user');
+    	$this->request->query->set('lct', 'user');
+    
+    	return ModUtil::func($this->name, $objectType, 'getPlaylists', array('lct' => 'user'));
+    }
 }

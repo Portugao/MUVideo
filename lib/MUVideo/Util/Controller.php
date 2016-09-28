@@ -114,7 +114,7 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
     	$collectionObject = $collectionRepository->selectById($collectionId);
     
     	// we get a movie repository
-    	$movieRepository = MUVideo_Util_Model::getMovieRepository();
+    	$playlistRepository = MUVideo_Util_Model::getPlaylistRepository();
     
     	//$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&channelId=" . $channelId  . "&key=" . $youtubeApi);
     	$api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResult=50&schannelId=" . $channelId . "&key=" . $youtubeApi);
@@ -131,50 +131,48 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
     	$existingYoutubePlaylists = $playlistRepository->selectWhere($where);
     
     	if ($existingYoutubePlaylists && count($existingYoutubePlaylists > 0)) {
-    		foreach ($existingYoutubeVideos as $existingYoutubeVideo) {
-    			$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $existingYoutubePlaylists['urlOfYoutubePlaylist']);
-    			$videoIds[] = $youtubeId;
+    		foreach ($existingYoutubePlaylists as $existingYoutubePlaylist) {
+    			$youtubePLaylistId = str_replace('https://www.youtube.com/watch?v=', '', $existingYoutubePlaylists['urlOfYoutubePlaylist']);
+    			$playlistIds[] = $youtubePlaylistId;
     		}
     	}
     
     	$serviceManager = ServiceUtil::getManager();
     	$entityManager = $serviceManager->getService('doctrine.entitymanager');
     
-    	if (is_array($videos['items'])) {
+    	if (is_array($playlists['items'])) {
     
-    		foreach ($videos['items'] as $videoData) {
-    			if (isset($videoData['id']['videoId'])) {
-    				if (isset($videoIds) && is_array($videoIds)) {
-    					if (in_array($videoData['id']['videoId'], $videoIds)) {
-    						$fragment = $videoData['id']['videoId'];
+    		foreach ($playlists['items'] as $playlistData) {
+    			if (isset($playlistData['id']['playlistId'])) {
+    				if (isset($playlistIds) && is_array($playlistIds)) {
+    					if (in_array($playlistData['id']['playlistId'], $playlistIds)) {
+    						$fragment = $playlistData['id']['playlistId'];
     						$where2 = 'tbl.urlOfYoutube LIKE \'%' . $fragment . '\'';
-    						$thisExistingVideo = $movieRepository->selectWhere($where2);
-    						if(is_array($thisExistingVideo) && count($thisExistingVideo) == 1 && ModUtil::getVar($this->name, 'overrideVars') == 1) {
-    							$thisExistingVideoObject = $movieRepository->selectById($thisExistingVideo[0]['id']);
+    						$thisExistingPlaylist = $movieRepository->selectWhere($where2);
+    						if(is_array($thisExistingPlaylist) && count($thisExistingPlaylist) == 1 && ModUtil::getVar($this->name, 'overrideVars') == 1) {
+    							$thisExistingPlaylistObject = $movieRepository->selectById($thisExistingPlaylist[0]['id']);
     
-    							$thisExistingVideoObject->setTitle($videoData['snippet']['title']);
-    							$thisExistingVideoObject->setDescription($videoData['snippet']['description']);
-    							$thisExistingVideoObject->setCollection($collectionObject);
+    							$thisExistingPlaylistObject->setTitle($playlistData['snippet']['title']);
+    							$thisExistingPlaylistObject->setDescription($playlistData['snippet']['description']);
+    							$thisExistingPlaylistObject->setCollection($collectionObject);
     
     							$entityManager->flush();
-    							LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was overrided', $dom));
+    							LogUtil::registerStatus(__('The playlist', $dom) . ' ' . $playlistData['snippet']['title'] . ' ' . __('was overrided', $dom));
     						}
     						continue;
     					}
     				}
     				 
-    				$newYoutubeVideo = new MUVideo_Entity_Movie();
-    				$newYoutubeVideo->setTitle($videoData['snippet']['title']);
-    				$newYoutubeVideo->setDescription($videoData['snippet']['description']);
-    				$newYoutubeVideo->setUrlOfYoutube('https://www.youtube.com/watch?v=' . $videoData['id']['videoId']);
-    				$newYoutubeVideo->setWidthOfMovie('400');
-    				$newYoutubeVideo->setHeightOfMovie('300');
-    				$newYoutubeVideo->setWorkflowState('approved');
-    				$newYoutubeVideo->setCollection($collectionObject);
+    				$newYoutubePlaylist = new MUVideo_Entity_Playlist();
+    				$newYoutubePlaylist->setTitle($playlistData['snippet']['title']);
+    				$newYoutubePlaylist->setDescription($playlistData['snippet']['description']);
+    				$newYoutubePlaylist->setUrlOfYoutubePlaylist('https://www.youtube.com/watch?v=' . $playlistData['id']['playlistId']);
+    				$newYoutubePlaylist->setWorkflowState('approved');
+    				$newYoutubePlaylist->setCollection($collectionObject);
     
-    				$entityManager->persist($newYoutubeVideo);
+    				$entityManager->persist($newYoutubePlaylist);
     				$entityManager->flush();
-    				LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
+    				LogUtil::registerStatus(__('The playlist', $dom) . ' ' . $playlistData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
     			}
     		}
     	}

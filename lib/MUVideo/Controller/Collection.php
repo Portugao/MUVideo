@@ -45,4 +45,34 @@ class MUVideo_Controller_Collection extends MUVideo_Controller_Base_AbstractColl
         // execute form using supplied template and page event handler
         return $view->execute($template, new $handlerClass());
     }
+    
+    /**
+     * This method takes care of getting youtube playlists.
+     *
+     * @return string Output
+     */
+    public function getPlaylists()
+    {
+    	// DEBUG: permission check aspect starts
+    	$this->throwForbiddenUnless(SecurityUtil::checkPermission('MUVideo::', '::', ACCESS_EDIT));
+    	// DEBUG: permission check aspect ends
+    	// parameter specifying which type of objects we are treating
+    	$objectType = (isset($args['ot']) && !empty($args['ot'])) ? $args['ot'] : $this->request->getGet()->filter('ot', 'collection', FILTER_SANITIZE_STRING);
+    	$utilArgs = array('controller' => 'user', 'action' => 'getPlaylists');
+    	if (!in_array($objectType, MUVideo_Util_Controller::getObjectTypes('controllerAction', $utilArgs))) {
+    		$objectType = MUVideo_Util_Controller::getDefaultObjectType('controllerAction', $utilArgs);
+    	}
+    	// create new Form reference
+    	$view = FormUtil::newForm($this->name, $this);
+    
+    	// build form handler class name
+    	$handlerClass = 'MUVideo_Form_Handler_' . ucfirst($objectType) . '_GetPlaylists';
+    
+    	// determine the output template
+    	$viewHelper = new MUVideo_Util_View($this->serviceManager);
+    	$template = $viewHelper->getViewTemplate($this->view, $objectType, 'getPlaylists', array());
+    
+    	// execute form using supplied template and page event handler
+    	return $view->execute($template, new $handlerClass());
+    }
 }

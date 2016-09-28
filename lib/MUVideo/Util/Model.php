@@ -45,4 +45,19 @@ class MUVideo_Util_Model extends MUVideo_Util_Base_AbstractModel
     
         return $repository;
     }
+    
+    /**
+     *
+     This method is for getting a repository for playlists
+     *
+     */
+    
+    public static function getPlaylistRepository()
+    {
+    	$serviceManager = ServiceUtil::getManager();
+    	$entityManager = $serviceManager->getService('doctrine.entitymanager');
+    	$repository = $entityManager->getRepository('MUVideo_Entity_Playlist');
+    
+    	return $repository;
+    }
 }

@@ -174,6 +174,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 	
 		$data = $event->getData();
 
+		// we look for youtube video pattern and replace if found one
 		$pattern = "(YOUTUBE)\[([0-9]*)\]";
 		$newData = preg_replace_callback("/$pattern/", 			function ($treffer)
 			{
@@ -192,7 +193,28 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 					return '';
 				}
 			}, $data);
-		$event->setData($newData);			
+		
+		// we look for youtube video list and replace if found one
+		$pattern2 = "(YOUTUBELIST)\[([0-9]*)\]";
+		$newData = preg_replace_callback("/$pattern2/", 			function ($treffer2)
+		{
+			$playlistId = $treffer2[2];
+			$plalistrepository = MUVideo_Util_Model::getPlaylistRepository();
+			$playlist = $movierepository->selectById($movieId);
+			if (is_object($movie)) {
+				$youtubeUrl = $movie['urlOfYoutube'];
+				if ($youtubeUrl != '') {
+					$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $youtubeUrl);
+					return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/' . $youtubeId . '?rel=0" allowfullscreen></iframe></div>';
+				} else {
+					return '';
+				}
+			} else {
+				return '';
+			}
+		}, $data);
+		$event->setData($newData);
+		$event->setData($newData2);			
 			
 		} else {
 			// nothing to do
