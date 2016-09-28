@@ -117,7 +117,7 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
     	$playlistRepository = MUVideo_Util_Model::getPlaylistRepository();
     
     	//$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&channelId=" . $channelId  . "&key=" . $youtubeApi);
-    	$api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResult=50&schannelId=" . $channelId . "&key=" . $youtubeApi);
+    	$api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResult=50&channelId=" . $channelId . "&key=" . $youtubeApi);
     	// https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCJC8ynLpY_q89tmNhqIf1Sg&key={YOUR_API_KEY}
     	// simple call for playlist
     	//$api = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=" . $plylistId - "&key=" . $youtubeApi);
@@ -132,7 +132,7 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
     
     	if ($existingYoutubePlaylists && count($existingYoutubePlaylists > 0)) {
     		foreach ($existingYoutubePlaylists as $existingYoutubePlaylist) {
-    			$youtubePLaylistId = str_replace('https://www.youtube.com/watch?v=', '', $existingYoutubePlaylists['urlOfYoutubePlaylist']);
+    			$youtubePLaylistId = str_replace('https://www.youtube.com/playlist?list=', '', $existingYoutubePlaylists['urlOfYoutubePlaylist']);
     			$playlistIds[] = $youtubePlaylistId;
     		}
     	}
@@ -143,9 +143,9 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
     	if (is_array($playlists['items'])) {
     
     		foreach ($playlists['items'] as $playlistData) {
-    			if (isset($playlistData['id']['playlistId'])) {
+    			if (isset($playlistData['id'])) {
     				if (isset($playlistIds) && is_array($playlistIds)) {
-    					if (in_array($playlistData['id']['playlistId'], $playlistIds)) {
+    					if (in_array($playlistData['id'], $playlistIds)) {
     						$fragment = $playlistData['id']['playlistId'];
     						$where2 = 'tbl.urlOfYoutube LIKE \'%' . $fragment . '\'';
     						$thisExistingPlaylist = $movieRepository->selectWhere($where2);
@@ -166,7 +166,7 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
     				$newYoutubePlaylist = new MUVideo_Entity_Playlist();
     				$newYoutubePlaylist->setTitle($playlistData['snippet']['title']);
     				$newYoutubePlaylist->setDescription($playlistData['snippet']['description']);
-    				$newYoutubePlaylist->setUrlOfYoutubePlaylist('https://www.youtube.com/watch?v=' . $playlistData['id']['playlistId']);
+    				$newYoutubePlaylist->setUrlOfYoutubePlaylist('https://www.youtube.com/playlist?list=' . $playlistData['id']);
     				$newYoutubePlaylist->setWorkflowState('approved');
     				$newYoutubePlaylist->setCollection($collectionObject);
     

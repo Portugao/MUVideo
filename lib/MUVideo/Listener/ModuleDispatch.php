@@ -75,7 +75,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
      */
     public static function postExecute(Zikula_Event $event)
     {
-    		parent::postExecute($event);
+    	parent::postExecute($event);
 
 		// you can access general data available in the event
 
@@ -161,6 +161,10 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 		$modArgsModuleArray = ModUtil::getInfo($modArgsModuleId);
 		$modargsModule = $modArgsModuleArray['displayname'];
 		
+		/*LogUtil::registerError($modargsModule);
+		LogUtil::registerError($modargs['modname']);
+		LogUtil::registerError($modules[0]);*/
+		
 
 		$request = new Zikula_Request_Http();
 		$module = $request->query->filter('module', 'MUVideo', FILTER_SANITIZE_STRING);
@@ -170,8 +174,9 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 		$modArray = ModUtil::getInfo($moduleId);
 		$moduleDisplayName = $modArray['displayname'];
 
-		if (($modargsModule == $moduleDisplayName && in_array($modargs['modname'], $modules)) || ($module == 'muvideo' && $isAvailable === true)) {
+        //if (($modargsModule == $moduleDisplayName && in_array($modargs['modname'], $modules)) || ($module == 'muvideo' && $isAvailable === true)) {
 	
+        LogUtil::registerError('Check');
 		$data = $event->getData();
 
 		// we look for youtube video pattern and replace if found one
@@ -195,30 +200,30 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 			}, $data);
 		
 		// we look for youtube video list and replace if found one
-		$pattern2 = "(YOUTUBELIST)\[([0-9]*)\]";
-		$newData = preg_replace_callback("/$pattern2/", 			function ($treffer2)
+		$pattern2 = "(YOUTUBEPLAYLIST)\[([0-9]*)\]";
+		$newData2 = preg_replace_callback("/$pattern2/", 			function ($treffer2)
 		{
 			$playlistId = $treffer2[2];
-			$plalistrepository = MUVideo_Util_Model::getPlaylistRepository();
-			$playlist = $movierepository->selectById($movieId);
-			if (is_object($movie)) {
-				$youtubeUrl = $movie['urlOfYoutube'];
-				if ($youtubeUrl != '') {
-					$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $youtubeUrl);
-					return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/' . $youtubeId . '?rel=0" allowfullscreen></iframe></div>';
+			$playlistrepository = MUVideo_Util_Model::getPlaylistRepository();
+			$playlist = $playlistrepository->selectById($playlistId);
+			if (is_object($playlist)) {
+				$youtubePlaylistUrl = $playlist['urlOfYoutubePlaylist'];
+				if ($youtubePlaylistUrl != '') {
+					$youtubeListId = str_replace('https://www.youtube.com/playlist?list=', '', $youtubePlaylistUrl);
+					return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube-nocookie.com/embed/videoseries?list=' . $youtubeListId . '" allowfullscreen></iframe></div>';
 				} else {
 					return '';
 				}
 			} else {
 				return '';
 			}
-		}, $data);
-		$event->setData($newData);
-		$event->setData($newData2);			
+		}, $newData);
+		$event->setData($newData2);
+		//$event->setData($newData2);			
 			
-		} else {
+		/*} else {
 			// nothing to do
-		}
+		}*/
     }
     
     /**
