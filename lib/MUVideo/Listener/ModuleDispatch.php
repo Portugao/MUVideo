@@ -159,7 +159,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 		// get displayname of $modargs['modname']
 		$modArgsModuleId = ModUtil::getIdFromName($modargs['modname']);
 		$modArgsModuleArray = ModUtil::getInfo($modArgsModuleId);
-		$modargsModule = $modArgsModuleArray['displayname'];		
+		$modargsModule = $modArgsModuleArray['displayname'];
 		
 
 		$request = new Zikula_Request_Http();
@@ -170,8 +170,8 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 		$modArray = ModUtil::getInfo($moduleId);
 		$moduleDisplayName = $modArray['displayname'];
 
-		if (($modargsModule == $moduleDisplayName && in_array($modargs['modname'], $modules) || $module == 'MUVideo') && $isAvailable === true) {
-
+		if (($modargsModule == $moduleDisplayName && in_array($modargs['modname'], $modules)) || ($module == 'muvideo' && $isAvailable === true)) {
+	
 		$data = $event->getData();
 
 		$pattern = "(YOUTUBE)\[([0-9]*)\]";
