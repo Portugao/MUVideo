@@ -40,6 +40,7 @@
             <div class="z-formrow">
                 <label for="mUVideoPasteAs">{gt text='Paste as'}:</label>
                 <select id="mUVideoPasteAs" name="pasteas">
+                    <option value="5">{gt text='Embed playlist'}</option>
                     <option value="1">{gt text='Link to the playlist'}</option>
                     <option value="2">{gt text='ID of playlist'}</option>
                 </select>
@@ -56,7 +57,7 @@
                                 <a href="#" onclick="mUVideo.finder.selectItem({$itemId})" onkeypress="mUVideo.finder.selectItem({$itemId})">{$playlist->getTitleFromDisplayPattern()}</a>
                                 <input type="hidden" id="url{$itemId}" value="{modurl modname='MUVideo' type='user' func='display' ot='playlist'  id=$playlist.id fqurl=true}" />
                                 <input type="hidden" id="title{$itemId}" value="{$playlist->getTitleFromDisplayPattern()|replace:"\"":""}" />
-                                <input type="hidden" id="desc{$itemId}" value="{capture assign='description'}{% if playlist.description is not empty %}{{ playlist.description }}{% endif %}
+                                <input type="hidden" id="desc{$itemId}" value="{capture assign='description'}{if $playlist.description != ''}{$playlist.description}{/if}
                                 {/capture}{$description|strip_tags|replace:"\"":""}" />
                             </li>
                         {foreachelse}
