@@ -31,13 +31,13 @@ class MUVideo_Form_Handler_Collection_GetPlaylists extends MUVideo_Form_Handler_
             // initialise list entries for the 'channelId' setting
             $formVars['channelIdItems'] = array(array('value' => $playLists[0], 'text' => $playLists[1]));
             // assign all module vars
-            $this->view->assign('getVideos', $formVars);
+            $this->view->assign('getPlaylists', $formVars);
         } else {
             foreach ($playLists as $playList) {
                 $thisPlaylist = explode(',', $playList);
                 $formVars['channelIdItems'][] = array('value' => $thisPlaylist[0], 'text' => $thisPlaylist[1]);
             }
-            $this->view->assign('getVideos', $formVars);
+            $this->view->assign('getPlaylists', $formVars);
         }
         parent::postInitialize();
     }
