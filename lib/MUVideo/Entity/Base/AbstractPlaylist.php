@@ -69,6 +69,7 @@ abstract class MUVideo_Entity_Base_AbstractPlaylist extends Zikula_EntityAccess
     protected $workflowState = 'initial';
     
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(length=255)
      * @var string $title
      */

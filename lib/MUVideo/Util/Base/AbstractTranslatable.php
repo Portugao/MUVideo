@@ -56,6 +56,9 @@ abstract class MUVideo_Util_Base_AbstractTranslatable extends Zikula_AbstractBas
             case 'playlist':
                 $fields = array(
                     array(
+                        'name' => 'title',
+                        'default' => $this->__('Title')
+                    ),array(
                         'name' => 'description',
                         'default' => $this->__('Description')
                     )
