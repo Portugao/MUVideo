@@ -43,10 +43,6 @@ abstract class MUVideo_Entity_Validator_Base_AbstractPlaylist extends MUVideo_Va
             $errorInfo['message'] = __f('Error! Field value must not be empty (%s).', array('title'), $dom);
             return $errorInfo;
         }
-        if (!$this->isStringNotContaining('title', ' ')) {
-            $errorInfo['message'] = __f('Error! Field value must not contain space chars (%s).', array('title'), $dom);
-            return $errorInfo;
-        }
         if (!$this->isStringNotLongerThan('description', 4000)) {
             $errorInfo['message'] = __f('Error! Length of field value must not be higher than %2$s (%1$s).', array('description', 4000), $dom);
             return $errorInfo;

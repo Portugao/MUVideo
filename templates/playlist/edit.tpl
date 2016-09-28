@@ -47,9 +47,8 @@
                             
                             <div class="z-formrow">
                                 {formlabel for='title' __text='Title' mandatorysym='1' cssClass=''}
-                                {formtextinput group='playlist' id='title' mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required validate-nospace'}
+                                {formtextinput group='playlist' id='title' mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required'}
                                 {muvideoValidationError id='title' class='required'}
-                                {muvideoValidationError id='title' class='validate-nospace'}
                             </div>
                             
                             <div class="z-formrow">
