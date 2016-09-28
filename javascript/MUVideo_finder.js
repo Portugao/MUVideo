@@ -100,6 +100,10 @@ function mUMUVideoGetPasteSnippet(mode, itemId)
     if (pasteMode === '4') {
     	return 'YOUTUBE[' + itemId + ']';
     }
+    
+    if (pasteMode === '5') {
+    	return 'YOUTUBEPLAYLIST[' + itemId + ']';
+    }
 
     if (pasteMode === '2' || pasteMode !== '1') {
         return itemId;
