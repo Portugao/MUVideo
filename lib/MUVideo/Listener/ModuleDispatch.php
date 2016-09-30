@@ -100,8 +100,8 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 
 		$modargs = $event->getArgs();
 
-		if (in_array($modargs['modname'], array('Admin'))) {
-			// nothing to do for module admin
+		if (in_array($modargs['modname'], array('Admin', 'Theme'))) {
+			// nothing to do for module admin and theme
 			return;
 		}
 
@@ -118,16 +118,22 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 			}
 		}
 
+		// we are not interested in api functions
+		if ($modargs['api'] == 1) {
+			return;
+		}
+		
 		// check if MUVideo is activated for any modules
 		$modules = MUVideo_Api_User::checkModules();
 		if (!is_array($modules) || count($modules) < 1) {
 			// no active modules, thus nothing to do
 			return;
-		}
-
-		// we are not interested in api functions
-		if ($modargs['api'] == 1) {
-			return;
+		} else {
+			foreach ($modules as $supportedModule) {
+				if($supportedModule != $modargs['modname']) {
+					return;
+				}
+			}
 		}
 		
 		if (UserUtil::getVar('uid') == 2 && $modargs['modname'] == 'Blocks') {
@@ -159,12 +165,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 		// get displayname of $modargs['modname']
 		$modArgsModuleId = ModUtil::getIdFromName($modargs['modname']);
 		$modArgsModuleArray = ModUtil::getInfo($modArgsModuleId);
-		$modargsModule = $modArgsModuleArray['displayname'];
-		
-		/*LogUtil::registerError($modargsModule);
-		LogUtil::registerError($modargs['modname']);
-		LogUtil::registerError($modules[0]);*/
-		
+		$modargsModule = $modArgsModuleArray['displayname'];	
 
 		$request = new Zikula_Request_Http();
 		$module = $request->query->filter('module', 'MUVideo', FILTER_SANITIZE_STRING);
@@ -176,7 +177,6 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 
         //if (($modargsModule == $moduleDisplayName && in_array($modargs['modname'], $modules)) || ($module == 'muvideo' && $isAvailable === true)) {
 	
-        LogUtil::registerError('Check');
 		$data = $event->getData();
 
 		// we look for youtube video pattern and replace if found one
@@ -219,11 +219,11 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 			}
 		}, $newData);
 		$event->setData($newData2);
-		//$event->setData($newData2);			
+		
 			
-		/*} else {
+		//} else {
 			// nothing to do
-		}*/
+		//}
     }
     
     /**
