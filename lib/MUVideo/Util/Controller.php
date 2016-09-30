@@ -32,12 +32,8 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
 
         // we get a movie repository
         $movieRepository = MUVideo_Util_Model::getMovieRepository();
-
+        // we get the videos from youtube
         $api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&channelId=" . $channelId  . "&key=" . $youtubeApi);
-        // https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCJC8ynLpY_q89tmNhqIf1Sg&key={YOUR_API_KEY}
-        // simple call for playlist
-        //$api = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=" . $plylistId - "&key=" . $youtubeApi);
-        //$api = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={DEINE_PLAYLIST_ID}&maxResults=10&fields=items%2Fsnippet&key=" . $youtubeApi);
 
         // we decode the jason array to php array
         $videos = json_decode($api, true);
@@ -115,14 +111,8 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
     
     	// we get a movie repository
     	$playlistRepository = MUVideo_Util_Model::getPlaylistRepository();
-    
-    	//$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&channelId=" . $channelId  . "&key=" . $youtubeApi);
+        // we get the playlists from youtube
     	$api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResult=50&channelId=" . $channelId . "&key=" . $youtubeApi);
-    	// https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCJC8ynLpY_q89tmNhqIf1Sg&key={YOUR_API_KEY}
-    	// simple call for playlist
-    	//$api = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=" . $plylistId - "&key=" . $youtubeApi);
-    	//$api = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={DEINE_PLAYLIST_ID}&maxResults=10&fields=items%2Fsnippet&key=" . $youtubeApi);
-    
     	// we decode the jason array to php array
     	$playlists = json_decode($api, true);
     
@@ -146,7 +136,7 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
     			if (isset($playlistData['id'])) {
     				if (isset($playlistIds) && is_array($playlistIds)) {
     					if (in_array($playlistData['id'], $playlistIds)) {
-    						$fragment = $playlistData['id']['playlistId'];
+    						$fragment = $playlistData['id'];
     						$where2 = 'tbl.urlOfYoutube LIKE \'%' . $fragment . '\'';
     						$thisExistingPlaylist = $movieRepository->selectWhere($where2);
     						if(is_array($thisExistingPlaylist) && count($thisExistingPlaylist) == 1 && ModUtil::getVar($this->name, 'overrideVars') == 1) {
