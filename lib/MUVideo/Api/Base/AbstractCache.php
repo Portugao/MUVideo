@@ -68,6 +68,7 @@ abstract class MUVideo_Api_Base_AbstractCache extends Zikula_AbstractApi
             case 'playlist':
                 $cacheIds[] = 'playlist_main';
                 $cacheIds[] = $objectType . '_view';
+                $cacheIds[] = $objectType . '_display|' . $instanceId;
                 
                 
                 break;
@@ -104,6 +105,7 @@ abstract class MUVideo_Api_Base_AbstractCache extends Zikula_AbstractApi
                 $cacheIdPrefix = 'MUVideo/' . $objectType . '/';
                 $cacheIds[] = $cacheIdPrefix . 'main'; // main function
                 $cacheIds[] = $cacheIdPrefix . 'view/'; // view function (list views)
+                $cacheIds[] = $cacheIdPrefix . 'display/' . $instanceId; // display function (detail views)
                 
                 
                 break;

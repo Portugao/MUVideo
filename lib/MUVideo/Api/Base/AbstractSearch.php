@@ -126,7 +126,7 @@ abstract class MUVideo_Api_Base_AbstractSearch extends Zikula_AbstractApi
             $idFields = ModUtil::apiFunc($this->name, 'selection', 'getIdFields', array('ot' => $objectType));
             $descriptionField = $repository->getDescriptionFieldName();
     
-            $entitiesWithDisplayAction = array('collection', 'movie');
+            $entitiesWithDisplayAction = array('collection', 'movie', 'playlist');
     
             foreach ($entities as $entity) {
                 $urlArgs = $entity->createUrlArgs();
@@ -183,7 +183,7 @@ abstract class MUVideo_Api_Base_AbstractSearch extends Zikula_AbstractApi
             $urlArgs = unserialize($datarow['extra']);
             $objectType = $urlArgs['type'];
             unset($urlArgs['type']);
-            if (in_array($objectType, array('collection', 'movie'))) {
+            if (in_array($objectType, array('collection', 'movie', 'playlist'))) {
                 $datarow['url'] = ModUtil::url($this->name, $objectType, 'display', $urlArgs);
             }
         }
