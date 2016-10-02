@@ -60,6 +60,31 @@ function MUVideo_needleapi_playlist_base($args)
     }
 
     $cache[$nid] = '<a href="' . ModUtil::url('MUVideo', 'playlist', 'view') . '" title="' . __('View playlists', $dom) . '">' . __('Playlists', $dom) . '</a>';
+    $needleParts = explode('-', $needleId);
+    if ($needleParts[0] != 'PLAYLIST' || count($needleParts) < 2) {
+        $cache[$nid] = '';
+
+        return $cache[$nid];
+    }
+
+    $entityId = (int)$needleParts[1];
+
+    if (!\SecurityUtil::checkPermission('MUVideo:Playlist:', $entityId . '::', ACCESS_READ)) {
+        $cache[$nid] = '';
+
+        return $cache[$nid];
+    }
+
+    $entity = \ModUtil::apiFunc('MUVideo', 'selection', 'getEntity', array('ot' => 'playlist, 'id' => $entityId));
+    if (null === $entity) {
+        $cache[$nid] = '<em>' . __f('Playlist with id %s could not be found', array($entityId), $dom) . '</em>';
+
+        return $cache[$nid];
+    }
+
+    $title = $entity->getTitleFromDisplayPattern();
+
+    $cache[$nid] = '<a href="' . ModUtil::url('MUVideo', 'playlist', 'display', array('id' => $entityId)) . '" title="' . str_replace('"', '', $title) . '">' . $title . '</a>';
 
     return $cache[$nid];
 }

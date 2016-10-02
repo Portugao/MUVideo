@@ -24,7 +24,7 @@ function MUVideo_needleapi_playlist_baseInfo()
         // module name
         'module'  => 'MUVideo',
         // possible needles
-        'info'    => 'MUVIDEO{PLAYLISTS}',
+        'info'    => 'MUVIDEO{PLAYLISTS|PLAYLIST-playlistId}',
         // whether a reverse lookup is possible, needs MUVideo_needleapi_playlist_inspect() function
         'inspect' => false
     );
