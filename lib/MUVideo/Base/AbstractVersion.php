@@ -25,7 +25,7 @@ abstract class MUVideo_Base_AbstractVersion extends Zikula_AbstractVersion
     {
         $meta = array();
         // the current module version
-        $meta['version']              = '1.1.0';
+        $meta['version']              = '1.2.0';
         // the displayed name of the module
         $meta['displayname']          = $this->__('M u video');
         // the module description

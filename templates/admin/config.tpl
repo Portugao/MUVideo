@@ -45,8 +45,8 @@
                             {formtextinput id='channelIds' group='config' maxLength=255 __title='Enter the channel ids.'}
                         </div>
                         <div class="z-formrow">
-                            {formlabel for='supportedModuls' __text='Supported moduls' cssClass=''}
-                            {formtextinput id='supportedModuls' group='config' maxLength=255 __title='Enter the supported moduls.'}
+                            {formlabel for='supportedModules' __text='Supported modules' cssClass=''}
+                            {formtextinput id='supportedModules' group='config' maxLength=255 __title='Enter the supported modules.'}
                         </div>
                         <div class="z-formrow">
                             {gt text='If this option is enabled, title and description of existing youtube videos will be overridden using the import function.' assign='toolTip'}
