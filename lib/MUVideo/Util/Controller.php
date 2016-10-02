@@ -66,9 +66,6 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
 
                                 $thisExistingVideoObject->setTitle($videoData['snippet']['title']);
                                 $thisExistingVideoObject->setDescription($videoData['snippet']['description']);
-                                if (ModUtil::getVar('ZConfig', 'multilingual') == 1) {
-                                	
-                                }
                                 $thisExistingVideoObject->setCollection($collectionObject);
                             
                                 $entityManager->flush();
