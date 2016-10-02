@@ -28,6 +28,7 @@
         <dt>{gt text='Url of youtube playlist'}</dt>
         <dd>{if !isset($smarty.get.theme) || $smarty.get.theme ne 'Printer'}
         <a href="{$playlist.urlOfYoutubePlaylist}" title="{gt text='Visit this page'}">{icon type='url' size='extrasmall' __alt='Homepage'}</a>
+        <br />YOUTUBEPLAYLIST[{$playlist.id}]
         {else}
           {$playlist.urlOfYoutubePlaylist}
         {/if}
