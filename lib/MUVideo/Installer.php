@@ -81,6 +81,9 @@ class MUVideo_Installer extends MUVideo_Base_AbstractInstaller
             	$this->setVar('channelIds', '');
             	$this->setVar('supportedModuls', '');
             	$this->setVar('overrideVars', false);
+            	$this->setVar('enableShrinkingForMoviePoster', false);
+            	$this->setVar('shrinkWidthMoviePoster', 800);
+            	$this->setVar('shrinkHeightMoviePoster', 600);
             	
             case '1.2.0':
             	// for later updates
