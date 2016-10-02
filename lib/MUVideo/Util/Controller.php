@@ -33,7 +33,7 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
         // we get a movie repository
         $movieRepository = MUVideo_Util_Model::getMovieRepository();
         // we get the videos from youtube
-        $api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&channelId=" . $channelId  . "&key=" . $youtubeApi);
+        $api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
 
         // we decode the jason array to php array
         $videos = json_decode($api, true);
@@ -66,6 +66,9 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
 
                                 $thisExistingVideoObject->setTitle($videoData['snippet']['title']);
                                 $thisExistingVideoObject->setDescription($videoData['snippet']['description']);
+                                if (ModUtil::getVar('ZConfig', 'multilingual') == 1) {
+                                	
+                                }
                                 $thisExistingVideoObject->setCollection($collectionObject);
                             
                                 $entityManager->flush();
@@ -112,7 +115,7 @@ class MUVideo_Util_Controller extends MUVideo_Util_Base_AbstractController
     	// we get a movie repository
     	$playlistRepository = MUVideo_Util_Model::getPlaylistRepository();
         // we get the playlists from youtube
-    	$api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResult=50&channelId=" . $channelId . "&key=" . $youtubeApi);
+       	$api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=" . $channelId . "&maxResult=50&key=" . $youtubeApi);
     	// we decode the jason array to php array
     	$playlists = json_decode($api, true);
     
