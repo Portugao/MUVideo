@@ -14,7 +14,7 @@
 /**
  * Item selector plugin base class.
  */
-class MUVideo_Form_Plugin_Base_ItemSelector extends Zikula_Form_Plugin_TextInput
+class MUVideo_Form_Plugin_Base_AbstractItemSelector extends Zikula_Form_Plugin_TextInput
 {
     /**
      * The treated object type.

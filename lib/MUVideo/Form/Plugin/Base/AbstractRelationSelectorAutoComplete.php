@@ -14,7 +14,7 @@
 /**
  * Relation selector plugin base class.
  */
-class MUVideo_Form_Plugin_Base_RelationSelectorAutoComplete extends MUVideo_Form_Plugin_AbstractObjectSelector
+class MUVideo_Form_Plugin_Base_AbstractRelationSelectorAutoComplete extends MUVideo_Form_Plugin_AbstractObjectSelector
 {
     /**
      * Identifier prefix (unique name for JS).
