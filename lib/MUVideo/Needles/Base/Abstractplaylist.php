@@ -75,7 +75,7 @@ function MUVideo_needleapi_playlist_base($args)
         return $cache[$nid];
     }
 
-    $entity = \ModUtil::apiFunc('MUVideo', 'selection', 'getEntity', array('ot' => 'playlist, 'id' => $entityId));
+    $entity = \ModUtil::apiFunc('MUVideo', 'selection', 'getEntity', array('ot' => 'playlist', 'id' => $entityId));
     if (null === $entity) {
         $cache[$nid] = '<em>' . __f('Playlist with id %s could not be found', array($entityId), $dom) . '</em>';
 
