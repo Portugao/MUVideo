@@ -96,7 +96,7 @@ class MUVideo_Form_Plugin_Base_AbstractItemSelector extends Zikula_Form_Plugin_T
             return false;
         }
 
-        $categorisableObjectTypes = array('collection', 'movie');
+        $categorisableObjectTypes = array('collection', 'movie', 'playlist');
         $catIds = array();
         if (in_array($this->objectType, $categorisableObjectTypes)) {
             // fetch selected categories to reselect them in the output

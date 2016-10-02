@@ -67,6 +67,9 @@ abstract class MUVideo_Api_Base_AbstractCategory extends Zikula_AbstractApi
             case 'movie':
                 $result = false;
                 break;
+            case 'playlist':
+                $result = false;
+                break;
         }
     
         return $result;

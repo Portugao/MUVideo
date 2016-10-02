@@ -34,7 +34,7 @@ abstract class MUVideo_Controller_Base_AbstractExternal extends Zikula_AbstractC
     {
         // Set caching to false by default.
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
-        $this->categorisableObjectTypes = array('collection', 'movie');
+        $this->categorisableObjectTypes = array('collection', 'movie', 'playlist');
     }
 
     /**

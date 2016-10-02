@@ -44,7 +44,7 @@ abstract class MUVideo_Base_AbstractInstaller extends Zikula_AbstractInstaller
         $this->setVar('standardPoster', '/images/poster.png');
         $this->setVar('youtubeApi', '');
         $this->setVar('channelIds', '');
-        $this->setVar('supportedModuls', '');
+        $this->setVar('supportedModules', '');
         $this->setVar('overrideVars', false);
         $this->setVar('enableShrinkingForMoviePoster', false);
         $this->setVar('shrinkWidthMoviePoster', 800);
@@ -79,6 +79,17 @@ abstract class MUVideo_Base_AbstractInstaller extends Zikula_AbstractInstaller
             LogUtil::registerError($this->__f('Error! Could not create a category registry for the %s entity.', array('movie')));
         }
         $categoryRegistryIdsPerEntity['movie'] = $registryData['id'];
+    
+        $registryData = array();
+        $registryData['modname'] = $this->name;
+        $registryData['table'] = 'Playlist';
+        $registryData['property'] = $categoryApi->getPrimaryProperty(array('ot' => 'Playlist'));
+        $registryData['category_id'] = $categoryGlobal['id'];
+        $registryData['id'] = false;
+        if (!DBUtil::insertObject($registryData, 'categories_registry')) {
+            LogUtil::registerError($this->__f('Error! Could not create a category registry for the %s entity.', array('playlist')));
+        }
+        $categoryRegistryIdsPerEntity['playlist'] = $registryData['id'];
     
         // create the default data
         $this->createDefaultData($categoryRegistryIdsPerEntity);
@@ -186,6 +197,7 @@ abstract class MUVideo_Base_AbstractInstaller extends Zikula_AbstractInstaller
         $classNames[] = 'MUVideo_Entity_MovieCategory';
         $classNames[] = 'MUVideo_Entity_Playlist';
         $classNames[] = 'MUVideo_Entity_PlaylistTranslation';
+        $classNames[] = 'MUVideo_Entity_PlaylistCategory';
     
         return $classNames;
     }

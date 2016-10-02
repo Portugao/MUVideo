@@ -30,7 +30,7 @@ abstract class MUVideo_Block_Base_AbstractItemList extends Zikula_Controller_Abs
     {
         //SecurityUtil::registerPermissionSchema('MUVideo:ItemListBlock:', 'Block title::');
     
-        $this->categorisableObjectTypes = array('collection', 'movie');
+        $this->categorisableObjectTypes = array('collection', 'movie', 'playlist');
     }
     
     /**

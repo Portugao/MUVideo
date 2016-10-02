@@ -205,6 +205,7 @@ abstract class MUVideo_Entity_Repository_Base_AbstractPlaylist extends EntityRep
         }
     
         $parameters = array();
+        $parameters['catIdList'] = ModUtil::apiFunc('MUVideo', 'category', 'retrieveCategoriesFromRequest', array('ot' => 'playlist', 'source' => 'GET'));
         $parameters['collection'] = isset($this->controllerArguments['collection']) ? $this->controllerArguments['collection'] : FormUtil::getPassedValue('collection', 0, 'GET');
         $parameters['workflowState'] = isset($this->controllerArguments['workflowState']) ? $this->controllerArguments['workflowState'] : FormUtil::getPassedValue('workflowState', '', 'GET');
         $parameters['q'] = isset($this->controllerArguments['q']) ? $this->controllerArguments['q'] : 
@@ -578,7 +579,20 @@ abstract class MUVideo_Entity_Repository_Base_AbstractPlaylist extends EntityRep
     
         $parameters = $this->getViewQuickNavParameters('', array());
         foreach ($parameters as $k => $v) {
-            if (in_array($k, array('q', 'searchterm'))) {
+            if ($k == 'catId') {
+                // single category filter
+                if ($v > 0) {
+                    $qb->andWhere('tblCategories.category = :category')
+                       ->setParameter('category', $v);
+                }
+            } elseif ($k == 'catIdList') {
+                // multi category filter
+                /* old
+                $qb->andWhere('tblCategories.category IN (:categories)')
+                   ->setParameter('categories', $v);
+                 */
+                $qb = ModUtil::apiFunc('MUVideo', 'category', 'buildFilterClauses', array('qb' => $qb, 'ot' => 'playlist', 'catids' => $v));
+            } elseif (in_array($k, array('q', 'searchterm'))) {
                 // quick search
                 if (!empty($v)) {
                     $qb = $this->addSearchFilter($qb, $v);
@@ -939,6 +953,8 @@ abstract class MUVideo_Entity_Repository_Base_AbstractPlaylist extends EntityRep
     {
         $selection = ', tblCollection';
     
+        $selection = ', tblCategories';
+    
         return $selection;
     }
     
@@ -952,6 +968,8 @@ abstract class MUVideo_Entity_Repository_Base_AbstractPlaylist extends EntityRep
     protected function addJoinsToFrom(QueryBuilder $qb)
     {
         $qb->leftJoin('tbl.collection', 'tblCollection');
+    
+        $qb->leftJoin('tbl.categories', 'tblCategories');
     
         return $qb;
     }

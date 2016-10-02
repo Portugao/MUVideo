@@ -36,7 +36,7 @@ abstract class MUVideo_Form_Handler_Playlist_Base_AbstractEdit extends MUVideo_F
         $this->hasPageLockSupport = true;
         $this->hasTranslatableFields = true;
     
-        $this->hasCategories = false;
+        $this->hasCategories = true;
         // array with list fields and multiple flags
         $this->listFields = array('workflowState' => false);
     }

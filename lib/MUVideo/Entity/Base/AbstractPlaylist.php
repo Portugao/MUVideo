@@ -12,6 +12,7 @@
  */
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
 
@@ -99,6 +100,14 @@ abstract class MUVideo_Entity_Base_AbstractPlaylist extends Zikula_EntityAccess
     protected $locale;
     
     /**
+     * @ORM\OneToMany(targetEntity="MUVideo_Entity_PlaylistCategory", 
+     *                mappedBy="entity", cascade={"all"}, 
+     *                orphanRemoval=true)
+     * @var MUVideo_Entity_PlaylistCategory
+     */
+    protected $categories = null;
+    
+    /**
      * @ORM\Column(type="integer")
      * @ZK\StandardFields(type="userid", on="create")
      * @var integer $createdUserId
@@ -149,6 +158,7 @@ abstract class MUVideo_Entity_Base_AbstractPlaylist extends Zikula_EntityAccess
         $this->workflowState = 'initial';
         $this->initValidator();
         $this->initWorkflow();
+        $this->categories = new ArrayCollection();
     }
     
     /**
@@ -392,6 +402,28 @@ abstract class MUVideo_Entity_Base_AbstractPlaylist extends Zikula_EntityAccess
     public function setLocale($locale)
     {
         $this->locale = $locale;
+    }
+    
+    /**
+     * Gets the categories.
+     *
+     * @return array
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+    
+    /**
+     * Sets the categories.
+     *
+     * @param array $categories
+     *
+     * @return void
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
     }
     
     /**
@@ -1114,6 +1146,15 @@ abstract class MUVideo_Entity_Base_AbstractPlaylist extends Zikula_EntityAccess
             $this->setUpdatedDate(null);
             $this->setUpdatedUserId(null);
     
+    
+            // clone categories
+            $categories = $this->categories;
+            $this->categories = new ArrayCollection();
+            foreach ($categories as $c) {
+                $newCat = clone $c;
+                $this->categories->add($newCat);
+                $newCat->setEntity($this);
+            }
         }
         // otherwise do nothing, do NOT throw an exception!
     }

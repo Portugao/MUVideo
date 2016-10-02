@@ -168,7 +168,7 @@ abstract class MUVideo_ContentType_Base_AbstractItemList extends Content_Abstrac
         $this->template = $data['template'];
         $this->customTemplate = $data['customTemplate'];
         $this->filter = $data['filter'];
-        $this->categorisableObjectTypes = array('collection', 'movie');
+        $this->categorisableObjectTypes = array('collection', 'movie', 'playlist');
     
         // fetch category properties
         $this->catRegistries = array();
