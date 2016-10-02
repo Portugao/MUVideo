@@ -46,6 +46,9 @@ abstract class MUVideo_Base_AbstractInstaller extends Zikula_AbstractInstaller
         $this->setVar('channelIds', '');
         $this->setVar('supportedModuls', '');
         $this->setVar('overrideVars', false);
+        $this->setVar('enableShrinkingForMoviePoster', false);
+        $this->setVar('shrinkWidthMoviePoster', 800);
+        $this->setVar('shrinkHeightMoviePoster', 600);
     
         $categoryRegistryIdsPerEntity = array();
     
@@ -196,199 +199,12 @@ abstract class MUVideo_Base_AbstractInstaller extends Zikula_AbstractInstaller
      */
     protected function createDefaultData($categoryRegistryIdsPerEntity)
     {
-        /*$entityClass = 'MUVideo_Entity_Collection';
+        $entityClass = 'MUVideo_Entity_Collection';
         $this->entityManager->getRepository($entityClass)->truncateTable();
         $entityClass = 'MUVideo_Entity_Movie';
         $this->entityManager->getRepository($entityClass)->truncateTable();
         $entityClass = 'MUVideo_Entity_Playlist';
         $this->entityManager->getRepository($entityClass)->truncateTable();
-        $collection1 = new \MUVideo_Entity_Collection();
-        $collection2 = new \MUVideo_Entity_Collection();
-        $collection3 = new \MUVideo_Entity_Collection();
-        $collection4 = new \MUVideo_Entity_Collection();
-        $collection5 = new \MUVideo_Entity_Collection();
-        
-        $movie1 = new \MUVideo_Entity_Movie();
-        $movie2 = new \MUVideo_Entity_Movie();
-        $movie3 = new \MUVideo_Entity_Movie();
-        $movie4 = new \MUVideo_Entity_Movie();
-        $movie5 = new \MUVideo_Entity_Movie();
-        
-        $playlist1 = new \MUVideo_Entity_Playlist();
-        $playlist2 = new \MUVideo_Entity_Playlist();
-        $playlist3 = new \MUVideo_Entity_Playlist();
-        $playlist4 = new \MUVideo_Entity_Playlist();
-        $playlist5 = new \MUVideo_Entity_Playlist();
-        
-        $categoryId = 41; // Business and work
-        $category = $this->entityManager->find('Zikula_Doctrine2_Entity_Category', $categoryId);
-        $collection1->setWorkflowState('initial');
-        $collection1->setTitle('Collection title 1');
-        $collection1->setDescription('Collection description 1');
-        
-        // create category assignment
-        $collection1->getCategories()->add(new \MUVideo_Entity_CollectionCategory($categoryRegistryIdsPerEntity['collection'], $category, $collection1));
-        $collection2->setWorkflowState('initial');
-        $collection2->setTitle('Collection title 2');
-        $collection2->setDescription('Collection description 2');
-        
-        // create category assignment
-        $collection2->getCategories()->add(new \MUVideo_Entity_CollectionCategory($categoryRegistryIdsPerEntity['collection'], $category, $collection2));
-        $collection3->setWorkflowState('initial');
-        $collection3->setTitle('Collection title 3');
-        $collection3->setDescription('Collection description 3');
-        
-        // create category assignment
-        $collection3->getCategories()->add(new \MUVideo_Entity_CollectionCategory($categoryRegistryIdsPerEntity['collection'], $category, $collection3));
-        $collection4->setWorkflowState('initial');
-        $collection4->setTitle('Collection title 4');
-        $collection4->setDescription('Collection description 4');
-        
-        // create category assignment
-        $collection4->getCategories()->add(new \MUVideo_Entity_CollectionCategory($categoryRegistryIdsPerEntity['collection'], $category, $collection4));
-        $collection5->setWorkflowState('initial');
-        $collection5->setTitle('Collection title 5');
-        $collection5->setDescription('Collection description 5');
-        
-        // create category assignment
-        $collection5->getCategories()->add(new \MUVideo_Entity_CollectionCategory($categoryRegistryIdsPerEntity['collection'], $category, $collection5));
-        
-        $categoryId = 41; // Business and work
-        $category = $this->entityManager->find('Zikula_Doctrine2_Entity_Category', $categoryId);
-        $movie1->setWorkflowState('initial');
-        $movie1->setTitle('Movie title 1');
-        $movie1->setDescription('Movie description 1');
-        $movie1->setUrlOfYoutube('http://webdesign-in-bremen.com');
-        $movie1->setWidthOfMovie(1);
-        $movie1->setHeightOfMovie(1);
-        
-        $movie1->setCollection($collection1);
-        // create category assignment
-        $movie1->getCategories()->add(new \MUVideo_Entity_MovieCategory($categoryRegistryIdsPerEntity['movie'], $category, $movie1));
-        $movie2->setWorkflowState('initial');
-        $movie2->setTitle('Movie title 2');
-        $movie2->setDescription('Movie description 2');
-        $movie2->setUrlOfYoutube('http://webdesign-in-bremen.com');
-        $movie2->setWidthOfMovie(2);
-        $movie2->setHeightOfMovie(2);
-        
-        $movie2->setCollection($collection2);
-        // create category assignment
-        $movie2->getCategories()->add(new \MUVideo_Entity_MovieCategory($categoryRegistryIdsPerEntity['movie'], $category, $movie2));
-        $movie3->setWorkflowState('initial');
-        $movie3->setTitle('Movie title 3');
-        $movie3->setDescription('Movie description 3');
-        $movie3->setUrlOfYoutube('http://webdesign-in-bremen.com');
-        $movie3->setWidthOfMovie(3);
-        $movie3->setHeightOfMovie(3);
-        
-        $movie3->setCollection($collection3);
-        // create category assignment
-        $movie3->getCategories()->add(new \MUVideo_Entity_MovieCategory($categoryRegistryIdsPerEntity['movie'], $category, $movie3));
-        $movie4->setWorkflowState('initial');
-        $movie4->setTitle('Movie title 4');
-        $movie4->setDescription('Movie description 4');
-        $movie4->setUrlOfYoutube('http://webdesign-in-bremen.com');
-        $movie4->setWidthOfMovie(4);
-        $movie4->setHeightOfMovie(4);
-        
-        $movie4->setCollection($collection4);
-        // create category assignment
-        $movie4->getCategories()->add(new \MUVideo_Entity_MovieCategory($categoryRegistryIdsPerEntity['movie'], $category, $movie4));
-        $movie5->setWorkflowState('initial');
-        $movie5->setTitle('Movie title 5');
-        $movie5->setDescription('Movie description 5');
-        $movie5->setUrlOfYoutube('http://webdesign-in-bremen.com');
-        $movie5->setWidthOfMovie(5);
-        $movie5->setHeightOfMovie(5);
-        
-        $movie5->setCollection($collection5);
-        // create category assignment
-        $movie5->getCategories()->add(new \MUVideo_Entity_MovieCategory($categoryRegistryIdsPerEntity['movie'], $category, $movie5));
-        
-        $playlist1->setWorkflowState('initial');
-        $playlist1->setTitle('Playlisttitle1');
-        $playlist1->setDescription('Playlist description 1');
-        $playlist1->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
-        
-        $playlist1->setCollection($collection1);
-        $playlist2->setWorkflowState('initial');
-        $playlist2->setTitle('Playlisttitle2');
-        $playlist2->setDescription('Playlist description 2');
-        $playlist2->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
-        
-        $playlist2->setCollection($collection2);
-        $playlist3->setWorkflowState('initial');
-        $playlist3->setTitle('Playlisttitle3');
-        $playlist3->setDescription('Playlist description 3');
-        $playlist3->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
-        
-        $playlist3->setCollection($collection3);
-        $playlist4->setWorkflowState('initial');
-        $playlist4->setTitle('Playlisttitle4');
-        $playlist4->setDescription('Playlist description 4');
-        $playlist4->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
-        
-        $playlist4->setCollection($collection4);
-        $playlist5->setWorkflowState('initial');
-        $playlist5->setTitle('Playlisttitle5');
-        $playlist5->setDescription('Playlist description 5');
-        $playlist5->setUrlOfYoutubePlaylist('http://webdesign-in-bremen.com');
-        
-        $playlist5->setCollection($collection5);
-        
-        // execute the workflow action for each entity
-        $action = 'submit';
-        $workflowHelper = new MUVideo_Util_Workflow($this->serviceManager);
-        try {
-            if ($collection1->validate()) {
-                $success = $workflowHelper->executeAction($collection1, $action);
-            }
-            if ($collection2->validate()) {
-                $success = $workflowHelper->executeAction($collection2, $action);
-            }
-            if ($collection3->validate()) {
-                $success = $workflowHelper->executeAction($collection3, $action);
-            }
-            if ($collection4->validate()) {
-                $success = $workflowHelper->executeAction($collection4, $action);
-            }
-            if ($collection5->validate()) {
-                $success = $workflowHelper->executeAction($collection5, $action);
-            }
-            if ($movie1->validate()) {
-                $success = $workflowHelper->executeAction($movie1, $action);
-            }
-            if ($movie2->validate()) {
-                $success = $workflowHelper->executeAction($movie2, $action);
-            }
-            if ($movie3->validate()) {
-                $success = $workflowHelper->executeAction($movie3, $action);
-            }
-            if ($movie4->validate()) {
-                $success = $workflowHelper->executeAction($movie4, $action);
-            }
-            if ($movie5->validate()) {
-                $success = $workflowHelper->executeAction($movie5, $action);
-            }
-            if ($playlist1->validate()) {
-                $success = $workflowHelper->executeAction($playlist1, $action);
-            }
-            if ($playlist2->validate()) {
-                $success = $workflowHelper->executeAction($playlist2, $action);
-            }
-            if ($playlist3->validate()) {
-                $success = $workflowHelper->executeAction($playlist3, $action);
-            }
-            if ($playlist4->validate()) {
-                $success = $workflowHelper->executeAction($playlist4, $action);
-            }
-            if ($playlist5->validate()) {
-                $success = $workflowHelper->executeAction($playlist5, $action);
-            }
-        } catch(\Exception $e) {
-            return LogUtil::registerError($this->__('Exception during example data creation') . ': ' . $e->getMessage());
-        }*/
     }
     
     /**

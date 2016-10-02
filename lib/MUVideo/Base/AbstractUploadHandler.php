@@ -106,13 +106,38 @@ abstract class MUVideo_Base_AbstractUploadHandler
         }
         $fileName = $this->determineFileName($objectType, $fieldName, $basePath, $fileName, $extension);
     
-        if (!move_uploaded_file($fileData[$fieldName]['tmp_name'], $basePath . $fileName)) {
+        $destinationFilePath = $basePath . $fileName;
+        if (!move_uploaded_file($fileData[$fieldName]['tmp_name'], $destinationFilePath)) {
             return LogUtil::registerError(__('Error! Could not move your file to the destination folder.', $dom));
+        }
+    
+        $isImage = in_array($extension, $this->imageFileTypes);
+        if ($isImage) {
+            // check if shrinking functionality is enabled
+            $fieldSuffix = ucfirst($objectType) . ucfirst($fieldName);
+            if (\ModUtil::getVar('MUVideo', 'enableShrinkingFor' . $fieldSuffix, false) == true) {
+                // resize to allowed maximum size
+                $thumbManager = $serviceManager->get('systemplugin.imagine.manager');
+                $maxWidth = \ModUtil::getVar('MUVideo', 'shrinkWidth' . $fieldSuffix, 800);
+                $maxHeight = \ModUtil::getVar('MUVideo', 'shrinkHeight' . $fieldSuffix, 600);
+    
+                $imgInfo = getimagesize($destinationFilePath);
+                if ($imgInfo[0] > $maxWidth || $imgInfo[1] > $maxHeight) {
+                    // create thumbnail image
+                    $thumbFilePath = $thumbManager->getThumb($destinationFilePath, $maxWidth, $maxHeight);
+    
+                    // remove original image
+                    unlink($destinationFilePath);
+    
+                    // rename thumbnail image to original image
+                    rename($thumbFilePath, $destinationFilePath);
+                }
+            }
         }
     
         // collect data to return
         $result['fileName'] = $fileName;
-        $result['metaData'] = $this->readMetaDataForFile($fileName, $basePath . $fileName);
+        $result['metaData'] = $this->readMetaDataForFile($fileName, $destinationFilePath);
     
         return $result;
     }
