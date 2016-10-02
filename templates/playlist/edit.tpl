@@ -65,9 +65,8 @@
                             
                             <div class="z-formrow">
                                 {formlabel for="title`$language`" __text='Title' mandatorysym='1' cssClass=''}
-                                {formtextinput group="playlist`$language`" id="title`$language`" mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required validate-nospace'}
+                                {formtextinput group="playlist`$language`" id="title`$language`" mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required'}
                                 {muvideoValidationError id="title`$language`" class='required'}
-                                {muvideoValidationError id="title`$language`" class='validate-nospace'}
                             </div>
                             
                             <div class="z-formrow">
@@ -87,9 +86,8 @@
                 
                 <div class="z-formrow">
                     {formlabel for='title' __text='Title' mandatorysym='1' cssClass=''}
-                    {formtextinput group='playlist' id='title' mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required validate-nospace'}
+                    {formtextinput group='playlist' id='title' mandatory=true readOnly=false __title='Enter the title of the playlist' textMode='singleline' maxLength=255 cssClass='required'}
                     {muvideoValidationError id='title' class='required'}
-                    {muvideoValidationError id='title' class='validate-nospace'}
                 </div>
                 
                 <div class="z-formrow">
@@ -110,6 +108,7 @@
         </div>
     </fieldset>
     
+    {include file='helper/includeCategoriesEdit.tpl' obj=$playlist groupName='playlistObj'}
     {include file='collection/includeSelectOne.tpl' group='playlist' alias='collection' aliasReverse='playlists' mandatory=false idPrefix='muvideoPlaylist_Collection' linkingItem=$playlist displayMode='choices' allowEditing=false}
     {if $mode ne 'create'}
         {include file='helper/includeStandardFieldsEdit.tpl' obj=$playlist}
