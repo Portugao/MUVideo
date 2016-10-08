@@ -79,7 +79,7 @@ class MUVideo_Installer extends MUVideo_Base_AbstractInstaller
 
             	$this->setVar('youtubeApi', '');
             	$this->setVar('channelIds', '');
-            	$this->setVar('supportedModuls', '');
+            	$this->setVar('supportedModules', '');
             	$this->setVar('overrideVars', false);
             	$this->setVar('enableShrinkingForMoviePoster', false);
             	$this->setVar('shrinkWidthMoviePoster', 800);
