@@ -109,14 +109,6 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 			// admin call, thus nothing to do
 			return;
 		}
-		
-		if ($modargs['modname'] == 'MUVideo') {
-			if ($modargs['type'] == 'user') {
-				// user call for MUVideo, thus nothing to do
-				return;
-				
-			}
-		}
 
 		// we are not interested in api functions
 		if ($modargs['api'] == 1) {
@@ -130,7 +122,8 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 			return;
 		} else {
 			foreach ($modules as $supportedModule) {
-				if($supportedModule != $modargs['modname']) {
+				if($supportedModule != $modargs['modname'] && $modargs['modname'] != 'MUVideo') {
+					LogUtil::registerError('Supported: ' . $supportedModule . ', Aufgerufenes Module: ' . $modargs['modname']);
 					return;
 				}
 			}
@@ -175,8 +168,6 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 		$modArray = ModUtil::getInfo($moduleId);
 		$moduleDisplayName = $modArray['displayname'];
 
-        //if (($modargsModule == $moduleDisplayName && in_array($modargs['modname'], $modules)) || ($module == 'muvideo' && $isAvailable === true)) {
-	
 		$data = $event->getData();
 
 		// we look for youtube video pattern and replace if found one
@@ -219,11 +210,7 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 			}
 		}, $newData);
 		$event->setData($newData2);
-		
-			
-		//} else {
-			// nothing to do
-		//}
+
     }
     
     /**
