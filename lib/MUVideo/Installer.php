@@ -1,4 +1,5 @@
 <?php
+use Gedmo\Mapping\Annotation\Language;
 /**
  * MUVideo.
  *
@@ -76,6 +77,18 @@ class MUVideo_Installer extends MUVideo_Base_AbstractInstaller
                $this->registerPersistentEventHandlers();
                            
             case '1.1.0':
+            	// update the database schema
+                try {
+                    DoctrineHelper::updateSchema($this->entityManager, $this->listEntityClasses());
+                } catch (\Exception $e) {
+                    return LogUtil::registerError($this->__('Doctrine Exception') . ': ' . $e->getMessage());
+                }
+                
+                // unregister persistent event handlers
+                EventUtil::unregisterPersistentModuleHandlers($this->name);
+                 
+                // unregister hook subscriber bundles
+                HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
 
             	$this->setVar('youtubeApi', '');
             	$this->setVar('channelIds', '');
@@ -83,7 +96,45 @@ class MUVideo_Installer extends MUVideo_Base_AbstractInstaller
             	$this->setVar('overrideVars', false);
             	$this->setVar('enableShrinkingForMoviePoster', false);
             	$this->setVar('shrinkWidthMoviePoster', 800);
-            	$this->setVar('shrinkHeightMoviePoster', 600);
+            	$this->setVar('shrinkHeightMoviePoster', 600);     	
+            	
+            	// register persistent event handlers
+            	$this->registerPersistentEventHandlers();
+            	
+            	// register hook subscriber bundles
+            	HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+            	
+            	$currentLanguage = array(ZLanguage::getLanguageCode());
+            	
+            	$newEntity = new MUVideo_Entity_Collection();
+            	$newEntity->setLocale($currentLanguage);
+            	
+                // we get an entity manager
+                $serviceManager = ServiceUtil::getManager();
+                $entityManager = $serviceManager->getService('doctrine.entitymanager');
+                
+                $selectArgs = array('ot' => 'collection');
+            	
+            	$collections = ModUtil::apiFunc($this->name, 'selection', 'getEntities', $selectArgs);
+            	if ($collections) {
+            		$collectionRepository = MUVideo_Util_Model::getCollectionRepository();
+            	    foreach ($collections as $collection) {
+            		    $thisCollection = $collectionRepository->selectById($collection['id']);
+            		    $thisCollection->setLocale($currentLanguage);
+            		    $entityManager->flush();
+            	    }
+            	}
+            	
+            	$selectArgs = array('ot' => 'movie');
+            	$movies = ModUtil::apiFunc($this->name, 'selection', 'getEntities', $selectArgs);
+            	if ($movies) {
+            		$movieRepository = MUVideo_Util_Model::getMovieRepository();
+            		foreach ($movies as $movie) {
+            			$thisMovie = $movieRepository->selectById($collection['id']);
+            			$thisMovie->setLocale($currentLanguage);
+            			$entityManager->flush();
+            		}
+            	}
             	
             case '1.2.0':
             	// for later updates
