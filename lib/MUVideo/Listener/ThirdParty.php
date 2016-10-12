@@ -16,7 +16,6 @@
  */
 class MUVideo_Listener_ThirdParty extends MUVideo_Listener_Base_AbstractThirdParty
 {
-    
     /**
      * {@inheritdoc}
      */
