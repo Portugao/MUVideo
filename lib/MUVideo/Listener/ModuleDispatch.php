@@ -123,14 +123,9 @@ class MUVideo_Listener_ModuleDispatch extends MUVideo_Listener_Base_AbstractModu
 		} else {
 			foreach ($modules as $supportedModule) {
 				if($supportedModule != $modargs['modname'] && $modargs['modname'] != 'MUVideo') {
-					LogUtil::registerError('Supported: ' . $supportedModule . ', Aufgerufenes Module: ' . $modargs['modname']);
-					return;
+             		return;
 				}
 			}
-		}
-		
-		if (UserUtil::getVar('uid') == 2 && $modargs['modname'] == 'Blocks') {
-			LogUtil::registerStatus($modargs['modfunc'][1]);
 		}
 
 		$controllers = array('display');
