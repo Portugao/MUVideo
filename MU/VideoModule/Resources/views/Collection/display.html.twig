@@ -29,6 +29,14 @@
         {% endif %}
         
     </dl>
+    
+    {% set getVideos = hasPermission('MUVideoModule::', '::', 'ACCESS_ADMIN') %}
+    {% if getVideos %}
+        <p class="managelink">
+            {% set getVideos = __('Get Videos') %}
+            <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'getVideos', { 'collectionId': collection.id }) }}" title="{{ getVideos|e('html_attr') }}" class="fa fa-plus">{{ getVideos }}</a>
+        </p>
+    {% endif %}
 
     {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'collection') %}
         {{ include('@MUVideoModule/Helper/includeCategoriesDisplay.html.twig', { obj: collection }) }}
