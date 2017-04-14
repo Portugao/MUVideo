@@ -1,0 +1,59 @@
+{# purpose of this template: build the form to edit an instance of collection #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'MUVideoModule::' ~ baseTemplate ~ '.html.twig' %}
+
+{% block header %}
+    {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.Validation.js', 98)) }}
+    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.EditFunctions.js', 99)) }}
+    {{ pageAddAsset('javascript', asset('typeahead/typeahead.bundle.min.js')) }}
+{% endblock %}
+{% block title mode == 'create' ? __('Create collection') : __('Edit collection') %}
+{% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
+{% block content %}
+    <div class="muvideomodule-collection muvideomodule-edit">
+        {% form_theme form with [
+            '@MUVideoModule/Form/bootstrap_3.html.twig',
+            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        ] %}
+        {{ form_start(form, {attr: {id: 'collectionEditForm', class: 'muvideo-edit-form'}}) }}
+            {gt text='Import' assign='tabTitle'}
+            <fieldset>
+                <legend>{$tabTitle}</legend>
+            
+                <p class="z-confirmationmsg">{gt text='Here you can get videos from your youtube channel into MUVideo.'}</p>
+            
+                <div class="z-formrow">
+                	{gt text='Here you can choose a channel' assign='toolTip'}
+                    	{formlabel for='channelId' __text='Name of channel' cssClass='muimage-form-tooltips' title=$toolTip}
+                        {formdropdownlist id='channelId' group='getVideos' __title='Choose the channel'}
+                </div>
+            </fieldset>
+
+            <div class="z-buttons z-formbuttons">
+                {formbutton commandName='get' __('Get videos') class='z-bt-save'}
+                {formbutton commandName='cancel' __('Cancel') class='z-bt-cancel'}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+    {% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
+    {% set removeImage = '<span class="fa fa-trash-o"></span>' %}
+    
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        
+        ( function($) {
+            $(document).ready(function() {
+                // initialise auto completion for user fields
+                {% if form.moderationSpecificCreator is defined %}
+                    mUVideoInitUserField('muvideomodule_collection_moderationSpecificCreator', 'getCommonUsersList');
+                {% endif %}
+                mUVideoInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ collection.id }}{% endif %}');
+            });
+        })(jQuery);
+    /* ]]> */
+    </script>
+{% endblock %}
