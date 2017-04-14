@@ -289,5 +289,56 @@ class CollectionController extends AbstractCollectionController
         return parent::handleSelectedEntriesAction($request);
     }
 
-    // feel free to add your own controller methods here
+    /**
+     * @inheritDoc
+     *
+     * @Route("/collection/getVideos/{collectionId}.{_format}",
+     *        requirements = {"collectionId" = "\d+", "_format" = "html"},
+     *        defaults = {"collectionId" = "0", "_format" = "html"},
+     *        methods = {"GET", "POST"}
+     * )
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws NotFoundHttpException Thrown by form handler if collection to be edited isn't found
+     * @throws RuntimeException      Thrown if another critical error occurs (e.g. workflow actions not available)
+     */
+    public function getVideosAction(Request $request)
+    {
+        return self::getVideosInternal($request);
+    }
+    
+    /**
+     * This method includes the common implementation code for adminEdit() and edit().
+     */
+    protected function getVideosInternal(Request $request, $isAdmin = false)
+    {
+    	// parameter specifying which type of objects we are treating
+    	$objectType = 'collection';
+    	$permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
+    	if (!$this->hasPermission('MUVideoModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
+    		throw new AccessDeniedException();
+    	}
+    	$templateParameters = [
+    			'routeArea' => $isAdmin ? 'admin' : ''
+    	];
+    
+    	$controllerHelper = $this->get('mu_video_module.controller_helper');
+    	$templateParameters = $controllerHelper->processEditActionParameters($objectType, $templateParameters);
+    
+    	// delegate form processing to the form handler
+    	$formHandler = $this->get('mu_video_module.form.handler.collection');
+    	$result = $formHandler->processForm($templateParameters);
+    	if ($result instanceof RedirectResponse) {
+    		return $result;
+    	}
+    
+    	$templateParameters = $formHandler->getTemplateParameters();
+    
+    	// fetch and return the appropriate template
+    	return $this->get('mu_video_module.view_helper')->processTemplate($objectType, 'getVideos', $templateParameters);
+    }
 }
