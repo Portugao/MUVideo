@@ -1,0 +1,22 @@
+{# purpose of this template: collections view csv view #}
+{% spaceless %}"{{ __('Title') }}";"{{ __('Description') }}";"{{ __('Workflow state') }}"
+;"{{ __('Movie') }}";"{{ __('Playlists') }}"
+{% endspaceless %}
+{% for collection in items %}
+{% spaceless %}
+    "{{ collection.title }}";"{{ collection.description|safeHtml }}";"{{ collection.workflowState|muvideomodule_objectState(false)|lower }}"
+    ;"
+    {% if collection.movie|default %}
+        {% for relatedItem in collection.movie %}
+        {{ relatedItem.getTitleFromDisplayPattern() }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+    ";"
+    {% if collection.playlists|default %}
+        {% for relatedItem in collection.playlists %}
+        {{ relatedItem.getTitleFromDisplayPattern() }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+    "
+{% endspaceless %}
+{% endfor %}

@@ -1,0 +1,7 @@
+{# purpose of this template: playlists view json view #}
+[
+{% for playlist in items %}
+    {% if not loop.first %},{% endif %}
+    {{ playlist.toJson() }}
+{% endfor %}
+]

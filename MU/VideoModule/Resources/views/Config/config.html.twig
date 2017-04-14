@@ -1,0 +1,137 @@
+{# purpose of this template: module configuration page #}
+{% extends 'MUVideoModule::adminBase.html.twig' %}
+{% block title __('Settings') %}
+{% block admin_page_icon 'wrench' %}
+{% block content %}
+    <div class="muvideomodule-config">
+        {% form_theme form with [
+            '@MUVideoModule/Form/bootstrap_3.html.twig',
+            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        ] %}
+        {{ form_start(form) }}
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs">
+            {% set tabTitle = __('Variables') %}
+            <li role="presentation" class="active">
+                <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+            </li>
+            {% set tabTitle = __('List views') %}
+            <li role="presentation">
+                <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+            </li>
+            {% set tabTitle = __('Images') %}
+            <li role="presentation" class=" dropdown">
+                <a id="imagesTabDrop" class="dropdown-toggle" href="#" data-toggle="dropdown" aria-controls="imagesTabDropSections" aria-expanded="false" title="{{ tabTitle|e('html_attr') }}">{{ tabTitle }}<span class="caret"></span></a>
+                <ul id="imagesTabDropSections" class="dropdown-menu" aria-labelledby="imagesTabDrop">
+                <li>
+                    <a id="imagesMovieUploadOfMovieTab" href="#tabImagesMovieUploadOfMovie" role="tab" data-toggle="tab" aria-controls="tabImagesMovieUploadOfMovie">{{ __('Movies upload of movie') }}</a>
+                </li>
+                <li>
+                    <a id="imagesMoviePosterTab" href="#tabImagesMoviePoster" role="tab" data-toggle="tab" aria-controls="tabImagesMoviePoster">{{ __('Movies poster') }}</a>
+                </li>
+                </ul>
+            </li>
+            {% set tabTitle = __('Integration') %}
+            <li role="presentation">
+                <a id="vars4Tab" href="#tab4" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+            </li>
+            </ul>
+
+            {{ form_errors(form) }}
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="tab1" aria-labelledby="vars1Tab">
+                    {% set tabTitle = __('Variables') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can manage all basic settings for this application.') }}</p>
+                    
+                        {{ form_row(form.pageSize) }}
+                        {{ form_row(form.maxSizeOfMovie) }}
+                        {{ form_row(form.maxSizeOfPoster) }}
+                        {{ form_row(form.standardPoster) }}
+                        {{ form_row(form.youtubeApi) }}
+                        {{ form_row(form.channelIds) }}
+                        {{ form_row(form.supportedModules) }}
+                        {{ form_row(form.overrideVars) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">
+                    {% set tabTitle = __('List views') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
+                    
+                        {{ form_row(form.collectionEntriesPerPage) }}
+                        {{ form_row(form.linkOwnCollectionsOnAccountPage) }}
+                        {{ form_row(form.movieEntriesPerPage) }}
+                        {{ form_row(form.linkOwnMoviesOnAccountPage) }}
+                        {{ form_row(form.playlistEntriesPerPage) }}
+                        {{ form_row(form.linkOwnPlaylistsOnAccountPage) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabImagesMovieUploadOfMovie" aria-labelledby="imagesMovieUploadOfMovieTab">
+                    {% set tabTitle = __('Image settings for movies upload of movie') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                
+                        {{ form_row(form.enableShrinkingForMovieUploadOfMovie) }}
+                        <div id="shrinkDetailsMovieUploadOfMovie">
+                        {{ form_row(form.shrinkWidthMovieUploadOfMovie) }}
+                        {{ form_row(form.shrinkHeightMovieUploadOfMovie) }}
+                        </div>
+                        {{ form_row(form.thumbnailModeMovieUploadOfMovie) }}
+                        {{ form_row(form.thumbnailWidthMovieUploadOfMovieView) }}
+                        {{ form_row(form.thumbnailHeightMovieUploadOfMovieView) }}
+                        {{ form_row(form.thumbnailWidthMovieUploadOfMovieDisplay) }}
+                        {{ form_row(form.thumbnailHeightMovieUploadOfMovieDisplay) }}
+                        {{ form_row(form.thumbnailWidthMovieUploadOfMovieEdit) }}
+                        {{ form_row(form.thumbnailHeightMovieUploadOfMovieEdit) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabImagesMoviePoster" aria-labelledby="imagesMoviePosterTab">
+                    {% set tabTitle = __('Image settings for movies poster') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                
+                        {{ form_row(form.enableShrinkingForMoviePoster) }}
+                        <div id="shrinkDetailsMoviePoster">
+                        {{ form_row(form.shrinkWidthMoviePoster) }}
+                        {{ form_row(form.shrinkHeightMoviePoster) }}
+                        </div>
+                        {{ form_row(form.thumbnailModeMoviePoster) }}
+                        {{ form_row(form.thumbnailWidthMoviePosterView) }}
+                        {{ form_row(form.thumbnailHeightMoviePosterView) }}
+                        {{ form_row(form.thumbnailWidthMoviePosterDisplay) }}
+                        {{ form_row(form.thumbnailHeightMoviePosterDisplay) }}
+                        {{ form_row(form.thumbnailWidthMoviePosterEdit) }}
+                        {{ form_row(form.thumbnailHeightMoviePosterEdit) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab4" aria-labelledby="vars4Tab">
+                    {% set tabTitle = __('Integration') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('These options allow you to configure integration aspects.')|nl2br }}</p>
+                    
+                        {{ form_row(form.enabledFinderTypes) }}
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.Config.js')) }}
+{% endblock %}

@@ -1,0 +1,10 @@
+{# purpose of this template: movies view csv view #}
+{% spaceless %}"{{ __('Title') }}";"{{ __('Description') }}";"{{ __('Upload of movie') }}";"{{ __('Url of youtube') }}";"{{ __('Poster') }}";"{{ __('Width of movie') }}";"{{ __('Height of movie') }}";"{{ __('Workflow state') }}"
+;"{{ __('Collection') }}"
+{% endspaceless %}
+{% for movie in items %}
+{% spaceless %}
+    "{{ movie.title }}";"{{ movie.description|safeHtml }}";"{{ movie.uploadOfMovie }}";"{{ movie.urlOfYoutube }}";"{{ movie.poster }}";"{{ movie.widthOfMovie }}";"{{ movie.heightOfMovie }}";"{{ movie.workflowState|muvideomodule_objectState(false)|lower }}"
+    ;"{% if movie.collection|default %}{{ movie.collection.getTitleFromDisplayPattern() }}{% endif %}"
+{% endspaceless %}
+{% endfor %}

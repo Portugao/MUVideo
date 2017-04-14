@@ -1,0 +1,8 @@
+{# Purpose of this template: Display collections in text mailings #}
+{% for collection in items %}
+{{ collection.getTitleFromDisplayPattern() }}
+{{ url('muvideomodule_collection_display', { 'id': collection.id }) }}
+-----
+{% else %}
+{{ __('No collections found.') }}
+{% endfor %}

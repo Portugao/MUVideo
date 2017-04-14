@@ -1,0 +1,5 @@
+muvideomodule:
+    # define routing support for these controllers
+    resource: "@MUVideoModule/Controller"
+    # enable support for defining routes by annotations
+    type: annotation

@@ -1,0 +1,102 @@
+services:
+    # Helper classes
+    mu_video_module.category_helper:
+        class: MU\VideoModule\Helper\CategoryHelper
+        arguments:
+            - "@translator.default"
+            - "@session"
+            - "@request_stack"
+            - "@logger"
+            - "@zikula_users_module.current_user"
+            - "@zikula_categories_module.api.category_registry"
+            - "@zikula_categories_module.api.category_permission"
+    
+    mu_video_module.controller_helper:
+        class: MU\VideoModule\Helper\ControllerHelper
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@session"
+            - "@logger"
+            - "@form.factory"
+            - "@zikula_extensions_module.api.variable"
+            - "@mu_video_module.entity_factory"
+            - "@mu_video_module.model_helper"
+            - "@mu_video_module.image_helper"
+            - "@mu_video_module.feature_activation_helper"
+    
+    mu_video_module.feature_activation_helper:
+        class: MU\VideoModule\Helper\FeatureActivationHelper
+    
+    mu_video_module.hook_helper:
+        class: MU\VideoModule\Helper\HookHelper
+        arguments:
+            - "@hook_dispatcher"
+    
+    mu_video_module.image_helper:
+        class: MU\VideoModule\Helper\ImageHelper
+        arguments:
+            - "@translator.default"
+            - "@session"
+            - "@zikula_extensions_module.api.variable"
+    
+    mu_video_module.listentries_helper:
+        class: MU\VideoModule\Helper\ListEntriesHelper
+        arguments:
+            - "@translator.default"
+    
+    mu_video_module.model_helper:
+        class: MU\VideoModule\Helper\ModelHelper
+        arguments:
+            - "@mu_video_module.entity_factory"
+    
+    mu_video_module.search_helper:
+        class: MU\VideoModule\Helper\SearchHelper
+        arguments:
+            - "@translator.default"
+            - "@zikula_permissions_module.api.permission"
+            - "@templating.engine.twig"
+            - "@session"
+            - "@request_stack"
+            - "@mu_video_module.entity_factory"
+            - "@mu_video_module.controller_helper"
+            - "@mu_video_module.feature_activation_helper"
+            - "@mu_video_module.category_helper"
+        tags:
+            - { name: zikula.searchable_module, bundleName: MUVideoModule }
+    
+    mu_video_module.translatable_helper:
+        class: MU\VideoModule\Helper\TranslatableHelper
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_settings_module.locale_api"
+            - "@mu_video_module.entity_factory"
+    
+    mu_video_module.upload_helper:
+        class: MU\VideoModule\Helper\UploadHelper
+        arguments:
+            - "@translator.default"
+            - "@session"
+            - "@logger"
+            - "@zikula_users_module.current_user"
+            - "@zikula_extensions_module.api.variable"
+            - "%datadir%"
+    
+    mu_video_module.view_helper:
+        class: MU\VideoModule\Helper\ViewHelper
+        arguments:
+            - "@twig"
+            - "@twig.loader"
+            - "@request_stack"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_core.common.theme.pagevars"
+            - "@mu_video_module.controller_helper"
+    
+    mu_video_module.workflow_helper:
+        class: MU\VideoModule\Helper\WorkflowHelper
+        arguments:
+            - "@translator.default"
+            - "@mu_video_module.listentries_helper"

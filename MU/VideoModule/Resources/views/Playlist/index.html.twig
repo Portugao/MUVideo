@@ -1,0 +1,7 @@
+{# purpose of this template: playlists index view #}
+{% extends routeArea == 'admin' ? 'MUVideoModule::adminBase.html.twig' : 'MUVideoModule::base.html.twig' %}
+{% block title __('playlists') %}
+{% block admin_page_icon 'home' %}
+{% block content %}
+    <p>{{ __('Welcome to the playlist section of the Video application.') }}</p>
+{% endblock %}

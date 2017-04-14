@@ -1,0 +1,67 @@
+{# purpose of this template: playlists display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'MUVideoModule::' ~ baseTemplate ~ '.html.twig' %}
+{% block pageTitle %}{{ playlist.getTitleFromDisplayPattern()|default(__('Playlist')) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = playlist.getTitleFromDisplayPattern()|default(__('Playlist')) %}
+    {{ templateTitle|notifyFilters('muvideomodule.filter_hooks.playlists.filter') }}
+    {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], { entity: playlist, area: routeArea, context: 'display' }) %}
+    <div class="dropdown">
+        <a id="itemActions{{ playlist.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+    </div>
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="muvideomodule-playlist muvideomodule-display">
+
+    <dl>
+        {% if playlist.title is not empty %}
+            <dt>{{ __('Title') }}</dt>
+            <dd>{{ playlist.title }}</dd>
+        {% endif %}
+        {% if playlist.description is not empty %}
+            <dt>{{ __('Description') }}</dt>
+            <dd>{{ playlist.description|safeHtml }}</dd>
+        {% endif %}
+        {% if playlist.urlOfYoutubePlaylist is not empty %}
+            <dt>{{ __('Url of youtube playlist') }}</dt>
+            <dd>{% if not isQuickView %}
+            <a href="{{ playlist.urlOfYoutubePlaylist }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
+            {% else %}
+                {{ playlist.urlOfYoutubePlaylist }}
+            {% endif %}
+            </dd>
+        {% endif %}
+        {% if playlist.collection|default %}
+            <dt>{{ __('Collection') }}</dt>
+            <dd>
+              {% if not isQuickView %}
+                  <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.id }) }}">{% spaceless %}
+                    {{ playlist.collection.getTitleFromDisplayPattern() }}
+                  {% endspaceless %}</a>
+                  <a id="collectionItem{{ playlist.collection.id }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.id, 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ playlist.collection.getTitleFromDisplayPattern()|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+              {% else %}
+                  {{ playlist.collection.getTitleFromDisplayPattern() }}
+              {% endif %}
+            </dd>
+        {% endif %}
+        
+    </dl>
+
+    {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'playlist') %}
+        {{ include('@MUVideoModule/Helper/includeCategoriesDisplay.html.twig', { obj: playlist }) }}
+    {% endif %}
+    {{ include('@MUVideoModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: playlist }) }}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.playlists.display_view', id=playlist.id, urlObject=currentUrlObject) %}
+    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
+        <h4>{{ providerArea }}</h4>
+        {{ hook }}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,195 @@
+{# purpose of this template: movies list view #}
+{% extends routeArea == 'admin' ? 'MUVideoModule::adminBase.html.twig' : 'MUVideoModule::base.html.twig' %}
+{% block title own ? __('My movies') : __('Movie list') %}
+{% block admin_page_icon 'list-alt' %}
+{% block content %}
+<div class="muvideomodule-movie muvideomodule-view">
+
+    {{ block('page_nav_links') }}
+
+    {{ include('@MUVideoModule/Movie/viewQuickNav.html.twig', { workflowStateFilter: false }) }}{# see template file for available options #}
+
+    {% if routeArea == 'admin' %}
+    <form action="{{ path('muvideomodule_movie_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="moviesViewForm" class="form-horizontal" role="form">
+        <div>
+    {% endif %}
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <colgroup>
+                {% if routeArea == 'admin' %}
+                    <col id="cSelect" />
+                {% endif %}
+                <col id="cItemActions" />
+                <col id="cTitle" />
+                <col id="cDescription" />
+                <col id="cUploadOfMovie" />
+                <col id="cUrlOfYoutube" />
+                <col id="cPoster" />
+                <col id="cWidthOfMovie" />
+                <col id="cHeightOfMovie" />
+                <col id="cCollection" />
+            </colgroup>
+            <thead>
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <th id="hSelect" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}text-center z-w02">
+                        <input type="checkbox" class="muvideo-mass-toggle" />
+                    </th>
+                {% endif %}
+                <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted z-w02">{{ __('Actions') }}</th>
+                <th id="hTitle" scope="col" class="text-left">
+                    <a href="{{ sort.title.url }}" title="{{ __f('Sort by %s', {'%s': 'title'}) }}" class="{{ sort.title.class }}">{{ __('Title') }}</a>
+                </th>
+                <th id="hDescription" scope="col" class="text-left">
+                    <a href="{{ sort.description.url }}" title="{{ __f('Sort by %s', {'%s': 'description'}) }}" class="{{ sort.description.class }}">{{ __('Description') }}</a>
+                </th>
+                <th id="hUploadOfMovie" scope="col" class="text-left">
+                    <a href="{{ sort.uploadOfMovie.url }}" title="{{ __f('Sort by %s', {'%s': 'upload of movie'}) }}" class="{{ sort.uploadOfMovie.class }}">{{ __('Upload of movie') }}</a>
+                </th>
+                <th id="hUrlOfYoutube" scope="col" class="text-center">
+                    <a href="{{ sort.urlOfYoutube.url }}" title="{{ __f('Sort by %s', {'%s': 'url of youtube'}) }}" class="{{ sort.urlOfYoutube.class }}">{{ __('Url of youtube') }}</a>
+                </th>
+                <th id="hPoster" scope="col" class="text-left">
+                    <a href="{{ sort.poster.url }}" title="{{ __f('Sort by %s', {'%s': 'poster'}) }}" class="{{ sort.poster.class }}">{{ __('Poster') }}</a>
+                </th>
+                <th id="hWidthOfMovie" scope="col" class="text-right">
+                    <a href="{{ sort.widthOfMovie.url }}" title="{{ __f('Sort by %s', {'%s': 'width of movie'}) }}" class="{{ sort.widthOfMovie.class }}">{{ __('Width of movie') }}</a>
+                </th>
+                <th id="hHeightOfMovie" scope="col" class="text-right">
+                    <a href="{{ sort.heightOfMovie.url }}" title="{{ __f('Sort by %s', {'%s': 'height of movie'}) }}" class="{{ sort.heightOfMovie.class }}">{{ __('Height of movie') }}</a>
+                </th>
+                <th id="hCollection" scope="col" class="text-left">
+                    <a href="{{ sort.collection.url }}" title="{{ __f('Sort by %s', {'%s': 'collection'}) }}" class="{{ sort.collection.class }}">{{ __('Collection') }}</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+        
+        {% for movie in items %}
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <td headers="hSelect" class="fixed-column text-center z-w02">
+                        <input type="checkbox" name="items[]" value="{{ movie.id }}" class="muvideo-toggle-checkbox" />
+                    </td>
+                {% endif %}
+                <td id="itemActions{{ movie.id }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                    {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], { entity: movie, area: routeArea, context: 'view' }) %}
+                    <div class="dropdown">
+                        <a id="itemActions{{ movie.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+                    </div>
+                </td>
+                <td headers="hTitle" class="text-left">
+                    <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': movie.id }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ movie.title|notifyFilters('muvideomodule.filterhook.movies') }}</a>
+                </td>
+                <td headers="hDescription" class="text-left">
+                    {{ movie.description|safeHtml|truncate(50) }}
+                </td>
+                <td headers="hUploadOfMovie" class="text-left">
+                    {% if movie.uploadOfMovie is not empty and movie.uploadOfMovieMeta|default %}
+                                <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
+                    {% if movie.uploadOfMovieMeta.isImage %}
+                        {% set thumbOptions = attribute(thumbRuntimeOptions, 'movieUploadOfMovie') %}
+                        <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                    {% else %}
+                        {{ __('Download') }} ({{ movie.uploadOfMovieMeta.size|muvideomodule_fileSize(movie.uploadOfMovie.getPathname(), false, false) }})
+                    {% endif %}
+                    </a>
+                    {% else %}&nbsp;{% endif %}
+                </td>
+                <td headers="hUrlOfYoutube" class="text-center">
+                    {% if movie.urlOfYoutube is not empty %}
+                    <a href="{{ movie.urlOfYoutube }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
+                    {% else %}&nbsp;{% endif %}
+                </td>
+                <td headers="hPoster" class="text-left">
+                    {% if movie.poster is not empty and movie.posterMeta|default %}
+                                <a href="{{ movie.posterUrl }}" title="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}"{% if movie.posterMeta.isImage %} class="image-link"{% endif %}>
+                    {% if movie.posterMeta.isImage %}
+                        {% set thumbOptions = attribute(thumbRuntimeOptions, 'moviePoster') %}
+                        <img src="{{ movie.poster.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                    {% else %}
+                        {{ __('Download') }} ({{ movie.posterMeta.size|muvideomodule_fileSize(movie.poster.getPathname(), false, false) }})
+                    {% endif %}
+                    </a>
+                    {% else %}&nbsp;{% endif %}
+                </td>
+                <td headers="hWidthOfMovie" class="text-right">
+                    {{ movie.widthOfMovie }}
+                </td>
+                <td headers="hHeightOfMovie" class="text-right">
+                    {{ movie.heightOfMovie }}
+                </td>
+                <td headers="hCollection" class="text-left">
+                    {% if movie.collection|default %}
+                        <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': movie.collection.id }) }}">{% spaceless %}
+                          {{ movie.collection.getTitleFromDisplayPattern() }}
+                        {% endspaceless %}</a>
+                        <a id="collectionItem{{ movie.id }}_rel_{{ movie.collection.id }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': movie.collection.id, 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ movie.collection.getTitleFromDisplayPattern()|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+                    {% else %}
+                        {{ __('Not set.') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}10{% else %}9{% endif %}">
+            {{ __('No movies found.') }}
+              </td>
+            </tr>
+        {% endfor %}
+        
+            </tbody>
+        </table>
+        </div>
+        
+        {% if showAllEntries != 1 and pager|default %}
+            {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'muvideomodule_movie_' ~ routeArea ~ 'view'}) }}
+        {% endif %}
+    {% if routeArea == 'admin' %}
+            <fieldset>
+                <label for="mUVideoModuleAction" class="col-sm-3 control-label">{{ __('With selected movies') }}</label>
+                <div class="col-sm-6">
+                    <select id="mUVideoModuleAction" name="action" class="form-control input-sm">
+                        <option value="">{{ __('Choose action') }}</option>
+                        <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input type="submit" value="{{ __('Submit') }}" class="btn btn-default btn-sm" />
+                </div>
+            </fieldset>
+        </div>
+    </form>
+    {% endif %}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block page_nav_links %}
+    <p>
+        {% if canBeCreated %}
+            {% if hasPermission('MUVideoModule:Movie:', '::', 'ACCESS_EDIT') %}
+                {% set createTitle = __('Create movie') %}
+                <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+            {% endif %}
+        {% endif %}
+        {% if showAllEntries == 1 %}
+            {% set linkTitle = __('Back to paginated view') %}
+            <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show all entries') %}
+            <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% endif %}
+    </p>
+{% endblock %}
+{% block display_hooks %}
+    
+    {# here you can activate calling display hooks for the view page if you need it #}
+    {# % if routeArea != 'admin' %}
+        {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.movies.display_view', urlObject=currentUrlObject) %}
+        {% for providerArea, hook in hooks %}
+            {{ hook }}
+        {% endfor %}
+    {% endif % #}
+{% endblock %}

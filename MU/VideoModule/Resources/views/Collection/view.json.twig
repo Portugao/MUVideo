@@ -1,0 +1,7 @@
+{# purpose of this template: collections view json view #}
+[
+{% for collection in items %}
+    {% if not loop.first %},{% endif %}
+    {{ collection.toJson() }}
+{% endfor %}
+]

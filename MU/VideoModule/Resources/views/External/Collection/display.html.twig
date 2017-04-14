@@ -1,0 +1,47 @@
+{# Purpose of this template: Display one certain collection within an external context #}
+<div id="collection{$collection.id}" class="muvideomodule-external-collection">
+{% if displayMode == 'link' %}
+    <p class="muvideomodule-external-link">
+    <a href="{{ path('muvideomodule_collection_display', { 'id': collection.id }) }}" title="{{ collection.getTitleFromDisplayPattern()|e('html_attr') }}">
+    {{ collection.getTitleFromDisplayPattern()|notifyFilters('video.filter_hooks.collections.filter') }}
+    </a>
+    </p>
+{% endif %}
+{% if hasPermission('MUVideoModule::', '::', 'ACCESS_EDIT') %}
+    {# for normal users without edit permission show only the actual file per default #}
+    {% if displayMode == 'embed' %}
+        <p class="muvideomodule-external-title">
+            <strong>{{ collection.getTitleFromDisplayPattern()|notifyFilters('video.filter_hooks.collections.filter') }}</strong>
+        </p>
+    {% endif %}
+{% endif %}
+
+{% if displayMode == 'link' %}
+{% elseif displayMode == 'embed' %}
+    <div class="muvideomodule-external-snippet">
+        &nbsp;
+    </div>
+
+    {# you can distinguish the context like this: #}
+    {# % if source == 'contentType' %}
+        ...
+    {% elseif source == 'scribite' %}
+        ...
+    {% endif % #}
+
+    {# you can enable more details about the item: #}
+    {#
+        <p class="muvideomodule-external-description">
+            {% if collection.description is not empty %}{{ collection.description }}<br />{% endif %}
+            {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'collection') %}
+                <dl class="category-list">
+                {% for propName, catMapping in collection.categories %}
+                    <dt>{{ propName }}</dt>
+                    <dd>{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</dd>
+                {% endfor %}
+                </dl>
+            {% endif %}
+        </p>
+    #}
+{% endif %}
+</div>

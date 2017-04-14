@@ -1,0 +1,7 @@
+{# purpose of this template: movies view json view #}
+[
+{% for movie in items %}
+    {% if not loop.first %},{% endif %}
+    {{ movie.toJson() }}
+{% endfor %}
+]

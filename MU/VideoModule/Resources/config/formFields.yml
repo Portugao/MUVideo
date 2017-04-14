@@ -1,0 +1,24 @@
+services:
+    # Form field types
+    
+    mu_video_module.form.type.field.translation:
+        class: MU\VideoModule\Form\Type\Field\TranslationType
+        tags:
+            - { name: form.type }
+    
+    mu_video_module.form.type.field.upload:
+        class: MU\VideoModule\Form\Type\Field\UploadType
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@mu_video_module.image_helper"
+            - "@mu_video_module.upload_helper"
+        tags:
+            - { name: form.type }
+    
+    mu_video_module.form.type.field.user:
+        class: MU\VideoModule\Form\Type\Field\UserType
+        arguments:
+            - "@zikula_users_module.user_repository"
+        tags:
+            - { name: form.type }
