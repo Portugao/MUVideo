@@ -26,6 +26,7 @@
             "class": "MU\\VideoModule\\MUVideoModule",
             "displayname": "Video",
             "url": "video",
+            "oldnames": ["MUVideo"],
             "capabilities": {
                 "user": {"route": "muvideomodule_collection_index"},
                 "admin": {"route": "muvideomodule_collection_adminindex"},
