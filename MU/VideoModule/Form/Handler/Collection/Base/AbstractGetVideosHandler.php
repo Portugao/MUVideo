@@ -23,7 +23,7 @@ use MU\VideoModule\Helper\FeatureActivationHelper;
  * This handler class handles the page events of editing forms.
  * It aims on the collection object type.
  */
-abstract class AbstractEditHandler extends EditHandler
+abstract class AbstractGetVideoHandler extends EditHandler
 {
     /**
      * Initialise form handler.

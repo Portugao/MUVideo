@@ -12,13 +12,39 @@
 
 namespace MU\VideoModule\Form\Handler\Collection;
 
-use MU\VideoModule\Form\Handler\Collection\Base\AbstractEditHandler;
+use MU\VideoModule\Form\Handler\Collection\Base\AbstractGetVideosHandler;
 
 /**
  * This handler class handles the page events of the Form called by the mUVideoModule_collection_edit() function.
  * It aims on the collection object type.
  */
-class GetVideosHandler extends AbstractEditHandler
+class GetVideosHandler extends AbstractGetVideosHandler
 {
-    // feel free to extend the base handler class here
+    /**
+     * Command event handler.
+     *
+     * This event handler is called when a command is issued by the user.
+     *
+     * @param array $args List of arguments
+     *
+     * @return mixed Redirect or false on errors
+     */
+    public function handleCommand($args = [])
+    {
+        // get collection id
+        
+        $collectionId = $this->request->query->filter('collectionId', 0, FILTER_SANITIZE_NUMBER_INT);
+        
+        if ($collectionId == 0) {
+            return LogUtil::registerError(__('Sorry. There is no valid collection id!'));
+        }
+
+        // get channel id from form
+        $channelId = $this->request->request->filter('channelId', '', FILTER_SANITIZE_STRING);
+        
+        $serviceManager = ServiceUtil::getManager();
+        $controllerHelper = new MUVideo_Util_Controller($serviceManager);
+        
+        return $controllerHelper->getYoutubeVideos($channelId[0], $collectionId);
+    }
 }
