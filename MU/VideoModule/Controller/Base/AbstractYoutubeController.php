@@ -15,12 +15,19 @@ namespace MU\VideoModule\Controller\Base;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use MU\VideoModule\Entity\Factory;
 
 /**
  * Config controller base class.
  */
 abstract class AbstractYoutubeController extends AbstractController
 {
+	
+	/**
+	 * 
+	 */
+	private $entityFactory;
+	
 	/**
 	 * This method takes care of the application configuration.
 	 *
@@ -54,7 +61,7 @@ abstract class AbstractYoutubeController extends AbstractController
 				$this->addFlash('status', $this->__('Operation cancelled.'));
 			}
 	
-			// redirect to config page again (to show with GET request)
+			// redirect to get videos page again (to show with GET request)
 			return $this->redirectToRoute('muvideomodule_youtube_getvideos');
 		}
 	
@@ -75,13 +82,17 @@ abstract class AbstractYoutubeController extends AbstractController
 	{
 		$dom = ZLanguage::getModuleDomain($this->name);
 		$youtubeApi = $this->getVar($this->name, 'youtubeApi');
+		die(1);
 	
 		// we get collection repository and the relevant collection object
-		$collectionRepository = MUVideo_Util_Model::getCollectionRepository();
+		$collectionRepository = $this->container->get('mu_video_module.collection_factory')->getRepository();
+		$collectionRepository = $this->entityFactory->
+		//$collectionRepository = MUVideo_Util_Model::getCollectionRepository();
 		$collectionObject = $collectionRepository->selectById($collectionId);
 	
 		// we get a movie repository
-		$movieRepository = MUVideo_Util_Model::getMovieRepository();
+		//$movieRepository = MUVideo_Util_Model::getMovieRepository();
+		$movieRepository = $this->container->get('mu_video_module.movie_factory')->getRepository();
 		// we get the videos from youtube
 		$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
 	
@@ -142,7 +153,7 @@ abstract class AbstractYoutubeController extends AbstractController
 		}
 	
 		$redirectUrl = ModUtil::url($this->name, 'user', 'display', array('ot' => 'collection', 'id' => $collectionId));
-		return System::redirect($redirectUrl);
+		//return System::redirect($redirectUrl);
 	}
 	
 	/*
@@ -168,5 +179,10 @@ abstract class AbstractYoutubeController extends AbstractController
 	{
 		$collectionId = $request->get('collectionId');
 		return $collectionId;
+	}
+	
+	public function setEntityFactory(Factory $entityFactory)
+	{
+		$this->entityFactory = $entityFactory;
 	}
 }

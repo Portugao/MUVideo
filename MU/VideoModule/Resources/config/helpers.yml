@@ -100,3 +100,4 @@ services:
         arguments:
             - "@translator.default"
             - "@mu_video_module.listentries_helper"
+            

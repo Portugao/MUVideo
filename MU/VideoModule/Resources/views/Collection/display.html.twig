@@ -31,12 +31,12 @@
     </dl>
     
     {% set mayGet = hasPermission('MUVideoModule::', '::', 'ACCESS_ADMIN') %}
-    {% if mayGet %}
+    {% if mayGet and routeArea == '' %}
         <p class="managelink">
             {% set getVideos = __('Get Videos') %}
             {% set getPlaylists = __('Get Playlists') %}
-            <a href="{{ path('muvideomodule_' ~ routeArea ~ 'youtube_getvideos', { collection: collection.id }) }}" title="{{ getVideos|e('html_attr') }}" class="fa fa-plus">{{ getVideos }}</a><br />
-            <a href="{{ path('muvideomodule_' ~ routeArea ~ 'youtube_getplaylists', { collection: collection.id }) }}" title="{{ getPlaylists|e('html_attr') }}" class="fa fa-plus">{{ getVideos }}</a>
+            <a href="{{ path('muvideomodule_' ~ routeArea ~ 'youtube_getvideos', { collectionId: collection.id }) }}" title="{{ getVideos|e('html_attr') }}" class="fa fa-plus">{{ getVideos }}</a><br />
+            <a href="{{ path('muvideomodule_' ~ routeArea ~ 'youtube_getplaylists', { collectionId: collection.id }) }}" title="{{ getPlaylists|e('html_attr') }}" class="fa fa-plus">{{ getPlaylists }}</a>
         </p>
     {% endif %}
 
