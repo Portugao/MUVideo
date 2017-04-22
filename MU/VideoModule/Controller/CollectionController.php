@@ -288,4 +288,6 @@ class CollectionController extends AbstractCollectionController
     {
         return parent::handleSelectedEntriesAction($request);
     }
+
+    // feel free to add your own controller methods here
 }

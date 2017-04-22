@@ -12,12 +12,12 @@
 
 namespace MU\VideoModule\Entity\Factory;
 
-use MU\VideoModule\Entity\Factory\Base\AbstractVideoFactory;
+use MU\VideoModule\Entity\Factory\Base\AbstractEntityInitialiser;
 
 /**
- * Factory class used to create entities and receive entity repositories.
+ * Entity initialiser class used to dynamically apply default values to newly created entities.
  */
-class VideoFactory extends AbstractVideoFactory
+class EntityInitialiser extends AbstractEntityInitialiser
 {
-    // feel free to customise the factory
+    // feel free to customise the initialiser
 }

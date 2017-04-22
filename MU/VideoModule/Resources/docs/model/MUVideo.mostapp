@@ -10,11 +10,13 @@ application "Video" {
         targetCoreVersion ZK14 
         generateXmlTemplates false 
         generateIcsTemplates false 
-        generateOnlyBaseClasses true 
+        generateOnlyBaseClasses false 
         versionAllGeneratedFiles false
         generatePoweredByBacklinksIntoFooterTemplates false
         generateTests false 
-        writeModelToDocs true  }
+        writeModelToDocs true  skipFiles "composer.json"
+        markFiles "Resources/view/Collection/display.html.twig"
+    }
    
         entities { 
             entity "collection" leading categorisable { 
