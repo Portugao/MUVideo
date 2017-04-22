@@ -156,7 +156,9 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      */
     public function set_objectType($_objectType)
     {
-        $this->_objectType = $_objectType;
+        if ($this->_objectType != $_objectType) {
+            $this->_objectType = $_objectType;
+        }
     }
     
     
@@ -179,7 +181,9 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      */
     public function setId($id)
     {
-        $this->id = intval($id);
+        if (intval($this->id) !== intval($id)) {
+            $this->id = intval($id);
+        }
     }
     
     /**
@@ -201,7 +205,9 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      */
     public function setWorkflowState($workflowState)
     {
-        $this->workflowState = isset($workflowState) ? $workflowState : '';
+        if ($this->workflowState !== $workflowState) {
+            $this->workflowState = isset($workflowState) ? $workflowState : '';
+        }
     }
     
     /**
@@ -223,7 +229,9 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      */
     public function setTitle($title)
     {
-        $this->title = isset($title) ? $title : '';
+        if ($this->title !== $title) {
+            $this->title = isset($title) ? $title : '';
+        }
     }
     
     /**
@@ -245,7 +253,9 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      */
     public function setDescription($description)
     {
-        $this->description = isset($description) ? $description : '';
+        if ($this->description !== $description) {
+            $this->description = isset($description) ? $description : '';
+        }
     }
     
     /**
@@ -267,7 +277,9 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      */
     public function setUrlOfYoutubePlaylist($urlOfYoutubePlaylist)
     {
-        $this->urlOfYoutubePlaylist = isset($urlOfYoutubePlaylist) ? $urlOfYoutubePlaylist : '';
+        if ($this->urlOfYoutubePlaylist !== $urlOfYoutubePlaylist) {
+            $this->urlOfYoutubePlaylist = isset($urlOfYoutubePlaylist) ? $urlOfYoutubePlaylist : '';
+        }
     }
     
     /**
@@ -289,7 +301,9 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      */
     public function setLocale($locale)
     {
-        $this->locale = $locale;
+        if ($this->locale != $locale) {
+            $this->locale = $locale;
+        }
     }
     
     /**

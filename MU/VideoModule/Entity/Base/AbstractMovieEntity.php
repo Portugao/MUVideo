@@ -212,8 +212,6 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function __construct()
     {
-        $this->widthOfMovie = 1;
-        $this->heightOfMovie = 1;
         $this->initWorkflow();
         $this->categories = new ArrayCollection();
     }
@@ -237,7 +235,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function set_objectType($_objectType)
     {
-        $this->_objectType = $_objectType;
+        if ($this->_objectType != $_objectType) {
+            $this->_objectType = $_objectType;
+        }
     }
     
     
@@ -260,7 +260,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setId($id)
     {
-        $this->id = intval($id);
+        if (intval($this->id) !== intval($id)) {
+            $this->id = intval($id);
+        }
     }
     
     /**
@@ -282,7 +284,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setWorkflowState($workflowState)
     {
-        $this->workflowState = isset($workflowState) ? $workflowState : '';
+        if ($this->workflowState !== $workflowState) {
+            $this->workflowState = isset($workflowState) ? $workflowState : '';
+        }
     }
     
     /**
@@ -304,7 +308,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setTitle($title)
     {
-        $this->title = isset($title) ? $title : '';
+        if ($this->title !== $title) {
+            $this->title = isset($title) ? $title : '';
+        }
     }
     
     /**
@@ -326,7 +332,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setDescription($description)
     {
-        $this->description = isset($description) ? $description : '';
+        if ($this->description !== $description) {
+            $this->description = isset($description) ? $description : '';
+        }
     }
     
     /**
@@ -348,7 +356,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setUploadOfMovie($uploadOfMovie)
     {
-        $this->uploadOfMovie = $uploadOfMovie;
+        if ($this->uploadOfMovie !== $uploadOfMovie) {
+            $this->uploadOfMovie = $uploadOfMovie;
+        }
     }
     
     /**
@@ -370,7 +380,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setUploadOfMovieUrl($uploadOfMovieUrl)
     {
-        $this->uploadOfMovieUrl = $uploadOfMovieUrl;
+        if ($this->uploadOfMovieUrl !== $uploadOfMovieUrl) {
+            $this->uploadOfMovieUrl = $uploadOfMovieUrl;
+        }
     }
     
     /**
@@ -392,7 +404,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setUploadOfMovieMeta($uploadOfMovieMeta = [])
     {
-        $this->uploadOfMovieMeta = $uploadOfMovieMeta;
+        if ($this->uploadOfMovieMeta !== $uploadOfMovieMeta) {
+            $this->uploadOfMovieMeta = $uploadOfMovieMeta;
+        }
     }
     
     /**
@@ -414,7 +428,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setUrlOfYoutube($urlOfYoutube)
     {
-        $this->urlOfYoutube = isset($urlOfYoutube) ? $urlOfYoutube : '';
+        if ($this->urlOfYoutube !== $urlOfYoutube) {
+            $this->urlOfYoutube = isset($urlOfYoutube) ? $urlOfYoutube : '';
+        }
     }
     
     /**
@@ -436,7 +452,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setPoster($poster)
     {
-        $this->poster = $poster;
+        if ($this->poster !== $poster) {
+            $this->poster = $poster;
+        }
     }
     
     /**
@@ -458,7 +476,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setPosterUrl($posterUrl)
     {
-        $this->posterUrl = $posterUrl;
+        if ($this->posterUrl !== $posterUrl) {
+            $this->posterUrl = $posterUrl;
+        }
     }
     
     /**
@@ -480,7 +500,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setPosterMeta($posterMeta = [])
     {
-        $this->posterMeta = $posterMeta;
+        if ($this->posterMeta !== $posterMeta) {
+            $this->posterMeta = $posterMeta;
+        }
     }
     
     /**
@@ -502,7 +524,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setWidthOfMovie($widthOfMovie)
     {
-        $this->widthOfMovie = intval($widthOfMovie);
+        if (intval($this->widthOfMovie) !== intval($widthOfMovie)) {
+            $this->widthOfMovie = intval($widthOfMovie);
+        }
     }
     
     /**
@@ -524,7 +548,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setHeightOfMovie($heightOfMovie)
     {
-        $this->heightOfMovie = intval($heightOfMovie);
+        if (intval($this->heightOfMovie) !== intval($heightOfMovie)) {
+            $this->heightOfMovie = intval($heightOfMovie);
+        }
     }
     
     /**
@@ -546,7 +572,9 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function setLocale($locale)
     {
-        $this->locale = $locale;
+        if ($this->locale != $locale) {
+            $this->locale = $locale;
+        }
     }
     
     /**

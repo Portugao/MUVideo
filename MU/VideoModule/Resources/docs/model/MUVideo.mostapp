@@ -3,14 +3,14 @@ application "Video" {
     author "Michael Ueberschaer" 
     email "info@homepages-mit-zikula.de" 
     url "http://homepages-mit-zikula.de" 
-    version "1.2.0" 
+    version "1.3.0" 
     prefix "video" 
     generatorSettings { 
         settingsContainer "Settings" 
         targetCoreVersion ZK14 
         generateXmlTemplates false 
         generateIcsTemplates false 
-        generateOnlyBaseClasses false 
+        generateOnlyBaseClasses true 
         versionAllGeneratedFiles false
         generatePoweredByBacklinksIntoFooterTemplates false
         generateTests false 

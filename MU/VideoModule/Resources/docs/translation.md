@@ -6,7 +6,7 @@ To create a new translation follow the steps below:
 2. Open a console and navigate to the Zikula root directory.
 3. Execute this command replacing `en` by your desired locale code:
 
-`php app/console translation:extract en --bundle=MUVideoModule --enable-extractor=jms_i18n_routing --output-format=po --exclude-dir=TaggedObjectMeta`
+`php app/console translation:extract en --bundle=MUVideoModule --enable-extractor=jms_i18n_routing --output-format=po`
 
 You can also use multiple locales at once, for example `de fr es`.
 
@@ -14,7 +14,7 @@ You can also use multiple locales at once, for example `de fr es`.
 
 Note you can even include custom views in `app/Resources/MUVideoModule/views/` and JavaScript files in `app/Resources/MUVideoModule/public/js/` like this:
 
-`php app/console translation:extract en --bundle=MUVideoModule --enable-extractor=jms_i18n_routing --output-format=po --exclude-dir=TaggedObjectMeta --dir=./modules/MU/VideoModule --dir=./app/Resources/MUVideoModule`
+`php app/console translation:extract en --bundle=MUVideoModule --enable-extractor=jms_i18n_routing --output-format=po --dir=./modules/MU/VideoModule --dir=./app/Resources/MUVideoModule`
 
 For questions and other remarks visit our homepage http://homepages-mit-zikula.de.
 

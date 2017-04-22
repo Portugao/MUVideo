@@ -296,8 +296,8 @@ abstract class AbstractEditHandler extends EditHandler
             return $this->repeatReturnUrl;
         }
     
-        if ($this->request->getSession()->has('muvideomoduleReferer')) {
-            $this->request->getSession()->del('muvideomoduleReferer');
+        if ($this->request->getSession()->has('muvideomodule' . $this->objectTypeCapital . 'Referer')) {
+            $this->request->getSession()->del('muvideomodule' . $this->objectTypeCapital . 'Referer');
         }
     
         // normal usage, compute return url from given redirect code

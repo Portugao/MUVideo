@@ -20,7 +20,6 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use ServiceUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\FilterUtil\FilterUtil;
 use Zikula\Component\FilterUtil\Config as FilterConfig;
@@ -87,7 +86,9 @@ abstract class AbstractCollectionRepository extends EntityRepository
      */
     public function setDefaultSortingField($defaultSortingField)
     {
-        $this->defaultSortingField = $defaultSortingField;
+        if ($this->defaultSortingField != $defaultSortingField) {
+            $this->defaultSortingField = $defaultSortingField;
+        }
     }
     
     /**
@@ -109,7 +110,9 @@ abstract class AbstractCollectionRepository extends EntityRepository
      */
     public function setRequest($request)
     {
-        $this->request = $request;
+        if ($this->request != $request) {
+            $this->request = $request;
+        }
     }
     
 
@@ -181,7 +184,7 @@ abstract class AbstractCollectionRepository extends EntityRepository
             }
     
             // initialise Imagine runtime options
-            if (in_array($args['action'], ['display', 'view'])) {
+            if (in_array($args['action'], ['display', 'edit', 'view'])) {
                 // use separate preset for images in related items
                 $templateParameters['relationThumbRuntimeOptions'] = $imageHelper->getCustomRuntimeOptions('', '', 'MUVideoModule_relateditem', $context, $args);
             }
@@ -209,7 +212,7 @@ abstract class AbstractCollectionRepository extends EntityRepository
         }
     
         $parameters = [];
-        $categoryHelper = ServiceUtil::get('mu_video_module.category_helper');
+        $categoryHelper = \ServiceUtil::get('mu_video_module.category_helper');
         $parameters['catIdList'] = $categoryHelper->retrieveCategoriesFromRequest('collection', 'GET');
         $parameters['workflowState'] = $this->getRequest()->query->get('workflowState', '');
         $parameters['q'] = $this->getRequest()->query->get('q', '');
@@ -575,7 +578,7 @@ abstract class AbstractCollectionRepository extends EntityRepository
                 $qb->andWhere('tblCategories.category IN (:categories)')
                    ->setParameter('categories', $v);
                  */
-                $categoryHelper = ServiceUtil::get('mu_video_module.category_helper');
+                $categoryHelper = \ServiceUtil::get('mu_video_module.category_helper');
                 $qb = $categoryHelper->buildFilterClauses($qb, 'collection', $v);
             } elseif (in_array($k, ['q', 'searchterm'])) {
                 // quick search
@@ -853,7 +856,7 @@ abstract class AbstractCollectionRepository extends EntityRepository
     
             // add category plugins dynamically for all existing registry properties
             // we need to create one category plugin instance for each one
-            $categoryHelper = ServiceUtil::get('mu_video_module.category_helper');
+            $categoryHelper = \ServiceUtil::get('mu_video_module.category_helper');
             $categoryProperties = $categoryHelper->getAllProperties('collection');
             foreach ($categoryProperties as $propertyName => $registryId) {
                 $config['plugins'][] = new CategoryFilter('MUVideoModule', $propertyName, 'categories' . ucfirst($propertyName));
@@ -946,7 +949,7 @@ abstract class AbstractCollectionRepository extends EntityRepository
     {
         $query = $qb->getQuery();
     
-        $featureActivationHelper = ServiceUtil::get('mu_video_module.feature_activation_helper');
+        $featureActivationHelper = \ServiceUtil::get('mu_video_module.feature_activation_helper');
         if ($featureActivationHelper->isEnabled(FeatureActivationHelper::TRANSLATIONS, 'collection')) {
             // set the translation query hint
             $query->setHint(

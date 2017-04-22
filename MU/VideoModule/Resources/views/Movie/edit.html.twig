@@ -4,8 +4,8 @@
 
 {% block header %}
     {{ parent() }}
-    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.Validation.js', 98)) }}
-    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.EditFunctions.js', 99)) }}
+    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.EditFunctions.js'), 99) }}
     {{ pageAddAsset('javascript', asset('typeahead/typeahead.bundle.min.js')) }}
 {% endblock %}
 {% block title mode == 'create' ? __('Create movie') : __('Edit movie') %}

@@ -15,11 +15,10 @@ namespace MU\VideoModule\Entity\Factory\Base;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
+use MU\VideoModule\Entity\Factory\EntityInitialiser;
 
 /**
  * Factory class used to create entities and receive entity repositories.
- *
- * This is the base factory class.
  */
 abstract class AbstractVideoFactory
 {
@@ -29,13 +28,20 @@ abstract class AbstractVideoFactory
     protected $objectManager;
 
     /**
+     * @var EntityInitialiser The entity initialiser for dynamical application of default values
+     */
+    protected $entityInitialiser;
+
+    /**
      * VideoFactory constructor.
      *
-     * @param ObjectManager $objectManager The object manager to be used for determining the repositories
+     * @param ObjectManager     $objectManager     The object manager to be used for determining the repositories
+     * @param EntityInitialiser $entityInitialiser The entity initialiser for dynamical application of default values
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManager $objectManager, EntityInitialiser $entityInitialiser)
     {
         $this->objectManager = $objectManager;
+        $this->entityInitialiser = $entityInitialiser;
     }
 
     /**
@@ -61,7 +67,11 @@ abstract class AbstractVideoFactory
     {
         $entityClass = 'MU\\VideoModule\\Entity\\CollectionEntity';
 
-        return new $entityClass();
+        $entity = new $entityClass();
+
+        $this->entityInitialiser->initCollection($entity);
+
+        return $entity;
     }
 
     /**
@@ -73,7 +83,11 @@ abstract class AbstractVideoFactory
     {
         $entityClass = 'MU\\VideoModule\\Entity\\MovieEntity';
 
-        return new $entityClass();
+        $entity = new $entityClass();
+
+        $this->entityInitialiser->initMovie($entity);
+
+        return $entity;
     }
 
     /**
@@ -85,7 +99,11 @@ abstract class AbstractVideoFactory
     {
         $entityClass = 'MU\\VideoModule\\Entity\\PlaylistEntity';
 
-        return new $entityClass();
+        $entity = new $entityClass();
+
+        $this->entityInitialiser->initPlaylist($entity);
+
+        return $entity;
     }
 
     /**
@@ -144,7 +162,34 @@ abstract class AbstractVideoFactory
      */
     public function setObjectManager($objectManager)
     {
-        $this->objectManager = $objectManager;
+        if ($this->objectManager != $objectManager) {
+            $this->objectManager = $objectManager;
+        }
+    }
+    
+
+    /**
+     * Returns the entity initialiser.
+     *
+     * @return EntityInitialiser
+     */
+    public function getEntityInitialiser()
+    {
+        return $this->entityInitialiser;
+    }
+    
+    /**
+     * Sets the entity initialiser.
+     *
+     * @param EntityInitialiser $entityInitialiser
+     *
+     * @return void
+     */
+    public function setEntityInitialiser($entityInitialiser)
+    {
+        if ($this->entityInitialiser != $entityInitialiser) {
+            $this->entityInitialiser = $entityInitialiser;
+        }
     }
     
 }

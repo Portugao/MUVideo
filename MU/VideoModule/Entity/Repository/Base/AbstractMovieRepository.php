@@ -20,7 +20,6 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use ServiceUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\FilterUtil\FilterUtil;
 use Zikula\Component\FilterUtil\Config as FilterConfig;
@@ -92,7 +91,9 @@ abstract class AbstractMovieRepository extends EntityRepository
      */
     public function setDefaultSortingField($defaultSortingField)
     {
-        $this->defaultSortingField = $defaultSortingField;
+        if ($this->defaultSortingField != $defaultSortingField) {
+            $this->defaultSortingField = $defaultSortingField;
+        }
     }
     
     /**
@@ -114,7 +115,9 @@ abstract class AbstractMovieRepository extends EntityRepository
      */
     public function setRequest($request)
     {
-        $this->request = $request;
+        if ($this->request != $request) {
+            $this->request = $request;
+        }
     }
     
 
@@ -191,7 +194,7 @@ abstract class AbstractMovieRepository extends EntityRepository
             $thumbRuntimeOptions[$objectType . 'UploadOfMovie'] = $imageHelper->getRuntimeOptions($objectType, 'uploadOfMovie', $context, $args);
             $thumbRuntimeOptions[$objectType . 'Poster'] = $imageHelper->getRuntimeOptions($objectType, 'poster', $context, $args);
             $templateParameters['thumbRuntimeOptions'] = $thumbRuntimeOptions;
-            if (in_array($args['action'], ['display', 'view'])) {
+            if (in_array($args['action'], ['display', 'edit', 'view'])) {
                 // use separate preset for images in related items
                 $templateParameters['relationThumbRuntimeOptions'] = $imageHelper->getCustomRuntimeOptions('', '', 'MUVideoModule_relateditem', $context, $args);
             }
@@ -219,7 +222,7 @@ abstract class AbstractMovieRepository extends EntityRepository
         }
     
         $parameters = [];
-        $categoryHelper = ServiceUtil::get('mu_video_module.category_helper');
+        $categoryHelper = \ServiceUtil::get('mu_video_module.category_helper');
         $parameters['catIdList'] = $categoryHelper->retrieveCategoriesFromRequest('movie', 'GET');
         $parameters['collection'] = $this->getRequest()->query->get('collection', 0);
         $parameters['workflowState'] = $this->getRequest()->query->get('workflowState', '');
@@ -586,7 +589,7 @@ abstract class AbstractMovieRepository extends EntityRepository
                 $qb->andWhere('tblCategories.category IN (:categories)')
                    ->setParameter('categories', $v);
                  */
-                $categoryHelper = ServiceUtil::get('mu_video_module.category_helper');
+                $categoryHelper = \ServiceUtil::get('mu_video_module.category_helper');
                 $qb = $categoryHelper->buildFilterClauses($qb, 'movie', $v);
             } elseif (in_array($k, ['q', 'searchterm'])) {
                 // quick search
@@ -874,7 +877,7 @@ abstract class AbstractMovieRepository extends EntityRepository
     
             // add category plugins dynamically for all existing registry properties
             // we need to create one category plugin instance for each one
-            $categoryHelper = ServiceUtil::get('mu_video_module.category_helper');
+            $categoryHelper = \ServiceUtil::get('mu_video_module.category_helper');
             $categoryProperties = $categoryHelper->getAllProperties('movie');
             foreach ($categoryProperties as $propertyName => $registryId) {
                 $config['plugins'][] = new CategoryFilter('MUVideoModule', $propertyName, 'categories' . ucfirst($propertyName));
@@ -967,7 +970,7 @@ abstract class AbstractMovieRepository extends EntityRepository
     {
         $query = $qb->getQuery();
     
-        $featureActivationHelper = ServiceUtil::get('mu_video_module.feature_activation_helper');
+        $featureActivationHelper = \ServiceUtil::get('mu_video_module.feature_activation_helper');
         if ($featureActivationHelper->isEnabled(FeatureActivationHelper::TRANSLATIONS, 'movie')) {
             // set the translation query hint
             $query->setHint(

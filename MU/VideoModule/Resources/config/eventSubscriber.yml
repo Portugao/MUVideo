@@ -1,5 +1,5 @@
 services:
-    # Event subscriber and listener classes
+    # Event subscribers and listeners
     mu_video_module.entity_lifecycle_listener:
         class: MU\VideoModule\Listener\EntityLifecycleListener
         arguments:

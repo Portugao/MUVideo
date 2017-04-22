@@ -158,7 +158,9 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function set_objectType($_objectType)
     {
-        $this->_objectType = $_objectType;
+        if ($this->_objectType != $_objectType) {
+            $this->_objectType = $_objectType;
+        }
     }
     
     
@@ -181,7 +183,9 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function setId($id)
     {
-        $this->id = intval($id);
+        if (intval($this->id) !== intval($id)) {
+            $this->id = intval($id);
+        }
     }
     
     /**
@@ -203,7 +207,9 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function setWorkflowState($workflowState)
     {
-        $this->workflowState = isset($workflowState) ? $workflowState : '';
+        if ($this->workflowState !== $workflowState) {
+            $this->workflowState = isset($workflowState) ? $workflowState : '';
+        }
     }
     
     /**
@@ -225,7 +231,9 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function setTitle($title)
     {
-        $this->title = isset($title) ? $title : '';
+        if ($this->title !== $title) {
+            $this->title = isset($title) ? $title : '';
+        }
     }
     
     /**
@@ -247,7 +255,9 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function setDescription($description)
     {
-        $this->description = isset($description) ? $description : '';
+        if ($this->description !== $description) {
+            $this->description = isset($description) ? $description : '';
+        }
     }
     
     /**
@@ -269,7 +279,9 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function setLocale($locale)
     {
-        $this->locale = $locale;
+        if ($this->locale != $locale) {
+            $this->locale = $locale;
+        }
     }
     
     /**
