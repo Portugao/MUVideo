@@ -32,8 +32,7 @@ local.properties
 ## ZIKULA
 ################
 
-Resources/style
-Resources/templates
+
 
 #################
 ## Visual Studio
