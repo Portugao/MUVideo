@@ -43,7 +43,7 @@ function MUVideoModule_needleapi_movie_base($args)
     }
 
     if (!$container->get('kernel')->isBundle('MUVideoModule')) {
-        $cache[$nid] = '<em>' . htmlspecialchars($translator->__f('Module "%moduleName%" is not available.', ['%moduleName%' => MUVideoModule'])) . '</em>';
+        $cache[$nid] = '<em>' . htmlspecialchars($translator->__f('Module "%moduleName%" is not available.', ['%moduleName%' => 'MUVideoModule'])) . '</em>';
 
         return $cache[$nid];
     }
