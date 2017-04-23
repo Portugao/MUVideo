@@ -15,18 +15,15 @@ namespace MU\VideoModule\Controller\Base;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
-use MU\VideoModule\Entity\Factory;
+use MU\VideoModule\Entity\MovieEntity;
+use DataUtil;
+use ServiceUtil;
 
 /**
  * Config controller base class.
  */
 abstract class AbstractYoutubeController extends AbstractController
 {
-	
-	/**
-	 * 
-	 */
-	private $entityFactory;
 	
 	/**
 	 * This method takes care of the application configuration.
@@ -45,24 +42,23 @@ abstract class AbstractYoutubeController extends AbstractController
 	
 		$form = $this->createForm('MU\VideoModule\Form\GetVideosType');
 		$datas = $form->getData();
-		//print_r($datas);
+
 		if ($form->handleRequest($request)->isValid()) {
 			if ($form->get('getDatas')->isClicked()) {
-				//$this->setVars($form->getData());
+
 				$datas = $form->getData();
-				//print_r($datas);
 				
 				$this->getYoutubeVideos($datas['channelId'], $datas['collectionId']);
 	
-				$this->addFlash('status', $this->__('Done! Module configuration updated.'));
+				$this->addFlash('status', $this->__('Done! Video import complete.'));
 				$userName = $this->get('zikula_users_module.current_user')->get('uname');
 				$this->get('logger')->notice('{app}: User {user} updated the configuration.', ['app' => 'MUVideoModule', 'user' => $userName]);
 			} elseif ($form->get('cancel')->isClicked()) {
 				$this->addFlash('status', $this->__('Operation cancelled.'));
 			}
 	
-			// redirect to get videos page again (to show with GET request)
-			return $this->redirectToRoute('muvideomodule_youtube_getvideos');
+			// redirect to therelevant collection
+			return $this->redirectToRoute('muvideomodule_collection_display', array('id' => $datas['collectionId']));
 		}
 	
 		$templateParameters = [
@@ -80,19 +76,20 @@ abstract class AbstractYoutubeController extends AbstractController
 	 */
 	public function getYoutubeVideos($channelId = '', $collectionId = 0)
 	{
-		$dom = ZLanguage::getModuleDomain($this->name);
-		$youtubeApi = $this->getVar($this->name, 'youtubeApi');
-		die(1);
+		$youtubeApi = $this->getVar('youtubeApi');
+		
+		$modelHelper = $this->get('mu_video_module.model_helper');
 	
 		// we get collection repository and the relevant collection object
-		$collectionRepository = $this->container->get('mu_video_module.collection_factory')->getRepository();
-		$collectionRepository = $this->entityFactory->
-		//$collectionRepository = MUVideo_Util_Model::getCollectionRepository();
+		$collectionRepository = $modelHelper->getRepository('collection');
+
+		//$collectionRepository = $this->container->get('mu_video_module.video_factory')->getRepository('collection');
 		$collectionObject = $collectionRepository->selectById($collectionId);
-	
+		
 		// we get a movie repository
-		//$movieRepository = MUVideo_Util_Model::getMovieRepository();
-		$movieRepository = $this->container->get('mu_video_module.movie_factory')->getRepository();
+		$movieRepository = $modelHelper->getRepository('movie');
+		//$movieRepository = $this->container->get('mu_video_module.video_factory')->getRepository('movie');
+
 		// we get the videos from youtube
 		$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
 	
@@ -122,7 +119,7 @@ abstract class AbstractYoutubeController extends AbstractController
 							$fragment = $videoData['id']['videoId'];
 							$where2 = 'tbl.urlOfYoutube LIKE \'%' . $fragment . '\'';
 							$thisExistingVideo = $movieRepository->selectWhere($where2);
-							if(is_array($thisExistingVideo) && count($thisExistingVideo) == 1 && ModUtil::getVar($this->name, 'overrideVars') == 1) {
+							if(is_array($thisExistingVideo) && count($thisExistingVideo) == 1 && $this->getVar('overrideVars') == 1) {
 								$thisExistingVideoObject = $movieRepository->selectById($thisExistingVideo[0]['id']);
 	
 								$thisExistingVideoObject->setTitle($videoData['snippet']['title']);
@@ -130,13 +127,14 @@ abstract class AbstractYoutubeController extends AbstractController
 								$thisExistingVideoObject->setCollection($collectionObject);
 	
 								$entityManager->flush();
-								LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was overrided', $dom));
+								$this->addFlash('status', $this->__('The video') . ' ' . $videoData['snippet']['title'] . $this->__('was overrided'));
+								//LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was overrided', $dom));
 							}
 							continue;
 						}
 					}
-					 
-					$newYoutubeVideo = new MUVideo_Entity_Movie();
+
+					$newYoutubeVideo = new \MU\VideoModule\Entity\MovieEntity();
 					$newYoutubeVideo->setTitle($videoData['snippet']['title']);
 					$newYoutubeVideo->setDescription($videoData['snippet']['description']);
 					$newYoutubeVideo->setUrlOfYoutube('https://www.youtube.com/watch?v=' . $videoData['id']['videoId']);
@@ -144,16 +142,17 @@ abstract class AbstractYoutubeController extends AbstractController
 					$newYoutubeVideo->setHeightOfMovie('300');
 					$newYoutubeVideo->setWorkflowState('approved');
 					$newYoutubeVideo->setCollection($collectionObject);
+					$newYoutubeVideo->set__WORKFLOW__('approved');
 	
 					$entityManager->persist($newYoutubeVideo);
 					$entityManager->flush();
-					LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
+					$this->addFlash('status', $this->__('The video')  . ' ' . $videoData['snippet']['title'] . ' ' . $this->__('was created and put into the collection') . ' ' . $collectionObject['title']);
+					//LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
 				}
 			}
 		}
 	
-		$redirectUrl = ModUtil::url($this->name, 'user', 'display', array('ot' => 'collection', 'id' => $collectionId));
-		//return System::redirect($redirectUrl);
+		return $this->redirectToRoute('muvideomodule_collection_display', array('id'=> $collectionId));
 	}
 	
 	/*
@@ -181,7 +180,7 @@ abstract class AbstractYoutubeController extends AbstractController
 		return $collectionId;
 	}
 	
-	public function setEntityFactory(Factory $entityFactory)
+	public function setEntityFactory(MU\VideoModule\Entity\Factory $entityFactory)
 	{
 		$this->entityFactory = $entityFactory;
 	}

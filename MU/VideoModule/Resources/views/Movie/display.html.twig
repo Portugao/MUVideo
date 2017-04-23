@@ -25,6 +25,10 @@
             <dt>{{ __('Description') }}</dt>
             <dd>{{ movie.description|safeHtml }}</dd>
         {% endif %}
+        {% if movie.urlOfYoutube is not empty %}
+        	YOUTUBE[{$movie.id}]
+        {% endif %}
+        
         {% if movie.uploadOfMovie is not empty %}
             <dt>{{ __('Upload of movie') }}</dt>
             <dd>{% if movie.uploadOfMovie is not empty and movie.uploadOfMovieMeta|default %}
@@ -39,7 +43,7 @@
             {% else %}&nbsp;{% endif %}
             </dd>
         {% endif %}
-        {% if movie.urlOfYoutube is not empty %}
+        {#% if movie.urlOfYoutube is not empty %}
             <dt>{{ __('Url of youtube') }}</dt>
             <dd>{% if movie.urlOfYoutube is not empty %}
             {% if not isQuickView %}
@@ -49,7 +53,7 @@
             {% endif %}
             {% else %}&nbsp;{% endif %}
             </dd>
-        {% endif %}
+        {% endif %#}
         {% if movie.poster is not empty %}
             <dt>{{ __('Poster') }}</dt>
             <dd>{% if movie.poster is not empty and movie.posterMeta|default %}
@@ -64,14 +68,14 @@
             {% else %}&nbsp;{% endif %}
             </dd>
         {% endif %}
-        {% if movie.widthOfMovie is not empty %}
+        {#% if movie.widthOfMovie is not empty %}
             <dt>{{ __('Width of movie') }}</dt>
             <dd>{{ movie.widthOfMovie }}</dd>
         {% endif %}
         {% if movie.heightOfMovie is not empty %}
             <dt>{{ __('Height of movie') }}</dt>
             <dd>{{ movie.heightOfMovie }}</dd>
-        {% endif %}
+        {% endif %#}
         {% if movie.collection|default %}
             <dt>{{ __('Collection') }}</dt>
             <dd>
