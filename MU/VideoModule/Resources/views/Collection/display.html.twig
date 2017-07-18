@@ -30,7 +30,7 @@
         
     </dl>
     
-        {% set mayGet = hasPermission('MUVideoModule::', '::', 'ACCESS_ADMIN') %}
+    {% set mayGet = hasPermission('MUVideoModule::', '::', 'ACCESS_ADMIN') %}
     {% if mayGet and routeArea == '' %}
         <p class="managelink">
             {% set getVideos = __('Get Videos') %}
