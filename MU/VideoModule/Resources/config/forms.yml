@@ -184,3 +184,11 @@ services:
             - "@=service('zikula_extensions_module.api.variable').getAll('MUVideoModule')"
         tags:
             - { name: form.type }
+            
+    mu_video_module.form.type.getvideos:
+        class: MU\VideoModule\Form\Type\GetVideosType
+        arguments:
+            - "@translator.default"
+            - "@=service('zikula_extensions_module.api.variable').getAll('MUVideoModule')"
+        tags:
+            - { name: form.type }

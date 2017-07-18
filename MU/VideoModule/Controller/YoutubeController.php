@@ -47,15 +47,17 @@ class YoutubeController extends AbstractYoutubeController
 	 */
     public function getVideosAction(Request $request)
     {
-        return $this->getVideosAction($request);
+        return parent::getVideosAction($request);
     }
     
     /**
      * This method takes care of the application configuration.
      *
-     * @Route("/getPlaylists",
-     *        methods = {"GET", "POST"}
-     * )
+	 * @Route("/getPlaylists/{collectionId}.{_format}",
+	 *        requirements = {"collectionId" = "\d+", "_format" = "html"},
+	 *        defaults = {"collectionId" = "0", "_format" = "html"},
+	 *        methods = {"GET", "POST"}
+	 * )
      *
      * @param Request $request Current request instance
      *
@@ -65,7 +67,7 @@ class YoutubeController extends AbstractYoutubeController
      */
     public function getPlaylistsAction(Request $request)
     {
-    	return $this->getPlaylistsAction($request);
+    	return parent::getPlaylistsAction($request);
     }
 
     // feel free to add your own config controller methods here
