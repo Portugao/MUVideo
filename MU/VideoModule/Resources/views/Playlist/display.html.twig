@@ -1,13 +1,13 @@
 {# purpose of this template: playlists display view #}
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends 'MUVideoModule::' ~ baseTemplate ~ '.html.twig' %}
-{% block pageTitle %}{{ playlist.getTitleFromDisplayPattern()|default(__('Playlist')) }}{% endblock %}
+{% block pageTitle %}{{ playlist|muvideomodule_formattedTitle|default(__('Playlist')) }}{% endblock %}
 {% block title %}
-    {% set templateTitle = playlist.getTitleFromDisplayPattern()|default(__('Playlist')) %}
-    {{ templateTitle|notifyFilters('muvideomodule.filter_hooks.playlists.filter') }}
+    {% set templateTitle = playlist|muvideomodule_formattedTitle|default(__('Playlist')) %}
+    {{ templateTitle|notifyFilters('muvideomodule.filter_hooks.playlists.filter')|safeHtml }}
     {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], { entity: playlist, area: routeArea, context: 'display' }) %}
     <div class="dropdown">
-        <a id="itemActions{{ playlist.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        <a id="itemActions{{ playlist.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
         {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
     </div>
 {% endblock %}
@@ -38,12 +38,12 @@
             <dt>{{ __('Collection') }}</dt>
             <dd>
               {% if not isQuickView %}
-                  <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.id }) }}">{% spaceless %}
-                    {{ playlist.collection.getTitleFromDisplayPattern() }}
+                  <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.getId() }) }}">{% spaceless %}
+                    {{ playlist.collection|muvideomodule_formattedTitle }}
                   {% endspaceless %}</a>
-                  <a id="collectionItem{{ playlist.collection.id }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.id, 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ playlist.collection.getTitleFromDisplayPattern()|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+                  <a id="collectionItem{{ playlist.collection.getKey() }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.getId(), 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ playlist.collection|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
               {% else %}
-                  {{ playlist.collection.getTitleFromDisplayPattern() }}
+                  {{ playlist.collection|muvideomodule_formattedTitle }}
               {% endif %}
             </dd>
         {% endif %}
@@ -59,7 +59,7 @@
 </div>
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.playlists.display_view', id=playlist.id, urlObject=currentUrlObject) %}
+    {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.playlists.display_view', id=playlist.getKey(), urlObject=currentUrlObject) %}
     {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
         <h4>{{ providerArea }}</h4>
         {{ hook }}

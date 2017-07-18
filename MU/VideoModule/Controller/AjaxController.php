@@ -17,7 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\Core\Response\Ajax\AjaxResponse;
 
 /**
  * Ajax controller implementation class.
@@ -28,31 +27,16 @@ class AjaxController extends AbstractAjaxController
 {
     
     /**
-     * Retrieves a general purpose list of users.
-     *
-     * @Route("/getCommonUsersList", options={"expose"=true})
-     * @Method("GET")
-     *
-     * @param Request $request Current request instance
-     *
-     * @return JsonResponse
-     */ 
-    public function getCommonUsersListAction(Request $request)
-    {
-        return parent::getCommonUsersListAction($request);
-    }
-    
-    /**
      * Retrieve item list for finder selections in Forms, Content type plugin and Scribite.
      *
      * @Route("/getItemListFinder", options={"expose"=true})
-     * @Method("POST")
+     * @Method("GET")
      *
      * @param string $ot      Name of currently used object type
      * @param string $sort    Sorting field
      * @param string $sortdir Sorting direction
      *
-     * @return AjaxResponse
+     * @return JsonResponse
      */
     public function getItemListFinderAction(Request $request)
     {

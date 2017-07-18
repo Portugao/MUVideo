@@ -1,8 +1,0 @@
-{# Purpose of this template: Display movies in text mailings #}
-{% for movie in items %}
-{{ movie.getTitleFromDisplayPattern() }}
-{{ url('muvideomodule_movie_display', { 'id': movie.id }) }}
------
-{% else %}
-{{ __('No movies found.') }}
-{% endfor %}

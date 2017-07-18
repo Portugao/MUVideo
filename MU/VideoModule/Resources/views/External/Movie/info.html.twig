@@ -1,11 +1,11 @@
 {# Purpose of this template: Display item information for previewing from other modules #}
-<dl id="movie{{ movie.id }}">
-<dt>{{ movie.getTitleFromDisplayPattern()|notifyFilters('video.filter_hooks.movies.filter') }}</dt>
+<dl id="movie{{ movie.getKey() }}">
+<dt>{{ movie|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.movies.filter')|safeHtml }}</dt>
 <dd>{% if movie.uploadOfMovie is not empty and movie.uploadOfMovieMeta|default %}
-            <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
+            <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
 {% if movie.uploadOfMovieMeta.isImage %}
     {% set thumbOptions = attribute(thumbRuntimeOptions, 'movieUploadOfMovie') %}
-    <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+    <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
 {% else %}
     {{ __('Download') }} ({{ movie.uploadOfMovieMeta.size|muvideomodule_fileSize(movie.uploadOfMovie.getPathname(), false, false) }})
 {% endif %}

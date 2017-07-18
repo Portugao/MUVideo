@@ -13,6 +13,7 @@
 namespace MU\VideoModule\Form\Handler\Collection\Base;
 
 use MU\VideoModule\Form\Handler\Common\EditHandler;
+use MU\VideoModule\Form\Type\CollectionType;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -74,8 +75,8 @@ abstract class AbstractEditHandler extends EditHandler
         $options = [
             'mode' => $this->templateParameters['mode'],
             'actions' => $this->templateParameters['actions'],
-            'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_MODERATE),
-            'filter_by_ownership' => !$this->permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_ADD)
+            'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_MODERATE),
+            'filter_by_ownership' => !$this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_ADD)
         ];
     
         $options['translations'] = [];
@@ -83,14 +84,14 @@ abstract class AbstractEditHandler extends EditHandler
             $options['translations'][$language] = isset($this->templateParameters[$this->objectTypeLower . $language]) ? $this->templateParameters[$this->objectTypeLower . $language] : [];
         }
     
-        return $this->formFactory->create('MU\VideoModule\Form\Type\CollectionType', $this->entityRef, $options);
+        return $this->formFactory->create(CollectionType::class, $this->entityRef, $options);
     }
 
 
     /**
      * Get list of allowed redirect codes.
      *
-     * @return array list of possible redirect codes
+     * @return string[] list of possible redirect codes
      */
     protected function getRedirectCodes()
     {
@@ -155,7 +156,7 @@ abstract class AbstractEditHandler extends EditHandler
      *
      * @return mixed Redirect or false on errors
      */
-    public function handleCommand($args = [])
+    public function handleCommand(array $args = [])
     {
         $result = parent::handleCommand($args);
         if (false === $result) {
@@ -183,7 +184,7 @@ abstract class AbstractEditHandler extends EditHandler
      *
      * @return String desired status or error message
      */
-    protected function getDefaultMessage($args, $success = false)
+    protected function getDefaultMessage(array $args = [], $success = false)
     {
         if (false === $success) {
             return parent::getDefaultMessage($args, $success);
@@ -230,9 +231,9 @@ abstract class AbstractEditHandler extends EditHandler
         try {
             // execute the workflow action
             $success = $this->workflowHelper->executeAction($entity, $action);
-        } catch(\Exception $e) {
-            $flashBag->add('error', $this->__f('Sorry, but an error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]) . ' ' . $e->getMessage());
-            $logArgs = ['app' => 'MUVideoModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => 'collection', 'id' => $entity->createCompositeIdentifier(), 'errorMessage' => $e->getMessage()];
+        } catch (\Exception $exception) {
+            $flashBag->add('error', $this->__f('Sorry, but an error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]) . ' ' . $exception->getMessage());
+            $logArgs = ['app' => 'MUVideoModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => 'collection', 'id' => $entity->getKey(), 'errorMessage' => $exception->getMessage()];
             $this->logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', $logArgs);
         }
     
@@ -240,9 +241,7 @@ abstract class AbstractEditHandler extends EditHandler
     
         if ($success && $this->templateParameters['mode'] == 'create') {
             // store new identifier
-            foreach ($this->idFields as $idField) {
-                $this->idValues[$idField] = $entity[$idField];
-            }
+            $this->idValue = $entity->getKey();
         }
     
         return $success;
@@ -262,7 +261,7 @@ abstract class AbstractEditHandler extends EditHandler
         }
     
         if ($this->request->getSession()->has('muvideomodule' . $this->objectTypeCapital . 'Referer')) {
-            $this->request->getSession()->del('muvideomodule' . $this->objectTypeCapital . 'Referer');
+            $this->request->getSession()->remove('muvideomodule' . $this->objectTypeCapital . 'Referer');
         }
     
         // normal usage, compute return url from given redirect code
@@ -288,11 +287,7 @@ abstract class AbstractEditHandler extends EditHandler
             case 'userDisplay':
             case 'adminDisplay':
                 if ($args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel')) {
-                    foreach ($this->idFields as $idField) {
-                        $urlArgs[$idField] = $this->idValues[$idField];
-                    }
-    
-                    return $this->router->generate($routePrefix . 'display', $urlArgs);
+                    return $this->router->generate($routePrefix . 'display', $this->entityRef->createUrlArgs());
                 }
     
                 return $this->getDefaultReturnUrl($args);

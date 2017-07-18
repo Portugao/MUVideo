@@ -19,7 +19,6 @@ use Gedmo\Translatable\Translatable;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
-use MU\VideoModule\Traits\EntityWorkflowTrait;
 use MU\VideoModule\Traits\StandardFieldsTrait;
 use MU\VideoModule\Validator\Constraints as VideoAssert;
 
@@ -36,11 +35,6 @@ use MU\VideoModule\Validator\Constraints as VideoAssert;
  */
 abstract class AbstractMovieEntity extends EntityAccess implements Translatable
 {
-    /**
-     * Hook entity workflow field and behaviour.
-     */
-    use EntityWorkflowTrait;
-
     /**
      * Hook standard fields behaviour embedding createdBy, updatedBy, createdDate, updatedDate fields.
      */
@@ -212,7 +206,6 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function __construct()
     {
-        $this->initWorkflow();
         $this->categories = new ArrayCollection();
     }
     
@@ -654,19 +647,6 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
     }
     
     
-    /**
-     * Returns the formatted title conforming to the display pattern
-     * specified for this entity.
-     *
-     * @return string The display title
-     */
-    public function getTitleFromDisplayPattern()
-    {
-        $formattedTitle = ''
-                . $this->getTitle();
-    
-        return $formattedTitle;
-    }
     
     /**
      * Return entity data in JSON format.
@@ -685,27 +665,19 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function createUrlArgs()
     {
-        $args = [];
-    
-        $args['id'] = $this['id'];
-    
-        if (property_exists($this, 'slug')) {
-            $args['slug'] = $this['slug'];
-        }
-    
-        return $args;
+        return [
+            'id' => $this->getId()
+        ];
     }
     
     /**
-     * Create concatenated identifier string (for composite keys).
+     * Returns the primary key.
      *
-     * @return String concatenated identifiers
+     * @return integer The identifier
      */
-    public function createCompositeIdentifier()
+    public function getKey()
     {
-        $itemId = $this['id'];
-    
-        return $itemId;
+        return $this->getId();
     }
     
     /**
@@ -748,7 +720,7 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
      */
     public function __toString()
     {
-        return 'Movie ' . $this->createCompositeIdentifier() . ': ' . $this->getTitleFromDisplayPattern();
+        return 'Movie ' . $this->getKey() . ': ' . $this->getTitle();
     }
     
     /**
@@ -764,17 +736,17 @@ abstract class AbstractMovieEntity extends EntityAccess implements Translatable
     public function __clone()
     {
         // if the entity has no identity do nothing, do NOT throw an exception
-        if (!($this->id)) {
+        if (!$this->id) {
             return;
         }
     
         // otherwise proceed
     
-        // unset identifiers
+        // unset identifier
         $this->setId(0);
     
         // reset workflow
-        $this->resetWorkflow();
+        $this->setWorkflowState('initial');
     
         // reset upload fields
         $this->setUploadOfMovie(null);

@@ -7,15 +7,15 @@ application "Video" {
     prefix "video" 
     generatorSettings { 
         settingsContainer "Settings" 
-        targetCoreVersion ZK14 
+        targetCoreVersion ZK15DEV 
         generateXmlTemplates false 
         generateIcsTemplates false 
         generateOnlyBaseClasses false 
         versionAllGeneratedFiles false
         generatePoweredByBacklinksIntoFooterTemplates false
         generateTests false 
-        writeModelToDocs true  skipFiles "composer.json"
-        markFiles "Resources/view/Collection/display.html.twig"
+        writeModelToDocs true  skipFiles "README.md"
+        markFiles ""
     }
    
         entities { 

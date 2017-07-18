@@ -1,13 +1,13 @@
 {# purpose of this template: movies display view #}
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends 'MUVideoModule::' ~ baseTemplate ~ '.html.twig' %}
-{% block pageTitle %}{{ movie.getTitleFromDisplayPattern()|default(__('Movie')) }}{% endblock %}
+{% block pageTitle %}{{ movie|muvideomodule_formattedTitle|default(__('Movie')) }}{% endblock %}
 {% block title %}
-    {% set templateTitle = movie.getTitleFromDisplayPattern()|default(__('Movie')) %}
-    {{ templateTitle|notifyFilters('muvideomodule.filter_hooks.movies.filter') }}
+    {% set templateTitle = movie|muvideomodule_formattedTitle|default(__('Movie')) %}
+    {{ templateTitle|notifyFilters('muvideomodule.filter_hooks.movies.filter')|safeHtml }}
     {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], { entity: movie, area: routeArea, context: 'display' }) %}
     <div class="dropdown">
-        <a id="itemActions{{ movie.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        <a id="itemActions{{ movie.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
         {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
     </div>
 {% endblock %}
@@ -25,17 +25,13 @@
             <dt>{{ __('Description') }}</dt>
             <dd>{{ movie.description|safeHtml }}</dd>
         {% endif %}
-        {% if movie.urlOfYoutube is not empty %}
-        	YOUTUBE[{$movie.id}]
-        {% endif %}
-        
         {% if movie.uploadOfMovie is not empty %}
             <dt>{{ __('Upload of movie') }}</dt>
             <dd>{% if movie.uploadOfMovie is not empty and movie.uploadOfMovieMeta|default %}
-                        <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
+                        <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
             {% if movie.uploadOfMovieMeta.isImage %}
                 {% set thumbOptions = attribute(thumbRuntimeOptions, 'movieUploadOfMovie') %}
-                <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
             {% else %}
                 {{ __('Download') }} ({{ movie.uploadOfMovieMeta.size|muvideomodule_fileSize(movie.uploadOfMovie.getPathname(), false, false) }})
             {% endif %}
@@ -43,7 +39,7 @@
             {% else %}&nbsp;{% endif %}
             </dd>
         {% endif %}
-        {#% if movie.urlOfYoutube is not empty %}
+        {% if movie.urlOfYoutube is not empty %}
             <dt>{{ __('Url of youtube') }}</dt>
             <dd>{% if movie.urlOfYoutube is not empty %}
             {% if not isQuickView %}
@@ -53,14 +49,14 @@
             {% endif %}
             {% else %}&nbsp;{% endif %}
             </dd>
-        {% endif %#}
+        {% endif %}
         {% if movie.poster is not empty %}
             <dt>{{ __('Poster') }}</dt>
             <dd>{% if movie.poster is not empty and movie.posterMeta|default %}
-                        <a href="{{ movie.posterUrl }}" title="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}"{% if movie.posterMeta.isImage %} class="image-link"{% endif %}>
+                        <a href="{{ movie.posterUrl }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}"{% if movie.posterMeta.isImage %} class="image-link"{% endif %}>
             {% if movie.posterMeta.isImage %}
                 {% set thumbOptions = attribute(thumbRuntimeOptions, 'moviePoster') %}
-                <img src="{{ movie.poster.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                <img src="{{ movie.poster.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
             {% else %}
                 {{ __('Download') }} ({{ movie.posterMeta.size|muvideomodule_fileSize(movie.poster.getPathname(), false, false) }})
             {% endif %}
@@ -68,24 +64,24 @@
             {% else %}&nbsp;{% endif %}
             </dd>
         {% endif %}
-        {#% if movie.widthOfMovie is not empty %}
+        {% if movie.widthOfMovie is not empty %}
             <dt>{{ __('Width of movie') }}</dt>
             <dd>{{ movie.widthOfMovie }}</dd>
         {% endif %}
         {% if movie.heightOfMovie is not empty %}
             <dt>{{ __('Height of movie') }}</dt>
             <dd>{{ movie.heightOfMovie }}</dd>
-        {% endif %#}
+        {% endif %}
         {% if movie.collection|default %}
             <dt>{{ __('Collection') }}</dt>
             <dd>
               {% if not isQuickView %}
-                  <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': movie.collection.id }) }}">{% spaceless %}
-                    {{ movie.collection.getTitleFromDisplayPattern() }}
+                  <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': movie.collection.getId() }) }}">{% spaceless %}
+                    {{ movie.collection|muvideomodule_formattedTitle }}
                   {% endspaceless %}</a>
-                  <a id="collectionItem{{ movie.collection.id }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': movie.collection.id, 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ movie.collection.getTitleFromDisplayPattern()|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+                  <a id="collectionItem{{ movie.collection.getKey() }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': movie.collection.getId(), 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ movie.collection|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
               {% else %}
-                  {{ movie.collection.getTitleFromDisplayPattern() }}
+                  {{ movie.collection|muvideomodule_formattedTitle }}
               {% endif %}
             </dd>
         {% endif %}
@@ -101,7 +97,7 @@
 </div>
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.movies.display_view', id=movie.id, urlObject=currentUrlObject) %}
+    {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.movies.display_view', id=movie.getKey(), urlObject=currentUrlObject) %}
     {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
         <h4>{{ providerArea }}</h4>
         {{ hook }}

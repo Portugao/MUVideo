@@ -1,11 +1,11 @@
 {# Purpose of this template: Display playlists within an external context #}
 <dl>
     {% for playlist in items %}
-        <dt>{{ playlist.getTitleFromDisplayPattern() }}</dt>
+        <dt>{{ playlist|muvideomodule_formattedTitle }}</dt>
         {% if playlist.description %}
             <dd>{{ playlist.description|striptags|truncate(200, true, '&hellip;') }}</dd>
         {% endif %}
-        <dd><a href="{{ path('muvideomodule_playlist_display', { 'id': playlist.id }) }}">{{ __('Read more') }}</a>
+        <dd><a href="{{ path('muvideomodule_playlist_display', { 'id': playlist.getId() }) }}">{{ __('Read more') }}</a>
         </dd>
     {% else %}
         <dt>{{ __('No entries found.') }}</dt>

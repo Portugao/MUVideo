@@ -1,22 +1,22 @@
 {# purpose of this template: inclusion template for display of related movies #}
 {% set hasAdminPermission = hasPermission('MUVideoModule:Movie:', '::', 'ACCESS_EDIT') %}
-{% if nolink is not defined %}
-    {% set nolink = false %}
+{% if noLink is not defined %}
+    {% set noLink = false %}
 {% endif %}
 <h4>
 {% spaceless %}
-{% if not nolink %}
-    <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': item.id }) }}" title="{{ item.getTitleFromDisplayPattern()|e('html_attr') }}">
+{% if not noLink %}
+    <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': item.getId() }) }}" title="{{ item|muvideomodule_formattedTitle|e('html_attr') }}">
 {% endif %}
-    {{ item.getTitleFromDisplayPattern() }}
-{% if not nolink %}
+    {{ item|muvideomodule_formattedTitle }}
+{% if not noLink %}
     </a>
-    <a id="movieItem{{ item.id }}Display" href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': item.id, 'raw': 1 }) }}" title="{{ __('Open quick view window') }}" class="muvideo-inline-window hidden" data-modal-title="{{ item.getTitleFromDisplayPattern()|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+    <a id="movieItem{{ item.getKey() }}Display" href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': item.getId(), 'raw': 1 }) }}" title="{{ __('Open quick view window') }}" class="muvideo-inline-window hidden" data-modal-title="{{ item|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
 {% endif %}
 {% endspaceless %}
 </h4>
 {% if item.uploadOfMovie is not empty and item.uploadOfMovieMeta.isImage %}
     <p>
-        <img src="{{ item.uploadOfMovie.getPathname()|imagine_filter('zkroot', relationThumbRuntimeOptions) }}" alt="{{ item.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ relationThumbRuntimeOptions.thumbnail.size[0] }}" height="{{ relationThumbRuntimeOptions.thumbnail.size[1] }}" class="img-rounded" />
+        <img src="{{ item.uploadOfMovie.getPathname()|imagine_filter('zkroot', relationThumbRuntimeOptions) }}" alt="{{ item|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ relationThumbRuntimeOptions.thumbnail.size[0] }}" height="{{ relationThumbRuntimeOptions.thumbnail.size[1] }}" class="img-rounded" />
     </p>
 {% endif %}

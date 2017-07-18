@@ -8,7 +8,7 @@
     </author>
 {% set amountOfItems = items|length %}
 {% if amountOfItems > 0 %}
-{% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ items.first.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_playlist_' ~ routeArea ~ 'display', { 'id': items.first.id }) }}{% endset %}
+{% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ items.first.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_playlist_' ~ routeArea ~ 'display', { 'id': items.first.getId() }) }}{% endset %}
     <id>{{ uniqueID }}</id>
     <updated>{{ items[0].updatedDate|date('Y-m-dTH:M:SZ') }}</updated>
 {% endif %}
@@ -25,9 +25,9 @@
     </entry>
 {% endblock %}
 {% block entry_content %}
-    <title type="html">{{ playlist.getTitleFromDisplayPattern()|notifyFilters('muvideomodule.filterhook.playlists') }}</title>
-    <link rel="alternate" type="text/html" href="{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', { 'id': playlist.id }) }}" />
-    {% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ playlist.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_playlist_' ~ routeArea ~ 'display', { 'id': playlist.id }) }}{% endset %}
+    <title type="html">{{ playlist|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.playlists')|safeHtml }}</title>
+    <link rel="alternate" type="text/html" href="{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', { 'id': playlist.getId() }) }}" />
+    {% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ playlist.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_playlist_' ~ routeArea ~ 'display', { 'id': playlist.getId() }) }}{% endset %}
     <id>{{ uniqueID }}</id>
     {% if playlist.updatedDate|default %}
         <updated>{{ playlist.updatedDate|date('Y-m-dTH:M:SZ') }}</updated>

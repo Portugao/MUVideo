@@ -67,7 +67,7 @@ class PlaylistController extends AbstractPlaylistController
      * @inheritDoc
      *
      * @Route("/admin/playlists/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|json|kml"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|json"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -92,7 +92,7 @@ class PlaylistController extends AbstractPlaylistController
      * @inheritDoc
      *
      * @Route("/playlists/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|json|kml"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|json"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -205,7 +205,7 @@ class PlaylistController extends AbstractPlaylistController
      * @inheritDoc
      *
      * @Route("/admin/playlist/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html|json|kml"},
+     *        requirements = {"id" = "\d+", "_format" = "html|json"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -228,7 +228,7 @@ class PlaylistController extends AbstractPlaylistController
      * @inheritDoc
      *
      * @Route("/playlist/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html|json|kml"},
+     *        requirements = {"id" = "\d+", "_format" = "html|json"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )

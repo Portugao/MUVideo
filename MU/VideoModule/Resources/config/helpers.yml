@@ -4,26 +4,39 @@ services:
         class: MU\VideoModule\Helper\CategoryHelper
         arguments:
             - "@translator.default"
-            - "@session"
             - "@request_stack"
             - "@logger"
             - "@zikula_users_module.current_user"
-            - "@zikula_categories_module.api.category_registry"
+            - "@zikula_categories_module.category_registry_repository"
             - "@zikula_categories_module.api.category_permission"
+    
+    mu_video_module.collection_filter_helper:
+        class: MU\VideoModule\Helper\CollectionFilterHelper
+        arguments:
+            - "@request_stack"
+            - "@zikula_users_module.current_user"
+            - "@mu_video_module.category_helper"
+            - "@=service('zikula_extensions_module.api.variable').get('MUVideoModule', 'showOnlyOwnEntries', false)"
     
     mu_video_module.controller_helper:
         class: MU\VideoModule\Helper\ControllerHelper
         arguments:
             - "@translator.default"
             - "@request_stack"
-            - "@session"
             - "@logger"
             - "@form.factory"
             - "@zikula_extensions_module.api.variable"
             - "@mu_video_module.entity_factory"
+            - "@mu_video_module.collection_filter_helper"
             - "@mu_video_module.model_helper"
             - "@mu_video_module.image_helper"
             - "@mu_video_module.feature_activation_helper"
+    
+    mu_video_module.entity_display_helper:
+        class: MU\VideoModule\Helper\EntityDisplayHelper
+        arguments:
+            - "@translator.default"
+            - "@mu_video_module.listentries_helper"
     
     mu_video_module.feature_activation_helper:
         class: MU\VideoModule\Helper\FeatureActivationHelper
@@ -55,11 +68,11 @@ services:
         arguments:
             - "@translator.default"
             - "@zikula_permissions_module.api.permission"
-            - "@templating.engine.twig"
             - "@session"
             - "@request_stack"
             - "@mu_video_module.entity_factory"
             - "@mu_video_module.controller_helper"
+            - "@mu_video_module.entity_display_helper"
             - "@mu_video_module.feature_activation_helper"
             - "@mu_video_module.category_helper"
         tags:
@@ -79,10 +92,9 @@ services:
         arguments:
             - "@translator.default"
             - "@session"
-            - "@liip_imagine.cache.manager"
             - "@logger"
             - "@zikula_users_module.current_user"
-            - "@zikula_extensions_module.api.variable"
+            - "@=service('zikula_extensions_module.api.variable').getAll('MUVideoModule')"
             - "%datadir%"
     
     mu_video_module.view_helper:
@@ -100,4 +112,9 @@ services:
         class: MU\VideoModule\Helper\WorkflowHelper
         arguments:
             - "@translator.default"
+            - "@workflow.registry"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
+            - "@mu_video_module.entity_factory"
             - "@mu_video_module.listentries_helper"

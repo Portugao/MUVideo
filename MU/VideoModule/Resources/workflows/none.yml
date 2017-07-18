@@ -1,0 +1,26 @@
+workflow:
+    workflows:
+        muvideomodule_none:
+            type: state_machine
+            marking_store:
+                type: single_state
+                arguments:
+                    - workflowState
+            supports:
+                - MU\VideoModule\Entity\CollectionEntity
+                - MU\VideoModule\Entity\MovieEntity
+                - MU\VideoModule\Entity\PlaylistEntity
+            places:
+                - initial
+                - approved
+                - deleted
+            transitions:
+                submit:
+                    from: initial
+                    to: approved
+                updateapproved:
+                    from: approved
+                    to: approved
+                delete:
+                    from: approved
+                    to: deleted

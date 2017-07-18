@@ -1,0 +1,64 @@
+services:
+    mu_video_module.hook_subscriber.filter.collections:
+        class: MU\VideoModule\HookSubscriber\CollectionFilterHooksSubscriber
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.filter_hooks.collections' }
+
+    mu_video_module.hook_subscriber.form_aware.collections:
+        class: MU\VideoModule\HookSubscriber\CollectionFormAwareHookSubscriber
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.form_aware_hook.collections' }
+
+    mu_video_module.hook_subscriber.ui.collections:
+        class: MU\VideoModule\HookSubscriber\CollectionUiHooksSubscriber
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.ui_hooks.collections' }
+
+    mu_video_module.hook_subscriber.filter.movies:
+        class: MU\VideoModule\HookSubscriber\MovieFilterHooksSubscriber
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.filter_hooks.movies' }
+
+    mu_video_module.hook_subscriber.form_aware.movies:
+        class: MU\VideoModule\HookSubscriber\MovieFormAwareHookSubscriber
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.form_aware_hook.movies' }
+
+    mu_video_module.hook_subscriber.ui.movies:
+        class: MU\VideoModule\HookSubscriber\MovieUiHooksSubscriber
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.ui_hooks.movies' }
+
+    mu_video_module.hook_subscriber.filter.playlists:
+        class: MU\VideoModule\HookSubscriber\PlaylistFilterHooksSubscriber
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.filter_hooks.playlists' }
+
+    mu_video_module.hook_subscriber.form_aware.playlists:
+        class: MU\VideoModule\HookSubscriber\PlaylistFormAwareHookSubscriber
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.form_aware_hook.playlists' }
+
+    mu_video_module.hook_subscriber.ui.playlists:
+        class: MU\VideoModule\HookSubscriber\PlaylistUiHooksSubscriber
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.ui_hooks.playlists' }
+

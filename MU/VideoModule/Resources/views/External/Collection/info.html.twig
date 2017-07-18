@@ -1,6 +1,6 @@
 {# Purpose of this template: Display item information for previewing from other modules #}
-<dl id="collection{{ collection.id }}">
-<dt>{{ collection.getTitleFromDisplayPattern()|notifyFilters('video.filter_hooks.collections.filter') }}</dt>
+<dl id="collection{{ collection.getKey() }}">
+<dt>{{ collection|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.collections.filter')|safeHtml }}</dt>
 {% if collection.description is not empty %}<dd>{{ collection.description }}</dd>{% endif %}
 {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'collection') %}
     <dd>

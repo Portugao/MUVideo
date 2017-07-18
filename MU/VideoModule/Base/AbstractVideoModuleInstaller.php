@@ -15,7 +15,6 @@ namespace MU\VideoModule\Base;
 use Doctrine\DBAL\Connection;
 use RuntimeException;
 use Zikula\Core\AbstractExtensionInstaller;
-use Zikula_Workflow_Util;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 
 /**
@@ -38,20 +37,20 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         // Check if upload directories exist and if needed create them
         try {
             $container = $this->container;
-            $uploadHelper = new \MU\VideoModule\Helper\UploadHelper($container->get('translator.default'), $container->get('session'), $container->get('liip_imagine.cache.manager'), $container->get('logger'), $container->get('zikula_users_module.current_user'), $container->get('zikula_extensions_module.api.variable'), $container->getParameter('datadir'));
+            $uploadHelper = new \MU\VideoModule\Helper\UploadHelper($container->get('translator.default'), $container->get('session'), $container->get('logger'), $container->get('zikula_users_module.current_user'), $container->get('zikula_extensions_module.api.variable'), $container->getParameter('datadir'));
             $uploadHelper->checkAndCreateAllUploadFolders();
-        } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-            $logger->error('{app}: User {user} could not create upload folders during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'errorMessage' => $e->getMessage()]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $exception->getMessage());
+            $logger->error('{app}: User {user} could not create upload folders during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'errorMessage' => $exception->getMessage()]);
         
             return false;
         }
         // create all tables from according entity definitions
         try {
             $this->schemaTool->create($this->listEntityClasses());
-        } catch (\Exception $e) {
-            $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $e->getMessage());
-            $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'errorMessage' => $e->getMessage()]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
+            $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'errorMessage' => $exception->getMessage()]);
     
             return false;
         }
@@ -98,28 +97,27 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         // add default entry for category registry (property named Main)
         $categoryHelper = new \MU\VideoModule\Helper\CategoryHelper(
             $this->container->get('translator.default'),
-            $this->container->get('session'),
             $this->container->get('request_stack'),
             $logger,
             $this->container->get('zikula_users_module.current_user'),
-            $this->container->get('zikula_categories_module.api.category_registry'),
+            $this->container->get('zikula_categories_module.category_registry_repository'),
             $this->container->get('zikula_categories_module.api.category_permission')
         );
-        $categoryGlobal = $this->container->get('zikula_categories_module.api.category')->getCategoryByPath('/__SYSTEM__/Modules/Global');
+        $categoryGlobal = $this->container->get('zikula_categories_module.category_repository')->findOneBy(['name' => 'Global']);
     
         $registry = new CategoryRegistryEntity();
         $registry->setModname('MUVideoModule');
         $registry->setEntityname('CollectionEntity');
         $registry->setProperty($categoryHelper->getPrimaryProperty('Collection'));
-        $registry->setCategory_Id($categoryGlobal['id']);
+        $registry->setCategory($categoryGlobal);
     
         try {
             $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
             $entityManager->persist($registry);
             $entityManager->flush();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->addFlash('error', $this->__f('Error! Could not create a category registry for the %entity% entity.', ['%entity%' => 'collection']));
-            $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'entities' => 'collections', 'errorMessage' => $e->getMessage()]);
+            $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'entities' => 'collections', 'errorMessage' => $exception->getMessage()]);
         }
         $categoryRegistryIdsPerEntity['collection'] = $registry->getId();
     
@@ -127,15 +125,15 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         $registry->setModname('MUVideoModule');
         $registry->setEntityname('MovieEntity');
         $registry->setProperty($categoryHelper->getPrimaryProperty('Movie'));
-        $registry->setCategory_Id($categoryGlobal['id']);
+        $registry->setCategory($categoryGlobal);
     
         try {
             $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
             $entityManager->persist($registry);
             $entityManager->flush();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->addFlash('error', $this->__f('Error! Could not create a category registry for the %entity% entity.', ['%entity%' => 'movie']));
-            $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'entities' => 'movies', 'errorMessage' => $e->getMessage()]);
+            $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'entities' => 'movies', 'errorMessage' => $exception->getMessage()]);
         }
         $categoryRegistryIdsPerEntity['movie'] = $registry->getId();
     
@@ -143,23 +141,17 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         $registry->setModname('MUVideoModule');
         $registry->setEntityname('PlaylistEntity');
         $registry->setProperty($categoryHelper->getPrimaryProperty('Playlist'));
-        $registry->setCategory_Id($categoryGlobal['id']);
+        $registry->setCategory($categoryGlobal);
     
         try {
             $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
             $entityManager->persist($registry);
             $entityManager->flush();
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->addFlash('error', $this->__f('Error! Could not create a category registry for the %entity% entity.', ['%entity%' => 'playlist']));
-            $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'entities' => 'playlists', 'errorMessage' => $e->getMessage()]);
+            $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'entities' => 'playlists', 'errorMessage' => $exception->getMessage()]);
         }
         $categoryRegistryIdsPerEntity['playlist'] = $registry->getId();
-    
-        // create the default data
-        $this->createDefaultData($categoryRegistryIdsPerEntity);
-    
-        // install subscriber hooks
-        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
     
         // initialisation successful
         return true;
@@ -189,9 +181,9 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
                 // update the database schema
                 try {
                     $this->schemaTool->update($this->listEntityClasses());
-                } catch (\Exception $e) {
-                    $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $e->getMessage());
-                    $logger->error('{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'errorMessage' => $e->getMessage()]);
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
+                    $logger->error('{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'errorMessage' => $exception->getMessage()]);
     
                     return false;
                 }
@@ -227,6 +219,9 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
             // update module name in the workflows table
             $this->updateWorkflowsFor14();
         } * /
+    
+        // remove obsolete persisted hooks from the database
+        //$this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
     */
     
         // update successful
@@ -438,41 +433,25 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     {
         $logger = $this->container->get('logger');
     
-        // delete stored object workflows
-        $result = Zikula_Workflow_Util::deleteWorkflowsForModule('MUVideoModule');
-        if (false === $result) {
-            $this->addFlash('error', $this->__f('An error was encountered while removing stored object workflows for the %extension% extension.', ['%extension%' => 'MUVideoModule']));
-            $logger->error('{app}: Could not remove stored object workflows during uninstallation.', ['app' => 'MUVideoModule']);
-    
-            return false;
-        }
-    
         try {
             $this->schemaTool->drop($this->listEntityClasses());
-        } catch (\Exception $e) {
-            $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $e->getMessage());
-            $logger->error('{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'errorMessage' => $e->getMessage()]);
+        } catch (\Exception $exception) {
+            $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
+            $logger->error('{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'errorMessage' => $exception->getMessage()]);
     
             return false;
         }
-    
-        // uninstall subscriber hooks
-        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
     
         // remove all module vars
         $this->delVars();
     
         // remove category registry entries
-        $categoryRegistryApi = $this->container->get('zikula_categories_module.api.category_registry');
-        // assume that not more than five registries exist
-        for ($i = 1; $i <= 5; $i++) {
-            $categoryRegistryApi->deleteRegistry('MUVideoModule');
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $registries = $this->container->get('zikula_categories_module.category_registry_repository')->findBy(['modname' => 'MUVideoModule']);
+        foreach ($registries as $registry) {
+            $entityManager->remove($registry);
         }
-    
-        // remove all thumbnails
-        $manager = $this->container->get('systemplugin.imagine.manager');
-        $manager->setModule('MUVideoModule');
-        $manager->cleanupModuleThumbs();
+        $entityManager->flush();
     
         // remind user about upload folders not being deleted
         $uploadPath = $this->container->getParameter('datadir') . '/MUVideoModule/';
@@ -501,26 +480,5 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         $classNames[] = 'MU\VideoModule\Entity\PlaylistCategoryEntity';
     
         return $classNames;
-    }
-    
-    /**
-     * Create the default data for MUVideoModule.
-     *
-     * @param array $categoryRegistryIdsPerEntity List of category registry ids
-     *
-     * @return void
-     */
-    protected function createDefaultData($categoryRegistryIdsPerEntity)
-    {
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-        $logger = $this->container->get('logger');
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        
-        $entityClass = 'MU\VideoModule\Entity\CollectionEntity';
-        $entityManager->getRepository($entityClass)->truncateTable($logger);
-        $entityClass = 'MU\VideoModule\Entity\MovieEntity';
-        $entityManager->getRepository($entityClass)->truncateTable($logger);
-        $entityClass = 'MU\VideoModule\Entity\PlaylistEntity';
-        $entityManager->getRepository($entityClass)->truncateTable($logger);
     }
 }

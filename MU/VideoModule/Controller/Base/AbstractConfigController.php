@@ -13,8 +13,10 @@
 namespace MU\VideoModule\Controller\Base;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use MU\VideoModule\Form\Type\ConfigType;
 
 /**
  * Config controller base class.
@@ -26,7 +28,7 @@ abstract class AbstractConfigController extends AbstractController
      *
      * @param Request $request Current request instance
      *
-     * @return string Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
@@ -36,11 +38,12 @@ abstract class AbstractConfigController extends AbstractController
             throw new AccessDeniedException();
         }
         
-        $form = $this->createForm('MU\VideoModule\Form\AppSettingsType');
+        $form = $this->createForm(ConfigType::class);
         
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $this->setVars($form->getData());
+                $formData = $form->getData();
+                $this->setVars($formData);
         
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));
                 $userName = $this->get('zikula_users_module.current_user')->get('uname');

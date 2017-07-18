@@ -38,13 +38,13 @@
                         <ul>
                             {% for playlist in items %}
                                 <li>
-                                    {% set itemId = playlist.createCompositeIdentifier() %}
+                                    {% set itemId = playlist.getKey() %}
                                     <a href="#" data-itemid="{{ itemId }}">
-                                        {{ playlist.getTitleFromDisplayPattern() }}
+                                        {{ playlist|muvideomodule_formattedTitle }}
                                     </a>
-                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('muvideomodule_playlist_display', { 'id': playlist.id }) }}" />
-                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('muvideomodule_playlist_display', { 'id': playlist.id }) }}" />
-                                    <input type="hidden" id="title{{ itemId }}" value="{{ playlist.getTitleFromDisplayPattern()|e('html_attr') }}" />
+                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('muvideomodule_playlist_display', { 'id': playlist.getId() }) }}" />
+                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('muvideomodule_playlist_display', { 'id': playlist.getId() }) }}" />
+                                    <input type="hidden" id="title{{ itemId }}" value="{{ playlist|muvideomodule_formattedTitle|e('html_attr') }}" />
                                     <input type="hidden" id="desc{{ itemId }}" value="{% set description %}{% if playlist.description is not empty %}{{ playlist.description }}{% endif %}
                                     {% endset %}{{ description|striptags|e('html_attr') }}" />
                                 </li>

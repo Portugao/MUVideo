@@ -15,6 +15,7 @@ services:
         arguments:
             - "@translator.default"
             - "@request_stack"
+            - "@mu_video_module.entity_display_helper"
             - "@mu_video_module.listentries_helper"
             - "@mu_video_module.feature_activation_helper"
         tags:
@@ -25,6 +26,7 @@ services:
         arguments:
             - "@translator.default"
             - "@request_stack"
+            - "@mu_video_module.entity_display_helper"
             - "@mu_video_module.listentries_helper"
             - "@mu_video_module.feature_activation_helper"
         tags:
@@ -59,6 +61,8 @@ services:
         arguments:
             - "@translator.default"
             - "@mu_video_module.entity_factory"
+            - "@mu_video_module.collection_filter_helper"
+            - "@mu_video_module.entity_display_helper"
             - "@zikula_extensions_module.api.variable"
             - "@mu_video_module.translatable_helper"
             - "@mu_video_module.listentries_helper"
@@ -95,6 +99,8 @@ services:
         arguments:
             - "@translator.default"
             - "@mu_video_module.entity_factory"
+            - "@mu_video_module.collection_filter_helper"
+            - "@mu_video_module.entity_display_helper"
             - "@zikula_extensions_module.api.variable"
             - "@mu_video_module.translatable_helper"
             - "@mu_video_module.listentries_helper"
@@ -131,17 +137,12 @@ services:
         arguments:
             - "@translator.default"
             - "@mu_video_module.entity_factory"
+            - "@mu_video_module.collection_filter_helper"
+            - "@mu_video_module.entity_display_helper"
             - "@zikula_extensions_module.api.variable"
             - "@mu_video_module.translatable_helper"
             - "@mu_video_module.listentries_helper"
             - "@mu_video_module.feature_activation_helper"
-        tags:
-            - { name: form.type }
-    
-    mu_video_module.form.type.deleteentity:
-        class: MU\VideoModule\Form\DeleteEntityType
-        arguments:
-            - "@translator.default"
         tags:
             - { name: form.type }
     
@@ -176,19 +177,10 @@ services:
         tags:
             - { name: form.type }
     
-    mu_video_module.form.type.appsettings:
-        class: MU\VideoModule\Form\AppSettingsType
+    mu_video_module.form.type.config:
+        class: MU\VideoModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
-            - "@zikula_extensions_module.api.variable"
-        tags:
-            - { name: form.type }
-            
-    mu_video_module.form.type.getvideos:
-        class: MU\VideoModule\Form\GetVideosType
-        arguments:
-            - "@translator.default"
-            - "@zikula_extensions_module.api.variable"
-            - "@request_stack"
+            - "@=service('zikula_extensions_module.api.variable').getAll('MUVideoModule')"
         tags:
             - { name: form.type }

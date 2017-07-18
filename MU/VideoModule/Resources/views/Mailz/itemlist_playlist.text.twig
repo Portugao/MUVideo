@@ -1,8 +1,0 @@
-{# Purpose of this template: Display playlists in text mailings #}
-{% for playlist in items %}
-{{ playlist.getTitleFromDisplayPattern() }}
-{{ url('muvideomodule_playlist_display', { 'id': playlist.id }) }}
------
-{% else %}
-{{ __('No playlists found.') }}
-{% endfor %}

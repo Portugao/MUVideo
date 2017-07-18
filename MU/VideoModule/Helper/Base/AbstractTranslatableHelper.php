@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Doctrine\EntityAccess;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\SettingsModule\Api\LocaleApi;
-use MU\VideoModule\Entity\Factory\VideoFactory;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
+use MU\VideoModule\Entity\Factory\EntityFactory;
 
 /**
  * Helper base class for translatable methods.
@@ -37,35 +37,35 @@ abstract class AbstractTranslatableHelper
     protected $request;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
     /**
-     * @var LocaleApi
+     * @var LocaleApiInterface
      */
     protected $localeApi;
 
     /**
-     * @var VideoFactory
+     * @var EntityFactory
      */
     protected $entityFactory;
 
     /**
      * TranslatableHelper constructor.
      *
-     * @param TranslatorInterface $translator   Translator service instance
-     * @param RequestStack        $requestStack RequestStack service instance
-     * @param VariableApi         $variableApi  VariableApi service instance
-     * @param LocaleApi           $localeApi    LocaleApi service instance
-     * @param VideoFactory $entityFactory VideoFactory service instance
+     * @param TranslatorInterface $translator    Translator service instance
+     * @param RequestStack        $requestStack  RequestStack service instance
+     * @param VariableApiInterface  $variableApi  VariableApi service instance
+     * @param LocaleApiInterface   $localeApi    LocaleApi service instance
+     * @param EntityFactory       $entityFactory EntityFactory service instance
      */
     public function __construct(
         TranslatorInterface $translator,
         RequestStack $requestStack,
-        VariableApi $variableApi,
-        LocaleApi $localeApi,
-        VideoFactory $entityFactory
+        VariableApiInterface $variableApi,
+        LocaleApiInterface $localeApi,
+        EntityFactory $entityFactory
     ) {
         $this->translator = $translator;
         $this->request = $requestStack->getCurrentRequest();

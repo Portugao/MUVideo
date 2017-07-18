@@ -1,10 +1,13 @@
 services:
     # Entity factory
     mu_video_module.entity_factory:
-        class: MU\VideoModule\Entity\Factory\VideoFactory
+        class: MU\VideoModule\Entity\Factory\EntityFactory
         arguments:
             - "@doctrine.orm.default_entity_manager"
             - "@mu_video_module.entity_initialiser"
+            - "@mu_video_module.collection_filter_helper"
+            - "@mu_video_module.feature_activation_helper"
+    
     # Entity initialiser
     mu_video_module.entity_initialiser:
         class: MU\VideoModule\Entity\Factory\EntityInitialiser

@@ -13,13 +13,26 @@
 namespace MU\VideoModule\Form\Type\Base;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use MU\VideoModule\Entity\Factory\VideoFactory;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use MU\VideoModule\Entity\Factory\EntityFactory;
+use MU\VideoModule\Form\Type\Field\TranslationType;
+use Zikula\UsersModule\Form\Type\UserLiveSearchType;
+use MU\VideoModule\Helper\CollectionFilterHelper;
+use MU\VideoModule\Helper\EntityDisplayHelper;
 use MU\VideoModule\Helper\FeatureActivationHelper;
 use MU\VideoModule\Helper\ListEntriesHelper;
 use MU\VideoModule\Helper\TranslatableHelper;
@@ -32,12 +45,22 @@ abstract class AbstractCollectionType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @var VideoFactory
+     * @var EntityFactory
      */
     protected $entityFactory;
 
     /**
-     * @var VariableApi
+     * @var CollectionFilterHelper
+     */
+    protected $collectionFilterHelper;
+
+    /**
+     * @var EntityDisplayHelper
+     */
+    protected $entityDisplayHelper;
+
+    /**
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
@@ -60,22 +83,28 @@ abstract class AbstractCollectionType extends AbstractType
      * CollectionType constructor.
      *
      * @param TranslatorInterface $translator     Translator service instance
-     * @param VideoFactory        $entityFactory Entity factory service instance
-     * @param VariableApi         $variableApi VariableApi service instance
+     * @param EntityFactory       $entityFactory EntityFactory service instance
+     * @param CollectionFilterHelper $collectionFilterHelper CollectionFilterHelper service instance
+     * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
      * @param TranslatableHelper  $translatableHelper TranslatableHelper service instance
      * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
      * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,
-        VideoFactory $entityFactory,
-        VariableApi $variableApi,
+        EntityFactory $entityFactory,
+        CollectionFilterHelper $collectionFilterHelper,
+        EntityDisplayHelper $entityDisplayHelper,
+        VariableApiInterface $variableApi,
         TranslatableHelper $translatableHelper,
         ListEntriesHelper $listHelper,
         FeatureActivationHelper $featureActivationHelper
     ) {
         $this->setTranslator($translator);
         $this->entityFactory = $entityFactory;
+        $this->collectionFilterHelper = $collectionFilterHelper;
+        $this->entityDisplayHelper = $entityDisplayHelper;
         $this->variableApi = $variableApi;
         $this->translatableHelper = $translatableHelper;
         $this->listHelper = $listHelper;
@@ -115,7 +144,7 @@ abstract class AbstractCollectionType extends AbstractType
     public function addEntityFields(FormBuilderInterface $builder, array $options)
     {
         
-        $builder->add('title', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('title', TextType::class, [
             'label' => $this->__('Title') . ':',
             'empty_data' => '',
             'attr' => [
@@ -126,8 +155,9 @@ abstract class AbstractCollectionType extends AbstractType
             'required' => true,
         ]);
         
-        $builder->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+        $builder->add('description', TextareaType::class, [
             'label' => $this->__('Description') . ':',
+            'help' => $this->__f('Note: this value must not exceed %amount% characters.', ['%amount%' => 4000]),
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 4000,
@@ -147,7 +177,7 @@ abstract class AbstractCollectionType extends AbstractType
                     if ($language == $currentLanguage) {
                         continue;
                     }
-                    $builder->add('translations' . $language, 'MU\VideoModule\Form\Type\Field\TranslationType', [
+                    $builder->add('translations' . $language, TranslationType::class, [
                         'fields' => $translatableFields,
                         'mandatory_fields' => $mandatoryFields[$language],
                         'values' => isset($options['translations'][$language]) ? $options['translations'][$language] : []
@@ -165,7 +195,7 @@ abstract class AbstractCollectionType extends AbstractType
      */
     public function addCategoriesField(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('categories', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
+        $builder->add('categories', CategoriesType::class, [
             'label' => $this->__('Category') . ':',
             'empty_data' => null,
             'attr' => [
@@ -191,7 +221,7 @@ abstract class AbstractCollectionType extends AbstractType
             return;
         }
     
-        $builder->add('moderationSpecificCreator', 'MU\VideoModule\Form\Type\Field\UserType', [
+        $builder->add('moderationSpecificCreator', UserLiveSearchType::class, [
             'mapped' => false,
             'label' => $this->__('Creator') . ':',
             'attr' => [
@@ -203,7 +233,7 @@ abstract class AbstractCollectionType extends AbstractType
             'required' => false,
             'help' => $this->__('Here you can choose a user which will be set as creator')
         ]);
-        $builder->add('moderationSpecificCreationDate', 'Symfony\Component\Form\Extension\Core\Type\DateTimeType', [
+        $builder->add('moderationSpecificCreationDate', DateTimeType::class, [
             'mapped' => false,
             'label' => $this->__('Creation date') . ':',
             'attr' => [
@@ -230,7 +260,7 @@ abstract class AbstractCollectionType extends AbstractType
         if ($options['mode'] != 'create') {
             return;
         }
-        $builder->add('repeatCreation', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+        $builder->add('repeatCreation', CheckboxType::class, [
             'mapped' => false,
             'label' => $this->__('Create another item after save'),
             'required' => false
@@ -246,16 +276,15 @@ abstract class AbstractCollectionType extends AbstractType
     public function addSubmitButtons(FormBuilderInterface $builder, array $options)
     {
         foreach ($options['actions'] as $action) {
-            $builder->add($action['id'], 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->__(/** @Ignore */$action['title']),
+            $builder->add($action['id'], SubmitType::class, [
+                'label' => $action['title'],
                 'icon' => ($action['id'] == 'delete' ? 'fa-trash-o' : ''),
                 'attr' => [
-                    'class' => $action['buttonClass'],
-                    'title' => $this->__(/** @Ignore */$action['description'])
+                    'class' => $action['buttonClass']
                 ]
             ]);
         }
-        $builder->add('reset', 'Symfony\Component\Form\Extension\Core\Type\ResetType', [
+        $builder->add('reset', ResetType::class, [
             'label' => $this->__('Reset'),
             'icon' => 'fa-refresh',
             'attr' => [
@@ -263,7 +292,7 @@ abstract class AbstractCollectionType extends AbstractType
                 'formnovalidate' => 'formnovalidate'
             ]
         ]);
-        $builder->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+        $builder->add('cancel', SubmitType::class, [
             'label' => $this->__('Cancel'),
             'icon' => 'fa-times',
             'attr' => [
@@ -303,17 +332,13 @@ abstract class AbstractCollectionType extends AbstractType
                 'inline_usage' => false
             ])
             ->setRequired(['mode', 'actions'])
-            ->setAllowedTypes([
-                'mode' => 'string',
-                'actions' => 'array',
-                'has_moderate_permission' => 'bool',
-                'translations' => 'array',
-                'filter_by_ownership' => 'bool',
-                'inline_usage' => 'bool'
-            ])
-            ->setAllowedValues([
-                'mode' => ['create', 'edit']
-            ])
+            ->setAllowedTypes('mode', 'string')
+            ->setAllowedTypes('actions', 'array')
+            ->setAllowedTypes('has_moderate_permission', 'bool')
+            ->setAllowedTypes('translations', 'array')
+            ->setAllowedTypes('filter_by_ownership', 'bool')
+            ->setAllowedTypes('inline_usage', 'bool')
+            ->setAllowedValues('mode', ['create', 'edit'])
         ;
     }
 }

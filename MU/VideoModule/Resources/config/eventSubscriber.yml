@@ -4,6 +4,8 @@ services:
         class: MU\VideoModule\Listener\EntityLifecycleListener
         arguments:
             - "@service_container"
+            - "@event_dispatcher"
+            - "@logger"
         tags:
             - { name: doctrine.event_subscriber }
     
@@ -69,6 +71,13 @@ services:
     
     mu_video_module.thirdparty_listener:
         class: MU\VideoModule\Listener\ThirdPartyListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    mu_video_module.workflow_events_listener:
+        class: MU\VideoModule\Listener\WorkflowEventsListener
+        arguments:
+            - "@zikula_permissions_module.api.permission"
         tags:
             - { name: kernel.event_subscriber }
     

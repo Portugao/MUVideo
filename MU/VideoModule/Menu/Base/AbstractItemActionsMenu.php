@@ -17,6 +17,7 @@ use Knp\Menu\MenuItem;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\UsersModule\Constant as UsersConstant;
 use MU\VideoModule\Entity\CollectionEntity;
 use MU\VideoModule\Entity\MovieEntity;
 use MU\VideoModule\Entity\PlaylistEntity;
@@ -62,12 +63,13 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
 
         $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
         $currentUserApi = $this->container->get('zikula_users_module.current_user');
+        $entityDisplayHelper = $this->container->get('mu_video_module.entity_display_helper');
         $menu->setChildrenAttribute('class', 'list-inline');
 
-        $currentUserId = $currentUserApi->isLoggedIn() ? $currentUserApi->get('uid') : 1;
+        $currentUserId = $currentUserApi->isLoggedIn() ? $currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
         if ($entity instanceof CollectionEntity) {
             $component = 'MUVideoModule:Collection:';
-            $instance = $entity['id'] . '::';
+            $instance = $entity->getKey() . '::';
             $routePrefix = 'muvideomodule_collection_';
             $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
@@ -84,7 +86,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
                 ])->setAttribute('icon', 'fa fa-eye');
-                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entity->getTitleFromDisplayPattern()));
+                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
                 $menu->addChild($this->__('Edit'), [
@@ -94,7 +96,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                 $menu[$this->__('Edit')]->setLinkAttribute('title', $this->__('Edit this collection'));
                 $menu->addChild($this->__('Reuse'), [
                     'route' => $routePrefix . $routeArea . 'edit',
-                    'routeParameters' => ['astemplate' => $entity['id']]
+                    'routeParameters' => ['astemplate' => $entity->getKey()]
                 ])->setAttribute('icon', 'fa fa-files-o');
                 $menu[$this->__('Reuse')]->setLinkAttribute('title', $this->__('Reuse for new collection'));
             }
@@ -116,30 +118,30 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             // more actions for adding new related items
             
             $relatedComponent = 'MUVideoModule:Movie:';
-            $relatedInstance = $entity['id'] . '::';
+            $relatedInstance = $entity->getKey() . '::';
             if ($isOwner || $permissionApi->hasPermission($relatedComponent, $relatedInstance, ACCESS_EDIT)) {
                 $title = $this->__('Create movie');
                 $menu->addChild($title, [
                     'route' => 'muvideomodule_movie_' . $routeArea . 'edit',
-                    'routeParameters' => ['collection' => $entity['id']]
+                    'routeParameters' => ['collection' => $entity->getKey()]
                 ])->setAttribute('icon', 'fa fa-plus');
                 $menu[$title]->setLinkAttribute('title', $title);
             }
             
             $relatedComponent = 'MUVideoModule:Playlist:';
-            $relatedInstance = $entity['id'] . '::';
+            $relatedInstance = $entity->getKey() . '::';
             if ($isOwner || $permissionApi->hasPermission($relatedComponent, $relatedInstance, ACCESS_EDIT)) {
                 $title = $this->__('Create playlist');
                 $menu->addChild($title, [
                     'route' => 'muvideomodule_playlist_' . $routeArea . 'edit',
-                    'routeParameters' => ['collection' => $entity['id']]
+                    'routeParameters' => ['collection' => $entity->getKey()]
                 ])->setAttribute('icon', 'fa fa-plus');
                 $menu[$title]->setLinkAttribute('title', $title);
             }
         }
         if ($entity instanceof MovieEntity) {
             $component = 'MUVideoModule:Movie:';
-            $instance = $entity['id'] . '::';
+            $instance = $entity->getKey() . '::';
             $routePrefix = 'muvideomodule_movie_';
             $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
@@ -156,7 +158,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
                 ])->setAttribute('icon', 'fa fa-eye');
-                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entity->getTitleFromDisplayPattern()));
+                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
                 $menu->addChild($this->__('Edit'), [
@@ -166,7 +168,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                 $menu[$this->__('Edit')]->setLinkAttribute('title', $this->__('Edit this movie'));
                 $menu->addChild($this->__('Reuse'), [
                     'route' => $routePrefix . $routeArea . 'edit',
-                    'routeParameters' => ['astemplate' => $entity['id']]
+                    'routeParameters' => ['astemplate' => $entity->getKey()]
                 ])->setAttribute('icon', 'fa fa-files-o');
                 $menu[$this->__('Reuse')]->setLinkAttribute('title', $this->__('Reuse for new movie'));
             }
@@ -187,7 +189,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
         }
         if ($entity instanceof PlaylistEntity) {
             $component = 'MUVideoModule:Playlist:';
-            $instance = $entity['id'] . '::';
+            $instance = $entity->getKey() . '::';
             $routePrefix = 'muvideomodule_playlist_';
             $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
@@ -204,7 +206,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
                 ])->setAttribute('icon', 'fa fa-eye');
-                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entity->getTitleFromDisplayPattern()));
+                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
                 $menu->addChild($this->__('Edit'), [
@@ -214,7 +216,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                 $menu[$this->__('Edit')]->setLinkAttribute('title', $this->__('Edit this playlist'));
                 $menu->addChild($this->__('Reuse'), [
                     'route' => $routePrefix . $routeArea . 'edit',
-                    'routeParameters' => ['astemplate' => $entity['id']]
+                    'routeParameters' => ['astemplate' => $entity->getKey()]
                 ])->setAttribute('icon', 'fa fa-files-o');
                 $menu[$this->__('Reuse')]->setLinkAttribute('title', $this->__('Reuse for new playlist'));
             }

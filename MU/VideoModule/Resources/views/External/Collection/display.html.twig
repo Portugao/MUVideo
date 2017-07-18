@@ -1,9 +1,9 @@
 {# Purpose of this template: Display one certain collection within an external context #}
-<div id="collection{$collection.id}" class="muvideomodule-external-collection">
+<div id="collection{$collection->getKey()}" class="muvideomodule-external-collection">
 {% if displayMode == 'link' %}
     <p class="muvideomodule-external-link">
-    <a href="{{ path('muvideomodule_collection_display', { 'id': collection.id }) }}" title="{{ collection.getTitleFromDisplayPattern()|e('html_attr') }}">
-    {{ collection.getTitleFromDisplayPattern()|notifyFilters('video.filter_hooks.collections.filter') }}
+    <a href="{{ path('muvideomodule_collection_display', { 'id': collection.getId() }) }}" title="{{ collection|muvideomodule_formattedTitle|e('html_attr') }}">
+    {{ collection|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.collections.filter')|safeHtml }}
     </a>
     </p>
 {% endif %}
@@ -11,7 +11,7 @@
     {# for normal users without edit permission show only the actual file per default #}
     {% if displayMode == 'embed' %}
         <p class="muvideomodule-external-title">
-            <strong>{{ collection.getTitleFromDisplayPattern()|notifyFilters('video.filter_hooks.collections.filter') }}</strong>
+            <strong>{{ collection|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.collections.filter')|safeHtml }}</strong>
         </p>
     {% endif %}
 {% endif %}

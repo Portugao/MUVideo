@@ -30,6 +30,7 @@ abstract class AbstractEntityInitialiser
      */
     public function initCollection(CollectionEntity $entity)
     {
+
         return $entity;
     }
 
@@ -42,6 +43,7 @@ abstract class AbstractEntityInitialiser
      */
     public function initMovie(MovieEntity $entity)
     {
+
         return $entity;
     }
 
@@ -54,6 +56,7 @@ abstract class AbstractEntityInitialiser
      */
     public function initPlaylist(PlaylistEntity $entity)
     {
+
         return $entity;
     }
 

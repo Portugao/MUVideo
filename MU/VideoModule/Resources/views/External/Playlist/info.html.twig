@@ -1,6 +1,6 @@
 {# Purpose of this template: Display item information for previewing from other modules #}
-<dl id="playlist{{ playlist.id }}">
-<dt>{{ playlist.getTitleFromDisplayPattern()|notifyFilters('video.filter_hooks.playlists.filter') }}</dt>
+<dl id="playlist{{ playlist.getKey() }}">
+<dt>{{ playlist|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.playlists.filter')|safeHtml }}</dt>
 {% if playlist.description is not empty %}<dd>{{ playlist.description }}</dd>{% endif %}
 {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'playlist') %}
     <dd>

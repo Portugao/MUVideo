@@ -67,7 +67,7 @@ class MovieController extends AbstractMovieController
      * @inheritDoc
      *
      * @Route("/admin/movies/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|json|kml"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|json"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -92,7 +92,7 @@ class MovieController extends AbstractMovieController
      * @inheritDoc
      *
      * @Route("/movies/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|json|kml"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|csv|rss|atom|json"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -115,7 +115,7 @@ class MovieController extends AbstractMovieController
      * @inheritDoc
      *
      * @Route("/admin/movie/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html|json|kml"},
+     *        requirements = {"id" = "\d+", "_format" = "html|json"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -138,7 +138,7 @@ class MovieController extends AbstractMovieController
      * @inheritDoc
      *
      * @Route("/movie/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html|json|kml"},
+     *        requirements = {"id" = "\d+", "_format" = "html|json"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )

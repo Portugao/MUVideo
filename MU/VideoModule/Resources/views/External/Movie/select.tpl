@@ -32,7 +32,7 @@
             <div class="col-sm-9">
                 <select id="{$baseID}Id" name="id" class="form-control">
                     {foreach item='movie' from=$items}
-                        <option value="{$movie.id}"{if $selectedId eq $movie.id} selected="selected"{/if}>{$movie->getTitleFromDisplayPattern()}</option>
+                        <option value="{$movie->getKey()}"{if $selectedId eq $movie->getKey()} selected="selected"{/if}>{$movie->getTitle()}</option>
                     {foreachelse}
                         <option value="0">{gt text='No entries found.'}</option>
                     {/foreach}
@@ -76,7 +76,7 @@
     <div class="col-sm-4">
         <div id="{$baseID}Preview" style="border: 1px dotted #a3a3a3; padding: .2em .5em">
             <p><strong>{gt text='Movie information'}</strong></p>
-            {img id='ajax_indicator' modname='core' set='ajax' src='indicator_circle.gif' alt='' class='hidden'}
+            {img id='ajaxIndicator' modname='core' set='ajax' src='indicator_circle.gif' alt='' class='hidden'}
             <div id="{$baseID}PreviewContainer">&nbsp;</div>
         </div>
     </div>

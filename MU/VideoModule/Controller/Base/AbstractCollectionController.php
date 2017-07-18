@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Zikula\Bundle\HookBundle\Category\FormAwareCategory;
+use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
@@ -134,8 +136,6 @@ abstract class AbstractCollectionController extends AbstractController
         $controllerHelper = $this->get('mu_video_module.controller_helper');
         $viewHelper = $this->get('mu_video_module.view_helper');
         
-        // parameter for used sort order
-        $sortdir = strtolower($sortdir);
         $request->query->set('sort', $sort);
         $request->query->set('sortdir', $sortdir);
         $request->query->set('pos', $pos);
@@ -158,16 +158,13 @@ abstract class AbstractCollectionController extends AbstractController
             $templateParameters['items'] = $this->get('mu_video_module.category_helper')->filterEntitiesByPermission($templateParameters['items']);
         }
         
-        foreach ($templateParameters['items'] as $k => $entity) {
-            $entity->initWorkflow();
-        }
         
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
     }
     /**
      * This action provides a item detail view in the admin area.
-     * @ParamConverter("collection", class="MUVideoModule:CollectionEntity", options = {"id" = "id", "repository_method" = "selectById"})
+     * @ParamConverter("collection", class="MUVideoModule:CollectionEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
      * @Cache(lastModified="collection.getUpdatedDate()", ETag="'Collection' ~ collection.getid() ~ collection.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
@@ -185,7 +182,7 @@ abstract class AbstractCollectionController extends AbstractController
     
     /**
      * This action provides a item detail view.
-     * @ParamConverter("collection", class="MUVideoModule:CollectionEntity", options = {"id" = "id", "repository_method" = "selectById"})
+     * @ParamConverter("collection", class="MUVideoModule:CollectionEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
      * @Cache(lastModified="collection.getUpdatedDate()", ETag="'Collection' ~ collection.getid() ~ collection.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
@@ -213,12 +210,11 @@ abstract class AbstractCollectionController extends AbstractController
             throw new AccessDeniedException();
         }
         // create identifier for permission check
-        $instanceId = $collection->createCompositeIdentifier();
+        $instanceId = $collection->getKey();
         if (!$this->hasPermission('MUVideoModule:' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
             throw new AccessDeniedException();
         }
         
-        $collection->initWorkflow();
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : '',
             $objectType => $collection
@@ -305,7 +301,7 @@ abstract class AbstractCollectionController extends AbstractController
     }
     /**
      * This action provides a handling of simple delete requests in the admin area.
-     * @ParamConverter("collection", class="MUVideoModule:CollectionEntity", options = {"id" = "id", "repository_method" = "selectById"})
+     * @ParamConverter("collection", class="MUVideoModule:CollectionEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
      * @Cache(lastModified="collection.getUpdatedDate()", ETag="'Collection' ~ collection.getid() ~ collection.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
@@ -324,7 +320,7 @@ abstract class AbstractCollectionController extends AbstractController
     
     /**
      * This action provides a handling of simple delete requests.
-     * @ParamConverter("collection", class="MUVideoModule:CollectionEntity", options = {"id" = "id", "repository_method" = "selectById"})
+     * @ParamConverter("collection", class="MUVideoModule:CollectionEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
      * @Cache(lastModified="collection.getUpdatedDate()", ETag="'Collection' ~ collection.getid() ~ collection.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
@@ -353,9 +349,7 @@ abstract class AbstractCollectionController extends AbstractController
             throw new AccessDeniedException();
         }
         $logger = $this->get('logger');
-        $logArgs = ['app' => 'MUVideoModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'collection', 'id' => $collection->createCompositeIdentifier()];
-        
-        $collection->initWorkflow();
+        $logArgs = ['app' => 'MUVideoModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'collection', 'id' => $collection->getKey()];
         
         // determine available workflow actions
         $workflowHelper = $this->get('mu_video_module.workflow_helper');
@@ -386,13 +380,16 @@ abstract class AbstractCollectionController extends AbstractController
             return $this->redirectToRoute($redirectRoute);
         }
         
-        $form = $this->createForm('MU\VideoModule\Form\DeleteEntityType', $collection);
+        $form = $this->createForm('Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType', $collection);
+        $hookHelper = $this->get('mu_video_module.hook_helper');
+        
+        // Call form aware display hooks
+        $formHook = $hookHelper->callFormDisplayHooks($form, $collection, FormAwareCategory::TYPE_DELETE);
         
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
-                $hookHelper = $this->get('mu_video_module.hook_helper');
-                // Let any hooks perform additional validation actions
-                $validationHooksPassed = $hookHelper->callValidationHooks($collection, 'validate_delete');
+                // Let any ui hooks perform additional validation actions
+                $validationHooksPassed = $hookHelper->callValidationHooks($collection, UiHooksCategory::TYPE_VALIDATE_DELETE);
                 if ($validationHooksPassed) {
                     // execute the workflow action
                     $success = $workflowHelper->executeAction($collection, $deleteActionId);
@@ -401,8 +398,11 @@ abstract class AbstractCollectionController extends AbstractController
                         $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', $logArgs);
                     }
                     
-                    // Let any hooks know that we have deleted the collection
-                    $hookHelper->callProcessHooks($collection, 'process_delete', null);
+                    // Call form aware processing hooks
+                    $hookHelper->callFormProcessHooks($form, $collection, FormAwareCategory::TYPE_PROCESS_DELETE);
+                    
+                    // Let any ui hooks know that we have deleted the collection
+                    $hookHelper->callProcessHooks($collection, UiHooksCategory::TYPE_PROCESS_DELETE);
                     
                     return $this->redirectToRoute($redirectRoute);
                 }
@@ -416,7 +416,8 @@ abstract class AbstractCollectionController extends AbstractController
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : '',
             'deleteForm' => $form->createView(),
-            $objectType => $collection
+            $objectType => $collection,
+            'formHookTemplates' => $formHook->getTemplates()
         ];
         
         $controllerHelper = $this->get('mu_video_module.controller_helper');
@@ -489,7 +490,6 @@ abstract class AbstractCollectionController extends AbstractController
             if (null === $entity) {
                 continue;
             }
-            $entity->initWorkflow();
         
             // check if $action can be applied to this entity (may depend on it's current workflow state)
             $allowedActions = $workflowHelper->getActionsForObject($entity);
@@ -499,8 +499,8 @@ abstract class AbstractCollectionController extends AbstractController
                 continue;
             }
         
-            // Let any hooks perform additional validation actions
-            $hookType = $action == 'delete' ? 'validate_delete' : 'validate_edit';
+            // Let any ui hooks perform additional validation actions
+            $hookType = $action == 'delete' ? UiHooksCategory::TYPE_VALIDATE_DELETE : UiHooksCategory::TYPE_VALIDATE_EDIT;
             $validationHooksPassed = $hookHelper->callValidationHooks($entity, $hookType);
             if (!$validationHooksPassed) {
                 continue;
@@ -510,9 +510,9 @@ abstract class AbstractCollectionController extends AbstractController
             try {
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
-            } catch(\Exception $e) {
-                $this->addFlash('error', $this->__f('Sorry, but an error occured during the %action% action.', ['%action%' => $action]) . '  ' . $e->getMessage());
-                $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'action' => $action, 'entity' => 'collection', 'id' => $itemId, 'errorMessage' => $e->getMessage()]);
+            } catch (\Exception $exception) {
+                $this->addFlash('error', $this->__f('Sorry, but an error occured during the %action% action.', ['%action%' => $action]) . '  ' . $exception->getMessage());
+                $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'action' => $action, 'entity' => 'collection', 'id' => $itemId, 'errorMessage' => $exception->getMessage()]);
             }
         
             if (!$success) {
@@ -527,13 +527,13 @@ abstract class AbstractCollectionController extends AbstractController
                 $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', ['app' => 'MUVideoModule', 'user' => $userName, 'action' => $action, 'entity' => 'collection', 'id' => $itemId]);
             }
         
-            // Let any hooks know that we have updated or deleted an item
-            $hookType = $action == 'delete' ? 'process_delete' : 'process_edit';
+            // Let any ui hooks know that we have updated or deleted an item
+            $hookType = $action == 'delete' ? UiHooksCategory::TYPE_PROCESS_DELETE : UiHooksCategory::TYPE_PROCESS_EDIT;
             $url = null;
             if ($action != 'delete') {
                 $urlArgs = $entity->createUrlArgs();
                 $urlArgs['_locale'] = $request->getLocale();
-                $url = new RouteUrl('muvideomodule_collection_' . /*($isAdmin ? 'admin' : '') . */'display', $urlArgs);
+                $url = new RouteUrl('muvideomodule_collection_display', $urlArgs);
             }
             $hookHelper->callProcessHooks($entity, $hookType, $url);
         }

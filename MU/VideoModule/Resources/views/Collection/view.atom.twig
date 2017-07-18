@@ -8,7 +8,7 @@
     </author>
 {% set amountOfItems = items|length %}
 {% if amountOfItems > 0 %}
-{% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ items.first.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': items.first.id }) }}{% endset %}
+{% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ items.first.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': items.first.getId() }) }}{% endset %}
     <id>{{ uniqueID }}</id>
     <updated>{{ items[0].updatedDate|date('Y-m-dTH:M:SZ') }}</updated>
 {% endif %}
@@ -25,9 +25,9 @@
     </entry>
 {% endblock %}
 {% block entry_content %}
-    <title type="html">{{ collection.getTitleFromDisplayPattern()|notifyFilters('muvideomodule.filterhook.collections') }}</title>
-    <link rel="alternate" type="text/html" href="{{ url('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': collection.id }) }}" />
-    {% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ collection.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': collection.id }) }}{% endset %}
+    <title type="html">{{ collection|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.collections')|safeHtml }}</title>
+    <link rel="alternate" type="text/html" href="{{ url('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': collection.getId() }) }}" />
+    {% set uniqueID %}tag:{{ app.request.getSchemeAndHttpHost()|replace({ 'http://': '', '/': '' }) }},{{ collection.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': collection.getId() }) }}{% endset %}
     <id>{{ uniqueID }}</id>
     {% if collection.updatedDate|default %}
         <updated>{{ collection.updatedDate|date('Y-m-dTH:M:SZ') }}</updated>

@@ -6,7 +6,6 @@
     {{ parent() }}
     {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.Validation.js'), 98) }}
     {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.EditFunctions.js'), 99) }}
-    {{ pageAddAsset('javascript', asset('typeahead/typeahead.bundle.min.js')) }}
 {% endblock %}
 {% block title mode == 'create' ? __('Create collection') : __('Edit collection') %}
 {% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
@@ -32,9 +31,6 @@
                         <a id="standardFieldsTab" href="#tabStandardFields" title="{{ __('Creation and update') }}" role="tab" data-toggle="tab">{{ __('Creation and update') }}</a>
                     </li>
                 {% endif %}
-                <li role="presentation">
-                    <a id="hooksTab" href="#tabHooks" title="{{ __('Hooks') }}" role="tab" data-toggle="tab">{{ __('Hooks') }}</a>
-                </li>
                 {% if form.moderationSpecificCreator is defined %}
                     <li role="presentation">
                         <a id="moderationTab" href="#tabModeration" title="{{ __('Moderation options') }}" role="tab" data-toggle="tab">{{ __('Moderation') }}</a>
@@ -94,17 +90,13 @@
                     {{ include('@MUVideoModule/Helper/includeStandardFieldsEdit.html.twig', { obj: collection, tabs: true }) }}
                 {% endif %}
                 
-                <div role="tabpanel" class="tab-pane fade" id="tabHooks" aria-labelledby="hooksTab">
-                    <h3>{{ __('Hooks') }}</h3>
-                {% set hookId = mode != 'create' ? collection.id : null %}
-                {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.collections.form_edit', id=hookId) %}
-                {% if hooks is iterable and hooks|length > 0 %}
-                    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
-                        <h4>{{ providerArea }}</h4>
-                        {{ hook }}
-                    {% endfor %}
+                {% if formHookTemplates|length > 0 %}
+                    <fieldset>
+                        {% for hookTemplate in formHookTemplates %}
+                            {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
+                        {% endfor %}
+                    </fieldset>
                 {% endif %}
-                </div>
                 
                 {% if form.moderationSpecificCreator is defined %}
                     <div role="tabpanel" class="tab-pane fade" id="tabModeration" aria-labelledby="moderationTab">
@@ -135,25 +127,37 @@
             </div>
         </div>
         {{ form_end(form) }}
+        {% set hookId = mode != 'create' ? collection.id : null %}
+        {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.collections.form_edit', id=hookId) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            <h3>{{ __('Hooks') }}</h3>
+            {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
+                <h4>{{ providerArea }}</h4>
+                {{ hook }}
+            {% endfor %}
+        {% endif %}
+        
     </div>
 {% endblock %}
 {% block footer %}
     {{ parent() }}
     {% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
     {% set removeImage = '<span class="fa fa-trash-o"></span>' %}
-    
-    <script type="text/javascript">
-    /* <![CDATA[ */
-        
-        ( function($) {
-            $(document).ready(function() {
-                // initialise auto completion for user fields
-                {% if form.moderationSpecificCreator is defined %}
-                    mUVideoInitUserField('muvideomodule_collection_moderationSpecificCreator', 'getCommonUsersList');
-                {% endif %}
-                mUVideoInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ collection.id }}{% endif %}');
-            });
-        })(jQuery);
-    /* ]]> */
-    </script>
+    {% set formInitScript %}
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            
+            ( function($) {
+                $(document).ready(function() {
+                    // initialise auto completion for user fields
+                    {% if form.moderationSpecificCreator is defined %}
+                        initUserLiveSearch('muvideomodule_collection_moderationSpecificCreator');
+                    {% endif %}
+                    mUVideoInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ collection.id }}{% endif %}');
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endset %}
+    {{ pageAddAsset('footer', formInitScript) }}
 {% endblock %}

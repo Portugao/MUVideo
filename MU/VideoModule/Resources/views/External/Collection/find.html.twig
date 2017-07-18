@@ -38,13 +38,13 @@
                         <ul>
                             {% for collection in items %}
                                 <li>
-                                    {% set itemId = collection.createCompositeIdentifier() %}
+                                    {% set itemId = collection.getKey() %}
                                     <a href="#" data-itemid="{{ itemId }}">
-                                        {{ collection.getTitleFromDisplayPattern() }}
+                                        {{ collection|muvideomodule_formattedTitle }}
                                     </a>
-                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('muvideomodule_collection_display', { 'id': collection.id }) }}" />
-                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('muvideomodule_collection_display', { 'id': collection.id }) }}" />
-                                    <input type="hidden" id="title{{ itemId }}" value="{{ collection.getTitleFromDisplayPattern()|e('html_attr') }}" />
+                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('muvideomodule_collection_display', { 'id': collection.getId() }) }}" />
+                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('muvideomodule_collection_display', { 'id': collection.getId() }) }}" />
+                                    <input type="hidden" id="title{{ itemId }}" value="{{ collection|muvideomodule_formattedTitle|e('html_attr') }}" />
                                     <input type="hidden" id="desc{{ itemId }}" value="{% set description %}{% if collection.description is not empty %}{{ collection.description }}{% endif %}
                                     {% endset %}{{ description|striptags|e('html_attr') }}" />
                                 </li>

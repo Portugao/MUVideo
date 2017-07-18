@@ -5,6 +5,6 @@
 {% for movie in items %}
 {% spaceless %}
     "{{ movie.title }}";"{{ movie.description|safeHtml }}";"{{ movie.uploadOfMovie }}";"{{ movie.urlOfYoutube }}";"{{ movie.poster }}";"{{ movie.widthOfMovie }}";"{{ movie.heightOfMovie }}";"{{ movie.workflowState|muvideomodule_objectState(false)|lower }}"
-    ;"{% if movie.collection|default %}{{ movie.collection.getTitleFromDisplayPattern() }}{% endif %}"
+    ;"{% if movie.collection|default %}{{ movie.collection|muvideomodule_formattedTitle }}{% endif %}"
 {% endspaceless %}
 {% endfor %}

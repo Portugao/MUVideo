@@ -47,18 +47,18 @@
                                 {% if not onlyImages %}
                                     <li>
                                 {% endif %}
-                                    {% set itemId = movie.createCompositeIdentifier() %}
+                                    {% set itemId = movie.getKey() %}
                                     <a href="#" data-itemid="{{ itemId }}">
                                         {% if onlyImages %}
                                             {% set thumbOptions = attribute(thumbRuntimeOptions, 'movie' ~ imageField[:1]|upper ~ imageField[1:]) %}
-                                            <img src="{{ attribute(movie, imageField).getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-rounded" />
+                                            <img src="{{ attribute(movie, imageField).getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-rounded" />
                                         {% else %}
-                                            {{ movie.getTitleFromDisplayPattern() }}
+                                            {{ movie|muvideomodule_formattedTitle }}
                                         {% endif %}
                                     </a>
-                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('muvideomodule_movie_display', { 'id': movie.id }) }}" />
-                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('muvideomodule_movie_display', { 'id': movie.id }) }}" />
-                                    <input type="hidden" id="title{{ itemId }}" value="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" />
+                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('muvideomodule_movie_display', { 'id': movie.getId() }) }}" />
+                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('muvideomodule_movie_display', { 'id': movie.getId() }) }}" />
+                                    <input type="hidden" id="title{{ itemId }}" value="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" />
                                     <input type="hidden" id="desc{{ itemId }}" value="{% set description %}{% if movie.description is not empty %}{{ movie.description }}{% endif %}
                                     {% endset %}{{ description|striptags|e('html_attr') }}" />
                                     {% if onlyImages %}

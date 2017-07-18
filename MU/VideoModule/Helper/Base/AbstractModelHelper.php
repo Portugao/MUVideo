@@ -12,7 +12,7 @@
 
 namespace MU\VideoModule\Helper\Base;
 
-use MU\VideoModule\Entity\Factory\VideoFactory;
+use MU\VideoModule\Entity\Factory\EntityFactory;
 
 /**
  * Helper base class for model layer methods.
@@ -20,16 +20,16 @@ use MU\VideoModule\Entity\Factory\VideoFactory;
 abstract class AbstractModelHelper
 {
     /**
-     * @var VideoFactory
+     * @var EntityFactory
      */
     protected $entityFactory;
 
     /**
      * ModelHelper constructor.
      *
-     * @param VideoFactory $entityFactory VideoFactory service instance
+     * @param EntityFactory $entityFactory EntityFactory service instance
      */
-    public function __construct(VideoFactory $entityFactory)
+    public function __construct(EntityFactory $entityFactory)
     {
         $this->entityFactory = $entityFactory;
     }
@@ -49,8 +49,6 @@ abstract class AbstractModelHelper
      * @param string $objectType Name of treated entity type
      *
      * @return boolean Whether a new instance can be created or not
-     *
-     * @throws Exception If an invalid object type is used
      */
     public function canBeCreated($objectType)
     {
@@ -77,8 +75,6 @@ abstract class AbstractModelHelper
      * @param string $objectType Name of treated entity type
      *
      * @return boolean Whether at least one instance exists or not
-     *
-     * @throws Exception If an invalid object type is used
      */
     protected function hasExistingInstances($objectType)
     {
@@ -88,5 +84,30 @@ abstract class AbstractModelHelper
         }
     
         return $repository->selectCount() > 0;
+    }
+
+    /**
+     * Returns a desired sorting criteria for passing it to a repository method.
+     *
+     * @param string $objectType Name of treated entity type
+     * @param string $sorting    The type of sorting (newest, random, default)
+     *
+     * @return string The order by clause
+     */
+    public function resolveSortParameter($objectType = '', $sorting = 'default')
+    {
+        if ($sorting == 'random') {
+            return 'RAND()';
+        }
+    
+        $sortParam = '';
+        if ($sorting == 'newest') {
+            $sortParam = $this->entityFactory->getIdField($objectType) . ' DESC';
+        } elseif ($sorting == 'default') {
+            $repository = $this->entityFactory->getRepository($objectType);
+            $sortParam = $repository->getDefaultSortingField() . ' ASC';
+        }
+    
+        return $sortParam;
     }
 }

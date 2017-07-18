@@ -8,13 +8,13 @@
     ;"
     {% if collection.movie|default %}
         {% for relatedItem in collection.movie %}
-        {{ relatedItem.getTitleFromDisplayPattern() }}{% if not loop.last %}, {% endif %}
+        {{ relatedItem|muvideomodule_formattedTitle }}{% if not loop.last %}, {% endif %}
         {% endfor %}
     {% endif %}
     ";"
     {% if collection.playlists|default %}
         {% for relatedItem in collection.playlists %}
-        {{ relatedItem.getTitleFromDisplayPattern() }}{% if not loop.last %}, {% endif %}
+        {{ relatedItem|muvideomodule_formattedTitle }}{% if not loop.last %}, {% endif %}
         {% endfor %}
     {% endif %}
     "

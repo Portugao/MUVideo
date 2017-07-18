@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 use MU\VideoModule\Helper\ControllerHelper;
 
@@ -44,12 +44,12 @@ abstract class AbstractViewHelper
     protected $request;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     protected $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
@@ -69,8 +69,8 @@ abstract class AbstractViewHelper
      * @param Twig_Environment $twig             Twig service instance
      * @param FilesystemLoader $twigLoader       Twig loader service instance
      * @param RequestStack     $requestStack     RequestStack service instance
-     * @param PermissionApi    $permissionApi    PermissionApi service instance
-     * @param VariableApi      $variableApi      VariableApi service instance
+     * @param PermissionApiInterface    $permissionApi    PermissionApi service instance
+     * @param VariableApiInterface $variableApi      VariableApi service instance
      * @param ParameterBag     $pageVars         ParameterBag for theme page variables
      * @param ControllerHelper $controllerHelper ControllerHelper service instance
      *
@@ -80,8 +80,8 @@ abstract class AbstractViewHelper
         Twig_Environment $twig,
         FilesystemLoader $twigLoader,
         RequestStack $requestStack,
-        PermissionApi $permissionApi,
-        VariableApi $variableApi,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
         ParameterBag $pageVars,
         ControllerHelper $controllerHelper
     ) {
@@ -180,9 +180,6 @@ abstract class AbstractViewHelper
             case 'json.twig':
                 $response->headers->set('Content-Type', 'application/json');
                 break;
-            case 'kml.twig':
-                $response->headers->set('Content-Type', 'application/vnd.google-earth.kml+xml');
-                break;
             case 'atom.twig':
                 $response->headers->set('Content-Type', 'application/atom+xml');
                 break;
@@ -232,13 +229,13 @@ abstract class AbstractViewHelper
         $hasAdminAccess = $this->permissionApi->hasPermission('MUVideoModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
         if ($func == 'view') {
             if ($hasAdminAccess) {
-                $extensions = ['csv', 'rss', 'atom', 'json', 'kml'];
+                $extensions = ['csv', 'rss', 'atom', 'json'];
             } else {
                 $extensions = ['rss', 'atom'];
             }
         } elseif ($func == 'display') {
             if ($hasAdminAccess) {
-                $extensions = ['json', 'kml'];
+                $extensions = ['json'];
             } else {
                 $extensions = [];
             }
@@ -263,19 +260,17 @@ abstract class AbstractViewHelper
         // make local images absolute
         $output = str_replace('img src="/', 'img src="' . $this->request->server->get('DOCUMENT_ROOT') . '/', $output);
     
-        // see http://codeigniter.com/forums/viewthread/69388/P15/#561214
-        //$output = utf8_decode($output);
-    
         // then the surrounding
         $output = $this->twig->render('@MUVideoModule/includePdfHeader.html.twig') . $output . '</body></html>';
     
         // create name of the pdf output file
         $siteName = $this->variableApi->getSystemVar('sitename');
-        $pageTitle = $this->controllerHelper->formatPermalink($this->themePageVars->get('title', ''));
-        $fileTitle = $this->controllerHelper->formatPermalink($siteName)
+        $pageTitle = iconv('UTF-8', 'ASCII//TRANSLIT', $this->pageVars->get('title', ''));
+        $fileTitle = iconv('UTF-8', 'ASCII//TRANSLIT', $siteName)
                    . '-'
                    . ($pageTitle != '' ? $pageTitle . '-' : '')
                    . date('Ymd') . '.pdf';
+       $fileTitle = str_replace(' ', '_', $fileTitle);
     
         /*
         if (true === $this->request->query->getBoolean('dbg', false)) {
@@ -284,11 +279,11 @@ abstract class AbstractViewHelper
         */
     
         // instantiate pdf object
-        $pdf = new \DOMPDF();
+        $pdf = new \Dompdf\Dompdf();
         // define page properties
-        $pdf->set_paper('A4');
+        $pdf->setPaper('A4', 'portrait');
         // load html input data
-        $pdf->load_html($output);
+        $pdf->loadHtml($output);
         // create the actual pdf file
         $pdf->render();
         // stream output to browser

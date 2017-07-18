@@ -18,7 +18,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
-use MU\VideoModule\Traits\EntityWorkflowTrait;
 use MU\VideoModule\Traits\StandardFieldsTrait;
 use MU\VideoModule\Validator\Constraints as VideoAssert;
 
@@ -35,11 +34,6 @@ use MU\VideoModule\Validator\Constraints as VideoAssert;
  */
 abstract class AbstractCollectionEntity extends EntityAccess implements Translatable
 {
-    /**
-     * Hook entity workflow field and behaviour.
-     */
-    use EntityWorkflowTrait;
-
     /**
      * Hook standard fields behaviour embedding createdBy, updatedBy, createdDate, updatedDate fields.
      */
@@ -133,7 +127,6 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function __construct()
     {
-        $this->initWorkflow();
         $this->movie = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->categories = new ArrayCollection();
@@ -357,6 +350,9 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function setMovie($movie)
     {
+        foreach ($this->movie as $movieSingle) {
+            $this->removeMovie($movieSingle);
+        }
         foreach ($movie as $movieSingle) {
             $this->addMovie($movieSingle);
         }
@@ -407,6 +403,9 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function setPlaylists($playlists)
     {
+        foreach ($this->playlists as $playlistSingle) {
+            $this->removePlaylists($playlistSingle);
+        }
         foreach ($playlists as $playlistSingle) {
             $this->addPlaylists($playlistSingle);
         }
@@ -439,19 +438,6 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
     }
     
     
-    /**
-     * Returns the formatted title conforming to the display pattern
-     * specified for this entity.
-     *
-     * @return string The display title
-     */
-    public function getTitleFromDisplayPattern()
-    {
-        $formattedTitle = ''
-                . $this->getTitle();
-    
-        return $formattedTitle;
-    }
     
     /**
      * Return entity data in JSON format.
@@ -470,27 +456,19 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function createUrlArgs()
     {
-        $args = [];
-    
-        $args['id'] = $this['id'];
-    
-        if (property_exists($this, 'slug')) {
-            $args['slug'] = $this['slug'];
-        }
-    
-        return $args;
+        return [
+            'id' => $this->getId()
+        ];
     }
     
     /**
-     * Create concatenated identifier string (for composite keys).
+     * Returns the primary key.
      *
-     * @return String concatenated identifiers
+     * @return integer The identifier
      */
-    public function createCompositeIdentifier()
+    public function getKey()
     {
-        $itemId = $this['id'];
-    
-        return $itemId;
+        return $this->getId();
     }
     
     /**
@@ -546,7 +524,7 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
      */
     public function __toString()
     {
-        return 'Collection ' . $this->createCompositeIdentifier() . ': ' . $this->getTitleFromDisplayPattern();
+        return 'Collection ' . $this->getKey() . ': ' . $this->getTitle();
     }
     
     /**
@@ -562,17 +540,17 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
     public function __clone()
     {
         // if the entity has no identity do nothing, do NOT throw an exception
-        if (!($this->id)) {
+        if (!$this->id) {
             return;
         }
     
         // otherwise proceed
     
-        // unset identifiers
+        // unset identifier
         $this->setId(0);
     
         // reset workflow
-        $this->resetWorkflow();
+        $this->setWorkflowState('initial');
     
         $this->setCreatedBy(null);
         $this->setCreatedDate(null);

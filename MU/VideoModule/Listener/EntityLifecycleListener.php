@@ -13,13 +13,11 @@
 namespace MU\VideoModule\Listener;
 
 use MU\VideoModule\Listener\Base\AbstractEntityLifecycleListener;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use MU\VideoModule\Helper\WorkflowHelper;
 
 /**
  * Event subscriber implementation class for entity lifecycle events.
  */
 class EntityLifecycleListener extends AbstractEntityLifecycleListener
 {
-
+    // feel free to enhance this listener by custom actions
 }

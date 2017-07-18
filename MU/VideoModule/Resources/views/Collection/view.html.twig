@@ -1,6 +1,6 @@
 {# purpose of this template: collections list view #}
 {% extends routeArea == 'admin' ? 'MUVideoModule::adminBase.html.twig' : 'MUVideoModule::base.html.twig' %}
-{% block title own ? __('My collections') : __('Collection list') %}
+{% block title own ? __('My collections') : __('Collections list') %}
 {% block admin_page_icon 'list-alt' %}
 {% block content %}
 <div class="muvideomodule-collection muvideomodule-view">
@@ -45,18 +45,18 @@
             <tr>
                 {% if routeArea == 'admin' %}
                     <td headers="hSelect" class="fixed-column text-center z-w02">
-                        <input type="checkbox" name="items[]" value="{{ collection.id }}" class="muvideo-toggle-checkbox" />
+                        <input type="checkbox" name="items[]" value="{{ collection.getKey() }}" class="muvideo-toggle-checkbox" />
                     </td>
                 {% endif %}
-                <td id="itemActions{{ collection.id }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                <td id="itemActions{{ collection.getKey() }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
                     {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], { entity: collection, area: routeArea, context: 'view' }) %}
                     <div class="dropdown">
-                        <a id="itemActions{{ collection.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        <a id="itemActions{{ collection.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
                         {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
                     </div>
                 </td>
                 <td headers="hTitle" class="text-left">
-                    <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': collection.id }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ collection.title|notifyFilters('muvideomodule.filterhook.collections') }}</a>
+                    <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': collection.getId() }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ collection.title|notifyFilters('muvideomodule.filterhook.collections')|safeHtml }}</a>
                 </td>
                 <td headers="hDescription" class="text-left">
                     {{ collection.description|safeHtml|truncate(50) }}
@@ -74,7 +74,7 @@
         </table>
         </div>
         
-        {% if showAllEntries != 1 and pager|default %}
+        {% if all != 1 and pager|default %}
             {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'muvideomodule_collection_' ~ routeArea ~ 'view'}) }}
         {% endif %}
     {% if routeArea == 'admin' %}
@@ -105,7 +105,7 @@
                 <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
             {% endif %}
         {% endif %}
-        {% if showAllEntries == 1 %}
+        {% if all == 1 %}
             {% set linkTitle = __('Back to paginated view') %}
             <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
         {% else %}

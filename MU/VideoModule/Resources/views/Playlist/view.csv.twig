@@ -5,6 +5,6 @@
 {% for playlist in items %}
 {% spaceless %}
     "{{ playlist.title }}";"{{ playlist.description|safeHtml }}";"{{ playlist.urlOfYoutubePlaylist }}";"{{ playlist.workflowState|muvideomodule_objectState(false)|lower }}"
-    ;"{% if playlist.collection|default %}{{ playlist.collection.getTitleFromDisplayPattern() }}{% endif %}"
+    ;"{% if playlist.collection|default %}{{ playlist.collection|muvideomodule_formattedTitle }}{% endif %}"
 {% endspaceless %}
 {% endfor %}

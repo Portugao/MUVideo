@@ -2,11 +2,11 @@
 {{ pageAddAsset('javascript', asset('magnific-popup/jquery.magnific-popup.min.js')) }}
 {{ pageAddAsset('stylesheet', asset('magnific-popup/magnific-popup.css')) }}
 {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.js')) }}
-<div id="movie{$movie.id}" class="muvideomodule-external-movie">
+<div id="movie{$movie->getKey()}" class="muvideomodule-external-movie">
 {% if displayMode == 'link' %}
     <p class="muvideomodule-external-link">
-    <a href="{{ path('muvideomodule_movie_display', { 'id': movie.id }) }}" title="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}">
-    {{ movie.getTitleFromDisplayPattern()|notifyFilters('video.filter_hooks.movies.filter') }}
+    <a href="{{ path('muvideomodule_movie_display', { 'id': movie.getId() }) }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}">
+    {{ movie|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.movies.filter')|safeHtml }}
     </a>
     </p>
 {% endif %}
@@ -14,7 +14,7 @@
     {# for normal users without edit permission show only the actual file per default #}
     {% if displayMode == 'embed' %}
         <p class="muvideomodule-external-title">
-            <strong>{{ movie.getTitleFromDisplayPattern()|notifyFilters('video.filter_hooks.movies.filter') }}</strong>
+            <strong>{{ movie|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.movies.filter')|safeHtml }}</strong>
         </p>
     {% endif %}
 {% endif %}
@@ -23,10 +23,10 @@
 {% elseif displayMode == 'embed' %}
     <div class="muvideomodule-external-snippet">
         {% if movie.uploadOfMovie is not empty and movie.uploadOfMovieMeta|default %}
-                    <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
+                    <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
         {% if movie.uploadOfMovieMeta.isImage %}
             {% set thumbOptions = attribute(thumbRuntimeOptions, 'movieUploadOfMovie') %}
-            <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+            <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
         {% else %}
             {{ __('Download') }} ({{ movie.uploadOfMovieMeta.size|muvideomodule_fileSize(movie.uploadOfMovie.getPathname(), false, false) }})
         {% endif %}

@@ -1,6 +1,6 @@
 {# purpose of this template: movies list view #}
 {% extends routeArea == 'admin' ? 'MUVideoModule::adminBase.html.twig' : 'MUVideoModule::base.html.twig' %}
-{% block title own ? __('My movies') : __('Movie list') %}
+{% block title own ? __('My movies') : __('Movies list') %}
 {% block admin_page_icon 'list-alt' %}
 {% block content %}
 <div class="muvideomodule-movie muvideomodule-view">
@@ -69,28 +69,28 @@
             <tr>
                 {% if routeArea == 'admin' %}
                     <td headers="hSelect" class="fixed-column text-center z-w02">
-                        <input type="checkbox" name="items[]" value="{{ movie.id }}" class="muvideo-toggle-checkbox" />
+                        <input type="checkbox" name="items[]" value="{{ movie.getKey() }}" class="muvideo-toggle-checkbox" />
                     </td>
                 {% endif %}
-                <td id="itemActions{{ movie.id }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                <td id="itemActions{{ movie.getKey() }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
                     {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], { entity: movie, area: routeArea, context: 'view' }) %}
                     <div class="dropdown">
-                        <a id="itemActions{{ movie.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        <a id="itemActions{{ movie.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
                         {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
                     </div>
                 </td>
                 <td headers="hTitle" class="text-left">
-                    <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': movie.id }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ movie.title|notifyFilters('muvideomodule.filterhook.movies') }}</a>
+                    <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': movie.getId() }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ movie.title|notifyFilters('muvideomodule.filterhook.movies')|safeHtml }}</a>
                 </td>
                 <td headers="hDescription" class="text-left">
                     {{ movie.description|safeHtml|truncate(50) }}
                 </td>
                 <td headers="hUploadOfMovie" class="text-left">
                     {% if movie.uploadOfMovie is not empty and movie.uploadOfMovieMeta|default %}
-                                <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
+                                <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
                     {% if movie.uploadOfMovieMeta.isImage %}
                         {% set thumbOptions = attribute(thumbRuntimeOptions, 'movieUploadOfMovie') %}
-                        <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                        <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
                     {% else %}
                         {{ __('Download') }} ({{ movie.uploadOfMovieMeta.size|muvideomodule_fileSize(movie.uploadOfMovie.getPathname(), false, false) }})
                     {% endif %}
@@ -104,10 +104,10 @@
                 </td>
                 <td headers="hPoster" class="text-left">
                     {% if movie.poster is not empty and movie.posterMeta|default %}
-                                <a href="{{ movie.posterUrl }}" title="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}"{% if movie.posterMeta.isImage %} class="image-link"{% endif %}>
+                                <a href="{{ movie.posterUrl }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}"{% if movie.posterMeta.isImage %} class="image-link"{% endif %}>
                     {% if movie.posterMeta.isImage %}
                         {% set thumbOptions = attribute(thumbRuntimeOptions, 'moviePoster') %}
-                        <img src="{{ movie.poster.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                        <img src="{{ movie.poster.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
                     {% else %}
                         {{ __('Download') }} ({{ movie.posterMeta.size|muvideomodule_fileSize(movie.poster.getPathname(), false, false) }})
                     {% endif %}
@@ -122,10 +122,10 @@
                 </td>
                 <td headers="hCollection" class="text-left">
                     {% if movie.collection|default %}
-                        <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': movie.collection.id }) }}">{% spaceless %}
-                          {{ movie.collection.getTitleFromDisplayPattern() }}
+                        <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': movie.collection.getId() }) }}">{% spaceless %}
+                          {{ movie.collection|muvideomodule_formattedTitle }}
                         {% endspaceless %}</a>
-                        <a id="collectionItem{{ movie.id }}_rel_{{ movie.collection.id }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': movie.collection.id, 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ movie.collection.getTitleFromDisplayPattern()|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+                        <a id="collectionItem{{ movie.getKey() }}_rel_{{ movie.collection.getKey() }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': movie.collection.getId(), 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ movie.collection|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
                     {% else %}
                         {{ __('Not set.') }}
                     {% endif %}
@@ -143,7 +143,7 @@
         </table>
         </div>
         
-        {% if showAllEntries != 1 and pager|default %}
+        {% if all != 1 and pager|default %}
             {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'muvideomodule_movie_' ~ routeArea ~ 'view'}) }}
         {% endif %}
     {% if routeArea == 'admin' %}
@@ -174,7 +174,7 @@
                 <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
             {% endif %}
         {% endif %}
-        {% if showAllEntries == 1 %}
+        {% if all == 1 %}
             {% set linkTitle = __('Back to paginated view') %}
             <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
         {% else %}
