@@ -14,6 +14,7 @@ namespace MU\VideoModule\Controller\Base;
 
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use DataUtil;
@@ -30,7 +31,7 @@ abstract class AbstractYoutubeController extends AbstractController
 	 *
 	 * @param Request $request Current request instance
 	 *
-	 * @return string Output
+	 * @return Response Output
 	 *
 	 * @throws AccessDeniedException Thrown if the user doesn't have required permissions
 	 */
@@ -40,7 +41,7 @@ abstract class AbstractYoutubeController extends AbstractController
 			throw new AccessDeniedException();
 		}
 	
-		$form = $this->createForm('MU\VideoModule\Form\GetVideosType');
+		$form = $this->createForm(GetVideosType::class);
 		$datas = $form->getData();
 
 		if ($form->handleRequest($request)->isValid()) {
