@@ -19,6 +19,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * GetVideos form type base class.
@@ -31,16 +33,33 @@ abstract class AbstractGetVideosType extends AbstractType
      * @var array
      */
     protected $moduleVars;
+    
+    /**
+     * @var RequestStack
+     */
+    protected $request;
+    
+    /**
+     * @var VariableApiInterface
+     */
+    protected $variableApi;
 
     /**
      * GetVideosType constructor.
      *
      * @param TranslatorInterface $translator  Translator service instance
      * @param object              $moduleVars  Existing module vars
+     * @param RequestStack        $request
+     * @param VariableApiInterface $variableApi VariableApi service instance
      */
-    public function __construct( TranslatorInterface $translator, $moduleVars) {
+    public function __construct( TranslatorInterface $translator,
+        $moduleVars, 
+        RequestStack $request,
+    	VariableApiInterface $variableApi) {
         $this->setTranslator($translator);
         $this->moduleVars = $moduleVars;
+        $this->request = $request;
+        $this->variableApi = $variableApi;
     }
 
     /**
@@ -51,6 +70,16 @@ abstract class AbstractGetVideosType extends AbstractType
     public function setTranslator(/*TranslatorInterface */$translator)
     {
         $this->translator = $translator;
+    }
+    
+    /**
+     * Sets the translator.
+     *
+     * @param TranslatorInterface $translator Translator service instance
+     */
+    public function setRequest(/*RequestStack */$request)
+    {
+    	$this->request = $request;
     }
 
     /**
@@ -87,7 +116,7 @@ abstract class AbstractGetVideosType extends AbstractType
      */
     public function addInputFields(FormBuilderInterface $builder, array $options)
     {
-    	//$formVars = $this->getListEntries();
+    	$formVars = $this->getListEntries();
     	$builder
     	->add('channelId', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
     			'label' => $this->__('Channel') . ':',
@@ -104,8 +133,7 @@ abstract class AbstractGetVideosType extends AbstractType
     			],'choices' =>
     			/*$this->__('Inset') => 'inset'
     			 ,$this->__('Outbound') => 'outbound'*/
-    			//$formVars 
-    			null,
+    			$formVars ,
     			'choices_as_values' => false,
     			'multiple' => false
     	])
@@ -132,7 +160,7 @@ abstract class AbstractGetVideosType extends AbstractType
     	$resolver
     	->setDefaults([
     
-    			'collectionId' => /*$this->getCollectionId()*/ 1,
+    			'collectionId' => $this->getCollectionId(),
     
     	]);
     }
@@ -140,7 +168,7 @@ abstract class AbstractGetVideosType extends AbstractType
     /**
      *
      */
-    /*public function getListEntries()
+    public function getListEntries()
     {
     	$moduleVars = $this->variableApi->getAll('MUVideoModule');
     	$videos = $moduleVars['channelIds'];
@@ -153,20 +181,20 @@ abstract class AbstractGetVideosType extends AbstractType
     	} else {
     		foreach ($videos as $video) {
     			$thisVideo = explode(',', $video);
-    			$out = array($thisVideo[0] => $thisVideo[1]);
+    			$out[] = array($thisVideo[0] => $thisVideo[1]);
     		}
     	}
     
     	return $out;
-    }*/
+    }
     
     /**
      *
      */
-    /*public function getCollectionId()
+    public function getCollectionId()
     {
     	$currentRequest = $this->request->getCurrentRequest();
     	$collectionId = $currentRequest->get('collectionId');
     	return $collectionId;
-    }*/
+    }
 }

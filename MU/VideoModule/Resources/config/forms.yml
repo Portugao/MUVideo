@@ -190,5 +190,7 @@ services:
         arguments:
             - "@translator.default"
             - "@=service('zikula_extensions_module.api.variable').getAll('MUVideoModule')"
+            - "@request_stack"
+            - "@zikula_extensions_module.api.variable"
         tags:
             - { name: form.type }
