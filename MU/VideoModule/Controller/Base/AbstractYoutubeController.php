@@ -252,9 +252,13 @@ abstract class AbstractYoutubeController extends AbstractController
 					$api2 = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=" . $playlistData['id']['playlistId'] . "&key=" . $youtubeApi);
 					// we decode the jason array to php array
 					$playlistVideos = json_decode($api2, true);
-					foreach ($playlistVideos as $playlistVideo) {
-						
+					$playlistVideoId = '';
+					foreach ($playlistVideos['items'] as $video) {
+						if ($playlistVideoId == '') {
+							$playlistVideoId = $video['snippet']['resourceId']['videoId'];
+						}
 					}
+					
 					
 					if (isset($playlistIds) && is_array($playlistIds)) {
 						if (in_array($playlistData['id']['playlistId'], $playlistIds)) {
@@ -262,7 +266,7 @@ abstract class AbstractYoutubeController extends AbstractController
 							$where2 = 'tbl.urlOfYoutubePlaylist LIKE \'%' . $fragment . '\'';
 							$thisExistingPlaylist = $playlistRepository->selectWhere($where2);
 							if(is_array($thisExistingPlaylist) && count($thisExistingPlaylist) == 1 && $this->getVar('overrideVars') == 1) {
-								$thisExistingPlaylistObject = $movieRepository->selectById($thisExistingPlaylist[0]['id']);
+								$thisExistingPlaylistObject = $playlistRepository->selectById($thisExistingPlaylist[0]['id']);
 	
 								$thisExistingPlaylistObject->setTitle($playlistData['snippet']['title']);
 								$thisExistingPlaylistObject->setDescription($playlistData['snippet']['description']);
@@ -279,7 +283,7 @@ abstract class AbstractYoutubeController extends AbstractController
 					$newYoutubePlaylist = new \MU\VideoModule\Entity\PlaylistEntity();
 					$newYoutubePlaylist->setTitle($playlistData['snippet']['title']);
 					$newYoutubePlaylist->setDescription($playlistData['snippet']['description']);
-					$newYoutubePlaylist->setUrlOfYoutubePlaylist('https://www.youtube.com/watch?v=' . $playlistData['id']['playlistId']);
+					$newYoutubePlaylist->setUrlOfYoutubePlaylist('https://www.youtube.com/watch?v=' . $playlistVideoId . "&list=" .$playlistData['id']['playlistId']);
 					$newYoutubePlaylist->setWorkflowState('approved');
 					$newYoutubePlaylist->setCollection($collectionObject);
 	
