@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use DataUtil;
 use ServiceUtil;
-use MU\VideoModule\Form\Type\GetVideosType;
+use MU\VideoModule\Form\Type\GetPlaylistsType;
 
 /**
  * Config controller base class.
@@ -94,7 +94,7 @@ abstract class AbstractYoutubeController extends AbstractController
 	
 				$datas = $form->getData();
 	
-				$this->getYoutubeVideos($datas['channelId'], $datas['collectionId']);
+				$this->getYoutubeplaylists($datas['channelId'], $datas['collectionId']);
 	
 				$this->addFlash('status', $this->__('Done! Video import complete.'));
 				$userName = $this->get('zikula_users_module.current_user')->get('uname');
@@ -111,7 +111,7 @@ abstract class AbstractYoutubeController extends AbstractController
 				'form' => $form->createView()
 		];
 	
-		// render the get videos form
+		// render the get playlists form
 		return $this->render('@MUVideoModule/Youtube/getPlaylists.html.twig', $templateParameters);
 	}
 	
@@ -129,7 +129,7 @@ abstract class AbstractYoutubeController extends AbstractController
 		// we get collection repository and the relevant collection object
 		$collectionRepository = $modelHelper->getRepository('collection');
 
-		//$collectionRepository = $this->container->get('mu_video_module.video_factory')->getRepository('collection');
+		// we get the relevant collection object
 		$collectionObject = $collectionRepository->selectById($collectionId);
 		
 		// we get a movie repository
@@ -137,11 +137,12 @@ abstract class AbstractYoutubeController extends AbstractController
 		//$movieRepository = $this->container->get('mu_video_module.video_factory')->getRepository('movie');
 
 		// we get the videos from youtube
-		$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
+		$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
 	
 		// we decode the jason array to php array
 		$videos = json_decode($api, true);
-
+		//die($videos['items']);
+	
 		$where = 'tbl.urlOfYoutube != \'' . DataUtil::formatForStore('') . '\'';
 		// we look for movies with a youtube url entered
 		$existingYoutubeVideos = $movieRepository->selectWhere($where);
@@ -156,7 +157,7 @@ abstract class AbstractYoutubeController extends AbstractController
 		$serviceManager = ServiceUtil::getManager();
 		$entityManager = $serviceManager->getService('doctrine.entitymanager');
 	
-		if (is_array($videos['items'])) {
+		if (is_array($videos)) {
 	
 			foreach ($videos['items'] as $videoData) {
 				if (isset($videoData['id']['videoId'])) {
@@ -188,7 +189,6 @@ abstract class AbstractYoutubeController extends AbstractController
 					$newYoutubeVideo->setHeightOfMovie('300');
 					$newYoutubeVideo->setWorkflowState('approved');
 					$newYoutubeVideo->setCollection($collectionObject);
-					$newYoutubeVideo->set__WORKFLOW__('approved');
 	
 					$entityManager->persist($newYoutubeVideo);
 					$entityManager->flush();
@@ -196,6 +196,8 @@ abstract class AbstractYoutubeController extends AbstractController
 					//LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
 				}
 			}
+		} else {
+			$this->addFlash('error', 'No videos available!');
 		}
 	
 		return $this->redirectToRoute('muvideomodule_collection_display', array('id'=> $collectionId));
@@ -219,66 +221,71 @@ abstract class AbstractYoutubeController extends AbstractController
 		$collectionObject = $collectionRepository->selectById($collectionId);
 	
 		// we get a movie repository
-		$movieRepository = $modelHelper->getRepository('movie');
+		$playlistRepository = $modelHelper->getRepository('playlist');
 		//$movieRepository = $this->container->get('mu_video_module.video_factory')->getRepository('movie');
 	
-		// we get the videos from youtube
-		$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
+		// we get the playlists from youtube
+		$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&tpye=playlist&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
 	
 		// we decode the jason array to php array
-		$videos = json_decode($api, true);
+		$playlists = json_decode($api, true);
 	
-		$where = 'tbl.urlOfYoutube != \'' . DataUtil::formatForStore('') . '\'';
+		$where = 'tbl.urlOfYoutubePlaylist != \'' . DataUtil::formatForStore('') . '\'';
 		// we look for movies with a youtube url entered
-		$existingYoutubeVideos = $movieRepository->selectWhere($where);
+		$existingYoutubePlaylists = $playlistRepository->selectWhere($where);
 	
-		if ($existingYoutubeVideos && count($existingYoutubeVideos > 0)) {
-			foreach ($existingYoutubeVideos as $existingYoutubeVideo) {
-				$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $existingYoutubeVideo['urlOfYoutube']);
-				$videoIds[] = $youtubeId;
+		if ($existingYoutubePlaylists && count($existingYoutubePlaylists > 0)) {
+			foreach ($existingYoutubePlaylists as $existingYoutubePlaylist) {
+				$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $existingYoutubePlaylist['urlOfYoutubePlaylist']);
+				https://www.youtube.com/playlist?list=PLL7X1DfKI-zK2-b_ZRAnvK3H7th33fH-F
+				$playlistIds[] = $youtubeId;
 			}
 		}
 	
 		$serviceManager = ServiceUtil::getManager();
 		$entityManager = $serviceManager->getService('doctrine.entitymanager');
 	
-		if (is_array($videos['items'])) {
+		if (is_array($playlists['items'])) {
 	
-			foreach ($videos['items'] as $videoData) {
-				if (isset($videoData['id']['videoId'])) {
-					if (isset($videoIds) && is_array($videoIds)) {
-						if (in_array($videoData['id']['videoId'], $videoIds)) {
-							$fragment = $videoData['id']['videoId'];
-							$where2 = 'tbl.urlOfYoutube LIKE \'%' . $fragment . '\'';
-							$thisExistingVideo = $movieRepository->selectWhere($where2);
-							if(is_array($thisExistingVideo) && count($thisExistingVideo) == 1 && $this->getVar('overrideVars') == 1) {
-								$thisExistingVideoObject = $movieRepository->selectById($thisExistingVideo[0]['id']);
+			foreach ($playlists['items'] as $playlistData) {
+				if (isset($playlistData['id']['playlistId'])) {
+					$api2 = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=" . $playlistData['id']['playlistId'] . "&key=" . $youtubeApi);
+					// we decode the jason array to php array
+					$playlistVideos = json_decode($api2, true);
+					foreach ($playlistVideos as $playlistVideo) {
+						
+					}
+					
+					if (isset($playlistIds) && is_array($playlistIds)) {
+						if (in_array($playlistData['id']['playlistId'], $playlistIds)) {
+							$fragment = $playlistData['id']['playlistId'];
+							$where2 = 'tbl.urlOfYoutubePlaylist LIKE \'%' . $fragment . '\'';
+							$thisExistingPlaylist = $playlistRepository->selectWhere($where2);
+							if(is_array($thisExistingPlaylist) && count($thisExistingPlaylist) == 1 && $this->getVar('overrideVars') == 1) {
+								$thisExistingPlaylistObject = $movieRepository->selectById($thisExistingPlaylist[0]['id']);
 	
-								$thisExistingVideoObject->setTitle($videoData['snippet']['title']);
-								$thisExistingVideoObject->setDescription($videoData['snippet']['description']);
-								$thisExistingVideoObject->setCollection($collectionObject);
+								$thisExistingPlaylistObject->setTitle($playlistData['snippet']['title']);
+								$thisExistingPlaylistObject->setDescription($playlistData['snippet']['description']);
+								$thisExistingPlaylistObject->setCollection($collectionObject);
 	
 								$entityManager->flush();
-								$this->addFlash('status', $this->__('The video') . ' ' . $videoData['snippet']['title'] . $this->__('was overrided'));
-								//LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was overrided', $dom));
+								$this->addFlash('status', $this->__('The playlist') . ' ' . $playlistData['snippet']['title'] . $this->__('was overrided'));
+								//LogUtil::registerStatus(__('The playlist', $dom) . ' ' . $playlistData['snippet']['title'] . ' ' . __('was overrided', $dom));
 							}
 							continue;
 						}
 					}
 	
-					$newYoutubeVideo = new \MU\VideoModule\Entity\MovieEntity();
-					$newYoutubeVideo->setTitle($videoData['snippet']['title']);
-					$newYoutubeVideo->setDescription($videoData['snippet']['description']);
-					$newYoutubeVideo->setUrlOfYoutube('https://www.youtube.com/watch?v=' . $videoData['id']['videoId']);
-					$newYoutubeVideo->setWidthOfMovie('400');
-					$newYoutubeVideo->setHeightOfMovie('300');
-					$newYoutubeVideo->setWorkflowState('approved');
-					$newYoutubeVideo->setCollection($collectionObject);
-					$newYoutubeVideo->set__WORKFLOW__('approved');
+					$newYoutubePlaylist = new \MU\VideoModule\Entity\PlaylistEntity();
+					$newYoutubePlaylist->setTitle($playlistData['snippet']['title']);
+					$newYoutubePlaylist->setDescription($playlistData['snippet']['description']);
+					$newYoutubePlaylist->setUrlOfYoutubePlaylist('https://www.youtube.com/watch?v=' . $playlistData['id']['playlistId']);
+					$newYoutubePlaylist->setWorkflowState('approved');
+					$newYoutubePlaylist->setCollection($collectionObject);
 	
-					$entityManager->persist($newYoutubeVideo);
+					$entityManager->persist($newYoutubePlaylist);
 					$entityManager->flush();
-					$this->addFlash('status', $this->__('The video')  . ' ' . $videoData['snippet']['title'] . ' ' . $this->__('was created and put into the collection') . ' ' . $collectionObject['title']);
+					$this->addFlash('status', $this->__('The playlist')  . ' ' . $playlistData['snippet']['title'] . ' ' . $this->__('was created and put into the collection') . ' ' . $collectionObject['title']);
 					//LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
 				}
 			}
