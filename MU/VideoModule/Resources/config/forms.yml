@@ -194,3 +194,13 @@ services:
             - "@zikula_extensions_module.api.variable"
         tags:
             - { name: form.type }
+            
+    mu_video_module.form.type.getplaylists:
+        class: MU\VideoModule\Form\Type\GetPlaylistsType
+        arguments:
+            - "@translator.default"
+            - "@=service('zikula_extensions_module.api.variable').getAll('MUVideoModule')"
+            - "@request_stack"
+            - "@zikula_extensions_module.api.variable"
+        tags:
+            - { name: form.type }
