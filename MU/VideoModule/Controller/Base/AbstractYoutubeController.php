@@ -86,7 +86,7 @@ abstract class AbstractYoutubeController extends AbstractController
 			throw new AccessDeniedException();
 		}
 	
-		$form = $this->createForm(GetVideosType::class);
+		$form = $this->createForm(GetPlaylistsType::class);
 		//$datas = $form->getData();
 	
 		if ($form->handleRequest($request)->isValid()) {
@@ -141,7 +141,7 @@ abstract class AbstractYoutubeController extends AbstractController
 	
 		// we decode the jason array to php array
 		$videos = json_decode($api, true);
-	
+
 		$where = 'tbl.urlOfYoutube != \'' . DataUtil::formatForStore('') . '\'';
 		// we look for movies with a youtube url entered
 		$existingYoutubeVideos = $movieRepository->selectWhere($where);
