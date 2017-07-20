@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use DataUtil;
 use ServiceUtil;
+use MU\VideoModule\Form\Type\GetVideosType;
 use MU\VideoModule\Form\Type\GetPlaylistsType;
 
 /**
@@ -225,7 +226,7 @@ abstract class AbstractYoutubeController extends AbstractController
 		//$movieRepository = $this->container->get('mu_video_module.video_factory')->getRepository('movie');
 	
 		// we get the playlists from youtube
-		$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&tpye=playlist&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
+		$api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
 	
 		// we decode the jason array to php array
 		$playlists = json_decode($api, true);
@@ -248,8 +249,8 @@ abstract class AbstractYoutubeController extends AbstractController
 		if (is_array($playlists['items'])) {
 	
 			foreach ($playlists['items'] as $playlistData) {
-				if (isset($playlistData['id']['playlistId'])) {
-					$api2 = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=" . $playlistData['id']['playlistId'] . "&key=" . $youtubeApi);
+				if (isset($playlistData['id'])) {
+					$api2 = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=" . $playlistData['id'] . "&key=" . $youtubeApi);
 					// we decode the jason array to php array
 					$playlistVideos = json_decode($api2, true);
 					$playlistVideoId = '';
@@ -261,8 +262,8 @@ abstract class AbstractYoutubeController extends AbstractController
 					
 					
 					if (isset($playlistIds) && is_array($playlistIds)) {
-						if (in_array($playlistData['id']['playlistId'], $playlistIds)) {
-							$fragment = $playlistData['id']['playlistId'];
+						if (in_array($playlistData['id'], $playlistIds)) {
+							$fragment = $playlistData['id'];
 							$where2 = 'tbl.urlOfYoutubePlaylist LIKE \'%' . $fragment . '\'';
 							$thisExistingPlaylist = $playlistRepository->selectWhere($where2);
 							if(is_array($thisExistingPlaylist) && count($thisExistingPlaylist) == 1 && $this->getVar('overrideVars') == 1) {
@@ -283,7 +284,7 @@ abstract class AbstractYoutubeController extends AbstractController
 					$newYoutubePlaylist = new \MU\VideoModule\Entity\PlaylistEntity();
 					$newYoutubePlaylist->setTitle($playlistData['snippet']['title']);
 					$newYoutubePlaylist->setDescription($playlistData['snippet']['description']);
-					$newYoutubePlaylist->setUrlOfYoutubePlaylist('https://www.youtube.com/watch?v=' . $playlistVideoId . "&list=" .$playlistData['id']['playlistId']);
+					$newYoutubePlaylist->setUrlOfYoutubePlaylist('https://www.youtube.com/watch?v=' . $playlistVideoId . "&list=" .$playlistData['id']);
 					$newYoutubePlaylist->setWorkflowState('approved');
 					$newYoutubePlaylist->setCollection($collectionObject);
 	
