@@ -15,7 +15,7 @@ function mUVideoResetUploadField(fieldName)
  */
 function mUVideoInitUploadField(fieldName)
 {
-    jQuery('#' + fieldName + 'ResetVal').click( function (event) {
+    jQuery('#' + fieldName + 'ResetVal').click(function (event) {
         event.preventDefault();
         mUVideoResetUploadField(fieldName);
     }).removeClass('hidden');
