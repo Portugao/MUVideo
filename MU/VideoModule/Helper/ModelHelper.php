@@ -19,5 +19,9 @@ use MU\VideoModule\Helper\Base\AbstractModelHelper;
  */
 class ModelHelper extends AbstractModelHelper
 {
-    // feel free to add your own convenience methods here
+    public function getRepository($objectType = 'collection') {
+    	
+    	$repository = $this->entityFactory->getRepository($objectType);
+    	return $repository;
+    }
 }
