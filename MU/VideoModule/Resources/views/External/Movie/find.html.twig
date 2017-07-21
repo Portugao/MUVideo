@@ -29,9 +29,11 @@
             {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'movie') %}
                 {{ form_row(finderForm.categories) }}
             {% endif %}
+            <div class="hidden">
             {{ form_row(finderForm.onlyImages) }}
             <div id="imageFieldRow">
                 {{ form_row(finderForm.imageField) }}
+            </div>
             </div>
             {{ form_row(finderForm.pasteAs) }}
             <br />
