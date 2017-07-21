@@ -14,10 +14,33 @@ namespace MU\VideoModule\Form\Type\Finder;
 
 use MU\VideoModule\Form\Type\Finder\Base\AbstractMovieFinderType;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
+
 /**
  * Movie finder form type implementation class.
  */
 class MovieFinderType extends AbstractMovieFinderType
 {
-    // feel free to extend the base form type class here
+    /**
+     * Adds a "paste as" field.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addPasteAsField(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('pasteAs', ChoiceType::class, [
+            'label' => $this->__('Paste as') . ':',
+            'empty_data' => 1,
+            'choices' => [
+                $this->__('Relative link to the movie') => 1,
+                $this->__('Absolute url to the movie') => 2,
+                $this->__('Movie') => 3
+            ],
+            'choices_as_values' => true,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+    }
 }

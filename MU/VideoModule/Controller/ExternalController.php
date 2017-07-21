@@ -51,7 +51,7 @@ class ExternalController extends AbstractExternalController
      *
      * @Route("/finder/{objectType}/{editor}/{sort}/{sortdir}/{pos}/{num}",
      *        requirements = {"editor" = "ckeditor|tinymce", "sortdir" = "asc|desc", "pos" = "\d+", "num" = "\d+"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 0},
+     *        defaults = {"sort" = "DESC", "sortdir" = "asc", "pos" = 1, "num" = 0},
      *        methods = {"GET"},
      *        options={"expose"=true}
      * )

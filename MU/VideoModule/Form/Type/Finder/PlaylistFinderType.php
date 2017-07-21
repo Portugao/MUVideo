@@ -19,5 +19,25 @@ use MU\VideoModule\Form\Type\Finder\Base\AbstractPlaylistFinderType;
  */
 class PlaylistFinderType extends AbstractPlaylistFinderType
 {
-    // feel free to extend the base form type class here
+    /**
+     * Adds a "paste as" field.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addPasteAsField(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('pasteAs', ChoiceType::class, [
+            'label' => $this->__('Paste as') . ':',
+            'empty_data' => 1,
+            'choices' => [
+                $this->__('Relative link to the playlist') => 1,
+                $this->__('Absolute url to the playlist') => 2,
+                $this->__('Playlist') => 4
+            ],
+            'choices_as_values' => true,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+    }
 }
