@@ -32,7 +32,7 @@ local.properties
 ## ZIKULA
 ################
 
-
+*.generated.*
 
 #################
 ## Visual Studio

@@ -62,3 +62,10 @@ services:
         tags:
             - { name: zikula.hook_subscriber, areaName: 'subscriber.muvideomodule.ui_hooks.playlists' }
 
+    mu_video_module.hook_provider.filter_hooks.provider:
+        class: MU\VideoModule\HookProvider\FilterHooksProvider
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: zikula.hook_provider, areaName: 'provider.muvideomodule.filter_hooks.video' }
+

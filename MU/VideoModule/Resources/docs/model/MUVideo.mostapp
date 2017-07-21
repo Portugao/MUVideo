@@ -10,11 +10,11 @@ application "Video" {
         targetCoreVersion ZK15 
         generateXmlTemplates false 
         generateIcsTemplates false 
-        generateOnlyBaseClasses false 
+        filterHookProvider ENABLED
         versionAllGeneratedFiles false
         generatePoweredByBacklinksIntoFooterTemplates false
         generateTests false 
-        writeModelToDocs true  markFiles "Resources/views/Collection/display.html.twig"
+        writeModelToDocs true  markFiles "Controller/ExternalController.php,\r\nForm/Type/Finder/MovieFinderType.php,\r\nForm/Type/Finder/PlayListFinderType.php,\r\nHelper/ModelHelper.php,\r\nResources/config/forms.yml,\r\nResources/public/images/admin.png,\r\nResources/public/js/MUVideoModule.Finder.js,\r\nResources/views/Collection/display.html.twig,\r\nResources/views/External/Movie/find.html.twig"
     }
    
         entities { 

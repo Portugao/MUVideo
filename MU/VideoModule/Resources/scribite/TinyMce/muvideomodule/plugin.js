@@ -75,7 +75,7 @@
          */
         getInfo: function () {
             return {
-                longname: 'MUVideoModule for tinymce',
+                longname: 'MUVideoModule for TinyMCE',
                 author: 'Michael Ueberschaer',
                 authorurl: 'http://homepages-mit-zikula.de',
                 infourl: 'http://homepages-mit-zikula.de',

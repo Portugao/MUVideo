@@ -12,7 +12,7 @@ CKEDITOR.plugins.add('muvideomodule', {
         editor.ui.addButton('muvideomodule', {
             label: editor.lang.muvideomodule.title,
             command: 'insertMUVideoModule',
-            icon: this.path.replace('Scribite/CKEditor/muvideomodule', 'public/images') + 'admin.png'
+            icon: this.path.replace('scribite/CKEditor/muvideomodule', 'public/images') + 'admin.png'
         });
     }
 });
