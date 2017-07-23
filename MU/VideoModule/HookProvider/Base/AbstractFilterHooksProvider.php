@@ -28,7 +28,7 @@ abstract class AbstractFilterHooksProvider implements HookProviderInterface
     /**
      * @var TranslatorInterface
      */
-    private $translator;
+    protected $translator;
 
     /**
      * FilterHooksProvider constructor.
