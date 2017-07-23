@@ -14,12 +14,31 @@ namespace MU\VideoModule\HookProvider;
 
 use Zikula\Bundle\HookBundle\Hook\FilterHook;
 use MU\VideoModule\HookProvider\Base\AbstractFilterHooksProvider;
+use MU\VideoModule\Entity\Factory\EntityFactory;
+use Zikula\Common\Translator\TranslatorInterface;
 
 /**
  * Implementation class for filter hooks provider.
  */
 class FilterHooksProvider extends AbstractFilterHooksProvider
 {
+	/**
+	 * @var EntityFactory
+	 */
+	protected $entityFactory;
+	
+	/**
+	 * FilterHooksProvider constructor.
+	 *
+	 * @param TranslatorInterface $translator
+	 */
+	public function __construct(TranslatorInterface $translator,
+			EntityFactory $entityFactory)
+	{
+		$this->translator = $translator;
+		$this->entityFactory = $entityFactory;
+	}
+	
     /**
      * Filters the given data.
      *
@@ -28,13 +47,13 @@ class FilterHooksProvider extends AbstractFilterHooksProvider
     public function applyFilter(FilterHook $hook)
     {
     	$content = $hook->getData();
-    	die('T');
+
     	// we look for youtube video pattern and replace if found one
     	$pattern = "(YOUTUBE)\[([0-9]*)\]";
     	$newData = preg_replace_callback("/$pattern/", 			function ($treffer)
     	{
     		$movieId = $treffer[2];
-    		$movierepository = MUVideo_Util_Model::getMovieRepository();
+    		$movierepository = $this->entityFactory->getRepository('movie');
     		$movie = $movierepository->selectById($movieId);
     		if (is_object($movie)) {
     			$youtubeUrl = $movie['urlOfYoutube'];
@@ -48,8 +67,11 @@ class FilterHooksProvider extends AbstractFilterHooksProvider
     			return '';
     		}
     	}, $content);
-    	$new = 'Hallo';
-        $hook->setData($new);
+        $hook->setData($newData);
+    }
+    
+    protected function setEntityFactory(EntityFactory $entityFactory) {
+    	$this->entityFactory = $entityFactory;
     }
 
     // feel free to add your own convenience methods here

@@ -66,6 +66,7 @@ services:
         class: MU\VideoModule\HookProvider\FilterHooksProvider
         arguments:
             - "@translator.default"
+            - "@mu_video_module.entity_factory"
         tags:
             - { name: zikula.hook_provider, areaName: 'provider.muvideomodule.filter_hooks.video' }
 
