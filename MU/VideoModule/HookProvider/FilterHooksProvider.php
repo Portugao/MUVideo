@@ -39,6 +39,7 @@ class FilterHooksProvider extends AbstractFilterHooksProvider
 		$this->entityFactory = $entityFactory;
 	}
 	
+	
     /**
      * Filters the given data.
      *
@@ -53,8 +54,8 @@ class FilterHooksProvider extends AbstractFilterHooksProvider
     	$newData = preg_replace_callback("/$pattern/", 			function ($treffer)
     	{
     		$movieId = $treffer[2];
-    		$movierepository = $this->entityFactory->getRepository('movie');
-    		$movie = $movierepository->selectById($movieId);
+    		$movieRepository = $this->entityFactory->getRepository('movie');
+    		$movie = $movieRepository->selectById($movieId);
     		if (is_object($movie)) {
     			$youtubeUrl = $movie['urlOfYoutube'];
     			if ($youtubeUrl != '') {
@@ -67,6 +68,30 @@ class FilterHooksProvider extends AbstractFilterHooksProvider
     			return '';
     		}
     	}, $content);
+    	
+    	// we look for youtube playlist pattern and replace if found one
+    	$pattern2 = "(YOUTUBEPLAYLIST)\[([0-9]*)\]";
+    	$newData = preg_replace_callback("/$pattern2/", 			function ($treffer)
+    	{
+    		$playlistId = $treffer[2];
+    		$playlistRepository = $this->entityFactory->getRepository('playlist');
+    		$playlist = $playlistRepository->selectById($playlistId);
+    		if (is_object($playlist)) {
+    			$youtubeUrl = $playlist['urlOfYoutubePlaylist'];
+    			if ($youtubeUrl != '') {
+    				$youtubeUrl = str_replace('https://www.youtube.com/watch?v=', '', $youtubeUrl);
+    				$movieId = strtok($youtubeUrl, '&');
+    				$playlistId = explode('=', $youtubeUrl);
+    				$playlistId = $playlistId[1];
+
+    				return '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" src="https://www.youtube.com/embed/' . $movieId  .'?list=' . $playlistId . '" frameborder="0" allowfullscreen></iframe>';
+        		} else {
+    				return '';
+    			}
+    		} else {
+    			return '';
+    		}
+    	}, $newData);
         $hook->setData($newData);
     }
     
