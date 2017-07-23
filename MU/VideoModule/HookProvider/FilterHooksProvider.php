@@ -28,6 +28,7 @@ class FilterHooksProvider extends AbstractFilterHooksProvider
     public function applyFilter(FilterHook $hook)
     {
     	$content = $hook->getData();
+    	die('T');
     	// we look for youtube video pattern and replace if found one
     	$pattern = "(YOUTUBE)\[([0-9]*)\]";
     	$newData = preg_replace_callback("/$pattern/", 			function ($treffer)
@@ -47,7 +48,8 @@ class FilterHooksProvider extends AbstractFilterHooksProvider
     			return '';
     		}
     	}, $content);
-        $hook->setData('Hallo');
+    	$new = 'Hallo';
+        $hook->setData($new);
     }
 
     // feel free to add your own convenience methods here
