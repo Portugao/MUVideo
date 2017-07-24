@@ -109,7 +109,7 @@ function mUVideoGetPasteSnippet(mode, itemId)
     }
     
     if (pasteMode === '4') {
-        return 'YOUTUBEPLAYLIST[' + itemId + ']';;
+        return 'PLAYLIST[' + itemId + ']';;
     }
 
     // relative link to detail page
