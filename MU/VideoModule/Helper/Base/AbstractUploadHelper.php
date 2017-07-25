@@ -309,7 +309,7 @@ abstract class AbstractUploadHelper
             case 'movie':
                 switch ($fieldName) {
                     case 'uploadOfMovie':
-                        $allowedExtensions = ['mpeg,mpg,mp4'];
+                        $allowedExtensions = ['mpeg', 'mpg', 'mp4'];
                         break;
                     case 'poster':
                         $allowedExtensions = ['gif', 'jpeg', 'jpg', 'png'];
@@ -519,7 +519,7 @@ abstract class AbstractUploadHelper
     {
         $result = true;
     
-        $result &= $this->checkAndCreateUploadFolder('movie', 'uploadOfMovie', 'mpeg,mpg,mp4');
+        $result &= $this->checkAndCreateUploadFolder('movie', 'uploadOfMovie', 'mpeg, mpg, mp4');
         $result &= $this->checkAndCreateUploadFolder('movie', 'poster', 'gif, jpeg, jpg, png');
     
         return $result;

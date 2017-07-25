@@ -218,8 +218,8 @@ abstract class AbstractMovieType extends AbstractType
             ],
             'required' => false && $options['mode'] == 'create',
             'entity' => $options['entity'],
-            'allowed_extensions' => 'mpeg,mpg,mp4',
-            'allowed_size' => ''
+            'allowed_extensions' => 'mpeg, mpg, mp4',
+            'allowed_size' => '200M'
         ]);
         
         $builder->add('urlOfYoutube', UrlType::class, [

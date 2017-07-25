@@ -15,7 +15,7 @@ application "Video" {
         generatePoweredByBacklinksIntoFooterTemplates false
         generateTests false 
         writeModelToDocs true  skipFiles "README.md,\r\nResources/public/images/admin.png,\r\nResources/public/images/admin_b.png,\r\nResources/public/images/admin_w.png"
-        markFiles "composer.json,\r\nzikula.manifest.json,\r\nVideoModuleInstaller.php,\r\nForm/Type/Finder/MovieFinderTYpe.php,\r\nForm/Type/Finder/PlaylistFinderType.php,\r\nHelper/ControllerHelper.php,\r\nHookProvider/FilterHooksProvider.php,\r\nResources/config/forms.yml,\r\nResources/public/css/style.css,\r\nResources/public/js/MUVideoModule.Finder.js,\r\nResources/views/Collection/display.html.twig"
+        markFiles "composer.json,\r\nzikula.manifest.json,\r\nVideoModuleInstaller.php,\r\nController/ExternalController.php,\r\nForm/Type/Finder/MovieFinderType.php,\r\nForm/Type/Finder/PlaylistFinderType.php,\r\nHelper/ControllerHelper.php,\r\nHookProvider/FilterHooksProvider.php,\r\nResources/config/hooks.yml,\r\nResources/config/forms.yml,\r\nResources/public/css/style.css,\r\nResources/public/js/MUVideoModule.Finder.js,\r\nResources/views/Collection/display.html.twig"
     }
    
         entities { 
@@ -50,7 +50,8 @@ application "Video" {
                     upload "uploadOfMovie" 
                     { 
                         mandatory false 
-                    allowedExtensions "mpeg,mpg,mp4"
+                    allowedExtensions "mpeg, mpg, mp4"
+                    maxSize "200M"
                     mimeTypes "video/*"
                 } , 
                     url "urlOfYoutube" 
