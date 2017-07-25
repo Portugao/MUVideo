@@ -141,3 +141,13 @@ div.muvideomodule-view .avatar img {
         padding: 0;
     }
 }
+
+/*****************OWN**********************/
+
+.youtube-description {
+	margin: 15px 0;
+}
+
+.video-title, .playlist-title {
+	font-size: 1.2em;
+}
