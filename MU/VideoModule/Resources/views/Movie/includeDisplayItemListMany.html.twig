@@ -11,18 +11,18 @@
 <h4 class="list-group-item-heading">
 {% spaceless %}
 {% if not noLink %}
-    <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': item.getId() }) }}" title="{{ item|muvideomodule_formattedTitle|e('html_attr') }}">
+    <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', {'id': item.getId()}) }}" title="{{ item|muvideomodule_formattedTitle|e('html_attr') }}">
 {% endif %}
     {{ item|muvideomodule_formattedTitle }}
 {% if not noLink %}
     </a>
-    <a id="movieItem{{ item.getKey() }}Display" href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': item.getId(), 'raw': 1 }) }}" title="{{ __('Open quick view window') }}" class="muvideo-inline-window hidden" data-modal-title="{{ item|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+    <a id="movieItem{{ item.getKey() }}Display" href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', {'id': item.getId(), raw: 1}) }}" title="{{ __('Open quick view window') }}" class="muvideo-inline-window hidden" data-modal-title="{{ item|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
 {% endif %}
 {% endspaceless %}
 </h4>
-{% if item.uploadOfMovie is not empty and item.uploadOfMovieMeta.isImage %}
+{% if item.poster is not empty and item.posterMeta.isImage %}
     <p class="list-group-item-text">
-        <img src="{{ item.uploadOfMovie.getPathname()|imagine_filter('zkroot', relationThumbRuntimeOptions) }}" alt="{{ item|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ relationThumbRuntimeOptions.thumbnail.size[0] }}" height="{{ relationThumbRuntimeOptions.thumbnail.size[1] }}" class="img-rounded" />
+        <img src="{{ item.poster.getPathname()|imagine_filter('zkroot', relationThumbRuntimeOptions) }}" alt="{{ item|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ relationThumbRuntimeOptions.thumbnail.size[0] }}" height="{{ relationThumbRuntimeOptions.thumbnail.size[1] }}" class="img-rounded" />
     </p>
 {% endif %}
     </li>

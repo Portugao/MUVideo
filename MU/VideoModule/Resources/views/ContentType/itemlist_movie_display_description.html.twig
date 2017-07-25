@@ -5,7 +5,7 @@
         {% if movie.description %}
             <dd>{{ movie.description|striptags|truncate(200, true, '&hellip;') }}</dd>
         {% endif %}
-        <dd><a href="{{ path('muvideomodule_movie_display', { 'id': movie.getId() }) }}">{{ __('Read more') }}</a>
+        <dd><a href="{{ path('muvideomodule_movie_display', {'id': movie.getId()}) }}">{{ __('Read more') }}</a>
         </dd>
     {% else %}
         <dt>{{ __('No entries found.') }}</dt>

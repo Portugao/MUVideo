@@ -2,10 +2,10 @@
 {{ pageAddAsset('javascript', asset('magnific-popup/jquery.magnific-popup.min.js')) }}
 {{ pageAddAsset('stylesheet', asset('magnific-popup/magnific-popup.css')) }}
 {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.js')) }}
-<div id="movie{$movie->getKey()}" class="muvideomodule-external-movie">
+<div id="movie{{ movie.getKey() }}" class="muvideomodule-external-movie">
 {% if displayMode == 'link' %}
     <p class="muvideomodule-external-link">
-    <a href="{{ path('muvideomodule_movie_display', { 'id': movie.getId() }) }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}">
+    <a href="{{ path('muvideomodule_movie_display', {'id': movie.getId()}) }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}">
     {{ movie|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.movies.filter')|safeHtml }}
     </a>
     </p>
@@ -22,13 +22,13 @@
 {% if displayMode == 'link' %}
 {% elseif displayMode == 'embed' %}
     <div class="muvideomodule-external-snippet">
-        {% if movie.uploadOfMovie is not empty and movie.uploadOfMovieMeta|default %}
-                    <a href="{{ movie.uploadOfMovieUrl }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}"{% if movie.uploadOfMovieMeta.isImage %} class="image-link"{% endif %}>
-        {% if movie.uploadOfMovieMeta.isImage %}
-            {% set thumbOptions = attribute(thumbRuntimeOptions, 'movieUploadOfMovie') %}
-            <img src="{{ movie.uploadOfMovie.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+        {% if movie.poster is not empty and movie.posterMeta|default %}
+                    <a href="{{ movie.posterUrl }}" title="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}"{% if movie.posterMeta.isImage %} class="image-link"{% endif %}>
+        {% if movie.posterMeta.isImage %}
+            {% set thumbOptions = attribute(thumbRuntimeOptions, 'moviePoster') %}
+            <img src="{{ movie.poster.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ movie|muvideomodule_formattedTitle|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
         {% else %}
-            {{ __('Download') }} ({{ movie.uploadOfMovieMeta.size|muvideomodule_fileSize(movie.uploadOfMovie.getPathname(), false, false) }})
+            {{ __('Download') }} ({{ movie.posterMeta.size|muvideomodule_fileSize(movie.poster.getPathname(), false, false) }})
         {% endif %}
         </a>
         {% else %}&nbsp;{% endif %}

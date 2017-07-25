@@ -7,7 +7,7 @@
 
     {{ block('page_nav_links') }}
 
-    {{ include('@MUVideoModule/Collection/viewQuickNav.html.twig', { workflowStateFilter: false }) }}{# see template file for available options #}
+    {{ include('@MUVideoModule/Collection/viewQuickNav.html.twig', {workflowStateFilter: false}) }}{# see template file for available options #}
 
     {% if routeArea == 'admin' %}
     <form action="{{ path('muvideomodule_collection_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="collectionsViewForm" class="form-horizontal" role="form">
@@ -49,14 +49,14 @@
                     </td>
                 {% endif %}
                 <td id="itemActions{{ collection.getKey() }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
-                    {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], { entity: collection, area: routeArea, context: 'view' }) %}
+                    {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], {entity: collection, area: routeArea, context: 'view'}) %}
                     <div class="dropdown">
                         <a id="itemActions{{ collection.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
-                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+                        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
                     </div>
                 </td>
                 <td headers="hTitle" class="text-left">
-                    <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': collection.getId() }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ collection.title|notifyFilters('muvideomodule.filterhook.collections')|safeHtml }}</a>
+                    <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': collection.getId()}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ collection.title|notifyFilters('muvideomodule.filterhook.collections')|safeHtml }}</a>
                 </td>
                 <td headers="hDescription" class="text-left">
                     {{ collection.description|safeHtml|truncate(50) }}
@@ -75,7 +75,7 @@
         </div>
         
         {% if all != 1 and pager|default %}
-            {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'muvideomodule_collection_' ~ routeArea ~ 'view'}) }}
+            {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'muvideomodule_collection_' ~ routeArea ~ 'view'}) }}
         {% endif %}
     {% if routeArea == 'admin' %}
             <fieldset>
@@ -110,7 +110,7 @@
             <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
         {% else %}
             {% set linkTitle = __('Show all entries') %}
-            <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+            <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'view', {all: 1}) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
         {% endif %}
     </p>
 {% endblock %}

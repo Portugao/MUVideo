@@ -84,10 +84,10 @@
                 </div>
                 
                 {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'collection') %}
-                    {{ include('@MUVideoModule/Helper/includeCategoriesEdit.html.twig', { obj: collection, tabs: true }) }}
+                    {{ include('@MUVideoModule/Helper/includeCategoriesEdit.html.twig', {obj: collection, tabs: true}) }}
                 {% endif %}
                 {% if mode != 'create' %}
-                    {{ include('@MUVideoModule/Helper/includeStandardFieldsEdit.html.twig', { obj: collection, tabs: true }) }}
+                    {{ include('@MUVideoModule/Helper/includeStandardFieldsEdit.html.twig', {obj: collection, tabs: true}) }}
                 {% endif %}
                 
                 {% if formHookTemplates|length > 0 %}

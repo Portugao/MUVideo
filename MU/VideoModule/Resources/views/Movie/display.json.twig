@@ -1,2 +1,2 @@
 {# purpose of this template: movies display json view #}
-{{ movie.toJson() }}
+{{ movie.toArray()|json_encode() }}

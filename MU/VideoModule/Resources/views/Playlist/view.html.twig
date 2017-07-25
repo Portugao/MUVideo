@@ -7,7 +7,7 @@
 
     {{ block('page_nav_links') }}
 
-    {{ include('@MUVideoModule/Playlist/viewQuickNav.html.twig', { workflowStateFilter: false }) }}{# see template file for available options #}
+    {{ include('@MUVideoModule/Playlist/viewQuickNav.html.twig', {workflowStateFilter: false}) }}{# see template file for available options #}
 
     {% if routeArea == 'admin' %}
     <form action="{{ path('muvideomodule_playlist_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="playlistsViewForm" class="form-horizontal" role="form">
@@ -57,14 +57,14 @@
                     </td>
                 {% endif %}
                 <td id="itemActions{{ playlist.getKey() }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
-                    {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], { entity: playlist, area: routeArea, context: 'view' }) %}
+                    {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], {entity: playlist, area: routeArea, context: 'view'}) %}
                     <div class="dropdown">
                         <a id="itemActions{{ playlist.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
-                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+                        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
                     </div>
                 </td>
                 <td headers="hTitle" class="text-left">
-                    <a href="{{ path('muvideomodule_playlist_' ~ routeArea ~ 'display', { 'id': playlist.getId() }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ playlist.title|notifyFilters('muvideomodule.filterhook.playlists')|safeHtml }}</a>
+                    <a href="{{ path('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ playlist.title|notifyFilters('muvideomodule.filterhook.playlists')|safeHtml }}</a>
                 </td>
                 <td headers="hDescription" class="text-left">
                     {{ playlist.description|safeHtml|truncate(50) }}
@@ -74,10 +74,10 @@
                 </td>
                 <td headers="hCollection" class="text-left">
                     {% if playlist.collection|default %}
-                        <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.getId() }) }}">{% spaceless %}
+                        <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': playlist.collection.getId()}) }}">{% spaceless %}
                           {{ playlist.collection|muvideomodule_formattedTitle }}
                         {% endspaceless %}</a>
-                        <a id="collectionItem{{ playlist.getKey() }}_rel_{{ playlist.collection.getKey() }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.getId(), 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ playlist.collection|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+                        <a id="collectionItem{{ playlist.getKey() }}_rel_{{ playlist.collection.getKey() }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': playlist.collection.getId(), raw: 1}) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ playlist.collection|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
                     {% else %}
                         {{ __('Not set.') }}
                     {% endif %}
@@ -96,7 +96,7 @@
         </div>
         
         {% if all != 1 and pager|default %}
-            {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'muvideomodule_playlist_' ~ routeArea ~ 'view'}) }}
+            {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'muvideomodule_playlist_' ~ routeArea ~ 'view'}) }}
         {% endif %}
     {% if routeArea == 'admin' %}
             <fieldset>
@@ -131,7 +131,7 @@
             <a href="{{ path('muvideomodule_playlist_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
         {% else %}
             {% set linkTitle = __('Show all entries') %}
-            <a href="{{ path('muvideomodule_playlist_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+            <a href="{{ path('muvideomodule_playlist_' ~ routeArea ~ 'view', {all: 1}) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
         {% endif %}
     </p>
 {% endblock %}

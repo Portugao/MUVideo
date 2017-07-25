@@ -63,13 +63,13 @@
         
         {{ include(
             '@MUVideoModule/Collection/includeSelectOne.html.twig',
-            { group: 'playlist', alias: 'collection', aliasReverse: 'playlists', mandatory: false, idPrefix: 'videoPlaylist_Collection', linkingItem: playlist, displayMode: 'choices' }
+            {group: 'playlist', alias: 'collection', aliasReverse: 'playlists', mandatory: false, idPrefix: 'videoPlaylist_Collection', linkingItem: playlist, displayMode: 'choices'}
         ) }}
         {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'playlist') %}
-            {{ include('@MUVideoModule/Helper/includeCategoriesEdit.html.twig', { obj: playlist }) }}
+            {{ include('@MUVideoModule/Helper/includeCategoriesEdit.html.twig', {obj: playlist}) }}
         {% endif %}
         {% if mode != 'create' %}
-            {{ include('@MUVideoModule/Helper/includeStandardFieldsEdit.html.twig', { obj: playlist }) }}
+            {{ include('@MUVideoModule/Helper/includeStandardFieldsEdit.html.twig', {obj: playlist}) }}
         {% endif %}
         
         {% if formHookTemplates|length > 0 %}

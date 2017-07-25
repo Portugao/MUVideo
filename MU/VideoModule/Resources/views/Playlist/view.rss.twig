@@ -36,8 +36,8 @@
 {% endblock %}
 {% block entry_content %}
     <title><![CDATA[{% if playlist.updatedDate|default %}{{ playlist.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ playlist|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.playlists')|safeHtml }}]]></title>
-    <link>{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', { 'id': playlist.getId() }) }}</link>
-    <guid>{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', { 'id': playlist.getId() }) }}</guid>
+    <link>{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}</link>
+    <guid>{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}</guid>
     {% if playlist.createdBy|default and playlist.createdBy.getUid() > 0 %}
         {% set creatorAttributes = playlist.createdBy.getAttributes() %}
         <author>{{ playlist.createdBy.getEmail() }} ({{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(playlist.createdBy.getUname()) }})</author>
@@ -45,7 +45,7 @@
     <category><![CDATA[{{ __('Categories') }}: {% for propName, catMapping in playlist.categories %}{{ catMapping.category.display_name[lang] }}{% if not loop.last %}, {% endif %}{% endfor %}]]></category>
     <description>
         <![CDATA[
-        {{ playlist.description|replace({ '<br>': '<br />' }) }}
+        {{ playlist.description|replace({'<br>': '<br />'}) }}
         ]]>
     </description>
     {% if playlist.createdDate|default %}

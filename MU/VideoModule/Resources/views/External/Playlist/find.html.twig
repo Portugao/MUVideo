@@ -8,13 +8,13 @@
             <ul class="nav nav-tabs">
             {% set activatedObjectTypes = getModVar('MUVideoModule', 'enabledFinderTypes', []) %}
             {% if 'collection' in activatedObjectTypes %}
-                <li{{ objectType == 'collection' ? ' class="active"' : '' }}><a href="{{ path('muvideomodule_external_finder', {'objectType': 'collection', 'editor': editorName}) }}" title="{{ __('Search and select collection') }}">{{ __('Collections') }}</a></li>
+                <li{{ objectType == 'collection' ? ' class="active"' : '' }}><a href="{{ path('muvideomodule_external_finder', {objectType: 'collection', editor: editorName}) }}" title="{{ __('Search and select collection') }}">{{ __('Collections') }}</a></li>
             {% endif %}
             {% if 'movie' in activatedObjectTypes %}
-                <li{{ objectType == 'movie' ? ' class="active"' : '' }}><a href="{{ path('muvideomodule_external_finder', {'objectType': 'movie', 'editor': editorName}) }}" title="{{ __('Search and select movie') }}">{{ __('Movies') }}</a></li>
+                <li{{ objectType == 'movie' ? ' class="active"' : '' }}><a href="{{ path('muvideomodule_external_finder', {objectType: 'movie', editor: editorName}) }}" title="{{ __('Search and select movie') }}">{{ __('Movies') }}</a></li>
             {% endif %}
             {% if 'playlist' in activatedObjectTypes %}
-                <li{{ objectType == 'playlist' ? ' class="active"' : '' }}><a href="{{ path('muvideomodule_external_finder', {'objectType': 'playlist', 'editor': editorName}) }}" title="{{ __('Search and select playlist') }}">{{ __('Playlists') }}</a></li>
+                <li{{ objectType == 'playlist' ? ' class="active"' : '' }}><a href="{{ path('muvideomodule_external_finder', {objectType: 'playlist', editor: editorName}) }}" title="{{ __('Search and select playlist') }}">{{ __('Playlists') }}</a></li>
             {% endif %}
             </ul>
         </div>
@@ -22,7 +22,7 @@
             '@MUVideoModule/Form/bootstrap_3.html.twig',
             'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
         ] %}
-        {{ form_start(finderForm, {attr: { id: 'mUVideoModuleSelectorForm' }}) }}
+        {{ form_start(finderForm, {attr: {id: 'mUVideoModuleSelectorForm'}}) }}
         {{ form_errors(finderForm) }}
         <fieldset>
             <legend>{{ __('Search and select playlist') }}</legend>
@@ -42,8 +42,8 @@
                                     <a href="#" data-itemid="{{ itemId }}">
                                         {{ playlist|muvideomodule_formattedTitle }}
                                     </a>
-                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('muvideomodule_playlist_display', { 'id': playlist.getId() }) }}" />
-                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('muvideomodule_playlist_display', { 'id': playlist.getId() }) }}" />
+                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('muvideomodule_playlist_display', {'id': playlist.getId()}) }}" />
+                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('muvideomodule_playlist_display', {'id': playlist.getId()}) }}" />
                                     <input type="hidden" id="title{{ itemId }}" value="{{ playlist|muvideomodule_formattedTitle|e('html_attr') }}" />
                                     <input type="hidden" id="desc{{ itemId }}" value="{% set description %}{% if playlist.description is not empty %}{{ playlist.description }}{% endif %}
                                     {% endset %}{{ description|striptags|e('html_attr') }}" />
@@ -61,7 +61,7 @@
             {{ form_row(finderForm.num) }}
             {{ form_row(finderForm.q) }}
             <div>
-                {{ pager({ display: 'page', rowcount: pager.numitems, limit: pager.itemsperpage, posvar: 'pos', maxpages: 10, route: 'muvideomodule_external_finder'}) }}
+                {{ pager({display: 'page', rowcount: pager.numitems, limit: pager.itemsperpage, posvar: 'pos', maxpages: 10, route: 'muvideomodule_external_finder'}) }}
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">

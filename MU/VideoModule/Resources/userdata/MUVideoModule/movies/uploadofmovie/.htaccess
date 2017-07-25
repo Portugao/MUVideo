@@ -14,7 +14,7 @@
     Require all denied
 </IfModule>
 
-<FilesMatch "\.(gif|jpeg|jpg|png)$">
+<FilesMatch "\.(mpeg,mpg,mp4)$">
     # Apache 2.2
     <IfModule !mod_authz_core.c>
         Order allow,deny

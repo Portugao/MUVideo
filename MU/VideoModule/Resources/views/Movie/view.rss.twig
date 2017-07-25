@@ -36,8 +36,8 @@
 {% endblock %}
 {% block entry_content %}
     <title><![CDATA[{% if movie.updatedDate|default %}{{ movie.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ movie|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.movies')|safeHtml }}]]></title>
-    <link>{{ url('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': movie.getId() }) }}</link>
-    <guid>{{ url('muvideomodule_movie_' ~ routeArea ~ 'display', { 'id': movie.getId() }) }}</guid>
+    <link>{{ url('muvideomodule_movie_' ~ routeArea ~ 'display', {'id': movie.getId()}) }}</link>
+    <guid>{{ url('muvideomodule_movie_' ~ routeArea ~ 'display', {'id': movie.getId()}) }}</guid>
     {% if movie.createdBy|default and movie.createdBy.getUid() > 0 %}
         {% set creatorAttributes = movie.createdBy.getAttributes() %}
         <author>{{ movie.createdBy.getEmail() }} ({{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(movie.createdBy.getUname()) }})</author>
@@ -45,7 +45,7 @@
     <category><![CDATA[{{ __('Categories') }}: {% for propName, catMapping in movie.categories %}{{ catMapping.category.display_name[lang] }}{% if not loop.last %}, {% endif %}{% endfor %}]]></category>
     <description>
         <![CDATA[
-        {{ movie.description|replace({ '<br>': '<br />' }) }}
+        {{ movie.description|replace({'<br>': '<br />'}) }}
         ]]>
     </description>
     {% if movie.createdDate|default %}

@@ -24,9 +24,6 @@
                 <a id="imagesTabDrop" class="dropdown-toggle" href="#" data-toggle="dropdown" aria-controls="imagesTabDropSections" aria-expanded="false" title="{{ tabTitle|e('html_attr') }}">{{ tabTitle }}<span class="caret"></span></a>
                 <ul id="imagesTabDropSections" class="dropdown-menu" aria-labelledby="imagesTabDrop">
                 <li>
-                    <a id="imagesMovieUploadOfMovieTab" href="#tabImagesMovieUploadOfMovie" role="tab" data-toggle="tab" aria-controls="tabImagesMovieUploadOfMovie">{{ __('Movies upload of movie') }}</a>
-                </li>
-                <li>
                     <a id="imagesMoviePosterTab" href="#tabImagesMoviePoster" role="tab" data-toggle="tab" aria-controls="tabImagesMoviePoster">{{ __('Movies poster') }}</a>
                 </li>
                 </ul>
@@ -56,7 +53,6 @@
                         {{ form_row(form.standardPoster) }}
                         {{ form_row(form.youtubeApi) }}
                         {{ form_row(form.channelIds) }}
-                        {{ form_row(form.supportedModules) }}
                         {{ form_row(form.overrideVars) }}
                     </fieldset>
                 </div>
@@ -73,25 +69,6 @@
                         {{ form_row(form.linkOwnMoviesOnAccountPage) }}
                         {{ form_row(form.playlistEntriesPerPage) }}
                         {{ form_row(form.linkOwnPlaylistsOnAccountPage) }}
-                    </fieldset>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tabImagesMovieUploadOfMovie" aria-labelledby="imagesMovieUploadOfMovieTab">
-                    {% set tabTitle = __('Image settings for movies upload of movie') %}
-                    <fieldset>
-                        <legend>{{ tabTitle }}</legend>
-                
-                        {{ form_row(form.enableShrinkingForMovieUploadOfMovie) }}
-                        <div id="shrinkDetailsMovieUploadOfMovie">
-                        {{ form_row(form.shrinkWidthMovieUploadOfMovie) }}
-                        {{ form_row(form.shrinkHeightMovieUploadOfMovie) }}
-                        </div>
-                        {{ form_row(form.thumbnailModeMovieUploadOfMovie) }}
-                        {{ form_row(form.thumbnailWidthMovieUploadOfMovieView) }}
-                        {{ form_row(form.thumbnailHeightMovieUploadOfMovieView) }}
-                        {{ form_row(form.thumbnailWidthMovieUploadOfMovieDisplay) }}
-                        {{ form_row(form.thumbnailHeightMovieUploadOfMovieDisplay) }}
-                        {{ form_row(form.thumbnailWidthMovieUploadOfMovieEdit) }}
-                        {{ form_row(form.thumbnailHeightMovieUploadOfMovieEdit) }}
                     </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tabImagesMoviePoster" aria-labelledby="imagesMoviePosterTab">
@@ -131,11 +108,11 @@
                         <p class="alert alert-info">{{ __('Here you can inspect and amend the existing workflows.') }}</p>
                 
                         <h4>{{ __('Collections') }}</h4>
-                        <p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'muvideomodule_none' }) }}" title="{{ __('Edit workflow for collections') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit collections workflow') }}</a>
+                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'muvideomodule_none'}) }}" title="{{ __('Edit workflow for collections') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit collections workflow') }}</a>
                         <h4>{{ __('Movies') }}</h4>
-                        <p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'muvideomodule_none' }) }}" title="{{ __('Edit workflow for movies') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit movies workflow') }}</a>
+                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'muvideomodule_none'}) }}" title="{{ __('Edit workflow for movies') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit movies workflow') }}</a>
                         <h4>{{ __('Playlists') }}</h4>
-                        <p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'muvideomodule_none' }) }}" title="{{ __('Edit workflow for playlists') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit playlists workflow') }}</a>
+                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'muvideomodule_none'}) }}" title="{{ __('Edit workflow for playlists') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit playlists workflow') }}</a>
                     </fieldset>
                 </div>
             </div>

@@ -1,2 +1,2 @@
 {# purpose of this template: playlists display json view #}
-{{ playlist.toJson() }}
+{{ playlist.toArray()|json_encode() }}

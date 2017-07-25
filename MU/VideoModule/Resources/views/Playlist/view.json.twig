@@ -2,6 +2,6 @@
 [
 {% for playlist in items %}
     {% if not loop.first %},{% endif %}
-    {{ playlist.toJson() }}
+    {{ playlist.toArray()|json_encode() }}
 {% endfor %}
 ]

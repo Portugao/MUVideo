@@ -4,7 +4,7 @@
 {% block admin_page_icon 'trash-o' %}
 {% block content %}
     <div class="muvideomodule-movie muvideomodule-delete">
-        <p class="alert alert-warning">{{ __f('Do you really want to delete this movie: "%name%" ?', { '%name%': movie|muvideomodule_formattedTitle }) }}</p>
+        <p class="alert alert-warning">{{ __f('Do you really want to delete this movie: "%name%" ?', {'%name%': movie|muvideomodule_formattedTitle}) }}</p>
 
         {% form_theme deleteForm with [
             '@MUVideoModule/Form/bootstrap_3.html.twig',

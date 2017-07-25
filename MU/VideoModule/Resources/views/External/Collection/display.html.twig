@@ -1,8 +1,8 @@
 {# Purpose of this template: Display one certain collection within an external context #}
-<div id="collection{$collection->getKey()}" class="muvideomodule-external-collection">
+<div id="collection{{ collection.getKey() }}" class="muvideomodule-external-collection">
 {% if displayMode == 'link' %}
     <p class="muvideomodule-external-link">
-    <a href="{{ path('muvideomodule_collection_display', { 'id': collection.getId() }) }}" title="{{ collection|muvideomodule_formattedTitle|e('html_attr') }}">
+    <a href="{{ path('muvideomodule_collection_display', {'id': collection.getId()}) }}" title="{{ collection|muvideomodule_formattedTitle|e('html_attr') }}">
     {{ collection|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.collections.filter')|safeHtml }}
     </a>
     </p>

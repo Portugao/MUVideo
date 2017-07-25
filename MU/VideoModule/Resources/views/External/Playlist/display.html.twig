@@ -1,8 +1,8 @@
 {# Purpose of this template: Display one certain playlist within an external context #}
-<div id="playlist{$playlist->getKey()}" class="muvideomodule-external-playlist">
+<div id="playlist{{ playlist.getKey() }}" class="muvideomodule-external-playlist">
 {% if displayMode == 'link' %}
     <p class="muvideomodule-external-link">
-    <a href="{{ path('muvideomodule_playlist_display', { 'id': playlist.getId() }) }}" title="{{ playlist|muvideomodule_formattedTitle|e('html_attr') }}">
+    <a href="{{ path('muvideomodule_playlist_display', {'id': playlist.getId()}) }}" title="{{ playlist|muvideomodule_formattedTitle|e('html_attr') }}">
     {{ playlist|muvideomodule_formattedTitle|notifyFilters('video.filter_hooks.playlists.filter')|safeHtml }}
     </a>
     </p>

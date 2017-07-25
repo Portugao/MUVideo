@@ -5,10 +5,10 @@
 {% block title %}
     {% set templateTitle = playlist|muvideomodule_formattedTitle|default(__('Playlist')) %}
     {{ templateTitle|notifyFilters('muvideomodule.filter_hooks.playlists.filter')|safeHtml }}
-    {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], { entity: playlist, area: routeArea, context: 'display' }) %}
+    {% set itemActions = knp_menu_get('MUVideoModule:ItemActionsMenu:menu', [], {entity: playlist, area: routeArea, context: 'display'}) %}
     <div class="dropdown">
         <a id="itemActions{{ playlist.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
-        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
     </div>
 {% endblock %}
 {% block admin_page_icon 'eye' %}
@@ -38,10 +38,10 @@
             <dt>{{ __('Collection') }}</dt>
             <dd>
               {% if not isQuickView %}
-                  <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.getId() }) }}">{% spaceless %}
+                  <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': playlist.collection.getId()}) }}">{% spaceless %}
                     {{ playlist.collection|muvideomodule_formattedTitle }}
                   {% endspaceless %}</a>
-                  <a id="collectionItem{{ playlist.collection.getKey() }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', { 'id': playlist.collection.getId(), 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ playlist.collection|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+                  <a id="collectionItem{{ playlist.collection.getKey() }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': playlist.collection.getId(), raw: 1}) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ playlist.collection|muvideomodule_formattedTitle|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
               {% else %}
                   {{ playlist.collection|muvideomodule_formattedTitle }}
               {% endif %}
@@ -51,9 +51,9 @@
     </dl>
 
     {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'playlist') %}
-        {{ include('@MUVideoModule/Helper/includeCategoriesDisplay.html.twig', { obj: playlist }) }}
+        {{ include('@MUVideoModule/Helper/includeCategoriesDisplay.html.twig', {obj: playlist}) }}
     {% endif %}
-    {{ include('@MUVideoModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: playlist }) }}
+    {{ include('@MUVideoModule/Helper/includeStandardFieldsDisplay.html.twig', {obj: playlist}) }}
 
     {{ block('display_hooks') }}
 </div>

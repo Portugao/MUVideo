@@ -2,6 +2,6 @@
 [
 {% for movie in items %}
     {% if not loop.first %},{% endif %}
-    {{ movie.toJson() }}
+    {{ movie.toArray()|json_encode() }}
 {% endfor %}
 ]
