@@ -35,7 +35,8 @@ class PlaylistFinderType extends AbstractPlaylistFinderType
             'choices' => [
                 $this->__('Relative link to the playlist') => 1,
                 $this->__('Absolute url to the playlist') => 2,
-                $this->__('Playlist') => 4
+                $this->__('Playlist') => 4,
+            	$this->__('Playlist with description') => 11
             ],
             'choices_as_values' => true,
             'multiple' => false,

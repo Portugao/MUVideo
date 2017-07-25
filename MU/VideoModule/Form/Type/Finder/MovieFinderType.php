@@ -36,7 +36,8 @@ class MovieFinderType extends AbstractMovieFinderType
             'choices' => [
                 $this->__('Relative link to the movie') => 1,
                 $this->__('Absolute url to the movie') => 2,
-                $this->__('Movie') => 3
+                $this->__('Movie') => 3,
+            	$this->__('Movie with description') => 10            		
             ],
             'choices_as_values' => true,
             'multiple' => false,
