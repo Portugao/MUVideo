@@ -37,7 +37,7 @@ class VideoModuleInstaller extends AbstractVideoModuleInstaller
     
         // Upgrade dependent on old version number
         switch ($oldVersion) {
-        			case '1.0.0' :
+        		case '1.0.0' :
 				// update the database schema
 				try {
 					DoctrineHelper::updateSchema ( $this->entityManager, $this->listEntityClasses () );
