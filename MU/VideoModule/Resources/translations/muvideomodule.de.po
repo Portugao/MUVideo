@@ -1,0 +1,1262 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 2.0.2\n"
+
+msgid "%title%"
+msgstr "%title%"
+
+msgid "10"
+msgstr "10"
+
+msgid "100"
+msgstr "100"
+
+msgid "15"
+msgstr "15"
+
+msgid "20"
+msgstr "20"
+
+msgid "30"
+msgstr "30"
+
+msgid "5"
+msgstr "5"
+
+msgid "50"
+msgstr "50"
+
+msgid "A direct feed showing the list of collections"
+msgstr "Ein Feed der die Kollektionenliste anzeigt"
+
+msgid "A direct feed showing the list of movies"
+msgstr "Ein Feed der die Filmliste anzeigt"
+
+msgid "A direct feed showing the list of playlists"
+msgstr "Ein Feed der die Playlisten Liste anzeigt"
+
+#, fuzzy
+msgid "Absolute url to the collection"
+msgstr "Absolute url to the collection"
+
+#, fuzzy
+msgid "Absolute url to the movie"
+msgstr "Absolute url to the movie"
+
+#, fuzzy
+msgid "Absolute url to the playlist"
+msgstr "Absolute url to the playlist"
+
+msgid "Actions"
+msgstr "Aktionen"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All except approved"
+msgstr "Alle ausgenommen freigegebene"
+
+msgid "Allowed file extensions"
+msgstr "Allowed file extensions"
+
+msgid "Allowed file size"
+msgstr "Erlaubte Dateigröße"
+
+msgid "Amount"
+msgstr "Anzahl"
+
+msgid "An error occured during creation of the .htaccess file in directory \"%path%\"."
+msgstr "Ein Fehler ist während der Erstellung der .htaccess  Datei im Ordner \"%path%\" aufgetreten."
+
+msgid "An error was encountered while updating tables for the %s extension."
+msgstr "Ein Fehler ist während der Aktualisierung der Tabellen für die Erweiterung %s aufgetreten."
+
+msgid "Approved"
+msgstr "Freigegeben"
+
+msgid "Ascending"
+msgstr "Ascending"
+
+msgid "Back to overview"
+msgstr "Zur Übersicht"
+
+msgid "Back to paginated view"
+msgstr "Zurück zur Seitenansicht"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Bytes"
+msgstr "Bytes"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Categories"
+msgstr "Kategorien"
+
+msgid "Category"
+msgstr "Kategorie"
+
+msgid "Change selection"
+msgstr "Auswahl ändern"
+
+msgid "Channel"
+msgstr "Kanal"
+
+msgid "Channel for import."
+msgstr "Kanal für Import."
+
+msgid "Channel ids"
+msgstr "Channel IDs"
+
+msgid "Choose action"
+msgstr "Auswahlaktion"
+
+#, fuzzy
+msgid "Choose the channel for import."
+msgstr "Choose the channel for import."
+
+msgid "Choose the collection"
+msgstr "Wähle Kollektion"
+
+msgid "Choose the enabled finder types."
+msgstr "Wähle die aktivierten Finder Typen."
+
+msgid "Choose the thumbnail mode."
+msgstr "Wähle den Thumbnail Modus"
+
+#, fuzzy
+msgid "Collection"
+msgstr "Collection"
+
+#, fuzzy
+msgid "Collection entries per page"
+msgstr "Collection entries per page"
+
+#, fuzzy
+msgid "Collection filter hooks subscriber"
+msgstr "Collection filter hooks subscriber"
+
+#, fuzzy
+msgid "Collection form aware subscriber"
+msgstr "Collection form aware subscriber"
+
+msgid "Collection list"
+msgstr "Kollektionenliste"
+
+#, fuzzy
+msgid "Collection ui hooks subscriber"
+msgstr "Collection ui hooks subscriber"
+
+msgid "Collections"
+msgstr "Kollektionen"
+
+#, fuzzy
+msgid "Collections list"
+msgstr "Collections list"
+
+msgid "Configuration"
+msgstr "Einstellungen"
+
+msgid "Confirmation prompt"
+msgstr "Sicherheitsabfrage"
+
+msgid "Content has been approved and is available online."
+msgstr "Inhalt wurde freigegeben und ist nun online verfügbar."
+
+msgid "Create another item after save"
+msgstr "Erstelle ein weiteres Element nach dem Speichern"
+
+msgid "Create collection"
+msgstr "Erstelle Kollektion"
+
+msgid "Create movie"
+msgstr "Film erstellen"
+
+msgid "Create playlist"
+msgstr "Playliste erstellen"
+
+msgid "Created by %user"
+msgstr "Erstellt von %user"
+
+msgid "Created by %user on %date"
+msgstr "Erstellt von %user am %date"
+
+msgid "Created on %date"
+msgstr "Erstellt am %date"
+
+msgid "Creation"
+msgstr "Erstellung"
+
+msgid "Creation and update"
+msgstr "Erstellung und Aktualisierung"
+
+msgid "Creation date"
+msgstr "Erstelldatum"
+
+msgid "Creator"
+msgstr "Ersteller"
+
+msgid "Current file"
+msgstr "Aktuelle Datei"
+
+msgid "Custom template"
+msgstr "Benutzer Template"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Delete collection"
+msgstr "Lösche Kollektion"
+
+msgid "Delete content permanently."
+msgstr "Inhalt dauerhaft löschen."
+
+msgid "Delete existing file"
+msgstr "Datei löschen"
+
+msgid "Delete movie"
+msgstr "Film löschen"
+
+msgid "Delete playlist"
+msgstr "Playliste löschen"
+
+msgid "Delete this collection"
+msgstr "Diese Kollektion löschen"
+
+msgid "Delete this file ?"
+msgstr "Diese Datei löschen?"
+
+msgid "Delete this movie"
+msgstr "Diesen Film löschen"
+
+msgid "Delete this playlist"
+msgstr "Diese Playliste löschen"
+
+msgid "Deleted"
+msgstr "Gelöscht"
+
+msgid "Descending"
+msgstr "Descending"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "Details"
+msgstr "Details"
+
+#, fuzzy
+msgid "Display list of MUVideoModule objects."
+msgstr "Display list of MUVideoModule objects."
+
+#, fuzzy
+msgid "Display or link a single MUVideoModule object."
+msgstr "Display or link a single MUVideoModule object."
+
+#, fuzzy
+msgid "Do you really want to delete this collection: \"%name%\" ?"
+msgstr "Do you really want to delete this collection: \"%name%\" ?"
+
+#, fuzzy
+msgid "Do you really want to delete this movie: \"%name%\" ?"
+msgstr "Do you really want to delete this movie: \"%name%\" ?"
+
+#, fuzzy
+msgid "Do you really want to delete this playlist: \"%name%\" ?"
+msgstr "Do you really want to delete this playlist: \"%name%\" ?"
+
+msgid "Doctrine Exception"
+msgstr "Doctrine Ausnahme"
+
+msgid "Doctrine Exception: "
+msgstr "Doctrine Ausnahme:"
+
+msgid "Done! Collection created."
+msgstr "Erledigt! Kollektion erstellt."
+
+msgid "Done! Collection deleted."
+msgstr "Erledigt! Kollektion gelöscht."
+
+msgid "Done! Collection updated."
+msgstr "Erledigt! Kollektion aktualisiert."
+
+msgid "Done! Item created."
+msgstr "Erledigt! Element erstellt."
+
+msgid "Done! Item deleted."
+msgstr "Erledigt! Element gelöscht."
+
+msgid "Done! Item updated."
+msgstr "Erledigt! Element aktualisiert."
+
+msgid "Done! Module configuration updated."
+msgstr "Erledigt. Konfiguration aktualisiert."
+
+msgid "Done! Movie created."
+msgstr "Erledigt! Film erstellt."
+
+msgid "Done! Movie deleted."
+msgstr "Erledigt! Film gelöscht."
+
+msgid "Done! Movie updated."
+msgstr "Erledigt! Film aktualisiert."
+
+msgid "Done! Playlist created."
+msgstr "Erledigt! Playliste erstellt."
+
+msgid "Done! Playlist deleted."
+msgstr "Erledigt! Playliste gelöscht."
+
+msgid "Done! Playlist updated."
+msgstr "Erledigt! Playliste aktualisiert."
+
+#, fuzzy
+msgid "Done! Video import complete."
+msgstr "Done! Video import complete."
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "Edit collection"
+msgstr "Kollektion bearbeiten"
+
+#, fuzzy
+msgid "Edit collections workflow"
+msgstr "Edit collections workflow"
+
+msgid "Edit movie"
+msgstr "Film bearbeiten"
+
+#, fuzzy
+msgid "Edit movies workflow"
+msgstr "Edit movies workflow"
+
+msgid "Edit playlist"
+msgstr "Playliste bearbeiten"
+
+#, fuzzy
+msgid "Edit playlists workflow"
+msgstr "Edit playlists workflow"
+
+#, fuzzy
+msgid "Edit this collection"
+msgstr "Edit this collection"
+
+#, fuzzy
+msgid "Edit this movie"
+msgstr "Edit this movie"
+
+#, fuzzy
+msgid "Edit this playlist"
+msgstr "Edit this playlist"
+
+#, fuzzy
+msgid "Edit workflow for collections"
+msgstr "Edit workflow for collections"
+
+#, fuzzy
+msgid "Edit workflow for movies"
+msgstr "Edit workflow for movies"
+
+#, fuzzy
+msgid "Edit workflow for playlists"
+msgstr "Edit workflow for playlists"
+
+msgid "Enable shrinking"
+msgstr "Beschneidung aktivieren"
+
+msgid "Enable this option to insert images"
+msgstr "Diese Option zum Einfügen von Bildern aktivieren"
+
+msgid "Enabled finder types"
+msgstr "Aktive Finder Typen"
+
+msgid "Enter the channel ids."
+msgstr "Gib die Kanal IDs ein."
+
+msgid "Enter the collection entries per page."
+msgstr "Gib die Einträge der Kollektionen pro Seite ein"
+
+msgid "Enter the description of the collection"
+msgstr "Gib die Kollektionenbeschreibung ein"
+
+msgid "Enter the description of the movie"
+msgstr "Gib die Filmbeschreibung ein"
+
+msgid "Enter the description of the playlist"
+msgstr "Gib die Beschreibung der Playliste ein"
+
+#, fuzzy
+msgid "Enter the height of movie of the movie."
+msgstr "Enter the height of movie of the movie."
+
+#, fuzzy
+msgid "Enter the max size of movie."
+msgstr "Enter the max size of movie."
+
+#, fuzzy
+msgid "Enter the max size of poster."
+msgstr "Enter the max size of poster."
+
+#, fuzzy
+msgid "Enter the movie entries per page."
+msgstr "Enter the movie entries per page."
+
+#, fuzzy
+msgid "Enter the page size."
+msgstr "Enter the page size."
+
+#, fuzzy
+msgid "Enter the playlist entries per page."
+msgstr "Enter the playlist entries per page."
+
+msgid "Enter the poster of the movie"
+msgstr "Wähle ein Bild als Poster für den Upload aus"
+
+msgid "Enter the shrink height."
+msgstr "Gib die Beschneidungshöhe ein."
+
+msgid "Enter the shrink width."
+msgstr "Gib die beschneidungsbreite ein."
+
+msgid "Enter the standard poster."
+msgstr "Gib das Standard Poster ein."
+
+msgid "Enter the thumbnail height display."
+msgstr "Gib die Höhe für Thumbnails ein."
+
+msgid "Enter the thumbnail height edit."
+msgstr "Gib die Höhe für Thumbnails im Bearbeitungstemplate ein."
+
+msgid "Enter the thumbnail height view."
+msgstr "Gib die Höhe für Thumbnails im Übersichtstemplate ein."
+
+msgid "Enter the thumbnail width display."
+msgstr "Gib die Breite für Thumbnails im Detailansichtstemplate ein."
+
+msgid "Enter the thumbnail width edit."
+msgstr "Gib die Breite des Thumbnails für Bearbeitungen ein."
+
+msgid "Enter the thumbnail width view."
+msgstr "Gib die Breite des Thumbnails für Übersichten ein."
+
+msgid "Enter the title of the collection"
+msgstr "Gib den Kollektionentitel ein"
+
+msgid "Enter the title of the movie"
+msgstr "Gib den Filmtitel ein"
+
+msgid "Enter the title of the playlist"
+msgstr "Gib den Titel der Playliste ein"
+
+msgid "Enter the upload of movie of the movie"
+msgstr "Wähle ein Bild für den Upload aus"
+
+msgid "Enter the url of youtube of the movie"
+msgstr "Gib die Url von Youtube ein"
+
+msgid "Enter the url of youtube playlist of the playlist"
+msgstr "Gib die YouTube Url der Playliste ein"
+
+#, fuzzy
+msgid "Enter the width of movie of the movie."
+msgstr "Enter the width of movie of the movie."
+
+msgid "Enter the youtube api."
+msgstr "Gib die Youtube Api ein"
+
+msgid "Error! Could not create a category registry for the %entity% entity."
+msgstr "Fehler! Konnte die Kategoriezuweisung für die %entity% Entität nicht erstellen."
+
+msgid "Error! Could not create a category registry for the %s entity."
+msgstr "Fehler! Konnte keine Kategorie Registrierung für die Entität %s erstellen."
+
+msgid "Error! Could not determine workflow actions."
+msgstr "Fehler! Konnte die Workflow Aktion nicht beenden."
+
+msgid "Error! Could not load the associated workflow."
+msgstr "Fehler! Kann den zugeordneten Workflow nicht laden."
+
+msgid "Error! Creation attempt failed."
+msgstr "Fehler! Versuch der Erstellung gescheitert."
+
+msgid "Error! Deletion attempt failed."
+msgstr "Fehler! Versuch der Löschung gescheitert."
+
+msgid "Error! Invalid object type received."
+msgstr "Fehler! Ungültiger Objekttyp angefordert."
+
+msgid "Error! It is not allowed to delete this collection."
+msgstr "Fehler! Es ist nicht erlaubt diese Kollektion zu löschen."
+
+msgid "Error! It is not allowed to delete this movie."
+msgstr "Fehler! Es ist nicht erlaubt diesen Filmt zu löschen."
+
+msgid "Error! It is not allowed to delete this playlist."
+msgstr "Fehler! Es ist nicht erlaubt, diese Playliste zu löschen."
+
+msgid "Error! This file type is not allowed. Please choose another file format."
+msgstr "Fehler! Dieser Dateityp ist nicht erlaubt. Bitte wähle ein anderes Dateiformat."
+
+msgid "Error! This file type seems not to be a valid image."
+msgstr "Fehler! Dieser Dateityp scheint kein gültiges Bild zu sein."
+
+msgid "Error! Update attempt failed."
+msgstr "Fehler! Versuch der Aktualisierung gescheitert."
+
+msgid "Error: Invalid editor context given for external controller action."
+msgstr "Fehler! Ungültiger Editor-Kontext für einen externen Controller."
+
+msgid "Errors"
+msgstr "Fehler"
+
+msgid "Example"
+msgstr "Beispiel"
+
+msgid "Fields"
+msgstr "Felder"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "Filter (expert option)"
+msgstr "Filter (Optionen für Experten)"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Further properties"
+msgstr "Weitere Eigenschaften"
+
+msgid "GB"
+msgstr "GB"
+
+msgid "Get Playlists"
+msgstr "Playlisten holen"
+
+msgid "Get Videos"
+msgstr "Videos holen"
+
+#, fuzzy
+msgid "Get datas"
+msgstr "Get datas"
+
+#, fuzzy
+msgid "Get playlists"
+msgstr "Get playlists"
+
+#, fuzzy
+msgid "Get videos"
+msgstr "Get videos"
+
+msgid "Height of movie"
+msgstr "Höhe des Films"
+
+msgid "Here you can choose a custom creation date"
+msgstr "Hier kannst Du ein eigenes Erstelldatum auswählen"
+
+msgid "Here you can choose a user which will be set as creator"
+msgstr "Hier kannst Du einen Benutzer als Ersteller festlegen"
+
+msgid "Here you can configure parameters for list views."
+msgstr "Hier kannst Du Parameter für die Listenansicht einstellen."
+
+msgid "Here you can inspect and amend the existing workflows."
+msgstr "Hier kannst Du den existierenden Workflow betrachten und abändern."
+
+msgid "Here you can manage all basic settings for this application."
+msgstr "Hier kannst Du die Grundeinstellungen für dieses Modul verwalten."
+
+msgid "Hooks"
+msgstr "Hooks"
+
+msgid "ID of collection"
+msgstr "Id der Kollektion"
+
+msgid "ID of movie"
+msgstr "Id des Films"
+
+msgid "ID of playlist"
+msgstr "ID der Playliste"
+
+msgid "If this option is enabled, title and description of existing youtube videos will be overridden using the import function."
+msgstr "Ist diese Option aktiviert, werden Titel und Beschreibung vorhandener Youtube Videos überschrieben, wenn die Importfunktion genutzt wird."
+
+msgid "If you change this please save the block once to reload the parameters below."
+msgstr "Wenn Du dies änderst, speichere den Block erneut, um die Parameter neu zu laden."
+
+msgid "Image"
+msgstr "Bild"
+
+#, fuzzy
+msgid "Image settings for movies poster"
+msgstr "Image settings for movies poster"
+
+#, fuzzy
+msgid "Image with absolute url to the movie"
+msgstr "Image with absolute url to the movie"
+
+#, fuzzy
+msgid "Image with relative link to the movie"
+msgstr "Image with relative link to the movie"
+
+msgid "Images"
+msgstr "Bilder"
+
+msgid "Initial"
+msgstr "Initial"
+
+msgid "Inset"
+msgstr "Eingefügt"
+
+msgid "Integration"
+msgstr "Integration"
+
+msgid "Invalid object type received."
+msgstr "Ungültiger Objekttyp erkannt."
+
+msgid "Invalid user identifier received."
+msgstr "Ungültige Benutzerkennung erkannt."
+
+msgid "KB"
+msgstr "KB"
+
+msgid "Last update"
+msgstr "Letzte Aktualisierung"
+
+msgid "Latest collections"
+msgstr "Letzte Kollektionen"
+
+msgid "Latest movies"
+msgstr "Letzte Filme"
+
+msgid "Latest playlists"
+msgstr "Letzte Playlisten"
+
+#, fuzzy
+msgid "Link own collections on account page"
+msgstr "Link own collections on account page"
+
+#, fuzzy
+msgid "Link own movies on account page"
+msgstr "Link own movies on account page"
+
+#, fuzzy
+msgid "Link own playlists on account page"
+msgstr "Link own playlists on account page"
+
+msgid "List views"
+msgstr "Listensicht"
+
+msgid "MB"
+msgstr "MB"
+
+#, fuzzy
+msgid "MUVideoModule detail view"
+msgstr "MUVideoModule detail view"
+
+#, fuzzy
+msgid "MUVideoModule items"
+msgstr "MUVideoModule items"
+
+#, fuzzy
+msgid "MUVideoModule list view"
+msgstr "MUVideoModule list view"
+
+msgid "Manage settings for this application"
+msgstr "Einstellungen für Blogging vornehmen"
+
+msgid "Max size of movie"
+msgstr "Maximale Größe des Films"
+
+msgid "Max size of poster"
+msgstr "Maximale Größe des Posters"
+
+msgid "Moderation"
+msgstr "Moderation"
+
+#, fuzzy
+msgid "Moderation options"
+msgstr "Moderation options"
+
+#, fuzzy
+msgid "Movie"
+msgstr "Movie"
+
+#, fuzzy
+msgid "Movie entries per page"
+msgstr "Movie entries per page"
+
+#, fuzzy
+msgid "Movie filter hooks subscriber"
+msgstr "Movie filter hooks subscriber"
+
+#, fuzzy
+msgid "Movie form aware subscriber"
+msgstr "Movie form aware subscriber"
+
+msgid "Movie list"
+msgstr "Filmliste"
+
+#, fuzzy
+msgid "Movie ui hooks subscriber"
+msgstr "Movie ui hooks subscriber"
+
+#, fuzzy
+msgid "Movie with description"
+msgstr "Movie with description"
+
+msgid "Movies"
+msgstr "Filme"
+
+#, fuzzy
+msgid "Movies list"
+msgstr "Movies list"
+
+#, fuzzy
+msgid "Movies poster"
+msgstr "Movies poster"
+
+#, fuzzy
+msgid "My collections"
+msgstr "My collections"
+
+#, fuzzy
+msgid "My movies"
+msgstr "My movies"
+
+#, fuzzy
+msgid "My playlists"
+msgstr "My playlists"
+
+msgid "Newest"
+msgstr "Aktuellste"
+
+msgid "No collections found."
+msgstr "Keine Kollektionen gefunden"
+
+msgid "No entries found."
+msgstr "Keine Einträge gefunden."
+
+msgid "No item selected."
+msgstr "Kein Element ausgewählt."
+
+msgid "No movies found."
+msgstr "Keine Filme gefunden"
+
+msgid "No playlists found."
+msgstr "Keine Playlisten gefunden."
+
+msgid "No such item found."
+msgstr "Kein solches Element gefunden."
+
+msgid "No such item."
+msgstr "Kein solches Element."
+
+msgid "None workflow (no approval)"
+msgstr "Kein Workflow (keine Freigabe)"
+
+#, fuzzy
+msgid "Not set."
+msgstr "Not set."
+
+msgid "Note: this value must not exceed %amount% characters."
+msgstr "Beachte: Dieser Wert darf nicht mehr als %amount% Zeichen beinhalten."
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Object type"
+msgstr "Objekttyp"
+
+msgid "Only digits are allowed."
+msgstr "Nur Ziffern sind erlaubt."
+
+msgid "Only images"
+msgstr "Nur Bilder"
+
+msgid "Only item titles"
+msgstr "Nur Elementtitlel"
+
+msgid "Open file"
+msgstr "Datei öffnen"
+
+msgid "Open preview page"
+msgstr "Vorschau öffnen"
+
+msgid "Open quick view window"
+msgstr "Schnellansicht öffnen"
+
+msgid "Operation cancelled."
+msgstr "Aktion abgebrochen."
+
+msgid "Outbound"
+msgstr "Auslaufend"
+
+msgid "Override vars"
+msgstr "Variablen überschreiben"
+
+msgid "Page size"
+msgstr "Seitengröße"
+
+msgid "Paste as"
+msgstr "Einfügen als"
+
+#, fuzzy
+msgid "Playlist"
+msgstr "Playlist"
+
+#, fuzzy
+msgid "Playlist entries per page"
+msgstr "Playlist entries per page"
+
+#, fuzzy
+msgid "Playlist filter hooks subscriber"
+msgstr "Playlist filter hooks subscriber"
+
+#, fuzzy
+msgid "Playlist form aware subscriber"
+msgstr "Playlist form aware subscriber"
+
+msgid "Playlist list"
+msgstr "Liste der Playlisten"
+
+#, fuzzy
+msgid "Playlist ui hooks subscriber"
+msgstr "Playlist ui hooks subscriber"
+
+#, fuzzy
+msgid "Playlist with description"
+msgstr "Playlist with description"
+
+msgid "Playlists"
+msgstr "Playlisten"
+
+#, fuzzy
+msgid "Playlists list"
+msgstr "Playlists list"
+
+msgid "Please choose an option"
+msgstr "Bitte wählen Sie ein Option"
+
+msgid "Poster"
+msgstr "Poster"
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Pseudo-state for content which has been deleted from the database."
+msgstr "Pseudo-Status für Inhalt, welcher aus der Datenbank gelöscht wurde."
+
+msgid "Pseudo-state for content which is just created and not persisted yet."
+msgstr "Pseudo-Status für Inhalt, welcher gerade erstellt aber noch nicht persistiert wurde."
+
+msgid "Quick navigation"
+msgstr "Schnellnavigation"
+
+msgid "Random"
+msgstr "Zufall"
+
+msgid "Read more"
+msgstr "Mehr lesen"
+
+#, fuzzy
+msgid "Relative link to the collection"
+msgstr "Relative link to the collection"
+
+msgid "Relative link to the image"
+msgstr "Relativer Link zum Bild"
+
+#, fuzzy
+msgid "Relative link to the movie"
+msgstr "Relative link to the movie"
+
+#, fuzzy
+msgid "Relative link to the playlist"
+msgstr "Relative link to the playlist"
+
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+msgid "Reset to empty value"
+msgstr "Wert leeren"
+
+msgid "Return control"
+msgstr "Weiterleitungskontrolle"
+
+msgid "Reuse"
+msgstr "Wiederverwenden"
+
+#, fuzzy
+msgid "Reuse for new collection"
+msgstr "Reuse for new collection"
+
+#, fuzzy
+msgid "Reuse for new movie"
+msgstr "Reuse for new movie"
+
+#, fuzzy
+msgid "Reuse for new playlist"
+msgstr "Reuse for new playlist"
+
+msgid "Search"
+msgstr "Suche"
+
+msgid "Search and select collection"
+msgstr "Suche und wähle Kollektion"
+
+msgid "Search and select movie"
+msgstr "Suche und wähle Film"
+
+msgid "Search and select playlist"
+msgstr "Suche und wähle Playliste"
+
+msgid "Search for"
+msgstr "Search for"
+
+msgid "Send private message to %userName%"
+msgstr "Private Nacchricht an %userName% senden"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Show all entries"
+msgstr "Zeige alle Einträge"
+
+msgid "Shows all items except these which are approved"
+msgstr "Alle Elemente zeigen außer die, die freigegeben sind"
+
+msgid "Shrink height"
+msgstr "Beschneidungshöhe"
+
+msgid "Shrink width"
+msgstr "Beschneidungsbreite"
+
+msgid "Sorry, but an error occured during the %action% action."
+msgstr "Entschuldigung, aber ein Fehler ist während der %action% entstanden."
+
+msgid "Sorry, but an error occured during the %action% action. Please apply the changes again!"
+msgstr "Entschuldigung, aber ein Fehler ist während der %action% Aktion aufgetreten. Bitte stimme den Änderungen erneut zu!"
+
+msgid "Sorry, but you can not create the collection yet as other items are required which must be created before!"
+msgstr "Entschuldigung, aber Du kannst keine Kollektion erstellen bevor andere erforderliche Elemente nicht erstellt sind!"
+
+msgid "Sorry, but you can not create the movie yet as other items are required which must be created before!"
+msgstr "Entschuldigung, aber Du kannst keinen Film erstellen bevor andere erforderliche Elemente nicht erstellt sind!"
+
+msgid "Sorry, but you can not create the playlist yet as other items are required which must be created before!"
+msgstr "Entschuldigung, aber Du kannst keine Playliste erstellen bevor andere erforderliche Elemente nicht erstellt sind!"
+
+msgid "Sort by"
+msgstr "Sortierung nach"
+
+msgid "Sort by %s"
+msgstr "Sortierung anhand von %s"
+
+msgid "Sort direction"
+msgstr "Richtung der Sortierung"
+
+msgid "Sorting"
+msgstr "Sortierung"
+
+msgid "Standard poster"
+msgstr "Standard Poster"
+
+msgid "State"
+msgstr "Status"
+
+msgid "Submit"
+msgstr "Abschicken"
+
+msgid "Submit content."
+msgstr "Inhalt bestätigen."
+
+msgid "Switch to administration area."
+msgstr "Zum Backend wechseln."
+
+msgid "Switch to user area."
+msgstr "Zum Frontend wechseln."
+
+msgid "Template"
+msgstr "Template"
+
+#, fuzzy
+msgid "The amount of collections shown per page"
+msgstr "The amount of collections shown per page"
+
+#, fuzzy
+msgid "The amount of movies shown per page"
+msgstr "The amount of movies shown per page"
+
+#, fuzzy
+msgid "The amount of playlists shown per page"
+msgstr "The amount of playlists shown per page"
+
+msgid "The cache directory \"%directory%\" does not exist. Please create it and make it writable for the webserver."
+msgstr "Der Cache ordner %Directory% existiert nicht. Bitte erstelle diesen und versehe ihn mit Schreibrechten."
+
+msgid "The enable shrinking option."
+msgstr "Option das Beschneiden zu aktivieren."
+
+#, fuzzy
+msgid "The link own collections on account page option."
+msgstr "The link own collections on account page option."
+
+#, fuzzy
+msgid "The link own movies on account page option."
+msgstr "The link own movies on account page option."
+
+#, fuzzy
+msgid "The link own playlists on account page option."
+msgstr "The link own playlists on account page option."
+
+msgid "The maximum amount of items to be shown."
+msgstr "Maximale Anzahl anzuzeigender Elemente."
+
+msgid "The maximum image height in pixels."
+msgstr "Maximale Höhe für Bilder in Pixel."
+
+msgid "The maximum image width in pixels."
+msgstr "Maximale Breite für Bilder in Pixel."
+
+#, fuzzy
+msgid "The override vars option."
+msgstr "The override vars option."
+
+msgid "The playlist"
+msgstr "Die Playliste"
+
+msgid "The upload directories at \"%path%\" can be removed manually."
+msgstr "Der Upload Folder %path% kann gelöscht werden."
+
+msgid "The upload directory \"%path%\" does not exist and could not be created. Try to create it yourself and make sure that this folder is accessible via the web and writable by the webserver."
+msgstr "Der Upload Ordner %path% existiert nicht und konnte nicht angelegt werden. Versuche dies selbst und stelle sicher, dass er beschreibbar ist."
+
+msgid "The value \"%value%\" is not allowed for the \"%property%\" property."
+msgstr "Der Wert \"%value%\" ist nicht erlaubt für die \"%property%\" Eigenschaft."
+
+msgid "The video"
+msgstr "Das Video"
+
+msgid "These options allow you to configure integration aspects."
+msgstr "Diese Option erlaubt es Integrationsaspekte zu konfigurieren."
+
+#, fuzzy
+msgid "This is a dummy addition by a generated filter provider."
+msgstr "This is a dummy addition by a generated filter provider."
+
+msgid "This is an optional filter."
+msgstr "Dies ist ein optionaler Filter."
+
+msgid "This is like a non-existing workflow. Everything is online immediately after creation."
+msgstr "Dies ist wie ein nicht existierender Workflow. Alles ist nach dem Erstellen direkt online."
+
+msgid "Thumbnail height display"
+msgstr "Thumbnail Höhe Detailansicht"
+
+msgid "Thumbnail height edit"
+msgstr "Thumbnail Höhe bearbeiten"
+
+msgid "Thumbnail height on display pages in pixels."
+msgstr "Thumbnail Höhe in der Detailansicht in Pixel."
+
+msgid "Thumbnail height on edit pages in pixels."
+msgstr "Thumbnail Höhe in der Bearbeitung in Pixel."
+
+msgid "Thumbnail height on view pages in pixels."
+msgstr "Thumbnail Höhe in der Seitenübersicht in Pixel."
+
+msgid "Thumbnail height view"
+msgstr "Höhe Thumbnail View"
+
+msgid "Thumbnail mode"
+msgstr "Thumbnail Modus"
+
+msgid "Thumbnail mode (inset or outbound)."
+msgstr "Thumbnail Modus (eingefügt oder auslaufend)."
+
+msgid "Thumbnail width display"
+msgstr "Thumbnail Breite Detailansicht"
+
+msgid "Thumbnail width edit"
+msgstr "Thumbnail Breite bearbeiten"
+
+msgid "Thumbnail width on display pages in pixels."
+msgstr "Thumbnail Breite in der Detailansicht in Pixel."
+
+msgid "Thumbnail width on edit pages in pixels."
+msgstr "Thumbnail Breite in der Bearbeitung in Pixel."
+
+msgid "Thumbnail width on view pages in pixels."
+msgstr "Thumbnail Breite in der Seitenübersicht in Pixel."
+
+msgid "Thumbnail width view"
+msgstr "Breite Thumbnail View"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Update"
+msgstr "Aktualisieren"
+
+msgid "Update configuration"
+msgstr "Einstellungen aktualisieren"
+
+msgid "Update content."
+msgstr "Aktualisiere Inhalt."
+
+msgid "Update date"
+msgstr "Aktualisierungsdatum"
+
+msgid "Updated by %user"
+msgstr "Aktualisiert von %user"
+
+msgid "Updated by %user on %date"
+msgstr "Aktualisiert von %user am %date"
+
+msgid "Updated on %date"
+msgstr "Aktualisiert am %date"
+
+msgid "Updater"
+msgstr "Aktualisierer"
+
+msgid "Upload of movie"
+msgstr "Film hochladen"
+
+msgid "Url of youtube"
+msgstr "Url von youtube"
+
+msgid "Url of youtube playlist"
+msgstr "Url der Youtube Playliste"
+
+msgid "Variables"
+msgstr "Variablen"
+
+msgid "Video Backend"
+msgstr "Video Backend"
+
+#, fuzzy
+msgid "Video filter hooks provider"
+msgstr "Video filter hooks provider"
+
+msgid "View detail page"
+msgstr "Detail Ansicht ansehen"
+
+msgid "Visit this page"
+msgstr "Seite besuchen"
+
+msgid "Warning! The upload directory at \"%path%\" exists but is not writable by the webserver."
+msgstr "Warnung! Der Upload Ordner \"%path%\" ist vorhanden, allerdings nicht beschreibbar."
+
+#, fuzzy
+msgid "Welcome to the collection section of the Video application."
+msgstr "Welcome to the collection section of the Video application."
+
+#, fuzzy
+msgid "Welcome to the movie section of the Video application."
+msgstr "Welcome to the movie section of the Video application."
+
+#, fuzzy
+msgid "Welcome to the playlist section of the Video application."
+msgstr "Welcome to the playlist section of the Video application."
+
+#, fuzzy
+msgid "Whether to add a link to collections of the current user on his account page"
+msgstr "Whether to add a link to collections of the current user on his account page"
+
+#, fuzzy
+msgid "Whether to add a link to movies of the current user on his account page"
+msgstr "Whether to add a link to movies of the current user on his account page"
+
+#, fuzzy
+msgid "Whether to add a link to playlists of the current user on his account page"
+msgstr "Whether to add a link to playlists of the current user on his account page"
+
+msgid "Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image."
+msgstr "Ob Bilder beschnitten werden sollen. Speichert heruntergerechnete Versionen des Originalbildes."
+
+msgid "Which sections are supported in the Finder component (used by Scribite plug-ins)."
+msgstr "Welche Bereiche im Finder (genutzt vom Scribite Plugin) unterstützt werden sollen."
+
+msgid "Width of movie"
+msgstr "Breite des Films:"
+
+msgid "With description"
+msgstr "Mit Beschreibung"
+
+msgid "With selected collections"
+msgstr "Mit gewählten Kollektionen"
+
+msgid "With selected movies"
+msgstr "Mit gewählten Filmen"
+
+msgid "With selected playlists"
+msgstr "Ausgewählte Playlisten"
+
+msgid "Workflow state"
+msgstr "Workflow Status"
+
+msgid "Workflows"
+msgstr "Workflows"
+
+msgid "Youtube api"
+msgstr "Youtube Api"
+
+msgid "collections"
+msgstr "Kollektionen"
+
+msgid "movies"
+msgstr "Filme"
+
+#, fuzzy
+msgid "muvideomodule. Collections Display Hooks"
+msgstr "muvideomodule. Collections Display Hooks"
+
+#, fuzzy
+msgid "muvideomodule. Collections Filter Hooks"
+msgstr "muvideomodule. Collections Filter Hooks"
+
+#, fuzzy
+msgid "muvideomodule. Movies Display Hooks"
+msgstr "muvideomodule. Movies Display Hooks"
+
+#, fuzzy
+msgid "muvideomodule. Movies Filter Hooks"
+msgstr "muvideomodule. Movies Filter Hooks"
+
+#, fuzzy
+msgid "muvideomodule. Playlists Display Hooks"
+msgstr "muvideomodule. Playlists Display Hooks"
+
+#, fuzzy
+msgid "muvideomodule. Playlists Filter Hooks"
+msgstr "muvideomodule. Playlists Filter Hooks"
+
+msgid "pixels"
+msgstr "Pixel"
+
+#, fuzzy
+msgid "playlists"
+msgstr "playlists"
+
+msgid "was created and put into the collection"
+msgstr "wurde erstellt und in der Kollektion aufgenommen"
+
+msgid "was overrided"
+msgstr "wurde überschrieben"

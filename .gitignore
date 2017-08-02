@@ -33,6 +33,7 @@ local.properties
 ################
 
 *.generated.*
+*generated.php
 
 #################
 ## Visual Studio
