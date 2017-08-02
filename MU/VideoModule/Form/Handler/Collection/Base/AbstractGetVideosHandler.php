@@ -23,7 +23,7 @@ use MU\VideoModule\Helper\FeatureActivationHelper;
  * This handler class handles the page events of editing forms.
  * It aims on the collection object type.
  */
-abstract class AbstractGetVideoHandler extends EditHandler
+abstract class AbstractGetVideosHandler extends EditHandler
 {
     /**
      * Initialise form handler.
@@ -155,7 +155,7 @@ abstract class AbstractGetVideoHandler extends EditHandler
      *
      * @return mixed Redirect or false on errors
      */
-    public function handleCommand($args = [])
+    public function handleCommand(array $args = [])
     {
         $result = parent::handleCommand($args);
         if (false === $result) {
@@ -183,7 +183,7 @@ abstract class AbstractGetVideoHandler extends EditHandler
      *
      * @return String desired status or error message
      */
-    protected function getDefaultMessage($args, $success = false)
+    protected function getDefaultMessage(array $args = [], $success = false)
     {
         if (false === $success) {
             return parent::getDefaultMessage($args, $success);

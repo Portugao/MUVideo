@@ -29,7 +29,7 @@ class GetVideosHandler extends AbstractGetVideosHandler
      *
      * @return mixed Redirect or false on errors
      */
-    public function handleCommand($args = [])
+    public function handleCommand(array $args = [])
     {
         // get collection id
         
