@@ -44,17 +44,14 @@ msgstr "Ein Feed der die Filmliste anzeigt"
 msgid "A direct feed showing the list of playlists"
 msgstr "Ein Feed der die Playlisten Liste anzeigt"
 
-#, fuzzy
 msgid "Absolute url to the collection"
-msgstr "Absolute url to the collection"
+msgstr "Absolute url zur Kollektion"
 
-#, fuzzy
 msgid "Absolute url to the movie"
-msgstr "Absolute url to the movie"
+msgstr "Absolute url zum Film"
 
-#, fuzzy
 msgid "Absolute url to the playlist"
-msgstr "Absolute url to the playlist"
+msgstr "Absolute url zur Playliste"
 
 msgid "Actions"
 msgstr "Aktionen"
@@ -122,9 +119,8 @@ msgstr "Channel IDs"
 msgid "Choose action"
 msgstr "Auswahlaktion"
 
-#, fuzzy
 msgid "Choose the channel for import."
-msgstr "Choose the channel for import."
+msgstr "Wähle den Kanal für den Import."
 
 msgid "Choose the collection"
 msgstr "Wähle Kollektion"
@@ -135,35 +131,29 @@ msgstr "Wähle die aktivierten Finder Typen."
 msgid "Choose the thumbnail mode."
 msgstr "Wähle den Thumbnail Modus"
 
-#, fuzzy
 msgid "Collection"
-msgstr "Collection"
+msgstr "Kollektion"
 
-#, fuzzy
 msgid "Collection entries per page"
-msgstr "Collection entries per page"
+msgstr "Einträge der Kollektion pro Seite"
 
-#, fuzzy
 msgid "Collection filter hooks subscriber"
-msgstr "Collection filter hooks subscriber"
+msgstr "Kollektion filter hooks subscriber"
 
-#, fuzzy
 msgid "Collection form aware subscriber"
-msgstr "Collection form aware subscriber"
+msgstr "Kollektion form aware subscriber"
 
 msgid "Collection list"
 msgstr "Kollektionenliste"
 
-#, fuzzy
 msgid "Collection ui hooks subscriber"
-msgstr "Collection ui hooks subscriber"
+msgstr "Kollektion ui hooks subscriber"
 
 msgid "Collections"
 msgstr "Kollektionen"
 
-#, fuzzy
 msgid "Collections list"
-msgstr "Collections list"
+msgstr "Liste der Kollektionen"
 
 msgid "Configuration"
 msgstr "Einstellungen"
@@ -258,25 +248,20 @@ msgstr "Beschreibung"
 msgid "Details"
 msgstr "Details"
 
-#, fuzzy
 msgid "Display list of MUVideoModule objects."
-msgstr "Display list of MUVideoModule objects."
+msgstr "Eine Liste von MUVideoModule Objekten zeigen."
 
-#, fuzzy
 msgid "Display or link a single MUVideoModule object."
-msgstr "Display or link a single MUVideoModule object."
+msgstr "Ein Objekt von MUVideoModule zeigen oder verlinken."
 
-#, fuzzy
 msgid "Do you really want to delete this collection: \"%name%\" ?"
-msgstr "Do you really want to delete this collection: \"%name%\" ?"
+msgstr "Möchtest Du die Kollektion \"%name%\" wirklich löschen?"
 
-#, fuzzy
 msgid "Do you really want to delete this movie: \"%name%\" ?"
-msgstr "Do you really want to delete this movie: \"%name%\" ?"
+msgstr "Möchtest Du den Film \"%name%\" wirklich löschen?"
 
-#, fuzzy
 msgid "Do you really want to delete this playlist: \"%name%\" ?"
-msgstr "Do you really want to delete this playlist: \"%name%\" ?"
+msgstr "Möchtest Du die Playliste \"%name%\" wirklich löschen?"
 
 msgid "Doctrine Exception"
 msgstr "Doctrine Ausnahme"
@@ -323,9 +308,8 @@ msgstr "Erledigt! Playliste gelöscht."
 msgid "Done! Playlist updated."
 msgstr "Erledigt! Playliste aktualisiert."
 
-#, fuzzy
 msgid "Done! Video import complete."
-msgstr "Done! Video import complete."
+msgstr "Erledigt! Video Import komplett."
 
 msgid "Download"
 msgstr "Download"
@@ -336,47 +320,38 @@ msgstr "Bearbeiten"
 msgid "Edit collection"
 msgstr "Kollektion bearbeiten"
 
-#, fuzzy
 msgid "Edit collections workflow"
-msgstr "Edit collections workflow"
+msgstr "Kollektionen Workflow bearbeiten"
 
 msgid "Edit movie"
 msgstr "Film bearbeiten"
 
-#, fuzzy
 msgid "Edit movies workflow"
-msgstr "Edit movies workflow"
+msgstr "Filme Workflow bearbeiten"
 
 msgid "Edit playlist"
 msgstr "Playliste bearbeiten"
 
-#, fuzzy
 msgid "Edit playlists workflow"
-msgstr "Edit playlists workflow"
+msgstr "Playlisten Workflow bearbeiten"
 
-#, fuzzy
 msgid "Edit this collection"
-msgstr "Edit this collection"
+msgstr "Kollektion bearbeiten"
 
-#, fuzzy
 msgid "Edit this movie"
-msgstr "Edit this movie"
+msgstr "Film bearbeiten"
 
-#, fuzzy
 msgid "Edit this playlist"
-msgstr "Edit this playlist"
+msgstr "Playliste bearbeiten"
 
-#, fuzzy
 msgid "Edit workflow for collections"
-msgstr "Edit workflow for collections"
+msgstr "Workflow für Kollektionen bearbeiten"
 
-#, fuzzy
 msgid "Edit workflow for movies"
-msgstr "Edit workflow for movies"
+msgstr "Workflow für Filme bearbeiten"
 
-#, fuzzy
 msgid "Edit workflow for playlists"
-msgstr "Edit workflow for playlists"
+msgstr "Workflow für Playlisten bearbeiten"
 
 msgid "Enable shrinking"
 msgstr "Beschneidung aktivieren"
@@ -402,29 +377,23 @@ msgstr "Gib die Filmbeschreibung ein"
 msgid "Enter the description of the playlist"
 msgstr "Gib die Beschreibung der Playliste ein"
 
-#, fuzzy
 msgid "Enter the height of movie of the movie."
-msgstr "Enter the height of movie of the movie."
+msgstr "Gib die Höhe für den Film ein."
 
-#, fuzzy
 msgid "Enter the max size of movie."
-msgstr "Enter the max size of movie."
+msgstr "Gib die maximale Größe für den Film ein."
 
-#, fuzzy
 msgid "Enter the max size of poster."
-msgstr "Enter the max size of poster."
+msgstr "Gib die maximale Größe für das Poster ein."
 
-#, fuzzy
 msgid "Enter the movie entries per page."
-msgstr "Enter the movie entries per page."
+msgstr "Gib die anzuzeigenden Einträge der Filme ein."
 
-#, fuzzy
 msgid "Enter the page size."
-msgstr "Enter the page size."
+msgstr "Gib die Seitengröße ein."
 
-#, fuzzy
 msgid "Enter the playlist entries per page."
-msgstr "Enter the playlist entries per page."
+msgstr "Gib die anzuzeigenden Einträge der Playlisten ein."
 
 msgid "Enter the poster of the movie"
 msgstr "Wähle ein Bild als Poster für den Upload aus"
@@ -474,9 +443,8 @@ msgstr "Gib die Url von Youtube ein"
 msgid "Enter the url of youtube playlist of the playlist"
 msgstr "Gib die YouTube Url der Playliste ein"
 
-#, fuzzy
 msgid "Enter the width of movie of the movie."
-msgstr "Enter the width of movie of the movie."
+msgstr "Gib die Breite für den Film ein."
 
 msgid "Enter the youtube api."
 msgstr "Gib die Youtube Api ein"
@@ -553,17 +521,14 @@ msgstr "Playlisten holen"
 msgid "Get Videos"
 msgstr "Videos holen"
 
-#, fuzzy
 msgid "Get datas"
-msgstr "Get datas"
+msgstr "Daten beziehen"
 
-#, fuzzy
 msgid "Get playlists"
-msgstr "Get playlists"
+msgstr "Playlisten beziehen"
 
-#, fuzzy
 msgid "Get videos"
-msgstr "Get videos"
+msgstr "Videos beziehen"
 
 msgid "Height of movie"
 msgstr "Höhe des Films"
@@ -604,17 +569,14 @@ msgstr "Wenn Du dies änderst, speichere den Block erneut, um die Parameter neu 
 msgid "Image"
 msgstr "Bild"
 
-#, fuzzy
 msgid "Image settings for movies poster"
-msgstr "Image settings for movies poster"
+msgstr "Bildeinstellen für Filmposter"
 
-#, fuzzy
 msgid "Image with absolute url to the movie"
-msgstr "Image with absolute url to the movie"
+msgstr "Bild mit absoluter Url zum Film"
 
-#, fuzzy
 msgid "Image with relative link to the movie"
-msgstr "Image with relative link to the movie"
+msgstr "Bild mit relativer Url zum Film"
 
 msgid "Images"
 msgstr "Bilder"
@@ -649,17 +611,14 @@ msgstr "Letzte Filme"
 msgid "Latest playlists"
 msgstr "Letzte Playlisten"
 
-#, fuzzy
 msgid "Link own collections on account page"
-msgstr "Link own collections on account page"
+msgstr "Eigene Kollektionen im Benutzerbereich verlinken"
 
-#, fuzzy
 msgid "Link own movies on account page"
-msgstr "Link own movies on account page"
+msgstr "Eigene Filme im Benutzerbereich verlinken"
 
-#, fuzzy
 msgid "Link own playlists on account page"
-msgstr "Link own playlists on account page"
+msgstr "Eigene Playlisten im Benutzerbereich verlinken"
 
 msgid "List views"
 msgstr "Listensicht"
@@ -667,17 +626,14 @@ msgstr "Listensicht"
 msgid "MB"
 msgstr "MB"
 
-#, fuzzy
 msgid "MUVideoModule detail view"
-msgstr "MUVideoModule detail view"
+msgstr "MUVideoModule Detail Ansicht"
 
-#, fuzzy
 msgid "MUVideoModule items"
-msgstr "MUVideoModule items"
+msgstr "MUVideoModule Elemente"
 
-#, fuzzy
 msgid "MUVideoModule list view"
-msgstr "MUVideoModule list view"
+msgstr "MUVideoModule Listenübersicht"
 
 msgid "Manage settings for this application"
 msgstr "Einstellungen für Blogging vornehmen"
@@ -691,59 +647,47 @@ msgstr "Maximale Größe des Posters"
 msgid "Moderation"
 msgstr "Moderation"
 
-#, fuzzy
 msgid "Moderation options"
-msgstr "Moderation options"
+msgstr "Optionen der Moderation"
 
-#, fuzzy
 msgid "Movie"
-msgstr "Movie"
+msgstr "Film"
 
-#, fuzzy
 msgid "Movie entries per page"
-msgstr "Movie entries per page"
+msgstr "Einträge der Filme pro Seite"
 
-#, fuzzy
 msgid "Movie filter hooks subscriber"
-msgstr "Movie filter hooks subscriber"
+msgstr "Film filter hooks subscriber"
 
-#, fuzzy
 msgid "Movie form aware subscriber"
-msgstr "Movie form aware subscriber"
+msgstr "Film form aware subscriber"
 
 msgid "Movie list"
 msgstr "Filmliste"
 
-#, fuzzy
 msgid "Movie ui hooks subscriber"
-msgstr "Movie ui hooks subscriber"
+msgstr "Film ui hooks subscriber"
 
-#, fuzzy
 msgid "Movie with description"
-msgstr "Movie with description"
+msgstr "Film mit Beschreibung"
 
 msgid "Movies"
 msgstr "Filme"
 
-#, fuzzy
 msgid "Movies list"
-msgstr "Movies list"
+msgstr "Liste der Filme"
 
-#, fuzzy
 msgid "Movies poster"
-msgstr "Movies poster"
+msgstr "Poster des Film"
 
-#, fuzzy
 msgid "My collections"
-msgstr "My collections"
+msgstr "Meine Kollektionen"
 
-#, fuzzy
 msgid "My movies"
-msgstr "My movies"
+msgstr "Meine Filme"
 
-#, fuzzy
 msgid "My playlists"
-msgstr "My playlists"
+msgstr "Meine Playlisten"
 
 msgid "Newest"
 msgstr "Aktuellste"
@@ -772,9 +716,8 @@ msgstr "Kein solches Element."
 msgid "None workflow (no approval)"
 msgstr "Kein Workflow (keine Freigabe)"
 
-#, fuzzy
 msgid "Not set."
-msgstr "Not set."
+msgstr "Nicht gesetzt."
 
 msgid "Note: this value must not exceed %amount% characters."
 msgstr "Beachte: Dieser Wert darf nicht mehr als %amount% Zeichen beinhalten."
@@ -818,39 +761,32 @@ msgstr "Seitengröße"
 msgid "Paste as"
 msgstr "Einfügen als"
 
-#, fuzzy
 msgid "Playlist"
-msgstr "Playlist"
+msgstr "Playliste"
 
-#, fuzzy
 msgid "Playlist entries per page"
-msgstr "Playlist entries per page"
+msgstr "Einträge der Playlisten pro Seite"
 
-#, fuzzy
 msgid "Playlist filter hooks subscriber"
-msgstr "Playlist filter hooks subscriber"
+msgstr "Playliste filter hooks subscriber"
 
-#, fuzzy
 msgid "Playlist form aware subscriber"
-msgstr "Playlist form aware subscriber"
+msgstr "Playliste form aware subscriber"
 
 msgid "Playlist list"
 msgstr "Liste der Playlisten"
 
-#, fuzzy
 msgid "Playlist ui hooks subscriber"
-msgstr "Playlist ui hooks subscriber"
+msgstr "Playliste ui hooks subscriber"
 
-#, fuzzy
 msgid "Playlist with description"
-msgstr "Playlist with description"
+msgstr "Playliste mit Beschreibung"
 
 msgid "Playlists"
 msgstr "Playlisten"
 
-#, fuzzy
 msgid "Playlists list"
-msgstr "Playlists list"
+msgstr "Liste der Playlisten"
 
 msgid "Please choose an option"
 msgstr "Bitte wählen Sie ein Option"
@@ -876,20 +812,17 @@ msgstr "Zufall"
 msgid "Read more"
 msgstr "Mehr lesen"
 
-#, fuzzy
 msgid "Relative link to the collection"
-msgstr "Relative link to the collection"
+msgstr "Relativer Link zur Kollektion"
 
 msgid "Relative link to the image"
 msgstr "Relativer Link zum Bild"
 
-#, fuzzy
 msgid "Relative link to the movie"
-msgstr "Relative link to the movie"
+msgstr "Relativer Link zum Film"
 
-#, fuzzy
 msgid "Relative link to the playlist"
-msgstr "Relative link to the playlist"
+msgstr "Relativer Link zur Playliste"
 
 msgid "Reset"
 msgstr "Zurücksetzen"
@@ -903,17 +836,14 @@ msgstr "Weiterleitungskontrolle"
 msgid "Reuse"
 msgstr "Wiederverwenden"
 
-#, fuzzy
 msgid "Reuse for new collection"
-msgstr "Reuse for new collection"
+msgstr "Für neue Kollektion wiederverwenden"
 
-#, fuzzy
 msgid "Reuse for new movie"
-msgstr "Reuse for new movie"
+msgstr "Für neuen Film wiederverwenden"
 
-#, fuzzy
 msgid "Reuse for new playlist"
-msgstr "Reuse for new playlist"
+msgstr "Für neue Playliste wiederverwenden"
 
 msgid "Search"
 msgstr "Suche"
@@ -996,17 +926,14 @@ msgstr "Zum Frontend wechseln."
 msgid "Template"
 msgstr "Template"
 
-#, fuzzy
 msgid "The amount of collections shown per page"
-msgstr "The amount of collections shown per page"
+msgstr "Die Anzahl der pro Seite zu zeigenden Kollektionen"
 
-#, fuzzy
 msgid "The amount of movies shown per page"
-msgstr "The amount of movies shown per page"
+msgstr "Die Anzahl der pro Seite zu zeigenden Filme"
 
-#, fuzzy
 msgid "The amount of playlists shown per page"
-msgstr "The amount of playlists shown per page"
+msgstr "Die Anzahl der pro Seite zu zeigenden Playlisten"
 
 msgid "The cache directory \"%directory%\" does not exist. Please create it and make it writable for the webserver."
 msgstr "Der Cache ordner %Directory% existiert nicht. Bitte erstelle diesen und versehe ihn mit Schreibrechten."
@@ -1014,17 +941,14 @@ msgstr "Der Cache ordner %Directory% existiert nicht. Bitte erstelle diesen und 
 msgid "The enable shrinking option."
 msgstr "Option das Beschneiden zu aktivieren."
 
-#, fuzzy
 msgid "The link own collections on account page option."
-msgstr "The link own collections on account page option."
+msgstr "Option zur Verlinkung eigener Kollektionen im Benutzerbereich."
 
-#, fuzzy
 msgid "The link own movies on account page option."
-msgstr "The link own movies on account page option."
+msgstr "Option zur Verlinkung eigener Filme im Benutzerbereich."
 
-#, fuzzy
 msgid "The link own playlists on account page option."
-msgstr "The link own playlists on account page option."
+msgstr "Option zur Verlinkung eigener Playlisten im Benutzerbereich."
 
 msgid "The maximum amount of items to be shown."
 msgstr "Maximale Anzahl anzuzeigender Elemente."
@@ -1035,9 +959,8 @@ msgstr "Maximale Höhe für Bilder in Pixel."
 msgid "The maximum image width in pixels."
 msgstr "Maximale Breite für Bilder in Pixel."
 
-#, fuzzy
 msgid "The override vars option."
-msgstr "The override vars option."
+msgstr "Option zur Überschreibung von Variablen"
 
 msgid "The playlist"
 msgstr "Die Playliste"
@@ -1057,9 +980,8 @@ msgstr "Das Video"
 msgid "These options allow you to configure integration aspects."
 msgstr "Diese Option erlaubt es Integrationsaspekte zu konfigurieren."
 
-#, fuzzy
 msgid "This is a dummy addition by a generated filter provider."
-msgstr "This is a dummy addition by a generated filter provider."
+msgstr "Dies ist eine Platzhalter Ergänzung durch einen generierten Filter Provider."
 
 msgid "This is an optional filter."
 msgstr "Dies ist ein optionaler Filter."
@@ -1151,7 +1073,6 @@ msgstr "Variablen"
 msgid "Video Backend"
 msgstr "Video Backend"
 
-#, fuzzy
 msgid "Video filter hooks provider"
 msgstr "Video filter hooks provider"
 
@@ -1164,29 +1085,23 @@ msgstr "Seite besuchen"
 msgid "Warning! The upload directory at \"%path%\" exists but is not writable by the webserver."
 msgstr "Warnung! Der Upload Ordner \"%path%\" ist vorhanden, allerdings nicht beschreibbar."
 
-#, fuzzy
 msgid "Welcome to the collection section of the Video application."
-msgstr "Welcome to the collection section of the Video application."
+msgstr "Willkommen zum Bereich der Kollektionen im Video Module."
 
-#, fuzzy
 msgid "Welcome to the movie section of the Video application."
-msgstr "Welcome to the movie section of the Video application."
+msgstr "Willkommen zum Bereich der Videos im Video Module."
 
-#, fuzzy
 msgid "Welcome to the playlist section of the Video application."
-msgstr "Welcome to the playlist section of the Video application."
+msgstr "Willkommen zum Bereich der Playlisten im Video Module."
 
-#, fuzzy
 msgid "Whether to add a link to collections of the current user on his account page"
-msgstr "Whether to add a link to collections of the current user on his account page"
+msgstr "Ob ein Link zu Kollektionen im Benutzerbereich angezeigt werden soll"
 
-#, fuzzy
 msgid "Whether to add a link to movies of the current user on his account page"
-msgstr "Whether to add a link to movies of the current user on his account page"
+msgstr "Ob ein Link zu Filmen im Benutzerbereich angezeigt werden soll"
 
-#, fuzzy
 msgid "Whether to add a link to playlists of the current user on his account page"
-msgstr "Whether to add a link to playlists of the current user on his account page"
+msgstr "Ob ein Link zu Playlisten im Benutzerbereich angezeigt werden soll"
 
 msgid "Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image."
 msgstr "Ob Bilder beschnitten werden sollen. Speichert heruntergerechnete Versionen des Originalbildes."
@@ -1224,36 +1139,29 @@ msgstr "Kollektionen"
 msgid "movies"
 msgstr "Filme"
 
-#, fuzzy
 msgid "muvideomodule. Collections Display Hooks"
-msgstr "muvideomodule. Collections Display Hooks"
+msgstr "muvideomodule. Kollektionen Display Hooks"
 
-#, fuzzy
 msgid "muvideomodule. Collections Filter Hooks"
-msgstr "muvideomodule. Collections Filter Hooks"
+msgstr "muvideomodule. Kollektionen Filter Hooks"
 
-#, fuzzy
 msgid "muvideomodule. Movies Display Hooks"
-msgstr "muvideomodule. Movies Display Hooks"
+msgstr "muvideomodule. Filme Display Hooks"
 
-#, fuzzy
 msgid "muvideomodule. Movies Filter Hooks"
-msgstr "muvideomodule. Movies Filter Hooks"
+msgstr "muvideomodule. Filme Filter Hooks"
 
-#, fuzzy
 msgid "muvideomodule. Playlists Display Hooks"
-msgstr "muvideomodule. Playlists Display Hooks"
+msgstr "muvideomodule. Playlisten Display Hooks"
 
-#, fuzzy
 msgid "muvideomodule. Playlists Filter Hooks"
-msgstr "muvideomodule. Playlists Filter Hooks"
+msgstr "muvideomodule. Playlisten Filter Hooks"
 
 msgid "pixels"
 msgstr "Pixel"
 
-#, fuzzy
 msgid "playlists"
-msgstr "playlists"
+msgstr "Playlisten"
 
 msgid "was created and put into the collection"
 msgstr "wurde erstellt und in der Kollektion aufgenommen"

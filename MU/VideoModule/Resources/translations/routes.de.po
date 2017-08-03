@@ -3,112 +3,172 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 2.0.2\n"
 
 msgid "doc"
 msgstr "/installdoc/{name}"
+
 msgid "fos_js_routing_js"
 msgstr "/js/routing.{_format}"
+
 msgid "home"
-msgstr "/"
+msgstr "start"
+
 msgid "install"
-msgstr "/install/{stage}"
+msgstr "/installieren/{stage}"
+
 msgid "legacy_short_url"
 msgstr "/{path}"
+
 msgid "liip_imagine_filter"
-msgstr "/media/cache/resolve/{filter}/{path}"
+msgstr "/medien/cache/aufloesen/{filter}/{path}"
+
 msgid "liip_imagine_filter_runtime"
-msgstr "/media/cache/resolve/{filter}/rc/{hash}/{path}"
+msgstr "/medien/cache/aufloesen/{filter}/rc/{hash}/{path}"
+
 msgid "muvideomodule_ajax_getitemlistfinder"
-msgstr "/ajax/getItemListFinder"
+msgstr "/ajax/listenfinderbeziehen"
+
 msgid "muvideomodule_collection_admindelete"
-msgstr "/admin/collection/delete/{id}.{_format}"
+msgstr "/admin/kollektionen/loeschen/{id}.{_format}"
+
 msgid "muvideomodule_collection_admindisplay"
-msgstr "/admin/collection/{id}.{_format}"
+msgstr "/admin/kollektionen/{id}.{_format}"
+
 msgid "muvideomodule_collection_adminedit"
-msgstr "/admin/collection/edit/{id}.{_format}"
+msgstr "/admin/kollektion/bearbeiten/{id}.{_format}"
+
 msgid "muvideomodule_collection_adminhandleselectedentries"
-msgstr "/admin/collections/handleSelectedEntries"
+msgstr "/admin/kollektionen/mitgewaehlteneintraegenverfahren"
+
 msgid "muvideomodule_collection_adminindex"
-msgstr "/admin/collections"
+msgstr "/admin/kollektionen"
+
 msgid "muvideomodule_collection_adminview"
-msgstr "/admin/collections/view/{sort}/{sortdir}/{pos}/{num}.{_format}"
+msgstr "/admin/kollektionen/uebersicht/{sort}/{sortdir}/{pos}/{num}.{_format}"
+
 msgid "muvideomodule_collection_delete"
-msgstr "/collection/delete/{id}.{_format}"
+msgstr "/kollektionen/loeschen/{id}.{_format}"
+
 msgid "muvideomodule_collection_display"
-msgstr "/collection/{id}.{_format}"
+msgstr "/kollektion/{id}.{_format}"
+
 msgid "muvideomodule_collection_edit"
-msgstr "/collection/edit/{id}.{_format}"
+msgstr "/kollektion/bearbeiten/{id}.{_format}"
+
 msgid "muvideomodule_collection_handleselectedentries"
-msgstr "/collections/handleSelectedEntries"
+msgstr "/kollektionen/mitgewaehlteneintraegenverfahren"
+
 msgid "muvideomodule_collection_index"
-msgstr "/collections"
+msgstr "/kollektionen"
+
 msgid "muvideomodule_collection_view"
-msgstr "/collections/view/{sort}/{sortdir}/{pos}/{num}.{_format}"
+msgstr "/kollektionen/uebersicht/{sort}/{sortdir}/{pos}/{num}.{_format}"
+
 msgid "muvideomodule_config_config"
-msgstr "/config/config"
+msgstr "/einstellungen/konfigurieren"
+
 msgid "muvideomodule_external_display"
-msgstr "/external/display/{objectType}/{id}/{source}/{displayMode}"
+msgstr "/extern/anzeigen/{objectType}/{id}/{source}/{displayMode}"
+
 msgid "muvideomodule_external_finder"
-msgstr "/external/finder/{objectType}/{editor}/{sort}/{sortdir}/{pos}/{num}"
+msgstr "/extern/finder/{objectType}/{editor}/{sort}/{sortdir}/{pos}/{num}"
+
 msgid "muvideomodule_movie_admindelete"
-msgstr "/admin/movie/delete/{id}.{_format}"
+msgstr "/admin/filme/loeschen/{id}.{_format}"
+
 msgid "muvideomodule_movie_admindisplay"
-msgstr "/admin/movie/{id}.{_format}"
+msgstr "/admin/filme/{id}.{_format}"
+
 msgid "muvideomodule_movie_adminedit"
-msgstr "/admin/movie/edit/{id}.{_format}"
+msgstr "/admin/film/bearbeiten/{id}.{_format}"
+
 msgid "muvideomodule_movie_adminhandleselectedentries"
 msgstr "/admin/movies/handleSelectedEntries"
+
 msgid "muvideomodule_movie_adminindex"
 msgstr "/admin/movies"
+
 msgid "muvideomodule_movie_adminview"
-msgstr "/admin/movies/view/{sort}/{sortdir}/{pos}/{num}.{_format}"
+msgstr "/admin/filme/uebersicht/{sort}/{sortdir}/{pos}/{num}.{_format}"
+
 msgid "muvideomodule_movie_delete"
-msgstr "/movie/delete/{id}.{_format}"
+msgstr "/filme/loeschen/{id}.{_format}"
+
 msgid "muvideomodule_movie_display"
-msgstr "/movie/{id}.{_format}"
+msgstr "/film/{id}.{_format}"
+
 msgid "muvideomodule_movie_edit"
-msgstr "/movie/edit/{id}.{_format}"
+msgstr "/film/bearbeiten/{id}.{_format}"
+
 msgid "muvideomodule_movie_handleselectedentries"
 msgstr "/movies/handleSelectedEntries"
+
 msgid "muvideomodule_movie_index"
 msgstr "/movies"
+
 msgid "muvideomodule_movie_view"
-msgstr "/movies/view/{sort}/{sortdir}/{pos}/{num}.{_format}"
+msgstr "/filme/uebersicht/{sort}/{sortdir}/{pos}/{num}.{_format}"
+
 msgid "muvideomodule_playlist_admindelete"
-msgstr "/admin/playlist/delete/{id}.{_format}"
+msgstr "/admin/playliste/loeschen/{id}.{_format}"
+
 msgid "muvideomodule_playlist_admindisplay"
-msgstr "/admin/playlist/{id}.{_format}"
+msgstr "/admin/playliste/{id}.{_format}"
+
 msgid "muvideomodule_playlist_adminedit"
-msgstr "/admin/playlist/edit/{id}.{_format}"
+msgstr "/admin/playliste/bearbeiten/{id}.{_format}"
+
 msgid "muvideomodule_playlist_adminhandleselectedentries"
 msgstr "/admin/playlists/handleSelectedEntries"
+
 msgid "muvideomodule_playlist_adminindex"
 msgstr "/admin/playlists"
+
 msgid "muvideomodule_playlist_adminview"
-msgstr "/admin/playlists/view/{sort}/{sortdir}/{pos}/{num}.{_format}"
+msgstr "/admin/playlisten/uebersicht/{sort}/{sortdir}/{pos}/{num}.{_format}"
+
 msgid "muvideomodule_playlist_delete"
-msgstr "/playlist/delete/{id}.{_format}"
+msgstr "/playliste/loeschen/{id}.{_format}"
+
 msgid "muvideomodule_playlist_display"
-msgstr "/playlist/{id}.{_format}"
+msgstr "/playliste/{id}.{_format}"
+
 msgid "muvideomodule_playlist_edit"
-msgstr "/playlist/edit/{id}.{_format}"
+msgstr "/playliste/bearbeiten/{id}.{_format}"
+
 msgid "muvideomodule_playlist_handleselectedentries"
 msgstr "/playlists/handleSelectedEntries"
+
 msgid "muvideomodule_playlist_index"
 msgstr "/playlists"
+
 msgid "muvideomodule_playlist_view"
-msgstr "/playlists/view/{sort}/{sortdir}/{pos}/{num}.{_format}"
+msgstr "/playlisten/uebersicht/{sort}/{sortdir}/{pos}/{num}.{_format}"
+
 msgid "muvideomodule_youtube_getplaylists"
-msgstr "/youtube/getPlaylists/{collectionId}.{_format}"
+msgstr "/youtube/playlistenbeziehen/{collectionId}.{_format}"
+
 msgid "muvideomodule_youtube_getvideos"
-msgstr "/youtube/getVideos/{collectionId}.{_format}"
+msgstr "/youtube/videosbeziiehen/{collectionId}.{_format}"
+
 msgid "upgrade"
 msgstr "/upgrade/{stage}"
+
 msgid "zikula_hook_hook_changeproviderareaorder"
 msgstr "/hooks/changeorder"
+
 msgid "zikula_hook_hook_edit"
 msgstr "/hooks/{moduleName}"
+
 msgid "zikula_hook_hook_togglesubscribeareastatus"
 msgstr "/hooks/togglestatus"
+
 msgid "zikula_workflow_editor_index"
 msgstr "/editor/index"
