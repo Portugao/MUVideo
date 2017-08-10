@@ -83,7 +83,7 @@
                     <a href="{{ path('muvideomodule_movie_' ~ routeArea ~ 'display', {'id': movie.getId()}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ movie.title|notifyFilters('muvideomodule.filterhook.movies')|safeHtml }}</a>
                 </td>
                 <td headers="hDescription" class="text-left">
-                    {{ movie.description|safeHtml|truncate(50) }}
+                    {{ movie.description|striptags|truncate(50) }}
                 </td>
                 <td headers="hUploadOfMovie" class="text-left">
                     {% if movie.uploadOfMovie is not empty and movie.uploadOfMovieMeta|default %}

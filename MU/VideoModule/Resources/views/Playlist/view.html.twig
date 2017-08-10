@@ -67,7 +67,7 @@
                     <a href="{{ path('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ playlist.title|notifyFilters('muvideomodule.filterhook.playlists')|safeHtml }}</a>
                 </td>
                 <td headers="hDescription" class="text-left">
-                    {{ playlist.description|safeHtml|truncate(50) }}
+                    {{ playlist.description|striptags|truncate(50) }}
                 </td>
                 <td headers="hUrlOfYoutubePlaylist" class="text-center">
                     <a href="{{ playlist.urlOfYoutubePlaylist }}" title="{{ __('Visit this page') }}" class="fa fa-external-link-square"></a>
