@@ -156,7 +156,7 @@ msgid "muvideomodule_youtube_getplaylists"
 msgstr "/youtube/playlistenbeziehen/{collectionId}.{_format}"
 
 msgid "muvideomodule_youtube_getvideos"
-msgstr "/youtube/videosbeziiehen/{collectionId}.{_format}"
+msgstr "/youtube/videosbeziehen/{collectionId}.{_format}"
 
 msgid "upgrade"
 msgstr "/upgrade/{stage}"
