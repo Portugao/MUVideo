@@ -175,9 +175,8 @@ abstract class AbstractYoutubeController extends AbstractController
 								$thisExistingVideoObject->setCollection($collectionObject);
 	
 								$entityManager->flush();
-								$this->addFlash('status', $this->__('The video') . ' ' . $videoData['snippet']['title'] . $this->__('was overrided'));
-								//LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was overrided', $dom));
-							}
+								$this->addFlash('status', $this->__('The video') . ' ' . $videoData['snippet']['title'] . $this->__('was overridden'));
+						        }
 							continue;
 						}
 					}
@@ -274,7 +273,7 @@ abstract class AbstractYoutubeController extends AbstractController
 								$thisExistingPlaylistObject->setCollection($collectionObject);
 	
 								$entityManager->flush();
-								$this->addFlash('status', $this->__('The playlist') . ' ' . $playlistData['snippet']['title'] . $this->__('was overrided'));
+								$this->addFlash('status', $this->__('The playlist') . ' ' . $playlistData['snippet']['title'] . $this->__('was overridden'));
 								//LogUtil::registerStatus(__('The playlist', $dom) . ' ' . $playlistData['snippet']['title'] . ' ' . __('was overrided', $dom));
 							}
 							continue;
@@ -294,6 +293,8 @@ abstract class AbstractYoutubeController extends AbstractController
 					//LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
 				}
 			}
+		} else {
+			$this->addFlash('error', 'No playlists available!');
 		}
 	
 		return $this->redirectToRoute('muvideomodule_collection_display', array('id'=> $collectionId));
