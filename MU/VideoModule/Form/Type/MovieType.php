@@ -14,10 +14,32 @@ namespace MU\VideoModule\Form\Type;
 
 use MU\VideoModule\Form\Type\Base\AbstractMovieType;
 
+use Symfony\Component\Form\FormBuilderInterface;
+use MU\VideoModule\Form\Type\Field\UploadType;
+
 /**
  * Movie editing form type implementation class.
  */
 class MovieType extends AbstractMovieType
 {
-    // feel free to extend the movie editing form type class here
+	/**
+	 * Adds basic entity fields.
+	 *
+	 * @param FormBuilderInterface $builder The form builder
+	 * @param array                $options The options
+	 */
+	public function addEntityFields(FormBuilderInterface $builder, array $options)
+	{
+            $builder->add('uploadOfMovie', UploadType::class, [
+            'label' => $this->__('Upload of movie') . ':',
+            'attr' => [
+                'class' => ' validate-upload',
+                'title' => $this->__('Enter the upload of movie of the movie')
+            ],
+            'required' => false && $options['mode'] == 'create',
+            'entity' => $options['entity'],
+            'allowed_extensions' => 'mpeg, mpg, mp4',
+            'allowed_size' => $this->variableApi->get('MUVideoModule', 'maxSizeOfMovie')
+        ]);
+	}
 }
