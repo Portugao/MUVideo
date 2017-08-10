@@ -110,7 +110,7 @@ class AbstractItemSelector extends Zikula_Form_Plugin_TextInput implements Conta
             $jsAssetBag->add($homePath . '/web/magnific-popup/jquery.magnific-popup.min.js');
             $cssAssetBag->add($homePath . '/web/magnific-popup/magnific-popup.css');
             $jsAssetBag->add($assetHelper->resolve('@MUVideoModule:js/MUVideoModule.js'));
-            $jsAssetBag->add($assetHelper->resolve('@MUVideoModule:js/MUVideoModule.Finder.js'));
+            $jsAssetBag->add($assetHelper->resolve('@MUVideoModule:js/MUVideoModule.ItemSelector.js'));
             $cssAssetBag->add($assetHelper->resolve('@MUVideoModule:css/style.css'));
         }
         $firstTime = false;
@@ -125,7 +125,7 @@ class AbstractItemSelector extends Zikula_Form_Plugin_TextInput implements Conta
         $catIds = [];
         if (in_array($this->objectType, $categorisableObjectTypes)) {
             // fetch selected categories to reselect them in the output
-            // the actual filtering is done inside the repository class
+            // the actual filtering is done inside the collection filter helper class
             $categoryHelper = $this->container->get('mu_video_module.category_helper');
             $catIds = $categoryHelper->retrieveCategoriesFromRequest($this->objectType);
         }

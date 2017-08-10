@@ -85,12 +85,12 @@ abstract class AbstractPlaylistType extends AbstractType
      * PlaylistType constructor.
      *
      * @param TranslatorInterface $translator     Translator service instance
-     * @param EntityFactory       $entityFactory EntityFactory service instance
+     * @param EntityFactory $entityFactory EntityFactory service instance
      * @param CollectionFilterHelper $collectionFilterHelper CollectionFilterHelper service instance
      * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
      * @param VariableApiInterface $variableApi VariableApi service instance
-     * @param TranslatableHelper  $translatableHelper TranslatableHelper service instance
-     * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
+     * @param TranslatableHelper $translatableHelper TranslatableHelper service instance
+     * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
      * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
      */
     public function __construct(

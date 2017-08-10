@@ -96,35 +96,25 @@ abstract class AbstractConfigType extends AbstractType
     public function addVariablesFields(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pageSize', IntegerType::class, [
-                'label' => $this->__('Page size') . ':',
-                'required' => false,
-                'data' => isset($this->moduleVars['pageSize']) ? intval($this->moduleVars['pageSize']) : intval(10),
-                'empty_data' => intval('10'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the page size.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('maxSizeOfMovie', IntegerType::class, [
+            ->add('maxSizeOfMovie', TextType::class, [
                 'label' => $this->__('Max size of movie') . ':',
                 'required' => false,
-                'data' => isset($this->moduleVars['maxSizeOfMovie']) ? intval($this->moduleVars['maxSizeOfMovie']) : intval(1024000000),
-                'empty_data' => intval('1024000000'),
+                'data' => isset($this->moduleVars['maxSizeOfMovie']) ? $this->moduleVars['maxSizeOfMovie'] : '',
+                'empty_data' => '200M',
                 'attr' => [
                     'maxlength' => 255,
-                    'title' => $this->__('Enter the max size of movie.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
+                    'title' => $this->__('Enter the max size of movie.')
+                ],
             ])
-            ->add('maxSizeOfPoster', IntegerType::class, [
+            ->add('maxSizeOfPoster', TextType::class, [
                 'label' => $this->__('Max size of poster') . ':',
                 'required' => false,
-                'data' => isset($this->moduleVars['maxSizeOfPoster']) ? intval($this->moduleVars['maxSizeOfPoster']) : intval(102400),
-                'empty_data' => intval('102400'),
+                'data' => isset($this->moduleVars['maxSizeOfPoster']) ? $this->moduleVars['maxSizeOfPoster'] : '',
+                'empty_data' => '200k',
                 'attr' => [
                     'maxlength' => 255,
-                    'title' => $this->__('Enter the max size of poster.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
+                    'title' => $this->__('Enter the max size of poster.')
+                ],
             ])
             ->add('standardPoster', TextType::class, [
                 'label' => $this->__('Standard poster') . ':',
