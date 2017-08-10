@@ -936,7 +936,7 @@ msgid "The amount of playlists shown per page"
 msgstr "Die Anzahl der pro Seite zu zeigenden Playlisten"
 
 msgid "The cache directory \"%directory%\" does not exist. Please create it and make it writable for the webserver."
-msgstr "Der Cache ordner %Directory% existiert nicht. Bitte erstelle diesen und versehe ihn mit Schreibrechten."
+msgstr "Der Cache Ordner \"%directory%\" existiert nicht. Bitte erstelle diesen und versehe ihn mit Schreibrechten."
 
 msgid "The enable shrinking option."
 msgstr "Option das Beschneiden zu aktivieren."
