@@ -19,10 +19,10 @@
     <div class="row">
         <div class="col-sm-7">
     <dl>
-        {% if collection.title is not empty %}
+        {#% if collection.title is not empty %}
             <dt>{{ __('Title') }}</dt>
             <dd>{{ collection.title }}</dd>
-        {% endif %}
+        {% endif %#}
         {% if collection.description is not empty %}
             <dt>{{ __('Description') }}</dt>
             <dd>{{ collection.description|safeHtml }}</dd>
@@ -35,8 +35,12 @@
         <p class="managelink">
             {% set getVideos = __('Get Videos') %}
             {% set getPlaylists = __('Get Playlists') %}
+            {% set api = getModVar('MUVideoModule', 'youtubeApi') %}
+            {% set channel = getModVar('MUVideoModule', 'channelIds') %}
+            {% if api != '' and channel != '' %}
             <a href="{{ path('muvideomodule_' ~ routeArea ~ 'youtube_getvideos', { collectionId: collection.id }) }}" title="{{ getVideos|e('html_attr') }}" class="fa fa-plus">{{ getVideos }}</a><br />
             <a href="{{ path('muvideomodule_' ~ routeArea ~ 'youtube_getplaylists', { collectionId: collection.id }) }}" title="{{ getPlaylists|e('html_attr') }}" class="fa fa-plus">{{ getPlaylists }}</a>
+            {% endif %}
         </p>
     {% endif %}
 
