@@ -56,10 +56,9 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         }
     
         // set up all our vars with initial values
-        $this->setVar('maxSizeOfMovie', '1024000000');
-        $this->setVar('maxSizeOfPoster', '102400');
+        $this->setVar('maxSizeOfMovie', '200M');
+        $this->setVar('maxSizeOfPoster', '200k');
         $this->setVar('standardPoster', '/images/poster.png');
-        // new vars in this version
         $this->setVar('youtubeApi', '');
         $this->setVar('channelIds', '');
         $this->setVar('overrideVars', false);
