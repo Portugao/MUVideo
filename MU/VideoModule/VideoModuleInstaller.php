@@ -108,10 +108,10 @@ class VideoModuleInstaller extends AbstractVideoModuleInstaller
 				HookUtil::unregisterSubscriberBundles ( $this->version->getHookSubscriberBundles () );
 				
                 // set up all our vars with initial values
-                $this->setVar('pageSize', '10');
-                $this->setVar('maxSizeOfMovie', '1024000000');
+                /*$this->setVar('maxSizeOfMovie', '1024000000');
                 $this->setVar('maxSizeOfPoster', '102400');
-                $this->setVar('standardPoster', '/images/poster.png');
+                $this->setVar('standardPoster', '/images/poster.png');*/ // should get renamed by modvar function below
+                // new vars in this version
                 $this->setVar('youtubeApi', '');
                 $this->setVar('channelIds', '');
                 $this->setVar('supportedModules', '');
