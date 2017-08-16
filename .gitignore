@@ -33,6 +33,8 @@ local.properties
 ################
 
 *.generated.*
+*.generated.html.twig
+
 
 #################
 ## Visual Studio
