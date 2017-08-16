@@ -28,12 +28,6 @@ local.properties
 # PDT-specific
 .buildpath
 
-################
-## ZIKULA
-################
-
-*.generated.*
-
 
 #################
 ## Visual Studio
@@ -133,6 +127,7 @@ publish/
 # Publish Web Output
 *.Publish.xml
 *.pubxml
+*.publishproj
 
 # NuGet Packages Directory
 ## TODO: If you have NuGet Package Restore enabled, uncomment the next line
@@ -193,7 +188,7 @@ $RECYCLE.BIN/
 ## Python
 #############
 
-*.py[co]
+*.py[cod]
 
 # Packages
 *.egg
@@ -214,7 +209,10 @@ pip-log.txt
 .coverage
 .tox
 
+#Translations
+*.mo
+
 #Mr Developer
 .mr.developer.cfg
-MU/VideoModule/Helper/ControllerHelper.generated.php
-MU/VideoModule/Resources/views/Collection/display.generated.html.twig
+
+*.generated*
