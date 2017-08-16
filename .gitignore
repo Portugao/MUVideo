@@ -33,7 +33,6 @@ local.properties
 ################
 
 *.generated.*
-*.generated.html.twig
 
 
 #################
@@ -217,3 +216,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+MU/VideoModule/Helper/ControllerHelper.generated.php
+MU/VideoModule/Resources/views/Collection/display.generated.html.twig
