@@ -174,7 +174,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('muvideomodule_collection_' . $routeArea . 'view'),
                 'text' => $this->__('Collections', 'muvideomodule'),
-                'title' => $this->__('Collection list', 'muvideomodule')
+                'title' => $this->__('Collections list', 'muvideomodule')
             ];
         }
         if (in_array('movie', $allowedObjectTypes)
@@ -182,7 +182,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('muvideomodule_movie_' . $routeArea . 'view'),
                 'text' => $this->__('Movies', 'muvideomodule'),
-                'title' => $this->__('Movie list', 'muvideomodule')
+                'title' => $this->__('Movies list', 'muvideomodule')
             ];
         }
         if (in_array('playlist', $allowedObjectTypes)
@@ -190,7 +190,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('muvideomodule_playlist_' . $routeArea . 'view'),
                 'text' => $this->__('Playlists', 'muvideomodule'),
-                'title' => $this->__('Playlist list', 'muvideomodule')
+                'title' => $this->__('Playlists list', 'muvideomodule')
             ];
         }
         if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {

@@ -221,14 +221,8 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
      */
     protected function updateModVarsTo14()
     {
-        $dbName = $this->getDbName();
         $conn = $this->getConnection();
-    
-        $conn->executeQuery("
-            UPDATE $dbName.module_vars
-            SET modname = 'MUVideoModule'
-            WHERE modname = 'Video';
-        ");
+        $conn->update('module_vars', ['modname' => 'MUVideoModule'], ['modname' => 'Video']);
     }
     
     /**
@@ -237,14 +231,7 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     protected function updateExtensionInfoFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
-        $conn->executeQuery("
-            UPDATE $dbName.modules
-            SET name = 'MUVideoModule',
-                directory = 'MU/VideoModule'
-            WHERE name = 'Video';
-        ");
+        $conn->update('modules', ['name' => 'MUVideoModule', 'directory' => 'MU/VideoModule'], ['name' => 'Video']);
     }
     
     /**
@@ -253,12 +240,10 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     protected function renamePermissionsFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
         $componentLength = strlen('Video') + 1;
     
         $conn->executeQuery("
-            UPDATE $dbName.group_perms
+            UPDATE group_perms
             SET component = CONCAT('MUVideoModule', SUBSTRING(component, $componentLength))
             WHERE component LIKE 'Video%';
         ");
@@ -270,12 +255,10 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     protected function renameCategoryRegistriesFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
         $componentLength = strlen('Video') + 1;
     
         $conn->executeQuery("
-            UPDATE $dbName.categories_registry
+            UPDATE categories_registry
             SET modname = CONCAT('MUVideoModule', SUBSTRING(modname, $componentLength))
             WHERE modname LIKE 'Video%';
         ");
@@ -287,7 +270,6 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     protected function renameTablesFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
     
         $oldPrefix = 'video_';
         $oldPrefixLength = strlen($oldPrefix);
@@ -304,8 +286,8 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
             $newTableName = str_replace($oldPrefix, $newPrefix, $tableName);
     
             $conn->executeQuery("
-                RENAME TABLE $dbName.$tableName
-                TO $dbName.$newTableName;
+                RENAME TABLE $tableName
+                TO $newTableName;
             ");
         }
     }
@@ -324,49 +306,32 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     protected function updateHookNamesFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_area
-            SET owner = 'MUVideoModule'
-            WHERE owner = 'Video';
-        ");
+        $conn->update('hook_area', ['owner' => 'MUVideoModule'], ['owner' => 'Video']);
     
         $componentLength = strlen('subscriber.video') + 1;
         $conn->executeQuery("
-            UPDATE $dbName.hook_area
+            UPDATE hook_area
             SET areaname = CONCAT('subscriber.muvideomodule', SUBSTRING(areaname, $componentLength))
             WHERE areaname LIKE 'subscriber.video%';
         ");
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_binding
-            SET sowner = 'MUVideoModule'
-            WHERE sowner = 'Video';
-        ");
+        $conn->update('hook_binding', ['sowner' => 'MUVideoModule'], ['sowner' => 'Video']);
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_runtime
-            SET sowner = 'MUVideoModule'
-            WHERE sowner = 'Video';
-        ");
+        $conn->update('hook_runtime', ['sowner' => 'MUVideoModule'], ['sowner' => 'Video']);
     
         $componentLength = strlen('video') + 1;
         $conn->executeQuery("
-            UPDATE $dbName.hook_runtime
+            UPDATE hook_runtime
             SET eventname = CONCAT('muvideomodule', SUBSTRING(eventname, $componentLength))
             WHERE eventname LIKE 'video%';
         ");
     
-        $conn->executeQuery("
-            UPDATE $dbName.hook_subscriber
-            SET owner = 'MUVideoModule'
-            WHERE owner = 'Video';
-        ");
+        $conn->update('hook_subscriber', ['owner' => 'MUVideoModule'], ['owner' => 'Video']);
     
         $componentLength = strlen('video') + 1;
         $conn->executeQuery("
-            UPDATE $dbName.hook_subscriber
+            UPDATE hook_subscriber
             SET eventname = CONCAT('muvideomodule', SUBSTRING(eventname, $componentLength))
             WHERE eventname LIKE 'video%';
         ");
@@ -378,13 +343,10 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     protected function updateWorkflowsFor14()
     {
         $conn = $this->getConnection();
-        $dbName = $this->getDbName();
-    
-        $conn->executeQuery("
-            UPDATE $dbName.workflows
-            SET module = 'MUVideoModule'
-            WHERE module = 'Video';
-        ");
+        $conn->update('workflows', ['module' => 'MUVideoModule'], ['module' => 'Video']);
+        $conn->update('workflows', ['obj_table' => 'CollectionEntity'], ['module' => 'MUVideoModule', 'obj_table' => 'collection']);
+        $conn->update('workflows', ['obj_table' => 'MovieEntity'], ['module' => 'MUVideoModule', 'obj_table' => 'movie']);
+        $conn->update('workflows', ['obj_table' => 'PlaylistEntity'], ['module' => 'MUVideoModule', 'obj_table' => 'playlist']);
     }
     
     /**
@@ -395,19 +357,8 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     protected function getConnection()
     {
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-        $connection = $entityManager->getConnection();
     
-        return $connection;
-    }
-    
-    /**
-     * Returns the name of the default system database.
-     *
-     * @return string the database name
-     */
-    protected function getDbName()
-    {
-        return $this->container->getParameter('database_name');
+        return $entityManager->getConnection();
     }
     
     /**
