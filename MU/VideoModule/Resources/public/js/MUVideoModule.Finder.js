@@ -40,6 +40,10 @@ mUVideoModule.finder = {};
 mUVideoModule.finder.onLoad = function (baseId, selectedId)
 {
     var imageModeEnabled;
+    
+    if (jQuery('#mUVideoModuleSelectorForm').length < 1) {
+        return;
+    }
 
     imageModeEnabled = jQuery("[id$='onlyImages']").prop('checked');
     if (!imageModeEnabled) {
