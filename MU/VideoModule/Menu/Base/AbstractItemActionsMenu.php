@@ -131,7 +131,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $relatedComponent = 'MUVideoModule:Playlist:';
             $relatedInstance = $entity->getKey() . '::';
             if ($isOwner || $permissionApi->hasPermission($relatedComponent, $relatedInstance, ACCESS_EDIT)) {
-                $title = $this->__('Create playlist');
+                $title = $this->__('Create playlists');
                 $menu->addChild($title, [
                     'route' => 'muvideomodule_playlist_' . $routeArea . 'edit',
                     'routeParameters' => ['collection' => $entity->getKey()]
