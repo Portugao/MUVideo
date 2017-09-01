@@ -5,7 +5,7 @@
         {% if playlist.description %}
             <dd>{{ playlist.description|striptags|truncate(200, true, '&hellip;') }}</dd>
         {% endif %}
-        <dd><a href="{{ path('muvideomodule_playlist_display', {'id': playlist.getId()}) }}">{{ __('Read more') }}</a>
+        <dd><a href="{{ path('muvideomodule_playlist_display', {'id': playlist.getId()}) }}" title="{{ __('Read more')|e('html_attr') }}">{{ __('Read more') }}</a>
         </dd>
     {% else %}
         <dt>{{ __('No entries found.') }}</dt>

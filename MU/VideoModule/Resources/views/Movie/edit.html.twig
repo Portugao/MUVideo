@@ -67,7 +67,7 @@
         
         {{ include(
             '@MUVideoModule/Collection/includeSelectOne.html.twig',
-            {group: 'movie', alias: 'collection', aliasReverse: 'movie', mandatory: false, idPrefix: 'videoMovie_Collection', linkingItem: movie, displayMode: 'choices'}
+            {group: 'movie', heading: __('Collection'), alias: 'collection', mandatory: false, idPrefix: 'videoMovie_Collection', linkingItem: movie, displayMode: 'choices'}
         ) }}
         {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'movie') %}
             {{ include('@MUVideoModule/Helper/includeCategoriesEdit.html.twig', {obj: movie}) }}
@@ -95,7 +95,7 @@
         {% endif %}
         
         {# include return control #}
-        {% if mode == 'create' %}
+        {% if mode == 'create' and form.repeatCreation is defined %}
             <fieldset>
                 <legend>{{ __('Return control') }}</legend>
                 {{ form_row(form.repeatCreation) }}
@@ -114,24 +114,17 @@
         </div>
         {{ form_end(form) }}
         {% set hookId = mode != 'create' ? movie.id : null %}
-        {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.movies.form_edit', id=hookId) %}
-        {% if hooks is iterable and hooks|length > 0 %}
-            <h3>{{ __('Hooks') }}</h3>
-            {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
-                <h4>{{ providerArea }}</h4>
-                {{ hook }}
-            {% endfor %}
-        {% endif %}
+        {{ notifyDisplayHooks(eventName='muvideomodule.ui_hooks.movies.form_edit', id=hookId) }}
         
     </div>
 {% endblock %}
 {% block footer %}
     {{ parent() }}
-    {% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
-    {% set removeImage = '<span class="fa fa-trash-o"></span>' %}
     {% set formInitScript %}
         <script type="text/javascript">
         /* <![CDATA[ */
+            var mUVideoInlineEditHandlers = [];
+            var mUVideoEditHandler = null;
             
             ( function($) {
                 $(document).ready(function() {

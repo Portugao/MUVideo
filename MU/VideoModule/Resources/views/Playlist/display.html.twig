@@ -59,9 +59,5 @@
 </div>
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.playlists.display_view', id=playlist.getKey(), urlObject=currentUrlObject) %}
-    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
-        <h4>{{ providerArea }}</h4>
-        {{ hook }}
-    {% endfor %}
+    {{ notifyDisplayHooks(eventName='muvideomodule.ui_hooks.playlists.display_view', id=playlist.getKey(), urlObject=currentUrlObject) }}
 {% endblock %}

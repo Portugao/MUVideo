@@ -49,6 +49,6 @@
         ]]>
     </description>
     {% if collection.createdDate|default %}
-        <pubDate>{{ collection.createdDate|date('a, d b Y T +0100') }}</pubDate>
+        <pubDate>{{ collection.createdDate|date('r') }}</pubDate>
     {% endif %}
 {% endblock %}

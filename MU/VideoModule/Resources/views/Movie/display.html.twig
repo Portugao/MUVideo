@@ -17,10 +17,10 @@
     <div class="muvideomodule-movie muvideomodule-display">
 
     <dl>
-        {#% if movie.title is not empty %}
+        {% if movie.title is not empty %}
             <dt>{{ __('Title') }}</dt>
             <dd>{{ movie.title }}</dd>
-        {% endif %#}
+        {% endif %}
         {% if movie.description is not empty %}
             <dt>{{ __('Description') }}</dt>
             <dd>{{ movie.description|safeHtml }}</dd>
@@ -97,9 +97,5 @@
 </div>
 {% endblock %}
 {% block display_hooks %}
-    {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.movies.display_view', id=movie.getKey(), urlObject=currentUrlObject) %}
-    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
-        <h4>{{ providerArea }}</h4>
-        {{ hook }}
-    {% endfor %}
+    {{ notifyDisplayHooks(eventName='muvideomodule.ui_hooks.movies.display_view', id=movie.getKey(), urlObject=currentUrlObject) }}
 {% endblock %}

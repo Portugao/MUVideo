@@ -49,6 +49,6 @@
         ]]>
     </description>
     {% if playlist.createdDate|default %}
-        <pubDate>{{ playlist.createdDate|date('a, d b Y T +0100') }}</pubDate>
+        <pubDate>{{ playlist.createdDate|date('r') }}</pubDate>
     {% endif %}
 {% endblock %}

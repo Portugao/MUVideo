@@ -107,7 +107,7 @@
                 {% endif %}
                 
                 {# include return control #}
-                {% if mode == 'create' %}
+                {% if mode == 'create' and form.repeatCreation is defined %}
                     <fieldset>
                         <legend>{{ __('Return control') }}</legend>
                         {{ form_row(form.repeatCreation) }}
@@ -128,21 +128,12 @@
         </div>
         {{ form_end(form) }}
         {% set hookId = mode != 'create' ? collection.id : null %}
-        {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.collections.form_edit', id=hookId) %}
-        {% if hooks is iterable and hooks|length > 0 %}
-            <h3>{{ __('Hooks') }}</h3>
-            {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
-                <h4>{{ providerArea }}</h4>
-                {{ hook }}
-            {% endfor %}
-        {% endif %}
+        {{ notifyDisplayHooks(eventName='muvideomodule.ui_hooks.collections.form_edit', id=hookId) }}
         
     </div>
 {% endblock %}
 {% block footer %}
     {{ parent() }}
-    {% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
-    {% set removeImage = '<span class="fa fa-trash-o"></span>' %}
     {% set formInitScript %}
         <script type="text/javascript">
         /* <![CDATA[ */

@@ -1,6 +1,6 @@
 {# Purpose of this template: Display movies within an external context #}
 {% for movie in items %}
     <h3>{{ movie|muvideomodule_formattedTitle }}</h3>
-    <p><a href="{{ path('muvideomodule_movie_display', {'id': movie.getId()}) }}">{{ __('Read more') }}</a>
+    <p><a href="{{ path('muvideomodule_movie_display', {'id': movie.getId()}) }}" title="{{ __('Read more')|e('html_attr') }}">{{ __('Read more') }}</a>
     </p>
 {% endfor %}
