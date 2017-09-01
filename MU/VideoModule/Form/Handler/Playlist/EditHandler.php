@@ -15,7 +15,7 @@ namespace MU\VideoModule\Form\Handler\Playlist;
 use MU\VideoModule\Form\Handler\Playlist\Base\AbstractEditHandler;
 
 /**
- * This handler class handles the page events of the Form called by the mUVideoModule_playlist_edit() function.
+ * This handler class handles the page events of editing forms.
  * It aims on the playlist object type.
  */
 class EditHandler extends AbstractEditHandler

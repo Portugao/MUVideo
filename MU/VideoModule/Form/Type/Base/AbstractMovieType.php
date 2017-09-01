@@ -227,7 +227,7 @@ abstract class AbstractMovieType extends AbstractType
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
-                'class' => ' validate-url',
+                'class' => '',
                 'title' => $this->__('Enter the url of youtube of the movie')
             ],
             'required' => false,
@@ -250,7 +250,7 @@ abstract class AbstractMovieType extends AbstractType
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 11,
-                'class' => ' validate-digits',
+                'class' => '',
                 'title' => $this->__('Enter the width of movie of the movie.') . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => true,
@@ -262,7 +262,7 @@ abstract class AbstractMovieType extends AbstractType
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 11,
-                'class' => ' validate-digits',
+                'class' => '',
                 'title' => $this->__('Enter the height of movie of the movie.') . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => true,
@@ -334,13 +334,15 @@ abstract class AbstractMovieType extends AbstractType
         if (!$options['has_moderate_permission']) {
             return;
         }
+        if ($options['inline_usage']) {
+            return;
+        }
     
         $builder->add('moderationSpecificCreator', UserLiveSearchType::class, [
             'mapped' => false,
             'label' => $this->__('Creator') . ':',
             'attr' => [
                 'maxlength' => 11,
-                'class' => ' validate-digits',
                 'title' => $this->__('Here you can choose a user which will be set as creator')
             ],
             'empty_data' => 0,
@@ -372,6 +374,9 @@ abstract class AbstractMovieType extends AbstractType
     public function addReturnControlField(FormBuilderInterface $builder, array $options)
     {
         if ($options['mode'] != 'create') {
+            return;
+        }
+        if ($options['inline_usage']) {
             return;
         }
         $builder->add('repeatCreation', CheckboxType::class, [

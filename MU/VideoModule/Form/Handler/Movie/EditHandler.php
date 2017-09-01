@@ -15,7 +15,7 @@ namespace MU\VideoModule\Form\Handler\Movie;
 use MU\VideoModule\Form\Handler\Movie\Base\AbstractEditHandler;
 
 /**
- * This handler class handles the page events of the Form called by the mUVideoModule_movie_edit() function.
+ * This handler class handles the page events of editing forms.
  * It aims on the movie object type.
  */
 class EditHandler extends AbstractEditHandler

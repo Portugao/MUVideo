@@ -30,7 +30,9 @@ class MovieType extends AbstractMovieType
 	 */
 	public function addEntityFields(FormBuilderInterface $builder, array $options)
 	{
-            $builder->add('uploadOfMovie', UploadType::class, [
+		parent::addEntityFields($builder, $options);
+		
+        $builder->add('uploadOfMovie', UploadType::class, [
             'label' => $this->__('Upload of movie') . ':',
             'attr' => [
                 'class' => ' validate-upload',
@@ -40,6 +42,6 @@ class MovieType extends AbstractMovieType
             'entity' => $options['entity'],
             'allowed_extensions' => 'mpeg, mpg, mp4',
             'allowed_size' => $this->variableApi->get('MUVideoModule', 'maxSizeOfMovie')
-        ]);
+        ]);    
 	}
 }
