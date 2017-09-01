@@ -15,6 +15,8 @@ namespace MU\VideoModule\Controller;
 use MU\VideoModule\Controller\Base\AbstractPlaylistController;
 
 use RuntimeException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -33,6 +35,7 @@ class PlaylistController extends AbstractPlaylistController
      * @Route("/admin/playlists",
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+7 days", public=true)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -52,6 +55,7 @@ class PlaylistController extends AbstractPlaylistController
      * @Route("/playlists",
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -71,6 +75,7 @@ class PlaylistController extends AbstractPlaylistController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+2 hours", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -96,6 +101,7 @@ class PlaylistController extends AbstractPlaylistController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -119,6 +125,7 @@ class PlaylistController extends AbstractPlaylistController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Cache(expires="+30 minutes", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -142,6 +149,7 @@ class PlaylistController extends AbstractPlaylistController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @Cache(expires="+30 minutes", public=false)
      *
      * @param Request $request Current request instance
      *
@@ -163,6 +171,8 @@ class PlaylistController extends AbstractPlaylistController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @ParamConverter("playlist", class="MUVideoModule:PlaylistEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="playlist.getUpdatedDate()", ETag="'Playlist' ~ playlist.getid() ~ playlist.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -187,6 +197,8 @@ class PlaylistController extends AbstractPlaylistController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
+     * @ParamConverter("playlist", class="MUVideoModule:PlaylistEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="playlist.getUpdatedDate()", ETag="'Playlist' ~ playlist.getid() ~ playlist.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param PlaylistEntity $playlist Treated playlist instance
@@ -209,6 +221,8 @@ class PlaylistController extends AbstractPlaylistController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @ParamConverter("playlist", class="MUVideoModule:PlaylistEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="playlist.getUpdatedDate()", ETag="'Playlist' ~ playlist.getid() ~ playlist.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -232,6 +246,8 @@ class PlaylistController extends AbstractPlaylistController
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
+     * @ParamConverter("playlist", class="MUVideoModule:PlaylistEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(lastModified="playlist.getUpdatedDate()", ETag="'Playlist' ~ playlist.getid() ~ playlist.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param PlaylistEntity $playlist Treated playlist instance
