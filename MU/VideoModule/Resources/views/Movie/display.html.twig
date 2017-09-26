@@ -10,21 +10,39 @@
         <a id="itemActions{{ movie.getKey() }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
         {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
     </div>
+      <link href="http://vjs.zencdn.net/6.2.7/video-js.css" rel="stylesheet">
+
+  <!-- If you'd like to support IE8 -->
+  <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 {% endblock %}
 {% block admin_page_icon 'eye' %}
 {% block content %}
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
     <div class="muvideomodule-movie muvideomodule-display">
 
+   {% if routeArea != 'admin' %}
+   {% if movie.urlOfYoutube is empty %}
+       <video id="my-video-{{movie.id }}" class="video-js" controls preload="auto" width="{{ movie.widthOfMovie }}" height="{{ movie.heightOfMovie }}"
+       poster="{{ movie.posterUrl }}" data-setup="{}">
+       <source src="{{ movie.uploadOfMovieUrl }}" type='video/mp4'>
+       {#<source src="MY_VIDEO.webm" type='video/webm'>#}
+       <p class="vjs-no-js">
+       {{ __('To view this video please enable JavaScript, and consider upgrading to a web browser that') }}
+       <a href="http://videojs.com/html5-video-support/" target="_blank">{{ __('supports HTML5 video') }}</a>
+       </p>
+       </video>
+   <script src="http://vjs.zencdn.net/6.2.7/video.js"></script>
+   {% endif %}
+   {% endif %}
     <dl>
-        {% if movie.title is not empty %}
+        {#% if movie.title is not empty %}
             <dt>{{ __('Title') }}</dt>
             <dd>{{ movie.title }}</dd>
-        {% endif %}
+        {% endif %#}
         {% if movie.description is not empty %}
             <dt>{{ __('Description') }}</dt>
             <dd>{{ movie.description|safeHtml }}</dd>
-        {% endif %}
+        {% endif %}<br />
         {% if movie.uploadOfMovie is not empty %}
             <dt>{{ __('Upload of movie') }}</dt>
             <dd>{% if movie.uploadOfMovie is not empty and movie.uploadOfMovieMeta|default %}
@@ -50,6 +68,7 @@
             {% else %}&nbsp;{% endif %}
             </dd>
         {% endif %}
+        {% if routeArea == 'admin' %}
         {% if movie.poster is not empty %}
             <dt>{{ __('Poster') }}</dt>
             <dd>{% if movie.poster is not empty and movie.posterMeta|default %}
@@ -71,6 +90,7 @@
         {% if movie.heightOfMovie is not empty %}
             <dt>{{ __('Height of movie') }}</dt>
             <dd>{{ movie.heightOfMovie }}</dd>
+        {% endif %}
         {% endif %}
         {% if movie.collection|default %}
             <dt>{{ __('Collection') }}</dt>
