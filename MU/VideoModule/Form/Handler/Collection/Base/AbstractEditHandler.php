@@ -76,7 +76,8 @@ abstract class AbstractEditHandler extends EditHandler
             'mode' => $this->templateParameters['mode'],
             'actions' => $this->templateParameters['actions'],
             'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_MODERATE),
-            'filter_by_ownership' => !$this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_ADD)
+            'filter_by_ownership' => !$this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_ADD),
+            'inline_usage' => $this->templateParameters['inlineUsage']
         ];
     
         $options['translations'] = [];
@@ -168,6 +169,10 @@ abstract class AbstractEditHandler extends EditHandler
             if ($this->form->get($action['id'])->isClicked()) {
                 $args['commandName'] = $action['id'];
             }
+        }
+        if ($this->templateParameters['mode'] == 'create' && $this->form->get('submitrepeat')->isClicked()) {
+            $args['commandName'] = 'submit';
+            $this->repeatCreateAction = true;
         }
         if ($this->form->get('cancel')->isClicked()) {
             $args['commandName'] = 'cancel';
