@@ -37,7 +37,15 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         // Check if upload directories exist and if needed create them
         try {
             $container = $this->container;
-            $uploadHelper = new \MU\VideoModule\Helper\UploadHelper($container->get('translator.default'), $container->get('session'), $container->get('logger'), $container->get('zikula_users_module.current_user'), $container->get('zikula_extensions_module.api.variable'), $container->getParameter('datadir'));
+            $uploadHelper = new \MU\VideoModule\Helper\UploadHelper(
+                $container->get('translator.default'),
+                $container->get('filesystem'),
+                $container->get('session'),
+                $container->get('logger'),
+                $container->get('zikula_users_module.current_user'),
+                $container->get('zikula_extensions_module.api.variable'),
+                $container->getParameter('datadir')
+            );
             $uploadHelper->checkAndCreateAllUploadFolders();
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
@@ -92,6 +100,7 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
             $this->container->get('zikula_categories_module.api.category_permission')
         );
         $categoryGlobal = $this->container->get('zikula_categories_module.category_repository')->findOneBy(['name' => 'Global']);
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
     
         $registry = new CategoryRegistryEntity();
         $registry->setModname('MUVideoModule');
@@ -100,7 +109,6 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         $registry->setCategory($categoryGlobal);
     
         try {
-            $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
             $entityManager->persist($registry);
             $entityManager->flush();
         } catch (\Exception $exception) {
@@ -116,7 +124,6 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         $registry->setCategory($categoryGlobal);
     
         try {
-            $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
             $entityManager->persist($registry);
             $entityManager->flush();
         } catch (\Exception $exception) {
@@ -132,7 +139,6 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         $registry->setCategory($categoryGlobal);
     
         try {
-            $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
             $entityManager->persist($registry);
             $entityManager->flush();
         } catch (\Exception $exception) {
