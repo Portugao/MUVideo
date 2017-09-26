@@ -95,18 +95,45 @@ class VideoModuleInstaller extends AbstractVideoModuleInstaller
 			
 			case '1.1.0' :
 				// update the database schema
-				try {
-					DoctrineHelper::updateSchema ( $this->entityManager, $this->listEntityClasses () );
-				} catch ( \Exception $e ) {
-					return LogUtil::registerError ( $this->__ ( 'Doctrine Exception' ) . ': ' . $e->getMessage () );
-				}
-				
-				// unregister persistent event handlers
-				EventUtil::unregisterPersistentModuleHandlers ( $this->name );
-				
-				// unregister hook subscriber bundles
-				HookUtil::unregisterSubscriberBundles ( $this->version->getHookSubscriberBundles () );
-				
+                try {
+                    $this->schemaTool->update($this->listEntityClasses());
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
+                    $logger->error('{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'errorMessage' => $exception->getMessage()]);
+    
+                    return false;
+                }
+                
+                // set default category registry and category for playlists                
+                $categoryRegistryIdsPerEntity = [];
+                
+                // add default entry for category registry (property named Main)
+                $categoryHelper = new \MU\VideoModule\Helper\CategoryHelper(
+                		$this->container->get('translator.default'),
+                		$this->container->get('request_stack'),
+                		$logger,
+                		$this->container->get('zikula_users_module.current_user'),
+                		$this->container->get('zikula_categories_module.category_registry_repository'),
+                		$this->container->get('zikula_categories_module.api.category_permission')
+                		);
+                $categoryGlobal = $this->container->get('zikula_categories_module.category_repository')->findOneBy(['name' => 'Global']);
+                $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+                
+                $registry = new CategoryRegistryEntity();
+                $registry->setModname('MUVideoModule');
+                $registry->setEntityname('PlaylistEntity');
+                $registry->setProperty($categoryHelper->getPrimaryProperty('Playlist'));
+                $registry->setCategory($categoryGlobal);
+                
+                try {
+                	$entityManager->persist($registry);
+                	$entityManager->flush();
+                } catch (\Exception $exception) {
+                	$this->addFlash('error', $this->__f('Error! Could not create a category registry for the %entity% entity.', ['%entity%' => 'playlist']));
+                	$logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'MUVideoModule', 'user' => $userName, 'entities' => 'playlists', 'errorMessage' => $exception->getMessage()]);
+                }
+                $categoryRegistryIdsPerEntity['playlist'] = $registry->getId();
+			
                 // set up all our vars with initial values
                 /*$this->setVar('maxSizeOfMovie', '1024000000');
                 $this->setVar('maxSizeOfPoster', '102400');
@@ -114,7 +141,6 @@ class VideoModuleInstaller extends AbstractVideoModuleInstaller
                 // new vars in this version
                 $this->setVar('youtubeApi', '');
                 $this->setVar('channelIds', '');
-                $this->setVar('supportedModules', '');
                 $this->setVar('overrideVars', false);
                 $this->setVar('collectionEntriesPerPage', '10');
                 $this->setVar('linkOwnCollectionsOnAccountPage', true);
@@ -144,12 +170,8 @@ class VideoModuleInstaller extends AbstractVideoModuleInstaller
                 $this->setVar('thumbnailHeightMoviePosterEdit', '180');
                 $this->setVar('enabledFinderTypes', [ 'collection' ,  'movie' ,  'playlist' ]);
 				
-				// register persistent event handlers
-				$this->registerPersistentEventHandlers ();
-				
-				// register hook subscriber bundles
-				HookUtil::registerSubscriberBundles ( $this->version->getHookSubscriberBundles () );
-				
+				// set datas for the current language in the translation table
+				// for collections and movies
 				$currentLanguage = ZLanguage::getLanguageCode();
 				
 				$config = new \Doctrine\DBAL\Configuration();
@@ -172,23 +194,23 @@ class VideoModuleInstaller extends AbstractVideoModuleInstaller
 				);
 				$conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
 				
-				$collections = $conn->fetchAll('SELECT * FROM muvideo_collection');
-				
+				// get collection and save datas intó translation table
+				$collections = $conn->fetchAll('SELECT * FROM mu_video_collection');			
 				if ($collections) {
 					$collectionRepository = MUVideo_Util_Model::getCollectionRepository ();
 					foreach ( $collections as $collection ) {
-						$conn->insert('muvideo_collection_translation', array('locale' => $currentLanguage, 'object_class' => 'MUVideo_Entity_Collection', 'field' => 'title', 'foreign_key' => $collection['id'], 'content' => $collection['title']));
-						$conn->insert('muvideo_collection_translation', array('locale' => $currentLanguage, 'object_class' => 'MUVideo_Entity_Collection', 'field' => 'description', 'foreign_key' => $collection['id'], 'content' => $collection['description']));
+						$conn->insert('mu_video_collection_translation', array('locale' => $currentLanguage, 'object_class' => 'MU\VideoModule\Entity\CollectionEntity', 'field' => 'title', 'foreign_key' => $collection['id'], 'content' => $collection['title']));
+						$conn->insert('mu_video_collection_translation', array('locale' => $currentLanguage, 'object_class' => 'MU\VideoModule\Entity\CollectionEntity', 'field' => 'description', 'foreign_key' => $collection['id'], 'content' => $collection['description']));
 							
 					}
 				}
-				
-				$movies = $conn->fetchAll('SELECT * FROM muvideo_movie');
+				// get movies and save datas intó translation table
+				$movies = $conn->fetchAll('SELECT * FROM mu_video_movie');
 				if ($movies) {
 					$movieRepository = MUVideo_Util_Model::getMovieRepository ();
 					foreach ( $movies as $movie ) {
-						$conn->insert('muvideo_movie_translation', array('locale' => $currentLanguage, 'object_class' => 'MUVideo_Entity_Movie', 'field' => 'title', 'foreign_key' => $movie['id'], 'content' => $movie['title']));
-						$conn->insert('muvideo_movie_translation', array('locale' => $currentLanguage, 'object_class' => 'MUVideo_Entity_Movie', 'field' => 'description', 'foreign_key' => $movie['id'], 'content' => $movie['description']));
+						$conn->insert('mu_video_movie_translation', array('locale' => $currentLanguage, 'object_class' => 'MU\VideoModule\Entity\MovieEntity', 'field' => 'title', 'foreign_key' => $movie['id'], 'content' => $movie['title']));
+						$conn->insert('mu_video_movie_translation', array('locale' => $currentLanguage, 'object_class' => 'MU\VideoModule\Entity\MovieEntity', 'field' => 'description', 'foreign_key' => $movie['id'], 'content' => $movie['description']));
 						
 					}
 				}
@@ -197,8 +219,6 @@ class VideoModuleInstaller extends AbstractVideoModuleInstaller
         // Note there are several helpers available for making migrating your extension from Zikula 1.3 to 1.4 easier.
         // The following convenience methods are each responsible for a single aspect of upgrading to Zikula 1.4.x.
     
-        // here is a possible usage example
-        // of course 1.2.3 should match the number you used for the last stable 1.3.x module version.
          if ($oldVersion = '1.1.0') {
             // rename module for all modvars
             $this->updateModVarsTo14();
@@ -222,14 +242,134 @@ class VideoModuleInstaller extends AbstractVideoModuleInstaller
             $this->updateHookNamesFor14();
             
             // update module name in the workflows table
-            $this->updateWorkflowsFor14();
+            //$this->updateWorkflowsFor14();
         } 
     
         // remove obsolete persisted hooks from the database
-        //$this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
-    
-    
+        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+  
         // update successful
         return true;
+    }
+    
+    /**
+     * Renames the module name for variables in the module_vars table.
+     */
+    protected function updateModVarsTo14()
+    {
+    	$conn = $this->getConnection();
+    	$conn->update('module_vars', ['modname' => 'MUVideoModule'], ['modname' => 'MUVideo']);
+    }
+    
+    /**
+     * Renames this application in the core's extensions table.
+     */
+    protected function updateExtensionInfoFor14()
+    {
+    	$conn = $this->getConnection();
+    	$conn->update('modules', ['name' => 'MUVideoModule', 'directory' => 'MU/VideoModule'], ['name' => 'MUVideo']);
+    }
+    
+    /**
+     * Renames all permission rules stored for this app.
+     */
+    protected function renamePermissionsFor14()
+    {
+    	$conn = $this->getConnection();
+    	$componentLength = strlen('MUVideo') + 1;
+    
+    	$conn->executeQuery("
+    			UPDATE group_perms
+    			SET component = CONCAT('MUVideoModule', SUBSTRING(component, $componentLength))
+    			WHERE component LIKE 'MUVideo%';
+    			");
+    }
+    
+    /**
+     * Renames all category registries stored for this app.
+     */
+    protected function renameCategoryRegistriesFor14()
+    {
+    	$conn = $this->getConnection();
+    	$componentLength = strlen('MUVideo') + 1;
+    
+    	$conn->executeQuery("
+    			UPDATE categories_registry
+    			SET modname = CONCAT('MUVideoModule', SUBSTRING(modname, $componentLength))
+    			WHERE modname LIKE 'MUVideo%';
+    			");
+    }
+    
+    /**
+     * Renames all (existing) tables of this app.
+     */
+    protected function renameTablesFor14()
+    {
+    	$conn = $this->getConnection();
+    
+    	$oldPrefix = 'muvideo_';
+    	$oldPrefixLength = strlen($oldPrefix);
+    	$newPrefix = 'mu_video_';
+    
+    	$sm = $conn->getSchemaManager();
+    	$tables = $sm->listTables();
+    	foreach ($tables as $table) {
+    		$tableName = $table->getName();
+    		if (substr($tableName, 0, $oldPrefixLength) != $oldPrefix) {
+    			continue;
+    		}
+    
+    		$newTableName = str_replace($oldPrefix, $newPrefix, $tableName);
+    
+    		$conn->executeQuery("
+    				RENAME TABLE $tableName
+    				TO $newTableName;
+    				");
+    	}
+    }
+    
+    /**
+     * Removes event handlers from database as they are now described by service definitions and managed by dependency injection.
+     */
+    protected function dropEventHandlersFromDatabase()
+    {
+    	\EventUtil::unregisterPersistentModuleHandlers('MUVideo');
+    }
+    
+    /**
+     * Updates the module name in the hook tables.
+     */
+    protected function updateHookNamesFor14()
+    {
+    	$conn = $this->getConnection();
+    
+    	$conn->update('hook_area', ['owner' => 'MUVideoModule'], ['owner' => 'MUVideo']);
+    
+    	$componentLength = strlen('subscriber.muvideo') + 1;
+    	$conn->executeQuery("
+    			UPDATE hook_area
+    			SET areaname = CONCAT('subscriber.muvideomodule', SUBSTRING(areaname, $componentLength))
+    			WHERE areaname LIKE 'subscriber.muvideo%';
+    			");
+    
+    	$conn->update('hook_binding', ['sowner' => 'MUVideoModule'], ['sowner' => 'MUVideo']);
+    
+    	$conn->update('hook_runtime', ['sowner' => 'MUVideoModule'], ['sowner' => 'MUVideo']);
+    
+    	$componentLength = strlen('muvideo') + 1;
+    	$conn->executeQuery("
+    			UPDATE hook_runtime
+    			SET eventname = CONCAT('muvideomodule', SUBSTRING(eventname, $componentLength))
+    			WHERE eventname LIKE 'muvideo%';
+    			");
+    
+    	$conn->update('hook_subscriber', ['owner' => 'MUVideoModule'], ['owner' => 'MUVideo']);
+    
+    	$componentLength = strlen('muvideo') + 1;
+    	$conn->executeQuery("
+    			UPDATE hook_subscriber
+    			SET eventname = CONCAT('muvideomodule', SUBSTRING(eventname, $componentLength))
+    			WHERE eventname LIKE 'muvideo%';
+    			");
     }
 }
