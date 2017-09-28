@@ -115,9 +115,23 @@ function mUVideoGetPasteSnippet(mode, itemId)
     imagePath = jQuery('#imagePath' + itemId).length > 0 ? jQuery('#imagePath' + itemId).val().replace(quoteFinder, '') : '';
     pasteMode = jQuery("[id$='pasteAs']").first().val();
 
-    // item ID
+    // embed video
     if (pasteMode === '3') {
-        return '' + itemId;
+        return 'YOUTUBE[' + itemId + ']';;
+    }
+    
+    // embed playlist
+    if (pasteMode === '4') {
+        return 'PLAYLIST[' + itemId + ']';;
+    }
+    
+    // embed video
+    if (pasteMode === '10') {
+        return 'YOUTUBED[' + itemId + ']';;
+    }
+    // embed playlist
+    if (pasteMode === '11') {
+        return 'PLAYLISTD[' + itemId + ']';;
     }
 
     // relative link to detail page
