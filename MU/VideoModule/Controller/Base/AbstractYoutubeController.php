@@ -97,7 +97,7 @@ abstract class AbstractYoutubeController extends AbstractController
 	
 				$this->getYoutubeplaylists($datas['channelId'], $datas['collectionId']);
 	
-				$this->addFlash('status', $this->__('Done! Video import complete.'));
+				$this->addFlash('status', $this->__('Done! Playlist import complete.'));
 				$userName = $this->get('zikula_users_module.current_user')->get('uname');
 				$this->get('logger')->notice('{app}: User {user} updated the configuration.', ['app' => 'MUVideoModule', 'user' => $userName]);
 			} elseif ($form->get('cancel')->isClicked()) {
@@ -155,7 +155,7 @@ abstract class AbstractYoutubeController extends AbstractController
 			}
 		}
 	
-		$serviceManager = ServiceUtil::getManager();
+		$serviceManager = \ServiceUtil::getManager();
 		$entityManager = $serviceManager->getService('doctrine.entitymanager');
 	
 		if (is_array($videos)) {
@@ -175,7 +175,7 @@ abstract class AbstractYoutubeController extends AbstractController
 								$thisExistingVideoObject->setCollection($collectionObject);
 	
 								$entityManager->flush();
-								$this->addFlash('status', $this->__('The video') . ' ' . $videoData['snippet']['title'] . $this->__('was overridden'));
+								$this->addFlash('status', $this->__('The video') . ' ' . $videoData['snippet']['title'] . ' ' . $this->__('was overridden'));
 						        }
 							continue;
 						}
@@ -217,12 +217,11 @@ abstract class AbstractYoutubeController extends AbstractController
 		// we get collection repository and the relevant collection object
 		$collectionRepository = $modelHelper->getRepository('collection');
 	
-		//$collectionRepository = $this->container->get('mu_video_module.video_factory')->getRepository('collection');
+		// we get the collection object
 		$collectionObject = $collectionRepository->selectById($collectionId);
 	
 		// we get a movie repository
 		$playlistRepository = $modelHelper->getRepository('playlist');
-		//$movieRepository = $this->container->get('mu_video_module.video_factory')->getRepository('movie');
 	
 		// we get the playlists from youtube
 		$api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=" . $channelId  . "&maxResults=50&key=" . $youtubeApi);
@@ -237,16 +236,16 @@ abstract class AbstractYoutubeController extends AbstractController
 		if ($existingYoutubePlaylists && count($existingYoutubePlaylists > 0)) {
 			foreach ($existingYoutubePlaylists as $existingYoutubePlaylist) {
 				$youtubeId = str_replace('https://www.youtube.com/watch?v=', '', $existingYoutubePlaylist['urlOfYoutubePlaylist']);
-				https://www.youtube.com/playlist?list=PLL7X1DfKI-zK2-b_ZRAnvK3H7th33fH-F
 				$playlistIds[] = $youtubeId;
 			}
 		}
 	
-		$serviceManager = ServiceUtil::getManager();
+		$serviceManager = \ServiceUtil::getManager();
 		$entityManager = $serviceManager->getService('doctrine.entitymanager');
 	
 		if (is_array($playlists['items'])) {
 	
+			die('T');
 			foreach ($playlists['items'] as $playlistData) {
 				if (isset($playlistData['id'])) {
 					$api2 = self::getData("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=" . $playlistData['id'] . "&key=" . $youtubeApi);
@@ -273,8 +272,7 @@ abstract class AbstractYoutubeController extends AbstractController
 								$thisExistingPlaylistObject->setCollection($collectionObject);
 	
 								$entityManager->flush();
-								$this->addFlash('status', $this->__('The playlist') . ' ' . $playlistData['snippet']['title'] . $this->__('was overridden'));
-								//LogUtil::registerStatus(__('The playlist', $dom) . ' ' . $playlistData['snippet']['title'] . ' ' . __('was overrided', $dom));
+								$this->addFlash('status', $this->__('The playlist') . ' ' . $playlistData['snippet']['title'] . ' ' . $this->__('was overridden'));
 							}
 							continue;
 						}
