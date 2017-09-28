@@ -14,22 +14,26 @@ function getMUVideoModulePopupAttributes()
     pWidth = screen.width * 0.75;
     pHeight = screen.height * 0.66;
 
-    return 'width=' + pWidth + ',height=' + pHeight + ',scrollbars,resizable';
+    return 'width=' + pWidth + ',height=' + pHeight + ',location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes';
 }
 
 /**
- * Open a popup window with the finder triggered by a CKEditor button.
+ * Open a popup window with the finder triggered by an editor button.
  */
-function MUVideoModuleFinderCKEditor(editor, videoUrl)
+function MUVideoModuleFinderOpenPopup(editor, editorName)
 {
+    var popupUrl;
+
     // Save editor for access in selector window
     currentMUVideoModuleEditor = editor;
 
-    editor.popup(
-        Routing.generate('muvideomodule_external_finder', { objectType: 'collection', editor: 'ckeditor' }),
-        /*width*/ '80%', /*height*/ '70%',
-        'location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes'
-    );
+    popupUrl = Routing.generate('muvideomodule_external_finder', { objectType: 'collection', editor: editorName });
+
+    if (editorName == 'ckeditor') {
+        editor.popup(popupUrl, /*width*/ '80%', /*height*/ '70%', getMUVideoModulePopupAttributes());
+    } else {
+        window.open(popupUrl, '_blank', getMUVideoModulePopupAttributes());
+    }
 }
 
 
@@ -79,9 +83,13 @@ mUVideoModule.finder.handleCancel = function (event)
 
     event.preventDefault();
     editor = jQuery("[id$='editor']").first().val();
-    if ('tinymce' === editor) {
+    if ('ckeditor' === editor) {
         mUVideoClosePopup();
-    } else if ('ckeditor' === editor) {
+    } else if ('quill' === editor) {
+        mUVideoClosePopup();
+    } else if ('summernote' === editor) {
+        mUVideoClosePopup();
+    } else if ('tinymce' === editor) {
         mUVideoClosePopup();
     } else {
         alert('Close Editor: ' + editor);
@@ -148,17 +156,23 @@ mUVideoModule.finder.selectItem = function (itemId)
 {
     var editor, html;
 
+    html = mUVideoGetPasteSnippet('html', itemId);
     editor = jQuery("[id$='editor']").first().val();
-    if ('tinymce' === editor) {
-        html = mUVideoGetPasteSnippet('html', itemId);
-        tinyMCE.activeEditor.execCommand('mceInsertContent', false, html);
-        // other tinymce commands: mceImage, mceInsertLink, mceReplaceContent, see http://www.tinymce.com/wiki.php/Command_identifiers
-    } else if ('ckeditor' === editor) {
+    if ('ckeditor' === editor) {
         if (null !== window.opener.currentMUVideoModuleEditor) {
-            html = mUVideoGetPasteSnippet('html', itemId);
-
             window.opener.currentMUVideoModuleEditor.insertHtml(html);
         }
+    } else if ('quill' === editor) {
+        if (null !== window.opener.currentMUVideoModuleEditor) {
+            window.opener.currentMUVideoModuleEditor.clipboard.dangerouslyPasteHTML(window.opener.currentMUVideoModuleEditor.getLength(), html);
+        }
+    } else if ('summernote' === editor) {
+        if (null !== window.opener.currentMUVideoModuleEditor) {
+            html = jQuery(html).get(0);
+            window.opener.currentMUVideoModuleEditor.invoke('insertNode', html);
+        }
+    } else if ('tinymce' === editor) {
+        window.opener.currentMUVideoModuleEditor.insertContent(html);
     } else {
         alert('Insert into Editor: ' + editor);
     }
