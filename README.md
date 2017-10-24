@@ -11,4 +11,4 @@ For questions and other remarks visit our homepage http://homepages-mit-zikula.d
 Michael Ueberschaer (info@homepages-mit-zikula.de)
 http://homepages-mit-zikula.de
 
-This version is under development
+This version is under development at the moment.
