@@ -140,7 +140,7 @@ abstract class AbstractGetPlaylistsType extends AbstractType
     	])
     	->add('searchFragments', TextType::class, [
     			'label' => $this->__('Search fragments') . ':',
-    			'help' => $this->__('Commaseparated search fragments'),
+    			'help' => $this->__('Search fragments separated with a vertical stroke.'),
     			'empty_data' => '',
     			'attr' => [
     					'maxlength' => 255,
