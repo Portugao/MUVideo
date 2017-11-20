@@ -235,7 +235,7 @@ abstract class AbstractYoutubeController extends AbstractController {
 		// we get the playlists from youtube
 		    $api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=" . $channelId . "&maxResults=50&key=" . $youtubeApi);
 		} else {
-			$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&type=playlist&channelId=" . $channelId . "q=" . $searchfragment . "&maxResults=50&key=" . $youtubeApi);
+			$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&type=playlist&channelId=" . $channelId . "&q=" . $searchfragment . "&maxResults=50&key=" . $youtubeApi);
 		}
 		// we decode the jason array to php array
 		$playlists = json_decode ( $api, true );
@@ -263,11 +263,9 @@ abstract class AbstractYoutubeController extends AbstractController {
 			foreach($playlists['items'] as $playlistData) {
 				if (isset($playlistData['id']) || isset($playlistData['id']['playlistId'])) {
 					if (isset($playlistData['id'])) {
-						die('T');
-					$api2 = self::getData ( "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=" . $playlistData ['id'] . "&key=" . $youtubeApi );
+					    $api2 = self::getData ( "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=" . $playlistData ['id'] . "&key=" . $youtubeApi );
 					}
 					if (isset($playlistData['id']['playlistId'])) {
-
 						$api2 = self::getData ( "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=1&playlistId=" . $playlistData ['id']['playlistId'] . "&key=" . $youtubeApi );
 					}
 					// we decode the json array to php array
