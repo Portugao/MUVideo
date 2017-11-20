@@ -21,6 +21,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * GetVideos form type base class.
@@ -129,13 +130,24 @@ abstract class AbstractGetPlaylistsType extends AbstractType
     			//'data' => isset($this->modVars['thumbnailModeMovieUploadOfMovie']) ? $this->modVars['thumbnailModeMovieUploadOfMovie'] : '',
     			'empty_data' => 'inset',
     			'attr' => [
-    					'title' => $this->__('Choose the thumbnail mode.')
+    					'title' => $this->__('Choose the channel for import.')
     			],'choices' =>
     			/*$this->__('Inset') => 'inset'
     			 ,$this->__('Outbound') => 'outbound'*/
     			$formVars ,
     			'choices_as_values' => false,
     			'multiple' => false
+    	])
+    	->add('searchFragments', TextType::class, [
+    			'label' => $this->__('Search fragments') . ':',
+    			'help' => $this->__('Commaseparated search fragments'),
+    			'empty_data' => '',
+    			'attr' => [
+    					'maxlength' => 255,
+    					'class' => '',
+    					'title' => $this->__('Enter the search fragments')
+    			],
+    			'required' => false,
     	])
     	->add('collectionId', 'hidden', [
     			'data' => $options['collectionId']
