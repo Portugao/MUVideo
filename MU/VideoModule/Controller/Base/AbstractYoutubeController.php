@@ -49,7 +49,7 @@ abstract class AbstractYoutubeController extends AbstractController {
 				
 				$datas = $form->getData ();
 				
-				$this->getYoutubeVideos ( $datas ['channelId'], $datas ['collectionId'] );
+				$this->getYoutubeVideos ( $datas ['channelId'], $datas ['collectionId'], $datas['searchFragments'], $datas['publishedAfter'], $datas['publishedBefore']);
 				
 				$this->addFlash ( 'status', $this->__ ( 'Done! Video import complete.' ) );
 				$userName = $this->get ( 'zikula_users_module.current_user' )->get ( 'uname' );
@@ -98,7 +98,7 @@ abstract class AbstractYoutubeController extends AbstractController {
 				
 				$datas = $form->getData ();
 				
-				$this->getYoutubeplaylists ( $datas ['channelId'], $datas ['collectionId'], $datas['searchFragments'] );
+				$this->getYoutubeplaylists ( $datas ['channelId'], $datas ['collectionId'], $datas['searchFragments'], $datas['publishedAfter'], $datas['publishedBefore']);
 				
 				$this->addFlash ( 'status', $this->__ ( 'Done! Playlist import complete.' ) );
 				$userName = $this->get ( 'zikula_users_module.current_user' )->get ( 'uname' );
@@ -129,7 +129,7 @@ abstract class AbstractYoutubeController extends AbstractController {
 	 * this function is to get youtube videos into Video
 	 *
 	 */
-	public function getYoutubeVideos($channelId = '', $collectionId = 0) {
+	public function getYoutubeVideos($channelId = '', $collectionId = 0, $searchfragment = '', $publishedAfter = '', $publishedBefore = '') {
 		$youtubeApi = $this->getVar ( 'youtubeApi' );
 		
 		$modelHelper = $this->get ( 'mu_video_module.model_helper' );
@@ -144,9 +144,23 @@ abstract class AbstractYoutubeController extends AbstractController {
 		$movieRepository = $modelHelper->getRepository ( 'movie' );
 		// $movieRepository = $this->container->get('mu_video_module.video_factory')->getRepository('movie');
 		
+		if ($searchfragment == '') {
 		// we get the videos from youtube
-		$api = self::getData ( "https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&channelId=" . $channelId . "&maxResults=50&key=" . $youtubeApi );
-		
+		    $api = self::getData ( "https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&channelId=" . $channelId . "&maxResults=50&key=" . $youtubeApi);
+		} else {
+			$searchfragment = urlencode($searchfragment);
+			if ($publishedAfter != '') {
+			    $published = '&publishedAfter=' . urlencode($publishedAfter);
+			} else {
+				$published = '';
+			}	
+			if ($publishedBefore != '') {
+				$published2 = '&publishedBefore=' . urlencode($publishedBefore);
+			} else {
+				$published2 = '';
+			}
+     		$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&channelId=" . $channelId . "&q=" . $searchfragment . $published . "&maxResults=50&key=" . $youtubeApi);		
+		}
 		// we decode the jason array to php array
 		$videos = json_decode ( $api, true );
 		// die($videos['items']);
@@ -217,7 +231,7 @@ abstract class AbstractYoutubeController extends AbstractController {
 	 * this function is to get youtube playlists into Video
 	 *
 	 */
-	public function getYoutubePlaylists($channelId = '', $collectionId = 0, $searchfragment = '') {
+	public function getYoutubePlaylists($channelId = '', $collectionId = 0, $searchfragment = '', $publishedAfter = '', $publishedBefore = '') {
 		$youtubeApi = $this->getVar ( 'youtubeApi' );
 		
 		$modelHelper = $this->get ( 'mu_video_module.model_helper' );
@@ -235,7 +249,18 @@ abstract class AbstractYoutubeController extends AbstractController {
 		// we get the playlists from youtube
 		    $api = self::getData("https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=" . $channelId . "&maxResults=50&key=" . $youtubeApi);
 		} else {
-			$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&type=playlist&channelId=" . $channelId . "&q=" . $searchfragment . "&maxResults=50&key=" . $youtubeApi);
+			$searchfragment = urlencode($searchfragment);
+			if ($publishedAfter != '') {
+				$published = '&publishedAfter=' . urlencode($publishedAfter);
+			} else {
+				$published = '';
+			}
+			if ($publishedBefore != '') {
+				$published2 = '&publishedBefore=' . urlencode($publishedBefore);
+			} else {
+				$published2 = '';
+			}
+			$api = self::getData("https://www.googleapis.com/youtube/v3/search?part=snippet&type=playlist&channelId=" . $channelId . "&q=" . $searchfragment . $published . $published2 . "&maxResults=50&key=" . $youtubeApi);
 		}
 		// we decode the jason array to php array
 		$playlists = json_decode ( $api, true );

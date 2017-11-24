@@ -149,11 +149,31 @@ abstract class AbstractGetPlaylistsType extends AbstractType
     			],
     			'required' => false,
     	])
+    	->add('publishedBefore', TextType::class, [
+    			'label' => $this->__('Maximum date of publishing') . ':',
+    			'help' => $this->__('Date of publishing.(1970-01-01T00:00:00Z)'),
+    			'empty_data' => '',
+    			'attr' => [
+    					'maxlength' => 255,
+    					'class' => '',
+    					'title' => $this->__('Enter the date')
+    			],
+    			'required' => false,
+    	])
+    	->add('publishedAfter', TextType::class, [
+    			'label' => $this->__('Minimum date of publishing') . ':',
+    			'help' => $this->__('Date of publishing.(1970-01-01T00:00:00Z)'),
+    			'empty_data' => '',
+    			'attr' => [
+    					'maxlength' => 255,
+    					'class' => '',
+    					'title' => $this->__('Enter the date')
+    			],
+    			'required' => false,
+    	])
     	->add('collectionId', 'hidden', [
     			'data' => $options['collectionId']
-    	])
-    	 
-    	;
+    	]);
     }
 
     /**

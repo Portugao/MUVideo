@@ -15,6 +15,7 @@ namespace MU\VideoModule\Form\Type\Base;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -136,6 +137,39 @@ abstract class AbstractGetVideosType extends AbstractType
     			$formVars ,
     			'choices_as_values' => false,
     			'multiple' => false
+    	])
+    	->add('searchFragments', TextType::class, [
+    			'label' => $this->__('Search fragments') . ':',
+    			'help' => $this->__('Search fragments separated with a vertical stroke.'),
+    			'empty_data' => '',
+    			'attr' => [
+    					'maxlength' => 255,
+    					'class' => '',
+    					'title' => $this->__('Enter the search fragments')
+    			],
+    			'required' => false,
+    	])
+    	->add('publishedBefore', TextType::class, [
+    			'label' => $this->__('Maximum date of publishing') . ':',
+    			'help' => $this->__('Date of publishing.(1970-01-01T00:00:00Z)'),
+    			'empty_data' => '',
+    			'attr' => [
+    					'maxlength' => 255,
+    					'class' => '',
+    					'title' => $this->__('Enter the date')
+    			],
+    			'required' => false,
+    	])
+    	->add('publishedAfter', TextType::class, [
+    			'label' => $this->__('Minimum date of publishing') . ':',
+    			'help' => $this->__('Date of publishing.(1970-01-01T00:00:00Z)'),
+    			'empty_data' => '',
+    			'attr' => [
+    					'maxlength' => 255,
+    					'class' => '',
+    					'title' => $this->__('Enter the date')
+    			],
+    			'required' => false,
     	])
     	->add('collectionId', 'hidden', [
     			'data' => $options['collectionId']
