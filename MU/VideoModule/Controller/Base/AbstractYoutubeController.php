@@ -163,10 +163,10 @@ abstract class AbstractYoutubeController extends AbstractController {
 		}
 		// we decode the jason array to php array
 		$videos = json_decode ( $api, true );
-		// die($videos['items']);
-		
-		$where = 'tbl.urlOfYoutube != \'' . DataUtil::formatForStore ( '' ) . '\'';
+
 		// we look for movies with a youtube url entered
+		$fragment = 'www.youtube.com';
+		$where = 'tbl.urlOfYoutube LIKE \'%' . $fragment . '%\'';
 		$existingYoutubeVideos = $movieRepository->selectWhere ( $where );
 		
 		if ($existingYoutubeVideos && count ( $existingYoutubeVideos > 0 )) {
@@ -214,7 +214,6 @@ abstract class AbstractYoutubeController extends AbstractController {
 					$entityManager->persist ( $newYoutubeVideo );
 					$entityManager->flush ();
 					$this->addFlash ( 'status', $this->__ ( 'The video' ) . ' ' . $videoData ['snippet'] ['title'] . ' ' . $this->__ ( 'was created and put into the collection' ) . ' ' . $collectionObject ['title'] );
-					// LogUtil::registerStatus(__('The video', $dom) . ' ' . $videoData['snippet']['title'] . ' ' . __('was created and put into the collection', $dom) . ' ' . $collectionObject['title']);
 				}
 			}
 		} else {
@@ -264,11 +263,11 @@ abstract class AbstractYoutubeController extends AbstractController {
 		}
 		// we decode the jason array to php array
 		$playlists = json_decode ( $api, true );
-		
+
+		// we look for playlists with a youtube url entered
 		$fragment = 'www.youtube.com';
 		$where = 'tbl.urlOfYoutubePlaylist LIKE \'%' . $fragment . '%\'';
-		// we look for movies with a youtube url entered
-		$existingYoutubePlaylists = $playlistRepository->selectWhere ( $where );
+		$existingYoutubePlaylists = $playlistRepository->selectWhere ($where);
 		
 		$playlistIds = '';
 		
