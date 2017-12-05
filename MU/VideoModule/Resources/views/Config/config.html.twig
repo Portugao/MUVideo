@@ -11,7 +11,7 @@
         {{ form_start(form) }}
         <div class="zikula-bootstrap-tab-container">
             <ul class="nav nav-tabs">
-                {% set tabTitle = __('Variables') %}
+                {% set tabTitle = __('Settings') %}
                 <li role="presentation" class="active">
                     <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
                 </li>
@@ -41,7 +41,7 @@
             {{ form_errors(form) }}
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="tab1" aria-labelledby="vars1Tab">
-                    {% set tabTitle = __('Variables') %}
+                    {% set tabTitle = __('Settings') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
                     
@@ -117,9 +117,10 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group form-buttons">
             <div class="col-sm-offset-3 col-sm-9">
                 {{ form_widget(form.save) }}
+                {{ form_widget(form.reset) }}
                 {{ form_widget(form.cancel) }}
             </div>
         </div>
@@ -129,4 +130,18 @@
 {% block footer %}
     {{ parent() }}
     {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.Config.js')) }}
+    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.EditFunctions.js'), 99) }}
+    {% set formInitScript %}
+        <script>
+        /* <![CDATA[ */
+            ( function($) {
+                $(document).ready(function() {
+                    mUVideoInitEditForm('edit', '1');
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endset %}
+    {{ pageAddAsset('footer', formInitScript) }}
 {% endblock %}
