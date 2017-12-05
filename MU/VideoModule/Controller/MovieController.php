@@ -15,7 +15,7 @@ namespace MU\VideoModule\Controller;
 use MU\VideoModule\Controller\Base\AbstractMovieController;
 
 use RuntimeException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,6 @@ class MovieController extends AbstractMovieController
      * @Route("/admin/movies",
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+7 days", public=true)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -55,7 +54,6 @@ class MovieController extends AbstractMovieController
      * @Route("/movies",
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -75,7 +73,6 @@ class MovieController extends AbstractMovieController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+2 hours", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -101,7 +98,6 @@ class MovieController extends AbstractMovieController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -126,7 +122,6 @@ class MovieController extends AbstractMovieController
      *        methods = {"GET"}
      * )
      * @ParamConverter("movie", class="MUVideoModule:MovieEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="movie.getUpdatedDate()", ETag="'Movie' ~ movie.getid() ~ movie.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -151,7 +146,6 @@ class MovieController extends AbstractMovieController
      *        methods = {"GET"}
      * )
      * @ParamConverter("movie", class="MUVideoModule:MovieEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="movie.getUpdatedDate()", ETag="'Movie' ~ movie.getid() ~ movie.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param MovieEntity $movie Treated movie instance
@@ -173,7 +167,6 @@ class MovieController extends AbstractMovieController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     * @Cache(expires="+30 minutes", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -197,7 +190,6 @@ class MovieController extends AbstractMovieController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     * @Cache(expires="+30 minutes", public=false)
      *
      * @param Request $request Current request instance
      *
@@ -220,7 +212,6 @@ class MovieController extends AbstractMovieController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("movie", class="MUVideoModule:MovieEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="movie.getUpdatedDate()", ETag="'Movie' ~ movie.getid() ~ movie.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -246,7 +237,6 @@ class MovieController extends AbstractMovieController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("movie", class="MUVideoModule:MovieEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="movie.getUpdatedDate()", ETag="'Movie' ~ movie.getid() ~ movie.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param MovieEntity $movie Treated movie instance
