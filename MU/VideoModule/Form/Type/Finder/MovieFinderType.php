@@ -28,7 +28,7 @@ class MovieFinderType extends AbstractMovieFinderType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addPasteAsField(FormBuilderInterface $builder, array $options)
+    public function addPasteAsField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('pasteAs', ChoiceType::class, [
             'label' => $this->__('Paste as') . ':',

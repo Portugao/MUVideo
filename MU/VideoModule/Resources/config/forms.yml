@@ -25,8 +25,6 @@ services:
         class: MU\VideoModule\Form\Type\QuickNavigation\PlaylistQuickNavType
         arguments:
             - "@translator.default"
-            - "@request_stack"
-            - "@mu_video_module.entity_display_helper"
             - "@mu_video_module.listentries_helper"
             - "@mu_video_module.feature_activation_helper"
         tags:
@@ -137,8 +135,6 @@ services:
         arguments:
             - "@translator.default"
             - "@mu_video_module.entity_factory"
-            - "@mu_video_module.collection_filter_helper"
-            - "@mu_video_module.entity_display_helper"
             - "@zikula_extensions_module.api.variable"
             - "@mu_video_module.translatable_helper"
             - "@mu_video_module.listentries_helper"
@@ -181,7 +177,7 @@ services:
         class: MU\VideoModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
-            - "@=service('zikula_extensions_module.api.variable').getAll('MUVideoModule')"
+            - "@mu_video_module.listentries_helper"
         tags:
             - { name: form.type }
             
