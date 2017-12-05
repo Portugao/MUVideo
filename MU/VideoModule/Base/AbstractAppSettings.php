@@ -62,6 +62,13 @@ abstract class AbstractAppSettings
     protected $channelIds = '';
     
     /**
+     * @Assert\NotNull()
+     * @Assert\Type(type="bool")
+     * @var boolean $overrideVars
+     */
+    protected $overrideVars = false;
+    
+    /**
      * The amount of collections shown per page
      *
      * @Assert\Type(type="integer")
@@ -367,6 +374,30 @@ abstract class AbstractAppSettings
     {
         if ($this->channelIds !== $channelIds) {
             $this->channelIds = isset($channelIds) ? $channelIds : '';
+        }
+    }
+    
+    /**
+     * Returns the override vars.
+     *
+     * @return boolean
+     */
+    public function getOverrideVars()
+    {
+        return $this->overrideVars;
+    }
+    
+    /**
+     * Sets the override vars.
+     *
+     * @param boolean $overrideVars
+     *
+     * @return void
+     */
+    public function setOverrideVars($overrideVars)
+    {
+        if (boolval($this->overrideVars) !== boolval($overrideVars)) {
+            $this->overrideVars = boolval($overrideVars);
         }
     }
     
@@ -801,6 +832,9 @@ abstract class AbstractAppSettings
         if (isset($moduleVars['channelIds'])) {
             $this->setChannelIds($moduleVars['channelIds']);
         }
+        if (isset($moduleVars['overrideVars'])) {
+            $this->setOverrideVars($moduleVars['overrideVars']);
+        }
         if (isset($moduleVars['collectionEntriesPerPage'])) {
             $this->setCollectionEntriesPerPage($moduleVars['collectionEntriesPerPage']);
         }
@@ -864,6 +898,7 @@ abstract class AbstractAppSettings
         $this->variableApi->set('MUVideoModule', 'standardPoster', $this->getStandardPoster());
         $this->variableApi->set('MUVideoModule', 'youtubeApi', $this->getYoutubeApi());
         $this->variableApi->set('MUVideoModule', 'channelIds', $this->getChannelIds());
+        $this->variableApi->set('MUVideoModule', 'overrideVars', $this->getOverrideVars());
         $this->variableApi->set('MUVideoModule', 'collectionEntriesPerPage', $this->getCollectionEntriesPerPage());
         $this->variableApi->set('MUVideoModule', 'linkOwnCollectionsOnAccountPage', $this->getLinkOwnCollectionsOnAccountPage());
         $this->variableApi->set('MUVideoModule', 'movieEntriesPerPage', $this->getMovieEntriesPerPage());

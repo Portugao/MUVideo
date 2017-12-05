@@ -139,6 +139,15 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => false,
         ]);
+        
+        $builder->add('overrideVars', CheckboxType::class, [
+            'label' => $this->__('Override vars') . ':',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The override vars option')
+            ],
+            'required' => false,
+        ]);
     }
 
     /**

@@ -122,6 +122,9 @@ application "Video" {
                 },
                 string "channelIds" {
                     mandatory false
+                },
+                boolean "overrideVars" {
+                    mandatory false
                 }
             }
         }

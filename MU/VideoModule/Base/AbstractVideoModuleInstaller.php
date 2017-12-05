@@ -69,6 +69,7 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('standardPoster', '/images/poster.png');
         $this->setVar('youtubeApi', '');
         $this->setVar('channelIds', '');
+        $this->setVar('overrideVars', false);
         $this->setVar('collectionEntriesPerPage', 10);
         $this->setVar('linkOwnCollectionsOnAccountPage', true);
         $this->setVar('movieEntriesPerPage', 10);
