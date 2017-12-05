@@ -23,32 +23,26 @@
         #}
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <copyright>Copyright (c) {{ 'now'|date('Y') }}, {{ app.request.schemeAndHttpHost }}</copyright>
-        <webMaster>{{ pageGetVar('adminmail) }}</webMaster>
+        <webMaster>{{ pageGetVar('adminmail') }}</webMaster>
 {% for playlist in items %}
-    {{ block('entry') }}
+    <item>
+        <title><![CDATA[{% if playlist.updatedDate|default %}{{ playlist.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ playlist|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.playlists')|safeHtml }}]]></title>
+        <link>{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}</link>
+        <guid>{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}</guid>
+        {% if playlist.createdBy|default and playlist.createdBy.getUid() > 0 %}
+            {% set creatorAttributes = playlist.createdBy.getAttributes() %}
+            <author>{{ playlist.createdBy.getEmail() }} ({{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(playlist.createdBy.getUname()) }})</author>
+        {% endif %}
+        <category><![CDATA[{{ __('Categories') }}: {% for catMapping in playlist.categories %}{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}{% if not loop.last %}, {% endif %}{% endfor %}]]></category>
+        <description>
+            <![CDATA[
+            {{ playlist.description|replace({'<br>': '<br />'}) }}
+            ]]>
+        </description>
+        {% if playlist.createdDate|default %}
+            <pubDate>{{ playlist.createdDate|date('r') }}</pubDate>
+        {% endif %}
+    </item>
 {% endfor %}
     </channel>
 </rss>
-{% block entry %}
-    <item>
-        {{ block('entry_content') }}
-    </item>
-{% endblock %}
-{% block entry_content %}
-    <title><![CDATA[{% if playlist.updatedDate|default %}{{ playlist.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ playlist|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.playlists')|safeHtml }}]]></title>
-    <link>{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}</link>
-    <guid>{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}</guid>
-    {% if playlist.createdBy|default and playlist.createdBy.getUid() > 0 %}
-        {% set creatorAttributes = playlist.createdBy.getAttributes() %}
-        <author>{{ playlist.createdBy.getEmail() }} ({{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(playlist.createdBy.getUname()) }})</author>
-    {% endif %}
-    <category><![CDATA[{{ __('Categories') }}: {% for catMapping in playlist.categories %}{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}{% if not loop.last %}, {% endif %}{% endfor %}]]></category>
-    <description>
-        <![CDATA[
-        {{ playlist.description|replace({'<br>': '<br />'}) }}
-        ]]>
-    </description>
-    {% if playlist.createdDate|default %}
-        <pubDate>{{ playlist.createdDate|date('r') }}</pubDate>
-    {% endif %}
-{% endblock %}

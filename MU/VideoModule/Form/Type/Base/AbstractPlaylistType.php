@@ -12,9 +12,7 @@
 
 namespace MU\VideoModule\Form\Type\Base;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -33,8 +31,6 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use MU\VideoModule\Entity\Factory\EntityFactory;
 use MU\VideoModule\Form\Type\Field\TranslationType;
 use Zikula\UsersModule\Form\Type\UserLiveSearchType;
-use MU\VideoModule\Helper\CollectionFilterHelper;
-use MU\VideoModule\Helper\EntityDisplayHelper;
 use MU\VideoModule\Helper\FeatureActivationHelper;
 use MU\VideoModule\Helper\ListEntriesHelper;
 use MU\VideoModule\Helper\TranslatableHelper;
@@ -50,16 +46,6 @@ abstract class AbstractPlaylistType extends AbstractType
      * @var EntityFactory
      */
     protected $entityFactory;
-
-    /**
-     * @var CollectionFilterHelper
-     */
-    protected $collectionFilterHelper;
-
-    /**
-     * @var EntityDisplayHelper
-     */
-    protected $entityDisplayHelper;
 
     /**
      * @var VariableApiInterface
@@ -86,8 +72,6 @@ abstract class AbstractPlaylistType extends AbstractType
      *
      * @param TranslatorInterface $translator     Translator service instance
      * @param EntityFactory $entityFactory EntityFactory service instance
-     * @param CollectionFilterHelper $collectionFilterHelper CollectionFilterHelper service instance
-     * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
      * @param VariableApiInterface $variableApi VariableApi service instance
      * @param TranslatableHelper $translatableHelper TranslatableHelper service instance
      * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
@@ -96,8 +80,6 @@ abstract class AbstractPlaylistType extends AbstractType
     public function __construct(
         TranslatorInterface $translator,
         EntityFactory $entityFactory,
-        CollectionFilterHelper $collectionFilterHelper,
-        EntityDisplayHelper $entityDisplayHelper,
         VariableApiInterface $variableApi,
         TranslatableHelper $translatableHelper,
         ListEntriesHelper $listHelper,
@@ -105,8 +87,6 @@ abstract class AbstractPlaylistType extends AbstractType
     ) {
         $this->setTranslator($translator);
         $this->entityFactory = $entityFactory;
-        $this->collectionFilterHelper = $collectionFilterHelper;
-        $this->entityDisplayHelper = $entityDisplayHelper;
         $this->variableApi = $variableApi;
         $this->translatableHelper = $translatableHelper;
         $this->listHelper = $listHelper;
@@ -132,7 +112,6 @@ abstract class AbstractPlaylistType extends AbstractType
         if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, 'playlist')) {
             $this->addCategoriesField($builder, $options);
         }
-        $this->addIncomingRelationshipFields($builder, $options);
         $this->addModerationFields($builder, $options);
         $this->addSubmitButtons($builder, $options);
     }
@@ -143,7 +122,7 @@ abstract class AbstractPlaylistType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addEntityFields(FormBuilderInterface $builder, array $options)
+    public function addEntityFields(FormBuilderInterface $builder, array $options = [])
     {
         
         $builder->add('title', TextType::class, [
@@ -206,7 +185,7 @@ abstract class AbstractPlaylistType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addCategoriesField(FormBuilderInterface $builder, array $options)
+    public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('categories', CategoriesType::class, [
             'label' => $this->__('Category') . ':',
@@ -223,48 +202,14 @@ abstract class AbstractPlaylistType extends AbstractType
     }
 
     /**
-     * Adds fields for incoming relationships.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
-     */
-    public function addIncomingRelationshipFields(FormBuilderInterface $builder, array $options)
-    {
-        $queryBuilder = function(EntityRepository $er) {
-            // select without joins
-            return $er->getListQueryBuilder('', '', false);
-        };
-        $entityDisplayHelper = $this->entityDisplayHelper;
-        $choiceLabelClosure = function ($entity) use ($entityDisplayHelper) {
-            return $entityDisplayHelper->getFormattedTitle($entity);
-        };
-        $builder->add('collection', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
-            'class' => 'MUVideoModule:CollectionEntity',
-            'choice_label' => $choiceLabelClosure,
-            'multiple' => false,
-            'expanded' => false,
-            'query_builder' => $queryBuilder,
-            'placeholder' => $this->__('Please choose an option'),
-            'required' => false,
-            'label' => $this->__('Collection'),
-            'attr' => [
-                'title' => $this->__('Choose the collection')
-            ]
-        ]);
-    }
-
-    /**
      * Adds special fields for moderators.
      *
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addModerationFields(FormBuilderInterface $builder, array $options)
+    public function addModerationFields(FormBuilderInterface $builder, array $options = [])
     {
         if (!$options['has_moderate_permission']) {
-            return;
-        }
-        if ($options['inline_usage']) {
             return;
         }
     
@@ -301,7 +246,7 @@ abstract class AbstractPlaylistType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addSubmitButtons(FormBuilderInterface $builder, array $options)
+    public function addSubmitButtons(FormBuilderInterface $builder, array $options = [])
     {
         foreach ($options['actions'] as $action) {
             $builder->add($action['id'], SubmitType::class, [
@@ -311,7 +256,7 @@ abstract class AbstractPlaylistType extends AbstractType
                     'class' => $action['buttonClass']
                 ]
             ]);
-            if ($options['mode'] == 'create' && $action['id'] == 'submit' && !$options['inline_usage']) {
+            if ($options['mode'] == 'create' && $action['id'] == 'submit') {
                 // add additional button to submit item and return to create form
                 $builder->add('submitrepeat', SubmitType::class, [
                     'label' => $this->__('Submit and repeat'),
@@ -366,16 +311,12 @@ abstract class AbstractPlaylistType extends AbstractType
                 'actions' => [],
                 'has_moderate_permission' => false,
                 'translations' => [],
-                'filter_by_ownership' => true,
-                'inline_usage' => false
             ])
             ->setRequired(['mode', 'actions'])
             ->setAllowedTypes('mode', 'string')
             ->setAllowedTypes('actions', 'array')
             ->setAllowedTypes('has_moderate_permission', 'bool')
             ->setAllowedTypes('translations', 'array')
-            ->setAllowedTypes('filter_by_ownership', 'bool')
-            ->setAllowedTypes('inline_usage', 'bool')
             ->setAllowedValues('mode', ['create', 'edit'])
         ;
     }

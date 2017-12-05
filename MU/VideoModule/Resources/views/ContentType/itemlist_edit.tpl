@@ -91,7 +91,7 @@
     </div>
 </div>
 
-<script type="text/javascript">
+<script>
     (function($) {
     	$('#mUVideoModuleTemplate').change(function() {
     	    $('#customTemplateArea').toggleClass('hidden', $(this).val() != 'custom');

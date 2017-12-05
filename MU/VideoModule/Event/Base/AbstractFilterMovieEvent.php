@@ -36,7 +36,7 @@ class AbstractFilterMovieEvent extends Event
      * @param MovieEntity $movie Processed entity
      * @param array $entityChangeSet Change set for preUpdate events
      */
-    public function __construct(MovieEntity $movie, $entityChangeSet = [])
+    public function __construct(MovieEntity $movie, array $entityChangeSet = [])
     {
         $this->movie = $movie;
         $this->entityChangeSet = $entityChangeSet;
@@ -55,7 +55,7 @@ class AbstractFilterMovieEvent extends Event
     /**
      * Returns the change set.
      *
-     * @return array
+     * @return array Entity change set
      */
     public function getEntityChangeSet()
     {

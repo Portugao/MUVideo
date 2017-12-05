@@ -1,10 +1,8 @@
 {# purpose of this template: playlists view csv view #}
 {% spaceless %}"{{ __('Title') }}";"{{ __('Description') }}";"{{ __('Url of youtube playlist') }}";"{{ __('Workflow state') }}"
-;"{{ __('Collection') }}"
 {% endspaceless %}
 {% for playlist in items %}
 {% spaceless %}
     "{{ playlist.title }}";"{{ playlist.description|safeHtml }}";"{{ playlist.urlOfYoutubePlaylist }}";"{{ playlist.workflowState|muvideomodule_objectState(false)|lower }}"
-    ;"{% if playlist.collection|default %}{{ playlist.collection|muvideomodule_formattedTitle }}{% endif %}"
 {% endspaceless %}
 {% endfor %}

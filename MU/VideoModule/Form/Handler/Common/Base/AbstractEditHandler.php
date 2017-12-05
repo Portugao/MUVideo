@@ -323,7 +323,7 @@ abstract class AbstractEditHandler
      *
      * @throws RuntimeException Thrown if the workflow actions can not be determined
      */
-    public function processForm(array $templateParameters)
+    public function processForm(array $templateParameters = [])
     {
         $this->templateParameters = $templateParameters;
         $this->templateParameters['inlineUsage'] = $this->request->query->getBoolean('raw', false);
@@ -378,7 +378,7 @@ abstract class AbstractEditHandler
                 if (true === $this->hasPageLockSupport && $this->kernel->isBundle('ZikulaPageLockModule') && null !== $this->lockingApi) {
                     // try to guarantee that only one person at a time can be editing this entity
                     $lockName = 'MUVideoModule' . $this->objectTypeCapital . $entity->getKey();
-                    $this->lockingApi->addLock($lockName, $this->getRedirectUrl(null));
+                    $this->lockingApi->addLock($lockName, $this->getRedirectUrl(['commandName' => '']));
                     // reload entity as the addLock call above has triggered the preUpdate event
                     $this->entityFactory->getObjectManager()->refresh($entity);
                 }
@@ -604,7 +604,7 @@ abstract class AbstractEditHandler
                 $args['commandName'] = $action['id'];
             }
         }
-        if ($this->templateParameters['mode'] == 'create' && $this->form->get('submitrepeat')->isClicked()) {
+        if ($this->templateParameters['mode'] == 'create' && $this->form->has('submitrepeat') && $this->form->get('submitrepeat')->isClicked()) {
             $args['commandName'] = 'submit';
             $this->repeatCreateAction = true;
         }
@@ -691,8 +691,8 @@ abstract class AbstractEditHandler
     /**
      * Get success or error message for default operations.
      *
-     * @param array   $args    arguments from handleCommand method
-     * @param Boolean $success true if this is a success, false for default error
+     * @param array   $args    List of arguments from handleCommand method
+     * @param boolean $success Becomes true if this is a success, false for default error
      *
      * @return String desired status or error message
      */
@@ -729,8 +729,8 @@ abstract class AbstractEditHandler
     /**
      * Add success or error message to session.
      *
-     * @param array   $args    arguments from handleCommand method
-     * @param Boolean $success true if this is a success, false for default error
+     * @param array   $args    List of arguments from handleCommand method
+     * @param boolean $success Becomes true if this is a success, false for default error
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
@@ -768,10 +768,6 @@ abstract class AbstractEditHandler
             }
         }
     
-        if (isset($this->form['additionalNotificationRemarks']) && $this->form['additionalNotificationRemarks']->getData() != '') {
-            $this->request->getSession()->set('MUVideoModuleAdditionalNotificationRemarks', $this->form['additionalNotificationRemarks']->getData());
-        }
-    
         // return remaining form data
         return $formData;
     }
@@ -779,9 +775,9 @@ abstract class AbstractEditHandler
     /**
      * This method executes a certain workflow action.
      *
-     * @param array $args Arguments from handleCommand method
+     * @param array $args List of arguments from handleCommand method
      *
-     * @return bool Whether everything worked well or not
+     * @return boolean Whether everything worked well or not
      */
     public function applyAction(array $args = [])
     {

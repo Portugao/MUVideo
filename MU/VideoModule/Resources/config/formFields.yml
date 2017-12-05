@@ -1,6 +1,13 @@
 services:
     # Form field types
     
+    mu_video_module.form.type.field.multilist:
+        class: MU\VideoModule\Form\Type\Field\MultiListType
+        arguments:
+            - "@mu_video_module.listentries_helper"
+        tags:
+            - { name: form.type }
+    
     mu_video_module.form.type.field.translation:
         class: MU\VideoModule\Form\Type\Field\TranslationType
         tags:

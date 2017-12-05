@@ -36,7 +36,7 @@ class AbstractFilterCollectionEvent extends Event
      * @param CollectionEntity $collection Processed entity
      * @param array $entityChangeSet Change set for preUpdate events
      */
-    public function __construct(CollectionEntity $collection, $entityChangeSet = [])
+    public function __construct(CollectionEntity $collection, array $entityChangeSet = [])
     {
         $this->collection = $collection;
         $this->entityChangeSet = $entityChangeSet;
@@ -55,7 +55,7 @@ class AbstractFilterCollectionEvent extends Event
     /**
      * Returns the change set.
      *
-     * @return array
+     * @return array Entity change set
      */
     public function getEntityChangeSet()
     {

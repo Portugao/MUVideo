@@ -1,15 +1,13 @@
 'use strict';
 
-function mUVideoCapitaliseFirstLetter(string)
-{
+function mUVideoCapitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.substring(1);
 }
 
 /**
  * Initialise the quick navigation form in list views.
  */
-function mUVideoInitQuickNavigation()
-{
+function mUVideoInitQuickNavigation() {
     var quickNavForm;
     var objectType;
 
@@ -34,8 +32,7 @@ function mUVideoInitQuickNavigation()
 /**
  * Simulates a simple alert using bootstrap.
  */
-function mUVideoSimpleAlert(anchorElement, title, content, alertId, cssClass)
-{
+function mUVideoSimpleAlert(anchorElement, title, content, alertId, cssClass) {
     var alertBox;
 
     alertBox = ' \
@@ -56,89 +53,38 @@ function mUVideoSimpleAlert(anchorElement, title, content, alertId, cssClass)
 /**
  * Initialises the mass toggle functionality for admin view pages.
  */
-function mUVideoInitMassToggle()
-{
+function mUVideoInitMassToggle() {
     if (jQuery('.muvideo-mass-toggle').length > 0) {
         jQuery('.muvideo-mass-toggle').unbind('click').click(function (event) {
-            if (jQuery('.table.fixed-columns').length > 0) {
-                jQuery('.muvideo-toggle-checkbox').prop('checked', false);
-                jQuery('.table.fixed-columns .muvideo-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
-            } else {
-                jQuery('.muvideo-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
-            }
+            jQuery('.muvideo-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
         });
     }
 }
 
 /**
- * Initialises fixed table columns.
- */
-function mUVideoInitFixedColumns()
-{
-    jQuery('.table.fixed-columns').remove();
-    jQuery('.table').each(function() {
-        var originalTable, fixedColumnsTable, fixedTableWidth;
-
-        originalTable = jQuery(this);
-        fixedTableWidth = 0;
-        if (originalTable.find('.fixed-column').length > 0) {
-            fixedColumnsTable = originalTable.clone().insertBefore(originalTable).addClass('fixed-columns').removeAttr('id');
-            originalTable.find('.dropdown').addClass('hidden');
-            fixedColumnsTable.find('.dropdown').removeClass('hidden');
-            fixedColumnsTable.css('left', originalTable.parent().position().left);
-
-            fixedColumnsTable.find('th, td').not('.fixed-column').remove();
-            fixedColumnsTable.find('th').each(function (i, elem) {
-                jQuery(this).css('width', originalTable.find('th').eq(i).css('width'));
-                fixedTableWidth += originalTable.find('th').eq(i).width();
-            });
-            fixedColumnsTable.css('width', fixedTableWidth + 'px');
-
-            fixedColumnsTable.find('tr').each(function (i, elem) {
-                jQuery(this).height(originalTable.find('tr:eq(' + i + ')').height());
-            });
-        }
-    });
-    mUVideoInitMassToggle();
-}
-
-/**
  * Creates a dropdown menu for the item actions.
  */
-function mUVideoInitItemActions(context)
-{
+function mUVideoInitItemActions(context) {
     var containerSelector;
     var containers;
-    var listClasses;
-
+    
     containerSelector = '';
     if (context == 'view') {
         containerSelector = '.muvideomodule-view';
-        listClasses = 'list-unstyled dropdown-menu';
     } else if (context == 'display') {
         containerSelector = 'h2, h3';
-        listClasses = 'list-unstyled dropdown-menu';
     }
-
+    
     if (containerSelector == '') {
         return;
     }
-
+    
     containers = jQuery(containerSelector);
     if (containers.length < 1) {
         return;
     }
-
-    containers.find('.dropdown > ul').removeClass('list-inline').addClass(listClasses);
-    containers.find('.dropdown > ul a').each(function (index) {
-        var title;
-
-        title = jQuery(this).find('i').first().attr('title');
-        if (title == '') {
-            title = jQuery(this).find('i').first().data('original-title');
-        }
-        jQuery(this).html(jQuery(this).html() + title);
-    });
+    
+    containers.find('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu');
     containers.find('.dropdown > ul a i').addClass('fa-fw');
     containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
 }
@@ -146,8 +92,7 @@ function mUVideoInitItemActions(context)
 /**
  * Helper function to create new Bootstrap modal window instances.
  */
-function mUVideoInitInlineWindow(containerElem)
-{
+function mUVideoInitInlineWindow(containerElem) {
     var newWindowId;
     var modalTitle;
 
@@ -157,7 +102,7 @@ function mUVideoInitInlineWindow(containerElem)
     // define name of window
     newWindowId = containerElem.attr('id') + 'Dialog';
 
-    containerElem.unbind('click').click(function(event) {
+    containerElem.unbind('click').click(function (event) {
         event.preventDefault();
 
         // check if window exists already
@@ -196,8 +141,7 @@ function mUVideoInitInlineWindow(containerElem)
 /**
  * Initialises modals for inline display of related items.
  */
-function mUVideoInitQuickViewModals()
-{
+function mUVideoInitQuickViewModals() {
     jQuery('.muvideo-inline-window').each(function (index) {
         mUVideoInitInlineWindow(jQuery(this));
     });
@@ -206,8 +150,10 @@ function mUVideoInitQuickViewModals()
 /**
  * Initialises image viewing behaviour.
  */
-function mUVideoInitImageViewer()
-{
+function mUVideoInitImageViewer() {
+    if (typeof(magnificPopup) === 'undefined') {
+        return;
+    }
     jQuery('a.image-link').magnificPopup({
         type: 'image',
         closeOnContentClick: true,
@@ -231,7 +177,7 @@ function mUVideoInitImageViewer()
     });
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     var isViewPage;
     var isDisplayPage;
 
@@ -243,9 +189,6 @@ jQuery(document).ready(function() {
     if (isViewPage) {
         mUVideoInitQuickNavigation();
         mUVideoInitMassToggle();
-        jQuery(window).resize(mUVideoInitFixedColumns);
-        mUVideoInitFixedColumns();
-        window.setTimeout(mUVideoInitFixedColumns, 1000);
         mUVideoInitItemActions('view');
     } else if (isDisplayPage) {
         mUVideoInitItemActions('display');

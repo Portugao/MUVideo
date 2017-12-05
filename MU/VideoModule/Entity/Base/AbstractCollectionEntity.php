@@ -52,6 +52,7 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
     
     /**
      * the current workflow state
+     *
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
      * @VideoAssert\ListEntry(entityName="collection", propertyName="workflowState", multiple=false)
@@ -99,21 +100,11 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
     /**
      * Bidirectional - One collection [collection] has many movie [movies] (INVERSE SIDE).
      *
-     * @ORM\OneToMany(targetEntity="MU\VideoModule\Entity\MovieEntity", mappedBy="collection", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="MU\VideoModule\Entity\MovieEntity", mappedBy="collection")
      * @ORM\JoinTable(name="mu_video_collectionmovie")
-     * @ORM\OrderBy({"title" = "ASC"})
      * @var \MU\VideoModule\Entity\MovieEntity[] $movie
      */
     protected $movie = null;
-    
-    /**
-     * Bidirectional - One collection [collection] has many playlists [playlists] (INVERSE SIDE).
-     *
-     * @ORM\OneToMany(targetEntity="MU\VideoModule\Entity\PlaylistEntity", mappedBy="collection", cascade={"persist"})
-     * @ORM\JoinTable(name="mu_video_collectionplaylists")
-     * @var \MU\VideoModule\Entity\PlaylistEntity[] $playlists
-     */
-    protected $playlists = null;
     
     
     /**
@@ -126,7 +117,6 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
     public function __construct()
     {
         $this->movie = new ArrayCollection();
-        $this->playlists = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
     
@@ -289,7 +279,7 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
     /**
      * Sets the categories.
      *
-     * @param ArrayCollection $categories
+     * @param ArrayCollection $categories List of categories
      *
      * @return void
      */
@@ -310,8 +300,8 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
     /**
      * Checks if a collection contains an element based only on two criteria (categoryRegistryId, category).
      *
-     * @param ArrayCollection $collection
-     * @param \MU\VideoModule\Entity\CollectionCategoryEntity $element
+     * @param ArrayCollection $collection Given collection
+     * @param \MU\VideoModule\Entity\CollectionCategoryEntity $element Element to search for
      *
      * @return bool|int
      */
@@ -382,65 +372,12 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
         $movie->setCollection(null);
     }
     
-    /**
-     * Returns the playlists.
-     *
-     * @return \MU\VideoModule\Entity\PlaylistEntity[]
-     */
-    public function getPlaylists()
-    {
-        return $this->playlists;
-    }
-    
-    /**
-     * Sets the playlists.
-     *
-     * @param \MU\VideoModule\Entity\PlaylistEntity[] $playlists
-     *
-     * @return void
-     */
-    public function setPlaylists($playlists)
-    {
-        foreach ($this->playlists as $playlistSingle) {
-            $this->removePlaylists($playlistSingle);
-        }
-        foreach ($playlists as $playlistSingle) {
-            $this->addPlaylists($playlistSingle);
-        }
-    }
-    
-    /**
-     * Adds an instance of \MU\VideoModule\Entity\PlaylistEntity to the list of playlists.
-     *
-     * @param \MU\VideoModule\Entity\PlaylistEntity $playlist The instance to be added to the collection
-     *
-     * @return void
-     */
-    public function addPlaylists(\MU\VideoModule\Entity\PlaylistEntity $playlist)
-    {
-        $this->playlists->add($playlist);
-        $playlist->setCollection($this);
-    }
-    
-    /**
-     * Removes an instance of \MU\VideoModule\Entity\PlaylistEntity from the list of playlists.
-     *
-     * @param \MU\VideoModule\Entity\PlaylistEntity $playlist The instance to be removed from the collection
-     *
-     * @return void
-     */
-    public function removePlaylists(\MU\VideoModule\Entity\PlaylistEntity $playlist)
-    {
-        $this->playlists->removeElement($playlist);
-        $playlist->setCollection(null);
-    }
-    
     
     
     /**
      * Creates url arguments array for easy creation of display urls.
      *
-     * @return array The resulting arguments list
+     * @return array List of resulting arguments
      */
     public function createUrlArgs()
     {
@@ -482,26 +419,13 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
     /**
      * Returns an array of all related objects that need to be persisted after clone.
      * 
-     * @param array $objects The objects are added to this array. Default: []
+     * @param array $objects Objects that are added to this array
      * 
-     * @return array of entity objects
+     * @return array List of entity objects
      */
-    public function getRelatedObjectsToPersist(&$objects = []) 
+    public function getRelatedObjectsToPersist(&$objects = [])
     {
-        foreach ($this->movie as $rel) {
-            if (!in_array($rel, $objects, true)) {
-                $objects[] = $rel;
-                $rel->getRelatedObjectsToPersist($objects);
-            }
-        }
-        foreach ($this->playlists as $rel) {
-            if (!in_array($rel, $objects, true)) {
-                $objects[] = $rel;
-                $rel->getRelatedObjectsToPersist($objects);
-            }
-        }
-    
-        return $objects;
+        return [];
     }
     
     /**
@@ -518,7 +442,7 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
     /**
      * Clone interceptor implementation.
      * This method is for example called by the reuse functionality.
-     * Performs a deep copy.
+     * Performs a quite simple shallow copy.
      *
      * See also:
      * (1) http://docs.doctrine-project.org/en/latest/cookbook/implementing-wakeup-or-clone.html
@@ -545,19 +469,6 @@ abstract class AbstractCollectionEntity extends EntityAccess implements Translat
         $this->setUpdatedBy(null);
         $this->setUpdatedDate(null);
     
-        // handle related objects
-        // prevent shared references by doing a deep copy - see (2) and (3) for more information
-        // clone referenced objects only if a new record is necessary
-        $collection = $this->movie;
-        $this->movie = new ArrayCollection();
-        foreach ($collection as $rel) {
-            $this->addMovie( clone $rel);
-        }
-        $collection = $this->playlists;
-        $this->playlists = new ArrayCollection();
-        foreach ($collection as $rel) {
-            $this->addPlaylists( clone $rel);
-        }
     
         // clone categories
         $categories = $this->categories;

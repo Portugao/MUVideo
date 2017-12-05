@@ -151,6 +151,16 @@ abstract class AbstractListEntriesHelper
                         break;
                 }
                 break;
+            case 'appSettings':
+                switch ($fieldName) {
+                    case 'thumbnailModeMoviePoster':
+                        $result = false;
+                        break;
+                    case 'enabledFinderTypes':
+                        $result = true;
+                        break;
+                }
+                break;
         }
     
         return $result;
@@ -191,6 +201,16 @@ abstract class AbstractListEntriesHelper
                 switch ($fieldName) {
                     case 'workflowState':
                         $entries = $this->getWorkflowStateEntriesForPlaylist();
+                        break;
+                }
+                break;
+            case 'appSettings':
+                switch ($fieldName) {
+                    case 'thumbnailModeMoviePoster':
+                        $entries = $this->getThumbnailModeMoviePosterEntriesForAppSettings();
+                        break;
+                    case 'enabledFinderTypes':
+                        $entries = $this->getEnabledFinderTypesEntriesForAppSettings();
                         break;
                 }
                 break;
@@ -273,6 +293,65 @@ abstract class AbstractListEntriesHelper
             'title'   => $this->__('Shows all items except these which are approved'),
             'image'   => '',
             'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'thumbnail mode movie poster' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getThumbnailModeMoviePosterEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'inset',
+            'text'    => $this->__('Inset'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'outbound',
+            'text'    => $this->__('Outbound'),
+            'title'   => '',
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'enabled finder types' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getEnabledFinderTypesEntriesForAppSettings()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'collection',
+            'text'    => $this->__('Collection'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'movie',
+            'text'    => $this->__('Movie'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
+        ];
+        $states[] = [
+            'value'   => 'playlist',
+            'text'    => $this->__('Playlist'),
+            'title'   => '',
+            'image'   => '',
+            'default' => true
         ];
     
         return $states;

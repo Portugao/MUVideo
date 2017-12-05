@@ -13,7 +13,6 @@
 namespace MU\VideoModule\Form\Type\Base;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -140,7 +139,7 @@ abstract class AbstractCollectionType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addEntityFields(FormBuilderInterface $builder, array $options)
+    public function addEntityFields(FormBuilderInterface $builder, array $options = [])
     {
         
         $builder->add('title', TextType::class, [
@@ -192,7 +191,7 @@ abstract class AbstractCollectionType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addCategoriesField(FormBuilderInterface $builder, array $options)
+    public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('categories', CategoriesType::class, [
             'label' => $this->__('Category') . ':',
@@ -214,7 +213,7 @@ abstract class AbstractCollectionType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addModerationFields(FormBuilderInterface $builder, array $options)
+    public function addModerationFields(FormBuilderInterface $builder, array $options = [])
     {
         if (!$options['has_moderate_permission']) {
             return;
@@ -256,7 +255,7 @@ abstract class AbstractCollectionType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addSubmitButtons(FormBuilderInterface $builder, array $options)
+    public function addSubmitButtons(FormBuilderInterface $builder, array $options = [])
     {
         foreach ($options['actions'] as $action) {
             $builder->add($action['id'], SubmitType::class, [

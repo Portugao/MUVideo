@@ -106,7 +106,7 @@ abstract class AbstractPlaylistFinderType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addCategoriesField(FormBuilderInterface $builder, array $options)
+    public function addCategoriesField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('categories', CategoriesType::class, [
             'label' => $this->__('Category') . ':',
@@ -130,7 +130,7 @@ abstract class AbstractPlaylistFinderType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addPasteAsField(FormBuilderInterface $builder, array $options)
+    public function addPasteAsField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('pasteAs', ChoiceType::class, [
             'label' => $this->__('Paste as') . ':',
@@ -152,7 +152,7 @@ abstract class AbstractPlaylistFinderType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addSortingFields(FormBuilderInterface $builder, array $options)
+    public function addSortingFields(FormBuilderInterface $builder, array $options = [])
     {
         $builder
             ->add('sort', ChoiceType::class, [
@@ -191,7 +191,7 @@ abstract class AbstractPlaylistFinderType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addAmountField(FormBuilderInterface $builder, array $options)
+    public function addAmountField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('num', ChoiceType::class, [
             'label' => $this->__('Page size') . ':',
@@ -220,7 +220,7 @@ abstract class AbstractPlaylistFinderType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addSearchField(FormBuilderInterface $builder, array $options)
+    public function addSearchField(FormBuilderInterface $builder, array $options = [])
     {
         $builder->add('q', SearchType::class, [
             'label' => $this->__('Search for') . ':',

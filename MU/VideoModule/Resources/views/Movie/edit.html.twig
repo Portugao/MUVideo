@@ -2,11 +2,6 @@
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends 'MUVideoModule::' ~ baseTemplate ~ '.html.twig' %}
 
-{% block header %}
-    {{ parent() }}
-    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.Validation.js'), 98) }}
-    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.EditFunctions.js'), 99) }}
-{% endblock %}
 {% block title mode == 'create' ? __('Create movie') : __('Edit movie') %}
 {% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
 {% block content %}
@@ -24,7 +19,7 @@
                         <li{% if language == app.request.locale %} class="active"{% endif %}>
                             <a href="#" data-toggle="tab" data-target=".{{ form.vars.id|lower }}-translations-fields-{{ language }}">
                                 {% if not form.vars.valid %}
-                                    <span class="label label-danger"><i class="fa fa-warning"></i><span class="sr-only">{{ __('Errors') }}</span></span>
+                                    <span class="label label-danger"><i class="fa fa-warning"></i> <span class="sr-only">{{ __('Errors') }}</span></span>
                                 {% endif %}
                                 {% set hasRequiredFields = language in localesWithMandatoryFields %}
                                 {% if hasRequiredFields %}<span class="required">{% endif %}{{ language|languageName|safeHtml }}{% if hasRequiredFields %}</span>{% endif %}
@@ -100,7 +95,7 @@
             <div class="col-sm-offset-3 col-sm-9">
                 {% for action in actions %}
                     {{ form_widget(attribute(form, action.id)) }}
-                    {% if mode == 'create' and action.id == 'submit' %}
+                    {% if mode == 'create' and action.id == 'submit' and form.submitrepeat is defined %}
                         {{ form_widget(attribute(form, 'submitrepeat')) }}
                     {% endif %}
                 {% endfor %}
@@ -110,27 +105,33 @@
         </div>
         {{ form_end(form) }}
         {% set hookId = mode != 'create' ? movie.id : null %}
-        {{ notifyDisplayHooks(eventName='muvideomodule.ui_hooks.movies.form_edit', id=hookId) }}
+        {% set hooks = notifyDisplayHooks(eventName='muvideomodule.ui_hooks.movies.form_edit', id=hookId, outputAsArray=true) %}
+        {% if hooks is iterable and hooks|length > 0 %}
+            {% for area, hook in hooks %}
+                <div class="z-displayhook" data-area="{{ area|e('html_attr') }}">{{ hook|raw }}</div>
+            {% endfor %}
+        {% endif %}
         
     </div>
 {% endblock %}
 {% block footer %}
     {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@MUVideoModule:js/MUVideoModule.EditFunctions.js'), 99) }}
     {% set formInitScript %}
-        <script type="text/javascript">
+        <script>
         /* <![CDATA[ */
             var mUVideoInlineEditHandlers = [];
             var mUVideoEditHandler = null;
             
             ( function($) {
                 $(document).ready(function() {
-                    // initialise auto completion for user fields
-                    {% if form.moderationSpecificCreator is defined %}
-                        initUserLiveSearch('muvideomodule_movie_moderationSpecificCreator');
-                    {% endif %}
                     mUVideoInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ movie.id }}{% endif %}');
                     mUVideoInitUploadField('muvideomodule_movie_uploadOfMovie_uploadOfMovie');
                     mUVideoInitUploadField('muvideomodule_movie_poster_poster');
+                    {% if form.moderationSpecificCreator is defined %}
+                        initUserLiveSearch('muvideomodule_movie_moderationSpecificCreator');
+                    {% endif %}
                 });
             })(jQuery);
         /* ]]> */

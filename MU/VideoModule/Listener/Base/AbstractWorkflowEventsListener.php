@@ -146,9 +146,6 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
                 if (count($entity->getMovie()) > 0) {
                     $isBlocked = true;
                 }
-                if (count($entity->getPlaylists()) > 0) {
-                    $isBlocked = true;
-                }
                 $event->setBlocked($isBlocked);
             }
         }

@@ -16,11 +16,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use MU\VideoModule\Form\Type\Field\MultiListType;
+use MU\VideoModule\AppSettings;
+use MU\VideoModule\Helper\ListEntriesHelper;
 
 /**
  * Configuration form type base class.
@@ -30,22 +35,22 @@ abstract class AbstractConfigType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @var array
+     * @var ListEntriesHelper
      */
-    protected $moduleVars;
+    protected $listHelper;
 
     /**
      * ConfigType constructor.
      *
-     * @param TranslatorInterface $translator  Translator service instance
-     * @param object              $moduleVars  Existing module vars
+     * @param TranslatorInterface $translator Translator service instance
+     * @param ListEntriesHelper $listHelper ListEntriesHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,
-        $moduleVars
+        ListEntriesHelper $listHelper
     ) {
         $this->setTranslator($translator);
-        $this->moduleVars = $moduleVars;
+        $this->listHelper = $listHelper;
     }
 
     /**
@@ -63,103 +68,77 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->addVariablesFields($builder, $options);
+        $this->addSettingsFields($builder, $options);
         $this->addListViewsFields($builder, $options);
         $this->addImagesFields($builder, $options);
         $this->addIntegrationFields($builder, $options);
 
-        $builder
-            ->add('save', SubmitType::class, [
-                'label' => $this->__('Update configuration'),
-                'icon' => 'fa-check',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default',
-                    'formnovalidate' => 'formnovalidate'
-                ]
-            ])
-        ;
+        $this->addSubmitButtons($builder, $options);
     }
 
     /**
-     * Adds fields for variables fields.
+     * Adds fields for settings fields.
      *
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addVariablesFields(FormBuilderInterface $builder, array $options)
+    public function addSettingsFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('maxSizeOfMovie', TextType::class, [
-                'label' => $this->__('Max size of movie') . ':',
-                'required' => false,
-                'data' => isset($this->moduleVars['maxSizeOfMovie']) ? $this->moduleVars['maxSizeOfMovie'] : '',
-                'empty_data' => '200M',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the max size of movie.')
-                ],
-            ])
-            ->add('maxSizeOfPoster', TextType::class, [
-                'label' => $this->__('Max size of poster') . ':',
-                'required' => false,
-                'data' => isset($this->moduleVars['maxSizeOfPoster']) ? $this->moduleVars['maxSizeOfPoster'] : '',
-                'empty_data' => '200k',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the max size of poster.')
-                ],
-            ])
-            ->add('standardPoster', TextType::class, [
-                'label' => $this->__('Standard poster') . ':',
-                'required' => false,
-                'data' => isset($this->moduleVars['standardPoster']) ? $this->moduleVars['standardPoster'] : '',
-                'empty_data' => '/images/poster.png',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the standard poster.')
-                ],
-            ])
-            ->add('youtubeApi', TextType::class, [
-                'label' => $this->__('Youtube api') . ':',
-                'required' => false,
-                'data' => isset($this->moduleVars['youtubeApi']) ? $this->moduleVars['youtubeApi'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the youtube api.')
-                ],
-            ])
-            ->add('channelIds', TextType::class, [
-                'label' => $this->__('Channel ids') . ':',
-                'required' => false,
-                'data' => isset($this->moduleVars['channelIds']) ? $this->moduleVars['channelIds'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the channel ids.')
-                ],
-            ])
-            ->add('overrideVars', CheckboxType::class, [
-                'label' => $this->__('Override vars') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('If this option is enabled, title and description of existing youtube videos will be overridden using the import function.')
-                ],
-                'help' => $this->__('If this option is enabled, title and description of existing youtube videos will be overridden using the import function.'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['overrideVars']) ? $this->moduleVars['overrideVars'] : false),
-                'attr' => [
-                    'title' => $this->__('The override vars option.')
-                ],
-            ])
-        ;
+        
+        $builder->add('maxSizeOfMovie', TextType::class, [
+            'label' => $this->__('Max size of movie') . ':',
+            'empty_data' => '200M',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '',
+                'title' => $this->__('Enter the max size of movie')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('maxSizeOfPoster', TextType::class, [
+            'label' => $this->__('Max size of poster') . ':',
+            'empty_data' => '',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '200k',
+                'title' => $this->__('Enter the max size of poster')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('standardPoster', TextType::class, [
+            'label' => $this->__('Standard poster') . ':',
+            'empty_data' => '/images/poster.png',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '',
+                'title' => $this->__('Enter the standard poster')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('youtubeApi', TextType::class, [
+            'label' => $this->__('Youtube api') . ':',
+            'empty_data' => '',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '',
+                'title' => $this->__('Enter the youtube api')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('channelIds', TextType::class, [
+            'label' => $this->__('Channel ids') . ':',
+            'empty_data' => '',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '',
+                'title' => $this->__('Enter the channel ids')
+            ],
+            'required' => false,
+        ]);
     }
 
     /**
@@ -168,94 +147,101 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addListViewsFields(FormBuilderInterface $builder, array $options)
+    public function addListViewsFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('collectionEntriesPerPage', IntegerType::class, [
-                'label' => $this->__('Collection entries per page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The amount of collections shown per page')
-                ],
-                'help' => $this->__('The amount of collections shown per page'),
-                'required' => false,
-                'data' => isset($this->moduleVars['collectionEntriesPerPage']) ? intval($this->moduleVars['collectionEntriesPerPage']) : intval(10),
-                'empty_data' => intval('10'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the collection entries per page.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('linkOwnCollectionsOnAccountPage', CheckboxType::class, [
-                'label' => $this->__('Link own collections on account page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to add a link to collections of the current user on his account page')
-                ],
-                'help' => $this->__('Whether to add a link to collections of the current user on his account page'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['linkOwnCollectionsOnAccountPage']) ? $this->moduleVars['linkOwnCollectionsOnAccountPage'] : true),
-                'attr' => [
-                    'title' => $this->__('The link own collections on account page option.')
-                ],
-            ])
-            ->add('movieEntriesPerPage', IntegerType::class, [
-                'label' => $this->__('Movie entries per page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The amount of movies shown per page')
-                ],
-                'help' => $this->__('The amount of movies shown per page'),
-                'required' => false,
-                'data' => isset($this->moduleVars['movieEntriesPerPage']) ? intval($this->moduleVars['movieEntriesPerPage']) : intval(10),
-                'empty_data' => intval('10'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the movie entries per page.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('linkOwnMoviesOnAccountPage', CheckboxType::class, [
-                'label' => $this->__('Link own movies on account page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to add a link to movies of the current user on his account page')
-                ],
-                'help' => $this->__('Whether to add a link to movies of the current user on his account page'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['linkOwnMoviesOnAccountPage']) ? $this->moduleVars['linkOwnMoviesOnAccountPage'] : true),
-                'attr' => [
-                    'title' => $this->__('The link own movies on account page option.')
-                ],
-            ])
-            ->add('playlistEntriesPerPage', IntegerType::class, [
-                'label' => $this->__('Playlist entries per page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The amount of playlists shown per page')
-                ],
-                'help' => $this->__('The amount of playlists shown per page'),
-                'required' => false,
-                'data' => isset($this->moduleVars['playlistEntriesPerPage']) ? intval($this->moduleVars['playlistEntriesPerPage']) : intval(10),
-                'empty_data' => intval('10'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the playlist entries per page.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-            ->add('linkOwnPlaylistsOnAccountPage', CheckboxType::class, [
-                'label' => $this->__('Link own playlists on account page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to add a link to playlists of the current user on his account page')
-                ],
-                'help' => $this->__('Whether to add a link to playlists of the current user on his account page'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['linkOwnPlaylistsOnAccountPage']) ? $this->moduleVars['linkOwnPlaylistsOnAccountPage'] : true),
-                'attr' => [
-                    'title' => $this->__('The link own playlists on account page option.')
-                ],
-            ])
-        ;
+        
+        $builder->add('collectionEntriesPerPage', IntegerType::class, [
+            'label' => $this->__('Collection entries per page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The amount of collections shown per page')
+            ],
+            'help' => $this->__('The amount of collections shown per page'),
+            'empty_data' => '10',
+            'attr' => [
+                'maxlength' => 11,
+                'class' => '',
+                'title' => $this->__('Enter the collection entries per page.') . ' ' . $this->__('Only digits are allowed.')
+            ],
+            'required' => true,
+            'scale' => 0
+        ]);
+        
+        $builder->add('linkOwnCollectionsOnAccountPage', CheckboxType::class, [
+            'label' => $this->__('Link own collections on account page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to add a link to collections of the current user on his account page')
+            ],
+            'help' => $this->__('Whether to add a link to collections of the current user on his account page'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The link own collections on account page option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('movieEntriesPerPage', IntegerType::class, [
+            'label' => $this->__('Movie entries per page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The amount of movies shown per page')
+            ],
+            'help' => $this->__('The amount of movies shown per page'),
+            'empty_data' => '10',
+            'attr' => [
+                'maxlength' => 11,
+                'class' => '',
+                'title' => $this->__('Enter the movie entries per page.') . ' ' . $this->__('Only digits are allowed.')
+            ],
+            'required' => true,
+            'scale' => 0
+        ]);
+        
+        $builder->add('linkOwnMoviesOnAccountPage', CheckboxType::class, [
+            'label' => $this->__('Link own movies on account page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to add a link to movies of the current user on his account page')
+            ],
+            'help' => $this->__('Whether to add a link to movies of the current user on his account page'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The link own movies on account page option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('playlistEntriesPerPage', IntegerType::class, [
+            'label' => $this->__('Playlist entries per page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The amount of playlists shown per page')
+            ],
+            'help' => $this->__('The amount of playlists shown per page'),
+            'empty_data' => '10',
+            'attr' => [
+                'maxlength' => 11,
+                'class' => '',
+                'title' => $this->__('Enter the playlist entries per page.') . ' ' . $this->__('Only digits are allowed.')
+            ],
+            'required' => true,
+            'scale' => 0
+        ]);
+        
+        $builder->add('linkOwnPlaylistsOnAccountPage', CheckboxType::class, [
+            'label' => $this->__('Link own playlists on account page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to add a link to playlists of the current user on his account page')
+            ],
+            'help' => $this->__('Whether to add a link to playlists of the current user on his account page'),
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('The link own playlists on account page option')
+            ],
+            'required' => false,
+        ]);
     }
 
     /**
@@ -264,172 +250,193 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addImagesFields(FormBuilderInterface $builder, array $options)
+    public function addImagesFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('enableShrinkingForMoviePoster', CheckboxType::class, [
-                'label' => $this->__('Enable shrinking') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
-                ],
-                'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
-                'required' => false,
-                'data' => (bool)(isset($this->moduleVars['enableShrinkingForMoviePoster']) ? $this->moduleVars['enableShrinkingForMoviePoster'] : false),
-                'attr' => [
-                    'title' => $this->__('The enable shrinking option.'),
-                    'class' => 'shrink-enabler'
-                ],
-            ])
-            ->add('shrinkWidthMoviePoster', IntegerType::class, [
-                'label' => $this->__('Shrink width') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image width in pixels.')
-                ],
-                'help' => $this->__('The maximum image width in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkWidthMoviePoster']) ? intval($this->moduleVars['shrinkWidthMoviePoster']) : intval(800),
-                'empty_data' => intval('800'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink width.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkwidthmovieposter'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('shrinkHeightMoviePoster', IntegerType::class, [
-                'label' => $this->__('Shrink height') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The maximum image height in pixels.')
-                ],
-                'help' => $this->__('The maximum image height in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['shrinkHeightMoviePoster']) ? intval($this->moduleVars['shrinkHeightMoviePoster']) : intval(600),
-                'empty_data' => intval('600'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the shrink height.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkheightmovieposter'
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailModeMoviePoster', ChoiceType::class, [
-                'label' => $this->__('Thumbnail mode') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail mode (inset or outbound).')
-                ],
-                'help' => $this->__('Thumbnail mode (inset or outbound).'),
-                'data' => isset($this->moduleVars['thumbnailModeMoviePoster']) ? $this->moduleVars['thumbnailModeMoviePoster'] : '',
-                'empty_data' => 'inset',
-                'attr' => [
-                    'title' => $this->__('Choose the thumbnail mode.')
-                ],'choices' => [
-                    $this->__('Inset') => 'inset',
-                    $this->__('Outbound') => 'outbound'
-                ],
-                'choices_as_values' => true,
-                'multiple' => false
-            ])
-            ->add('thumbnailWidthMoviePosterView', IntegerType::class, [
-                'label' => $this->__('Thumbnail width view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMoviePosterView']) ? intval($this->moduleVars['thumbnailWidthMoviePosterView']) : intval(32),
-                'empty_data' => intval('32'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMoviePosterView', IntegerType::class, [
-                'label' => $this->__('Thumbnail height view') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on view pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on view pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMoviePosterView']) ? intval($this->moduleVars['thumbnailHeightMoviePosterView']) : intval(24),
-                'empty_data' => intval('24'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height view.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMoviePosterDisplay', IntegerType::class, [
-                'label' => $this->__('Thumbnail width display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMoviePosterDisplay']) ? intval($this->moduleVars['thumbnailWidthMoviePosterDisplay']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMoviePosterDisplay', IntegerType::class, [
-                'label' => $this->__('Thumbnail height display') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on display pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on display pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMoviePosterDisplay']) ? intval($this->moduleVars['thumbnailHeightMoviePosterDisplay']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height display.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailWidthMoviePosterEdit', IntegerType::class, [
-                'label' => $this->__('Thumbnail width edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail width on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail width on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailWidthMoviePosterEdit']) ? intval($this->moduleVars['thumbnailWidthMoviePosterEdit']) : intval(240),
-                'empty_data' => intval('240'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail width edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-            ->add('thumbnailHeightMoviePosterEdit', IntegerType::class, [
-                'label' => $this->__('Thumbnail height edit') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Thumbnail height on edit pages in pixels.')
-                ],
-                'help' => $this->__('Thumbnail height on edit pages in pixels.'),
-                'required' => false,
-                'data' => isset($this->moduleVars['thumbnailHeightMoviePosterEdit']) ? intval($this->moduleVars['thumbnailHeightMoviePosterEdit']) : intval(180),
-                'empty_data' => intval('180'),
-                'attr' => [
-                    'maxlength' => 4,
-                    'title' => $this->__('Enter the thumbnail height edit.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0,
-                'input_group' => ['right' => $this->__('pixels')]
-            ])
-        ;
+        
+        $builder->add('enableShrinkingForMoviePoster', CheckboxType::class, [
+            'label' => $this->__('Enable shrinking for movie poster') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.')
+            ],
+            'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
+            'attr' => [
+                'class' => 'shrink-enabler',
+                'title' => $this->__('The enable shrinking option')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('shrinkWidthMoviePoster', IntegerType::class, [
+            'label' => $this->__('Shrink width movie poster') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image width in pixels.')
+            ],
+            'help' => $this->__('The maximum image width in pixels.'),
+            'empty_data' => '800',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink width')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('shrinkHeightMoviePoster', IntegerType::class, [
+            'label' => $this->__('Shrink height movie poster') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The maximum image height in pixels.')
+            ],
+            'help' => $this->__('The maximum image height in pixels.'),
+            'empty_data' => '600',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the shrink height')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'thumbnailModeMoviePoster');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('thumbnailModeMoviePoster', ChoiceType::class, [
+            'label' => $this->__('Thumbnail mode movie poster') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail mode (inset or outbound).')
+            ],
+            'help' => $this->__('Thumbnail mode (inset or outbound).'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the thumbnail mode.')
+            ],
+            'required' => true,
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => false,
+            'expanded' => false
+        ]);
+        
+        $builder->add('thumbnailWidthMoviePosterView', IntegerType::class, [
+            'label' => $this->__('Thumbnail width movie poster view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on view pages in pixels.'),
+            'empty_data' => '32',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMoviePosterView', IntegerType::class, [
+            'label' => $this->__('Thumbnail height movie poster view') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on view pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on view pages in pixels.'),
+            'empty_data' => '24',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height view')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMoviePosterDisplay', IntegerType::class, [
+            'label' => $this->__('Thumbnail width movie poster display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on display pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMoviePosterDisplay', IntegerType::class, [
+            'label' => $this->__('Thumbnail height movie poster display') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on display pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on display pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height display')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailWidthMoviePosterEdit', IntegerType::class, [
+            'label' => $this->__('Thumbnail width movie poster edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail width on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail width on edit pages in pixels.'),
+            'empty_data' => '240',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail width edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
+        
+        $builder->add('thumbnailHeightMoviePosterEdit', IntegerType::class, [
+            'label' => $this->__('Thumbnail height movie poster edit') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Thumbnail height on edit pages in pixels.')
+            ],
+            'help' => $this->__('Thumbnail height on edit pages in pixels.'),
+            'empty_data' => '180',
+            'attr' => [
+                'maxlength' => 4,
+                'class' => '',
+                'title' => $this->__('Enter the thumbnail height edit')
+            ],
+            'required' => true,
+            'scale' => 0,
+            'input_group' => ['right' => $this->__('pixels')]
+        ]);
     }
 
     /**
@@ -438,29 +445,69 @@ abstract class AbstractConfigType extends AbstractType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function addIntegrationFields(FormBuilderInterface $builder, array $options)
+    public function addIntegrationFields(FormBuilderInterface $builder, array $options = [])
     {
-        $builder
-            ->add('enabledFinderTypes', ChoiceType::class, [
-                'label' => $this->__('Enabled finder types') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).')
-                ],
-                'help' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).'),
-                'data' => isset($this->moduleVars['enabledFinderTypes']) ? $this->moduleVars['enabledFinderTypes'] : '',
-                'empty_data' => '',
-                'attr' => [
-                    'title' => $this->__('Choose the enabled finder types.')
-                ],'choices' => [
-                    $this->__('Collection') => 'collection',
-                    $this->__('Movie') => 'movie',
-                    $this->__('Playlist') => 'playlist'
-                ],
-                'choices_as_values' => true,
-                'multiple' => true
-            ])
-        ;
+        
+        $listEntries = $this->listHelper->getEntries('appSettings', 'enabledFinderTypes');
+        $choices = [];
+        $choiceAttributes = [];
+        foreach ($listEntries as $entry) {
+            $choices[$entry['text']] = $entry['value'];
+            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
+        }
+        $builder->add('enabledFinderTypes', MultiListType::class, [
+            'label' => $this->__('Enabled finder types') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).')
+            ],
+            'help' => $this->__('Which sections are supported in the Finder component (used by Scribite plug-ins).'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Choose the enabled finder types.')
+            ],
+            'required' => false,
+            'placeholder' => $this->__('Choose an option'),
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_attr' => $choiceAttributes,
+            'multiple' => true,
+            'expanded' => false
+        ]);
+    }
+
+    /**
+     * Adds submit buttons.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addSubmitButtons(FormBuilderInterface $builder, array $options = [])
+    {
+        $builder->add('save', SubmitType::class, [
+            'label' => $this->__('Update configuration'),
+            'icon' => 'fa-check',
+            'attr' => [
+                'class' => 'btn btn-success'
+            ]
+        ]);
+        $builder->add('reset', ResetType::class, [
+            'label' => $this->__('Reset'),
+            'icon' => 'fa-refresh',
+            'attr' => [
+                'class' => 'btn btn-default',
+                'formnovalidate' => 'formnovalidate'
+            ]
+        ]);
+        $builder->add('cancel', SubmitType::class, [
+            'label' => $this->__('Cancel'),
+            'icon' => 'fa-times',
+            'attr' => [
+                'class' => 'btn btn-default',
+                'formnovalidate' => 'formnovalidate'
+            ]
+        ]);
     }
 
     /**
@@ -469,5 +516,17 @@ abstract class AbstractConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'muvideomodule_config';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefaults([
+                // define class for underlying data
+                'data_class' => AppSettings::class,
+            ]);
     }
 }

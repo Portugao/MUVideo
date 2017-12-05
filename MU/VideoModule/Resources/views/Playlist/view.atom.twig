@@ -16,41 +16,35 @@
     <link rel="self" type="application/atom+xml" href="{{ app.request.schemeAndHttpHost ~ app.request.basePath }}" />
     <rights>Copyright (c) {{ 'now'|date('Y') }}, {{ app.request.schemeAndHttpHost }}</rights>
 {% for playlist in items %}
-    {{ block('entry') }}
+    <entry>
+        <title type="html">{{ playlist|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.playlists')|safeHtml }}</title>
+        <link rel="alternate" type="text/html" href="{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}" />
+        {% set uniqueID %}tag:{{ app.request.schemeAndHttpHost|replace({ 'http://': '', '/': '' }) }},{{ playlist.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}{% endset %}
+        <id>{{ uniqueID }}</id>
+        {% if playlist.updatedDate|default %}
+            <updated>{{ playlist.updatedDate|date('Y-m-dTH:M:SZ') }}</updated>
+        {% endif %}
+        {% if playlist.createdDate|default %}
+            <published>{{ playlist.createdDate|date('Y-m-dTH:M:SZ') }}</published>
+        {% endif %}
+        {% if playlist.createdBy|default and playlist.createdBy.getUid() > 0 %}
+            {% set creatorAttributes = playlist.createdBy.getAttributes() %}
+            <author>
+               <name>{{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(playlist.createdBy.getUname()) }}</name>
+               <uri>{{ creatorAttributes.get('_UYOURHOMEPAGE')|default('-') }}</uri>
+               <email>{{ playlist.createdBy.getEmail() }}</email>
+            </author>
+        {% endif %}
+        <summary type="html">
+            <![CDATA[
+            {{ playlist.description|truncate(150, true, '&hellip;')|default('-') }}
+            ]]>
+        </summary>
+        <content type="html">
+            <![CDATA[
+            {{ playlist.title|replace({ '<br>': '<br />' }) }}
+            ]]>
+        </content>
+    </entry>
 {% endfor %}
 </feed>
-{% block entry %}
-    <entry>
-        {{ block('entry_content') }}
-    </entry>
-{% endblock %}
-{% block entry_content %}
-    <title type="html">{{ playlist|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.playlists')|safeHtml }}</title>
-    <link rel="alternate" type="text/html" href="{{ url('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}" />
-    {% set uniqueID %}tag:{{ app.request.schemeAndHttpHost|replace({ 'http://': '', '/': '' }) }},{{ playlist.createdDate|date('Y-m-d') }}:{{ path('muvideomodule_playlist_' ~ routeArea ~ 'display', {'id': playlist.getId()}) }}{% endset %}
-    <id>{{ uniqueID }}</id>
-    {% if playlist.updatedDate|default %}
-        <updated>{{ playlist.updatedDate|date('Y-m-dTH:M:SZ') }}</updated>
-    {% endif %}
-    {% if playlist.createdDate|default %}
-        <published>{{ playlist.createdDate|date('Y-m-dTH:M:SZ') }}</published>
-    {% endif %}
-    {% if playlist.createdBy|default and playlist.createdBy.getUid() > 0 %}
-        {% set creatorAttributes = playlist.createdBy.getAttributes() %}
-        <author>
-           <name>{{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(playlist.createdBy.getUname()) }}</name>
-           <uri>{{ creatorAttributes.get('_UYOURHOMEPAGE')|default('-') }}</uri>
-           <email>{{ playlist.createdBy.getEmail() }}</email>
-        </author>
-    {% endif %}
-    <summary type="html">
-        <![CDATA[
-        {{ playlist.description|truncate(150, true, '&hellip;')|default('-') }}
-        ]]>
-    </summary>
-    <content type="html">
-        <![CDATA[
-        {{ playlist.title|replace({ '<br>': '<br />' }) }}
-        ]]>
-    </content>
-{% endblock %}

@@ -46,12 +46,16 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
+     * @Assert\Type(type="integer")
+     * @Assert\NotNull()
+     * @Assert\LessThan(value=1000000000)
      * @var integer $id
      */
     protected $id = 0;
     
     /**
      * the current workflow state
+     *
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
      * @VideoAssert\ListEntry(entityName="playlist", propertyName="workflowState", multiple=false)
@@ -104,16 +108,6 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      * @var \MU\VideoModule\Entity\PlaylistCategoryEntity
      */
     protected $categories = null;
-    
-    /**
-     * Bidirectional - Many playlists [playlists] are linked by one collection [collection] (OWNING SIDE).
-     *
-     * @ORM\ManyToOne(targetEntity="MU\VideoModule\Entity\CollectionEntity", inversedBy="playlists", cascade={"persist"})
-     * @ORM\JoinTable(name="mu_video_collection")
-     * @Assert\Type(type="MU\VideoModule\Entity\CollectionEntity")
-     * @var \MU\VideoModule\Entity\CollectionEntity $collection
-     */
-    protected $collection;
     
     
     /**
@@ -311,7 +305,7 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
     /**
      * Sets the categories.
      *
-     * @param ArrayCollection $categories
+     * @param ArrayCollection $categories List of categories
      *
      * @return void
      */
@@ -332,8 +326,8 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
     /**
      * Checks if a collection contains an element based only on two criteria (categoryRegistryId, category).
      *
-     * @param ArrayCollection $collection
-     * @param \MU\VideoModule\Entity\PlaylistCategoryEntity $element
+     * @param ArrayCollection $collection Given collection
+     * @param \MU\VideoModule\Entity\PlaylistCategoryEntity $element Element to search for
      *
      * @return bool|int
      */
@@ -351,34 +345,12 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
         return false;
     }
     
-    /**
-     * Returns the collection.
-     *
-     * @return \MU\VideoModule\Entity\CollectionEntity
-     */
-    public function getCollection()
-    {
-        return $this->collection;
-    }
-    
-    /**
-     * Sets the collection.
-     *
-     * @param \MU\VideoModule\Entity\CollectionEntity $collection
-     *
-     * @return void
-     */
-    public function setCollection($collection = null)
-    {
-        $this->collection = $collection;
-    }
-    
     
     
     /**
      * Creates url arguments array for easy creation of display urls.
      *
-     * @return array The resulting arguments list
+     * @return array List of resulting arguments
      */
     public function createUrlArgs()
     {
@@ -420,11 +392,11 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
     /**
      * Returns an array of all related objects that need to be persisted after clone.
      * 
-     * @param array $objects The objects are added to this array. Default: []
+     * @param array $objects Objects that are added to this array
      * 
-     * @return array of entity objects
+     * @return array List of entity objects
      */
-    public function getRelatedObjectsToPersist(&$objects = []) 
+    public function getRelatedObjectsToPersist(&$objects = [])
     {
         return [];
     }

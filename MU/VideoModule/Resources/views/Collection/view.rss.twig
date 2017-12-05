@@ -23,32 +23,26 @@
         #}
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <copyright>Copyright (c) {{ 'now'|date('Y') }}, {{ app.request.schemeAndHttpHost }}</copyright>
-        <webMaster>{{ pageGetVar('adminmail) }}</webMaster>
+        <webMaster>{{ pageGetVar('adminmail') }}</webMaster>
 {% for collection in items %}
-    {{ block('entry') }}
+    <item>
+        <title><![CDATA[{% if collection.updatedDate|default %}{{ collection.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ collection|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.collections')|safeHtml }}]]></title>
+        <link>{{ url('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': collection.getId()}) }}</link>
+        <guid>{{ url('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': collection.getId()}) }}</guid>
+        {% if collection.createdBy|default and collection.createdBy.getUid() > 0 %}
+            {% set creatorAttributes = collection.createdBy.getAttributes() %}
+            <author>{{ collection.createdBy.getEmail() }} ({{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(collection.createdBy.getUname()) }})</author>
+        {% endif %}
+        <category><![CDATA[{{ __('Categories') }}: {% for catMapping in collection.categories %}{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}{% if not loop.last %}, {% endif %}{% endfor %}]]></category>
+        <description>
+            <![CDATA[
+            {{ collection.description|replace({'<br>': '<br />'}) }}
+            ]]>
+        </description>
+        {% if collection.createdDate|default %}
+            <pubDate>{{ collection.createdDate|date('r') }}</pubDate>
+        {% endif %}
+    </item>
 {% endfor %}
     </channel>
 </rss>
-{% block entry %}
-    <item>
-        {{ block('entry_content') }}
-    </item>
-{% endblock %}
-{% block entry_content %}
-    <title><![CDATA[{% if collection.updatedDate|default %}{{ collection.updatedDate|localizeddate('medium', 'short') }} - {% endif %}{{ collection|muvideomodule_formattedTitle|notifyFilters('muvideomodule.filterhook.collections')|safeHtml }}]]></title>
-    <link>{{ url('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': collection.getId()}) }}</link>
-    <guid>{{ url('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': collection.getId()}) }}</guid>
-    {% if collection.createdBy|default and collection.createdBy.getUid() > 0 %}
-        {% set creatorAttributes = collection.createdBy.getAttributes() %}
-        <author>{{ collection.createdBy.getEmail() }} ({{ creatorAttributes.get('realname')|default(creatorAttributes.get('name'))|default(collection.createdBy.getUname()) }})</author>
-    {% endif %}
-    <category><![CDATA[{{ __('Categories') }}: {% for catMapping in collection.categories %}{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}{% if not loop.last %}, {% endif %}{% endfor %}]]></category>
-    <description>
-        <![CDATA[
-        {{ collection.description|replace({'<br>': '<br />'}) }}
-        ]]>
-    </description>
-    {% if collection.createdDate|default %}
-        <pubDate>{{ collection.createdDate|date('r') }}</pubDate>
-    {% endif %}
-{% endblock %}

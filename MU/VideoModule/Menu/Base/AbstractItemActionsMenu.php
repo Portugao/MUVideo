@@ -44,11 +44,11 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
      * Builds the menu.
      *
      * @param FactoryInterface $factory Menu factory
-     * @param array            $options Additional options
+     * @param array            $options List of additional options
      *
      * @return MenuItem The assembled menu
      */
-    public function menu(FactoryInterface $factory, array $options)
+    public function menu(FactoryInterface $factory, array $options = [])
     {
         $menu = $factory->createItem('itemActions');
         if (!isset($options['entity']) || !isset($options['area']) || !isset($options['context'])) {
@@ -74,45 +74,56 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
             if ($routeArea == 'admin') {
-                $menu->addChild($this->__('Preview'), [
+                $title = $this->__('Preview', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-search-plus');
-                $menu[$this->__('Preview')]->setLinkAttribute('target', '_blank');
-                $menu[$this->__('Preview')]->setLinkAttribute('title', $this->__('Open preview page'));
+                ]);
+                $menu[$title]->setLinkAttribute('target', '_blank');
+                $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
             }
             if ($context != 'display') {
-                $menu->addChild($this->__('Details'), [
+                $title = $this->__('Details', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-eye');
-                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
+                ]);
+                $menu[$title]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
+                $menu[$title]->setAttribute('icon', 'fa fa-eye');
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
-                $menu->addChild($this->__('Edit'), [
+                $title = $this->__('Edit', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-pencil-square-o');
-                $menu[$this->__('Edit')]->setLinkAttribute('title', $this->__('Edit this collection'));
-                $menu->addChild($this->__('Reuse'), [
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Edit this collection', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
+                $title = $this->__('Reuse', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
-                ])->setAttribute('icon', 'fa fa-files-o');
-                $menu[$this->__('Reuse')]->setLinkAttribute('title', $this->__('Reuse for new collection'));
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new collection', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
-                $menu->addChild($this->__('Delete'), [
+                $title = $this->__('Delete', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'delete',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-trash-o');
-                $menu[$this->__('Delete')]->setLinkAttribute('title', $this->__('Delete this collection'));
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Delete this collection', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
             }
             if ($context == 'display') {
-                $title = $this->__('Back to overview');
+                $title = $this->__('Back to overview', 'muvideomodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view'
-                ])->setAttribute('icon', 'fa fa-reply');
+                ]);
                 $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-reply');
             }
             
             // more actions for adding new related items
@@ -120,23 +131,13 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $relatedComponent = 'MUVideoModule:Movie:';
             $relatedInstance = $entity->getKey() . '::';
             if ($isOwner || $permissionApi->hasPermission($relatedComponent, $relatedInstance, ACCESS_EDIT)) {
-                $title = $this->__('Create movie');
+                $title = $this->__('Create movie', 'muvideomodule');
                 $menu->addChild($title, [
                     'route' => 'muvideomodule_movie_' . $routeArea . 'edit',
                     'routeParameters' => ['collection' => $entity->getKey()]
-                ])->setAttribute('icon', 'fa fa-plus');
+                ]);
                 $menu[$title]->setLinkAttribute('title', $title);
-            }
-            
-            $relatedComponent = 'MUVideoModule:Playlist:';
-            $relatedInstance = $entity->getKey() . '::';
-            if ($isOwner || $permissionApi->hasPermission($relatedComponent, $relatedInstance, ACCESS_EDIT)) {
-                $title = $this->__('Create playlists');
-                $menu->addChild($title, [
-                    'route' => 'muvideomodule_playlist_' . $routeArea . 'edit',
-                    'routeParameters' => ['collection' => $entity->getKey()]
-                ])->setAttribute('icon', 'fa fa-plus');
-                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-plus');
             }
         }
         if ($entity instanceof MovieEntity) {
@@ -146,45 +147,56 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
             if ($routeArea == 'admin') {
-                $menu->addChild($this->__('Preview'), [
+                $title = $this->__('Preview', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-search-plus');
-                $menu[$this->__('Preview')]->setLinkAttribute('target', '_blank');
-                $menu[$this->__('Preview')]->setLinkAttribute('title', $this->__('Open preview page'));
+                ]);
+                $menu[$title]->setLinkAttribute('target', '_blank');
+                $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
             }
             if ($context != 'display') {
-                $menu->addChild($this->__('Details'), [
+                $title = $this->__('Details', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-eye');
-                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
+                ]);
+                $menu[$title]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
+                $menu[$title]->setAttribute('icon', 'fa fa-eye');
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
-                $menu->addChild($this->__('Edit'), [
+                $title = $this->__('Edit', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-pencil-square-o');
-                $menu[$this->__('Edit')]->setLinkAttribute('title', $this->__('Edit this movie'));
-                $menu->addChild($this->__('Reuse'), [
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Edit this movie', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
+                $title = $this->__('Reuse', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
-                ])->setAttribute('icon', 'fa fa-files-o');
-                $menu[$this->__('Reuse')]->setLinkAttribute('title', $this->__('Reuse for new movie'));
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new movie', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
-                $menu->addChild($this->__('Delete'), [
+                $title = $this->__('Delete', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'delete',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-trash-o');
-                $menu[$this->__('Delete')]->setLinkAttribute('title', $this->__('Delete this movie'));
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Delete this movie', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
             }
             if ($context == 'display') {
-                $title = $this->__('Back to overview');
+                $title = $this->__('Back to overview', 'muvideomodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view'
-                ])->setAttribute('icon', 'fa fa-reply');
+                ]);
                 $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-reply');
             }
         }
         if ($entity instanceof PlaylistEntity) {
@@ -194,45 +206,56 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
             if ($routeArea == 'admin') {
-                $menu->addChild($this->__('Preview'), [
+                $title = $this->__('Preview', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-search-plus');
-                $menu[$this->__('Preview')]->setLinkAttribute('target', '_blank');
-                $menu[$this->__('Preview')]->setLinkAttribute('title', $this->__('Open preview page'));
+                ]);
+                $menu[$title]->setLinkAttribute('target', '_blank');
+                $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
             }
             if ($context != 'display') {
-                $menu->addChild($this->__('Details'), [
+                $title = $this->__('Details', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-eye');
-                $menu[$this->__('Details')]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
+                ]);
+                $menu[$title]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
+                $menu[$title]->setAttribute('icon', 'fa fa-eye');
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
-                $menu->addChild($this->__('Edit'), [
+                $title = $this->__('Edit', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-pencil-square-o');
-                $menu[$this->__('Edit')]->setLinkAttribute('title', $this->__('Edit this playlist'));
-                $menu->addChild($this->__('Reuse'), [
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Edit this playlist', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
+                $title = $this->__('Reuse', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
-                ])->setAttribute('icon', 'fa fa-files-o');
-                $menu[$this->__('Reuse')]->setLinkAttribute('title', $this->__('Reuse for new playlist'));
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new playlist', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
-                $menu->addChild($this->__('Delete'), [
+                $title = $this->__('Delete', 'muvideomodule');
+                $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'delete',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-trash-o');
-                $menu[$this->__('Delete')]->setLinkAttribute('title', $this->__('Delete this playlist'));
+                ]);
+                $menu[$title]->setLinkAttribute('title', $this->__('Delete this playlist', 'muvideomodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
             }
             if ($context == 'display') {
-                $title = $this->__('Back to overview');
+                $title = $this->__('Back to overview', 'muvideomodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view'
-                ])->setAttribute('icon', 'fa fa-reply');
+                ]);
                 $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-reply');
             }
         }
 

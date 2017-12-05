@@ -146,11 +146,21 @@ abstract class AbstractCollectionController extends AbstractController
         
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters, true);
         
+        // filter by permissions
+        $filteredEntities = [];
+        foreach ($templateParameters['items'] as $collection) {
+            if (!$this->hasPermission('MUVideoModule:' . ucfirst($objectType) . ':', $collection->getKey() . '::', $permLevel)) {
+                continue;
+            }
+            $filteredEntities[] = $collection;
+        }
+        $templateParameters['items'] = $filteredEntities;
+        
+        // filter by category permissions
         $featureActivationHelper = $this->get('mu_video_module.feature_activation_helper');
         if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
             $templateParameters['items'] = $this->get('mu_video_module.category_helper')->filterEntitiesByPermission($templateParameters['items']);
         }
-        
         
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
@@ -204,17 +214,17 @@ abstract class AbstractCollectionController extends AbstractController
             throw new AccessDeniedException();
         }
         
-        $templateParameters = [
-            'routeArea' => $isAdmin ? 'admin' : '',
-            $objectType => $collection
-        ];
-        
         $featureActivationHelper = $this->get('mu_video_module.feature_activation_helper');
         if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
             if (!$this->get('mu_video_module.category_helper')->hasPermission($collection)) {
                 throw new AccessDeniedException();
             }
         }
+        
+        $templateParameters = [
+            'routeArea' => $isAdmin ? 'admin' : '',
+            $objectType => $collection
+        ];
         
         $controllerHelper = $this->get('mu_video_module.controller_helper');
         $templateParameters = $controllerHelper->processDisplayActionParameters($objectType, $templateParameters, true);
@@ -452,7 +462,7 @@ abstract class AbstractCollectionController extends AbstractController
      * This method includes the common implementation code for adminHandleSelectedEntriesAction() and handleSelectedEntriesAction().
      *
      * @param Request $request Current request instance
-     * @param Boolean $isAdmin Whether the admin area is used or not
+     * @param boolean $isAdmin Whether the admin area is used or not
      */
     protected function handleSelectedEntriesActionInternal(Request $request, $isAdmin = false)
     {

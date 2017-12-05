@@ -36,7 +36,7 @@ class AbstractFilterPlaylistEvent extends Event
      * @param PlaylistEntity $playlist Processed entity
      * @param array $entityChangeSet Change set for preUpdate events
      */
-    public function __construct(PlaylistEntity $playlist, $entityChangeSet = [])
+    public function __construct(PlaylistEntity $playlist, array $entityChangeSet = [])
     {
         $this->playlist = $playlist;
         $this->entityChangeSet = $entityChangeSet;
@@ -55,7 +55,7 @@ class AbstractFilterPlaylistEvent extends Event
     /**
      * Returns the change set.
      *
-     * @return array
+     * @return array Entity change set
      */
     public function getEntityChangeSet()
     {

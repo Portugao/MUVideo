@@ -65,28 +65,27 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     
         // set up all our vars with initial values
         $this->setVar('maxSizeOfMovie', '200M');
-        $this->setVar('maxSizeOfPoster', '200k');
+        $this->setVar('maxSizeOfPoster', '');
         $this->setVar('standardPoster', '/images/poster.png');
         $this->setVar('youtubeApi', '');
         $this->setVar('channelIds', '');
-        $this->setVar('overrideVars', false);
-        $this->setVar('collectionEntriesPerPage', '10');
+        $this->setVar('collectionEntriesPerPage', 10);
         $this->setVar('linkOwnCollectionsOnAccountPage', true);
-        $this->setVar('movieEntriesPerPage', '10');
+        $this->setVar('movieEntriesPerPage', 10);
         $this->setVar('linkOwnMoviesOnAccountPage', true);
-        $this->setVar('playlistEntriesPerPage', '10');
+        $this->setVar('playlistEntriesPerPage', 10);
         $this->setVar('linkOwnPlaylistsOnAccountPage', true);
         $this->setVar('enableShrinkingForMoviePoster', false);
-        $this->setVar('shrinkWidthMoviePoster', '800');
-        $this->setVar('shrinkHeightMoviePoster', '600');
-        $this->setVar('thumbnailModeMoviePoster',  'inset' );
-        $this->setVar('thumbnailWidthMoviePosterView', '32');
-        $this->setVar('thumbnailHeightMoviePosterView', '24');
-        $this->setVar('thumbnailWidthMoviePosterDisplay', '240');
-        $this->setVar('thumbnailHeightMoviePosterDisplay', '180');
-        $this->setVar('thumbnailWidthMoviePosterEdit', '240');
-        $this->setVar('thumbnailHeightMoviePosterEdit', '180');
-        $this->setVar('enabledFinderTypes', [ 'collection' ,  'movie' ,  'playlist' ]);
+        $this->setVar('shrinkWidthMoviePoster', 800);
+        $this->setVar('shrinkHeightMoviePoster', 600);
+        $this->setVar('thumbnailModeMoviePoster', 'inset');
+        $this->setVar('thumbnailWidthMoviePosterView', 32);
+        $this->setVar('thumbnailHeightMoviePosterView', 24);
+        $this->setVar('thumbnailWidthMoviePosterDisplay', 240);
+        $this->setVar('thumbnailHeightMoviePosterDisplay', 180);
+        $this->setVar('thumbnailWidthMoviePosterEdit', 240);
+        $this->setVar('thumbnailHeightMoviePosterEdit', 180);
+        $this->setVar('enabledFinderTypes', 'collection###movie###playlist');
     
         $categoryRegistryIdsPerEntity = [];
     
@@ -409,7 +408,7 @@ abstract class AbstractVideoModuleInstaller extends AbstractExtensionInstaller
     /**
      * Build array with all entity classes for MUVideoModule.
      *
-     * @return array list of class names
+     * @return string[] List of class names
      */
     protected function listEntityClasses()
     {
