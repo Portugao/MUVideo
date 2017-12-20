@@ -12,15 +12,19 @@
 
 namespace MU\VideoModule\Form\Type\QuickNavigation\Base;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use MU\VideoModule\Helper\EntityDisplayHelper;
 use MU\VideoModule\Helper\FeatureActivationHelper;
 use MU\VideoModule\Helper\ListEntriesHelper;
 
@@ -30,6 +34,16 @@ use MU\VideoModule\Helper\ListEntriesHelper;
 abstract class AbstractPlaylistQuickNavType extends AbstractType
 {
     use TranslatorTrait;
+
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var EntityDisplayHelper
+     */
+    protected $entityDisplayHelper;
 
     /**
      * @var ListEntriesHelper
@@ -45,15 +59,21 @@ abstract class AbstractPlaylistQuickNavType extends AbstractType
      * PlaylistQuickNavType constructor.
      *
      * @param TranslatorInterface $translator   Translator service instance
+    * @param RequestStack        $requestStack RequestStack service instance
+    * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
      * @param ListEntriesHelper   $listHelper   ListEntriesHelper service instance
      * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,
+        RequestStack $requestStack,
+        EntityDisplayHelper $entityDisplayHelper,
         ListEntriesHelper $listHelper,
         FeatureActivationHelper $featureActivationHelper
     ) {
         $this->setTranslator($translator);
+        $this->request = $requestStack->getCurrentRequest();
+        $this->entityDisplayHelper = $entityDisplayHelper;
         $this->listHelper = $listHelper;
         $this->featureActivationHelper = $featureActivationHelper;
     }
@@ -83,6 +103,7 @@ abstract class AbstractPlaylistQuickNavType extends AbstractType
         if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, 'playlist')) {
             $this->addCategoriesField($builder, $options);
         }
+        $this->addIncomingRelationshipFields($builder, $options);
         $this->addListFields($builder, $options);
         $this->addSearchField($builder, $options);
         $this->addSortingFields($builder, $options);
@@ -117,8 +138,45 @@ abstract class AbstractPlaylistQuickNavType extends AbstractType
             'multiple' => false,
             'module' => 'MUVideoModule',
             'entity' => ucfirst($objectType) . 'Entity',
-            'entityCategoryClass' => 'MU\VideoModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity'
+            'entityCategoryClass' => 'MU\VideoModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity',
+            'showRegistryLabels' => true
         ]);
+    }
+
+    /**
+     * Adds fields for incoming relationships.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addIncomingRelationshipFields(FormBuilderInterface $builder, array $options = [])
+    {
+        $mainSearchTerm = '';
+        if ($this->request->query->has('q')) {
+            // remove current search argument from request to avoid filtering related items
+            $mainSearchTerm = $this->request->query->get('q');
+            $this->request->query->remove('q');
+        }
+    
+        $entityDisplayHelper = $this->entityDisplayHelper;
+        $choiceLabelClosure = function ($entity) use ($entityDisplayHelper) {
+            return $entityDisplayHelper->getFormattedTitle($entity);
+        };
+        $builder->add('collection', EntityType::class, [
+            'class' => 'MUVideoModule:CollectionEntity',
+            'choice_label' => $choiceLabelClosure,
+            'placeholder' => $this->__('All'),
+            'required' => false,
+            'label' => $this->__('Collection'),
+            'attr' => [
+                'class' => 'input-sm'
+            ]
+        ]);
+    
+        if ($mainSearchTerm != '') {
+            // readd current search argument
+            $this->request->query->set('q', $mainSearchTerm);
+        }
     }
 
     /**

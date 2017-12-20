@@ -203,7 +203,8 @@ abstract class AbstractCollectionType extends AbstractType
             'multiple' => false,
             'module' => 'MUVideoModule',
             'entity' => 'CollectionEntity',
-            'entityCategoryClass' => 'MU\VideoModule\Entity\CollectionCategoryEntity'
+            'entityCategoryClass' => 'MU\VideoModule\Entity\CollectionCategoryEntity',
+            'showRegistryLabels' => true
         ]);
     }
 

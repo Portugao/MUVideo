@@ -120,7 +120,8 @@ abstract class AbstractPlaylistFinderType extends AbstractType
             'multiple' => false,
             'module' => 'MUVideoModule',
             'entity' => ucfirst($options['object_type']) . 'Entity',
-            'entityCategoryClass' => 'MU\VideoModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity'
+            'entityCategoryClass' => 'MU\VideoModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity',
+            'showRegistryLabels' => true
         ]);
     }
 

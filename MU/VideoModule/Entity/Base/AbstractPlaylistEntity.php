@@ -46,9 +46,6 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
-     * @Assert\Type(type="integer")
-     * @Assert\NotNull()
-     * @Assert\LessThan(value=1000000000)
      * @var integer $id
      */
     protected $id = 0;
@@ -108,6 +105,16 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
      * @var \MU\VideoModule\Entity\PlaylistCategoryEntity
      */
     protected $categories = null;
+    
+    /**
+     * Bidirectional - Many playlists [playlists] are linked by one collection [collection] (OWNING SIDE).
+     *
+     * @ORM\ManyToOne(targetEntity="MU\VideoModule\Entity\CollectionEntity", inversedBy="playlists")
+     * @ORM\JoinTable(name="mu_video_collection")
+     * @Assert\Type(type="MU\VideoModule\Entity\CollectionEntity")
+     * @var \MU\VideoModule\Entity\CollectionEntity $collection
+     */
+    protected $collection;
     
     
     /**
@@ -343,6 +350,28 @@ abstract class AbstractPlaylistEntity extends EntityAccess implements Translatab
         }
     
         return false;
+    }
+    
+    /**
+     * Returns the collection.
+     *
+     * @return \MU\VideoModule\Entity\CollectionEntity
+     */
+    public function getCollection()
+    {
+        return $this->collection;
+    }
+    
+    /**
+     * Sets the collection.
+     *
+     * @param \MU\VideoModule\Entity\CollectionEntity $collection
+     *
+     * @return void
+     */
+    public function setCollection($collection = null)
+    {
+        $this->collection = $collection;
     }
     
     

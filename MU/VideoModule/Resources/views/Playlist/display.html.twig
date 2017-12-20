@@ -34,6 +34,19 @@
             {% endif %}
             </dd>
         {% endif %}
+        {% if playlist.collection|default %}
+            <dt>{{ __('Collection') }}</dt>
+            <dd>
+              {% if not isQuickView %}
+                  <a href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': playlist.collection.getId()}) }}">{% spaceless %}
+                    {{ playlist.collection|muvideomodule_formattedTitle }}
+                  {% endspaceless %}</a>
+                  <a id="collectionItem{{ playlist.collection.getKey() }}Display" href="{{ path('muvideomodule_collection_' ~ routeArea ~ 'display', {'id': playlist.collection.getId(), raw: 1}) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="muvideo-inline-window hidden" data-modal-title="{{ playlist.collection|muvideomodule_formattedTitle|e('html_attr') }}"><i class="fa fa-id-card-o"></i></a>
+              {% else %}
+                  {{ playlist.collection|muvideomodule_formattedTitle }}
+              {% endif %}
+            </dd>
+        {% endif %}
         
     </dl>
 

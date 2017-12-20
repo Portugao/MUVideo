@@ -56,6 +56,10 @@
             {{ form_row(form.urlOfYoutubePlaylist) }}
         </fieldset>
         
+        {{ include(
+            '@MUVideoModule/Collection/includeSelectOne.html.twig',
+            {group: 'playlist', heading: __('Collection'), alias: 'collection', mandatory: false, idPrefix: 'videoPlaylist_Collection', linkingItem: playlist, displayMode: 'choices'}
+        ) }}
         {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'playlist') %}
             {{ include('@MUVideoModule/Helper/includeCategoriesEdit.html.twig', {obj: playlist}) }}
         {% endif %}
@@ -113,6 +117,8 @@
     {% set formInitScript %}
         <script>
         /* <![CDATA[ */
+            var mUVideoInlineEditHandlers = [];
+            var mUVideoEditHandler = null;
             
             ( function($) {
                 $(document).ready(function() {

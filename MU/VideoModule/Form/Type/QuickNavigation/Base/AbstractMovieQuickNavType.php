@@ -138,7 +138,8 @@ abstract class AbstractMovieQuickNavType extends AbstractType
             'multiple' => false,
             'module' => 'MUVideoModule',
             'entity' => ucfirst($objectType) . 'Entity',
-            'entityCategoryClass' => 'MU\VideoModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity'
+            'entityCategoryClass' => 'MU\VideoModule\Entity\\' . ucfirst($objectType) . 'CategoryEntity',
+            'showRegistryLabels' => true
         ]);
     }
 

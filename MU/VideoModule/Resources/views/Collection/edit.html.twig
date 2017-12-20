@@ -11,72 +11,98 @@
             'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
         ] %}
         {{ form_start(form, {attr: {id: 'collectionEditForm', class: 'muvideo-edit-form'}}) }}
-        {{ form_errors(form) }}
-        {% if translationsEnabled == true %}
-            <div class="zikula-bootstrap-tab-container">
-                <ul class="{{ form.vars.id|lower }}-translation-locales nav nav-tabs">
-                    {% for language in supportedLanguages %}
-                        <li{% if language == app.request.locale %} class="active"{% endif %}>
-                            <a href="#" data-toggle="tab" data-target=".{{ form.vars.id|lower }}-translations-fields-{{ language }}">
-                                {% if not form.vars.valid %}
-                                    <span class="label label-danger"><i class="fa fa-warning"></i> <span class="sr-only">{{ __('Errors') }}</span></span>
-                                {% endif %}
-                                {% set hasRequiredFields = language in localesWithMandatoryFields %}
-                                {% if hasRequiredFields %}<span class="required">{% endif %}{{ language|languageName|safeHtml }}{% if hasRequiredFields %}</span>{% endif %}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <div class="{{ form.vars.id|lower }}-translation-fields tab-content">
-                    {% for language in supportedLanguages %}
-                        <div class="{{ form.vars.id|lower }}-translations-fields-{{ language }} tab-pane fade{% if language == app.request.locale %} active in{% endif %}">
-                            <fieldset>
-                                <legend>{{ language|languageName|safeHtml }}</legend>
-                                {% if language == app.request.locale %}
-                                    {{ form_row(form.title) }}
-                                    {{ form_row(form.description) }}
-                                {% else %}
-                                    {{ form_row(attribute(form, 'translations' ~ language)) }}
-                                {% endif %}
-                            </fieldset>
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active">
+                    <a id="fieldsTab" href="#tabFields" title="{{ __('Fields') }}" role="tab" data-toggle="tab">{{ __('Fields') }}</a>
+                </li>
+                {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'collection') %}
+                    <li role="presentation">
+                        <a id="categoriesTab" href="#tabCategories" title="{{ __('Categories') }}" role="tab" data-toggle="tab">{{ __('Categories') }}</a>
+                    </li>
+                {% endif %}
+                {% if mode != 'create' %}
+                    <li role="presentation">
+                        <a id="standardFieldsTab" href="#tabStandardFields" title="{{ __('Creation and update') }}" role="tab" data-toggle="tab">{{ __('Creation and update') }}</a>
+                    </li>
+                {% endif %}
+                {% if form.moderationSpecificCreator is defined %}
+                    <li role="presentation">
+                        <a id="moderationTab" href="#tabModeration" title="{{ __('Moderation options') }}" role="tab" data-toggle="tab">{{ __('Moderation') }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        
+            {{ form_errors(form) }}
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="tabFields" aria-labelledby="fieldsTab">
+                    <h3>{{ __('Fields') }}</h3>
+                    {% if translationsEnabled == true %}
+                        <div class="zikula-bootstrap-tab-container">
+                            <ul class="{{ form.vars.id|lower }}-translation-locales nav nav-tabs">
+                                {% for language in supportedLanguages %}
+                                    <li{% if language == app.request.locale %} class="active"{% endif %}>
+                                        <a href="#" data-toggle="tab" data-target=".{{ form.vars.id|lower }}-translations-fields-{{ language }}">
+                                            {% if not form.vars.valid %}
+                                                <span class="label label-danger"><i class="fa fa-warning"></i> <span class="sr-only">{{ __('Errors') }}</span></span>
+                                            {% endif %}
+                                            {% set hasRequiredFields = language in localesWithMandatoryFields %}
+                                            {% if hasRequiredFields %}<span class="required">{% endif %}{{ language|languageName|safeHtml }}{% if hasRequiredFields %}</span>{% endif %}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="{{ form.vars.id|lower }}-translation-fields tab-content">
+                                {% for language in supportedLanguages %}
+                                    <div class="{{ form.vars.id|lower }}-translations-fields-{{ language }} tab-pane fade{% if language == app.request.locale %} active in{% endif %}">
+                                        <fieldset>
+                                            <legend>{{ language|languageName|safeHtml }}</legend>
+                                            {% if language == app.request.locale %}
+                                                {{ form_row(form.title) }}
+                                                {{ form_row(form.description) }}
+                                            {% else %}
+                                                {{ form_row(attribute(form, 'translations' ~ language)) }}
+                                            {% endif %}
+                                        </fieldset>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
-                    {% endfor %}
+                    {% else %}
+                        {% set language = app.request.locale %}
+                        <fieldset>
+                            <legend>{{ language|languageName|safeHtml }}</legend>
+                            {{ form_row(form.title) }}
+                            {{ form_row(form.description) }}
+                        </fieldset>
+                    {% endif %}
                 </div>
+                
+                {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'collection') %}
+                    {{ include('@MUVideoModule/Helper/includeCategoriesEdit.html.twig', {obj: collection, tabs: true}) }}
+                {% endif %}
+                {% if mode != 'create' %}
+                    {{ include('@MUVideoModule/Helper/includeStandardFieldsEdit.html.twig', {obj: collection, tabs: true}) }}
+                {% endif %}
+                
+                {% if formHookTemplates|length > 0 %}
+                    <fieldset>
+                        {% for hookTemplate in formHookTemplates %}
+                            {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
+                        {% endfor %}
+                    </fieldset>
+                {% endif %}
+                
+                {% if form.moderationSpecificCreator is defined %}
+                    <div role="tabpanel" class="tab-pane fade" id="tabModeration" aria-labelledby="moderationTab">
+                        <h3>{{ __('Moderation') }}</h3>
+                        {{ form_row(form.moderationSpecificCreator) }}
+                        {{ form_row(form.moderationSpecificCreationDate) }}
+                    </div>
+                {% endif %}
+                
             </div>
-        {% else %}
-            {% set language = app.request.locale %}
-            <fieldset>
-                <legend>{{ language|languageName|safeHtml }}</legend>
-                {{ form_row(form.title) }}
-                {{ form_row(form.description) }}
-            </fieldset>
-        {% endif %}
-        
-        {% if featureActivationHelper.isEnabled(constant('MU\\VideoModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'collection') %}
-            {{ include('@MUVideoModule/Helper/includeCategoriesEdit.html.twig', {obj: collection}) }}
-        {% endif %}
-        {% if mode != 'create' %}
-            {{ include('@MUVideoModule/Helper/includeStandardFieldsEdit.html.twig', {obj: collection}) }}
-        {% endif %}
-        
-        {% if formHookTemplates|length > 0 %}
-            <fieldset>
-                {% for hookTemplate in formHookTemplates %}
-                    {{ include(hookTemplate.0, hookTemplate.1, ignore_missing = true) }}
-                {% endfor %}
-            </fieldset>
-        {% endif %}
-        
-        {% if form.moderationSpecificCreator is defined %}
-            <fieldset id="moderationFieldsSection">
-                <legend>{{ __('Moderation') }} <i class="fa fa-expand"></i></legend>
-                <div id="moderationFieldsContent">
-                    {{ form_row(form.moderationSpecificCreator) }}
-                    {{ form_row(form.moderationSpecificCreationDate) }}
-                </div>
-            </fieldset>
-        {% endif %}
-        
+        </div>
         
         {# include possible submit actions #}
         <div class="form-group form-buttons">

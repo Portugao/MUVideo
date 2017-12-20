@@ -139,6 +139,7 @@ abstract class AbstractPlaylistController extends AbstractController
             new Column('title'),
             new Column('description'),
             new Column('urlOfYoutubePlaylist'),
+            new Column('collection'),
             new Column('createdBy'),
             new Column('createdDate'),
             new Column('updatedBy'),

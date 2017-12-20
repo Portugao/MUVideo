@@ -206,6 +206,7 @@ abstract class AbstractCollectionFilterHelper
     
         $parameters['catId'] = $this->request->query->get('catId', '');
         $parameters['catIdList'] = $this->categoryHelper->retrieveCategoriesFromRequest('playlist', 'GET');
+        $parameters['collection'] = $this->request->query->get('collection', 0);
         $parameters['workflowState'] = $this->request->query->get('workflowState', '');
         $parameters['q'] = $this->request->query->get('q', '');
     

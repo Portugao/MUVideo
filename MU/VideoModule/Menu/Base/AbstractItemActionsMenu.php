@@ -139,6 +139,18 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                 $menu[$title]->setLinkAttribute('title', $title);
                 $menu[$title]->setAttribute('icon', 'fa fa-plus');
             }
+            
+            $relatedComponent = 'MUVideoModule:Playlist:';
+            $relatedInstance = $entity->getKey() . '::';
+            if ($isOwner || $permissionApi->hasPermission($relatedComponent, $relatedInstance, ACCESS_EDIT)) {
+                $title = $this->__('Create playlists', 'muvideomodule');
+                $menu->addChild($title, [
+                    'route' => 'muvideomodule_playlist_' . $routeArea . 'edit',
+                    'routeParameters' => ['collection' => $entity->getKey()]
+                ]);
+                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-plus');
+            }
         }
         if ($entity instanceof MovieEntity) {
             $component = 'MUVideoModule:Movie:';

@@ -1,6 +1,6 @@
 {# purpose of this template: collections view csv view #}
 {% spaceless %}"{{ __('Title') }}";"{{ __('Description') }}";"{{ __('Workflow state') }}"
-;"{{ __('Movie') }}"
+;"{{ __('Movie') }}";"{{ __('Playlists') }}"
 {% endspaceless %}
 {% for collection in items %}
 {% spaceless %}
@@ -8,6 +8,12 @@
     ;"
     {% if collection.movie|default %}
         {% for relatedItem in collection.movie %}
+        {{ relatedItem|muvideomodule_formattedTitle }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    {% endif %}
+    ";"
+    {% if collection.playlists|default %}
+        {% for relatedItem in collection.playlists %}
         {{ relatedItem|muvideomodule_formattedTitle }}{% if not loop.last %}, {% endif %}
         {% endfor %}
     {% endif %}

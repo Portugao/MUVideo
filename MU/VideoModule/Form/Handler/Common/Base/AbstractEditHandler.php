@@ -472,6 +472,17 @@ abstract class AbstractEditHandler
         return null;
     }
     
+    /**
+     * Returns the form options.
+     *
+     * @return array
+     */
+    protected function getFormOptions()
+    {
+        // to be customised in sub classes
+        return [];
+    }
+    
     
     /**
      * Initialises relationship presets.

@@ -286,7 +286,8 @@ abstract class AbstractMovieType extends AbstractType
             'multiple' => false,
             'module' => 'MUVideoModule',
             'entity' => 'MovieEntity',
-            'entityCategoryClass' => 'MU\VideoModule\Entity\MovieCategoryEntity'
+            'entityCategoryClass' => 'MU\VideoModule\Entity\MovieCategoryEntity',
+            'showRegistryLabels' => true
         ]);
     }
 

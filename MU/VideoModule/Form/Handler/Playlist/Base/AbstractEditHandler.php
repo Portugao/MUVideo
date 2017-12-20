@@ -68,14 +68,48 @@ abstract class AbstractEditHandler extends EditHandler
     }
     
     /**
+     * Initialises relationship presets.
+     */
+    protected function initRelationPresets()
+    {
+        $entity = $this->entityRef;
+    
+        
+        // assign identifiers of predefined incoming relationships
+        // editable relation, we store the id and assign it now to show it in UI
+        $this->relationPresets['collection'] = $this->request->get('collection', '');
+        if (!empty($this->relationPresets['collection'])) {
+            $relObj = $this->entityFactory->getRepository('collection')->selectById($this->relationPresets['collection']);
+            if (null !== $relObj) {
+                $relObj->addPlaylists($entity);
+            }
+        }
+    
+        // save entity reference for later reuse
+        $this->entityRef = $entity;
+    }
+    
+    /**
      * Creates the form type.
      */
     protected function createForm()
+    {
+        return $this->formFactory->create(PlaylistType::class, $this->entityRef, $this->getFormOptions());
+    }
+    
+    /**
+     * Returns the form options.
+     *
+     * @return array
+     */
+    protected function getFormOptions()
     {
         $options = [
             'mode' => $this->templateParameters['mode'],
             'actions' => $this->templateParameters['actions'],
             'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_ADMIN),
+            'filter_by_ownership' => !$this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_ADD),
+            'inline_usage' => $this->templateParameters['inlineUsage']
         ];
     
         $options['translations'] = [];
@@ -83,7 +117,7 @@ abstract class AbstractEditHandler extends EditHandler
             $options['translations'][$language] = isset($this->templateParameters[$this->objectTypeLower . $language]) ? $this->templateParameters[$this->objectTypeLower . $language] : [];
         }
     
-        return $this->formFactory->create(PlaylistType::class, $this->entityRef, $options);
+        return $options;
     }
 
 
@@ -113,6 +147,18 @@ abstract class AbstractEditHandler extends EditHandler
         // admin detail page of treated playlist
         $codes[] = 'adminDisplay';
     
+        // user list of collections
+        $codes[] = 'userViewCollections';
+        // admin list of collections
+        $codes[] = 'adminViewCollections';
+        // user list of own collections
+        $codes[] = 'userOwnViewCollections';
+        // admin list of own collections
+        $codes[] = 'adminOwnViewCollections';
+        // user detail page of related collection
+        $codes[] = 'userDisplayCollection';
+        // admin detail page of related collection
+        $codes[] = 'adminDisplayCollection';
     
         return $codes;
     }
@@ -292,6 +338,19 @@ abstract class AbstractEditHandler extends EditHandler
             case 'adminDisplay':
                 if ($args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel')) {
                     return $this->router->generate($routePrefix . 'display', $this->entityRef->createUrlArgs());
+                }
+    
+                return $this->getDefaultReturnUrl($args);
+            case 'userViewCollections':
+            case 'adminViewCollections':
+                return $this->router->generate('muvideomodule_collection_' . $routeArea . 'view');
+            case 'userOwnViewCollections':
+            case 'adminOwnViewCollections':
+                return $this->router->generate('muvideomodule_collection_' . $routeArea . 'view', ['own' => 1]);
+            case 'userDisplayCollection':
+            case 'adminDisplayCollection':
+                if (!empty($this->relationPresets['collection'])) {
+                    return $this->router->generate('muvideomodule_collection_' . $routeArea . 'display',  ['id' => $this->relationPresets['collection']]);
                 }
     
                 return $this->getDefaultReturnUrl($args);

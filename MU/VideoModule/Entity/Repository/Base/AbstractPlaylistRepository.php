@@ -473,7 +473,7 @@ abstract class AbstractPlaylistRepository extends EntityRepository
         if (!$isPaginated) {
             $result = $query->getResult();
         } else {
-            $paginator = new Paginator($query, false);
+            $paginator = new Paginator($query, true);
     
             $count = count($paginator);
             $result = $paginator;
@@ -683,7 +683,7 @@ abstract class AbstractPlaylistRepository extends EntityRepository
      */
     protected function addJoinsToSelection()
     {
-        $selection = '';
+        $selection = ', tblCollection';
     
         $selection = ', tblCategories';
     
@@ -699,6 +699,7 @@ abstract class AbstractPlaylistRepository extends EntityRepository
      */
     protected function addJoinsToFrom(QueryBuilder $qb)
     {
+        $qb->leftJoin('tbl.collection', 'tblCollection');
     
         $qb->leftJoin('tbl.categories', 'tblCategories');
     
