@@ -9,7 +9,7 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.0.3\n"
 
 msgid "doc"
 msgstr "/installdoc/{name}"
@@ -18,7 +18,7 @@ msgid "fos_js_routing_js"
 msgstr "/js/routing.{_format}"
 
 msgid "home"
-msgstr "start"
+msgstr "/"
 
 msgid "install"
 msgstr "/installieren/{stage}"
